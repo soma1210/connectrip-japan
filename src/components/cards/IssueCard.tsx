@@ -1,0 +1,28 @@
+import { Check } from "lucide-react";
+import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
+import { FadeIn } from "@/components/ui/FadeIn";
+
+export function IssueCard({
+  title,
+  image,
+  imageAlt,
+  delay = 0,
+}: {
+  title: string;
+  image: string;
+  imageAlt: string;
+  delay?: number;
+}) {
+  return (
+    <FadeIn delay={delay} className="relative aspect-[4/3] overflow-hidden">
+      <PlaceholderImage src={image} alt={imageAlt} sizes="(min-width: 768px) 33vw, 100vw" />
+      <div className="absolute inset-0 bg-navy-dark/55" />
+      <div className="absolute left-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-cream/60">
+        <Check className="h-4 w-4 text-cream" />
+      </div>
+      <p className="absolute bottom-6 left-5 right-5 whitespace-pre-line text-lg font-medium text-cream md:text-xl">
+        {title}
+      </p>
+    </FadeIn>
+  );
+}

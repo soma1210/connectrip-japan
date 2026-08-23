@@ -1,0 +1,303 @@
+{
+  "seo": {
+    "title": "Connectrip Japan | 日本旅行サポート",
+    "description": "大阪・京都・奈良・兵庫を中心とした、訪日外国人向けプレミアム日本旅行サポート。オーダーメイド旅行、ローカル体験、プライベートガイドをワンストップで。"
+  },
+  "nav": {
+    "service": "SERVICE",
+    "value": "VALUE",
+    "process": "PROCESS",
+    "plan": "PLAN",
+    "faq": "FAQ",
+    "gallery": "GALLERY",
+    "contact": "CONTACT",
+    "reserve": "予約する"
+  },
+  "header": {
+    "logoLine1": "CONNECTRIP",
+    "logoLine2": "JAPAN"
+  },
+  "hero": {
+    "eyebrow": "JAPAN TRAVEL SUPPORT",
+    "heading": "旅で人と心をつなぐ。",
+    "description": "関西エリア（大阪・京都・奈良・兵庫）を中心に、\n日本全国の旅行手配とガイドをワンストップで提供します。",
+    "cta": "日本の旅行プランを予約する",
+    "imageAlt": "雪の降る高山の古い町並みの夜景",
+    "slideAlts": [
+      "大阪城",
+      "紅葉に染まる湖畔の山々",
+      "富士山と湖",
+      "雪に包まれた白川郷の合掌造り集落",
+      "那智の滝と三重塔",
+      "奈良の大仏",
+      "小樽運河の夕景",
+      "京都嵐山の竹林",
+      "鳥取砂丘",
+      "奈良公園の鹿"
+    ]
+  },
+  "issues": {
+    "heading": "ISSUES",
+    "items": [
+      { "title": "言語の壁が不安", "imageAlt": "道に迷った旅行者のイメージ" },
+      { "title": "複雑な移動に自信がない。", "imageAlt": "駅を行き交う人々" },
+      { "title": "観光地だけではない、\nローカルな旅がしたい", "imageAlt": "地元の人との交流" },
+      { "title": "自分たちに合った\n旅行プランを作りたい。", "imageAlt": "旅の計画を立てる様子" },
+      { "title": "食文化やライフスタイルに\n合うお店がわからない。", "imageAlt": "日本の食卓" },
+      { "title": "子供も大人も\n満足できる旅にしたい。", "imageAlt": "家族での旅行" }
+    ]
+  },
+  "service": {
+    "heading": "SERVICE",
+    "description": "CONNECTRIP JAPANは、シンプルな想いから生まれました。\n日本には世界的に有名な観光地だけでなく、その土地ならではの文化、食、風景など、知られていない魅力が数多く存在します。\nその理由は興味がないからではなく、言語や認知の壁によって人とのつながりにアクセスできていないからです。\nその壁を取り除き、旅行者と地域、人と文化をつなぎ、本物の日本との出会いを創造すること。それがCONNECTRIP JAPANの原点です。",
+    "imageAlt": "桜と富士山、鳥居",
+    "cta": "日本の旅行プランを予約する",
+    "cards": [
+      { "number": "1", "title": "旅行相談・プラン作成", "description": "ご予算やご希望に合わせて、あなただけの日本旅行を設計します。" },
+      { "number": "2", "title": "ホテル・交通手配", "description": "ホテル、新幹線、レンタカーなど、旅行に必要な手配をサポートします。" },
+      { "number": "3", "title": "おすすめスポット紹介", "description": "有名観光地から穴場スポットまで、現地目線で本当に価値のある場所をご提案します。" },
+      { "number": "4", "title": "レストラン・体験予約", "description": "飲食店や文化体験など、日本旅行をより楽しむための予約をサポートします。" },
+      { "number": "5", "title": "プライベートガイド", "description": "現地ガイドが同行し、安心して日本を楽しむ旅をサポートします。" },
+      { "number": "6", "title": "英語サポート", "description": "旅行前のご相談から旅行中のお困りごとまで、英語で丁寧にサポートします。" }
+    ]
+  },
+  "value": {
+    "heading": "OUR VALUE",
+    "cta": "日本の旅行プランを予約する",
+    "cards": [
+      { "number": "1", "title": "日本人ローカルによるリアルな提案", "description": "観光サイトの人気ランキングではなく、実際に現地で暮らす日本人の目線でご提案します。" },
+      { "number": "2", "title": "関西専門チーム", "description": "大阪・京都・奈良・兵庫を中心に活動しているからこそ、最新のローカル情報をご案内できます。" },
+      { "number": "3", "title": "観光地だけではない日本", "description": "神社仏閣だけでなく、地元の商店街や飲食店、人との交流まで含めた旅をご提案します。" },
+      { "number": "4", "title": "あなた専用の旅", "description": "同じプランを販売するのではなく、ご希望に合わせて一から旅程を作成します。" },
+      { "number": "5", "title": "旅行前から相談できる", "description": "予約だけではなく、旅行前の疑問や不安も英語で気軽にご相談いただけます。" },
+      { "number": "6", "title": "日本の友人のような存在", "description": "旅行会社としてではなく、日本にいる友人のような立場で旅をサポートします。" }
+    ]
+  },
+  "process": {
+    "heading": "PROCESS",
+    "cta": "日本の旅行プランを予約する",
+    "steps": [
+      { "number": "1", "title": "お問い合わせ", "description": "旅行時期、ご希望エリア、ご予算、ご興味のある体験などをお問い合わせフォームよりお送りください。", "imageAlt": "スマートフォンで問い合わせをする様子" },
+      { "number": "2", "title": "ヒアリング・ご相談", "description": "ご希望の旅行スタイルやご要望を確認し、お客様に最適な旅の方向性をご提案します。", "imageAlt": "オンラインでの相談の様子" },
+      { "number": "3", "title": "旅行プランのご提案", "description": "オーダーメイド旅行またはパッケージツアーをご提案いたします。旅程、宿泊施設、体験内容などをご確認いただきます。", "imageAlt": "地図を使った旅程の確認" },
+      { "number": "4", "title": "ご予約・お支払い", "description": "内容をご確認いただき、プラン確定後にお支払い・各種手配を進めます。", "imageAlt": "日本円の紙幣" },
+      { "number": "5", "title": "出発前サポート", "description": "旅行前のご質問への対応や最終確認を行い、安心してご出発いただけるようサポートします。", "imageAlt": "空港を歩く旅行者" }
+    ]
+  },
+  "reviews": {
+    "heading": "REVIEWS",
+    "items": [
+      { "name": "Emily", "country": "United States", "countryCode": "US", "date": "2026.06.01", "rating": 5, "tag": "KYOTO PRIVATE TOUR", "quote": "自分たちだけでは出会えなかった京都の一面を、ガイドさんが案内してくれました。旅行会社というより、親しい友人と旅しているようでした。" },
+      { "name": "Lucas", "country": "Australia", "countryCode": "AU", "date": "2026.06.08", "rating": 5, "tag": "KANSAI CUSTOM PLAN", "quote": "私たちが本当に望んでいたことに合わせて、すべてが調整されていました。ホテルも電車も、夕食の予約まで手配してくれました。" },
+      { "name": "Sophia", "country": "United Kingdom", "countryCode": "GB", "date": "2026.06.15", "rating": 5, "tag": "OSAKA FOOD & CULTURE PLAN", "quote": "なんばのストリートフードから静かな茶道体験まで、今まで訪れた中で最も本物の日本を感じられる旅でした。" }
+    ]
+  },
+  "plan": {
+    "heading": "PLAN",
+    "subheading": "すべてのプランはご希望に合わせてカスタマイズ可能です。",
+    "cta": "日本の旅行プランを予約する",
+    "learnMore": "LEARN MORE",
+    "cards": [
+      { "title": "オーダーメイド", "description": "あなたのご希望をゼロからヒアリングし、オリジナルの旅行プランを作成します。", "imageAlt": "着物を着て歩く旅行者" },
+      { "title": "パッケージツアー", "description": "人気の観光地を効率良く巡る、安心のパッケージプランをご用意しています。", "imageAlt": "浅草寺を訪れる観光客" },
+      { "title": "VIPプラン（要相談）", "description": "特別なご要望にお応えするプレミアムな旅のプランです。詳細はお問い合わせください。", "imageAlt": "高級車のハンドル" }
+    ]
+  },
+  "faq": {
+    "heading": "FAQ",
+    "items": [
+      { "question": "英語での相談は可能ですか？", "answer": "はい、ご相談から旅行中のサポートまで、すべて英語で対応可能です。" },
+      { "question": "関西以外のエリアも対応していますか？", "answer": "はい、大阪・京都・奈良・兵庫を中心としながら、日本全国の旅行手配にも対応しております。" },
+      { "question": "何日前までに相談すればよいですか？", "answer": "内容にもよりますが、旅行の1〜2ヶ月前のご相談をおすすめしています。お急ぎの場合もまずはお気軽にご連絡ください。" },
+      { "question": "一人旅でも利用できますか？", "answer": "もちろんです。おひとり様でも安心してご利用いただけるようサポートいたします。" },
+      { "question": "オーダーメイド旅行とパッケージツアーの違いは何ですか？", "answer": "オーダーメイドはご希望をゼロからヒアリングして作成する旅程、パッケージツアーは人気スポットを効率よく巡れるあらかじめ用意されたプランです。" },
+      { "question": "TikTokやInstagramで見た場所も相談できますか？", "answer": "はい、気になる投稿のスクリーンショットやURLをお送りいただければ、現地情報を確認のうえプランに組み込みます。" },
+      { "question": "レストランや体験の予約もお願いできますか？", "answer": "はい、飲食店や文化体験の予約手配も承っております。" },
+      { "question": "プライベートガイドは利用できますか？", "answer": "はい、現地ガイドが同行するプランもご用意しております。" },
+      { "question": "ガイドなしで旅行手配のみ依頼できますか？", "answer": "はい、ホテルや交通手段の手配のみのご依頼も可能です。" },
+      { "question": "日本語が話せなくても大丈夫ですか？", "answer": "問題ございません。英語でのやり取りで最初から最後まで安心してご利用いただけます。" }
+    ]
+  },
+  "gallery": {
+    "heading": "GALLERY",
+    "items": [
+      { "imageAlt": "紅葉に包まれた日本庭園の小道" },
+      { "imageAlt": "雪化粧した日本の家屋" },
+      { "imageAlt": "縁側から見る紅葉の庭" }
+    ]
+  },
+  "vlog": {
+    "heading": "VLOG",
+    "readMore": "記事を読む",
+    "posts": [
+      { "title": "10 Hidden Gems in Kyoto You Can't Miss", "description": "Discover the secret spots loved by locals away from the crowds.", "imageAlt": "京都の隠れた名所を紹介する動画" },
+      { "title": "Osaka Street Food Guide", "description": "A local's guide to the best takoyaki and okonomiyaki in Namba.", "imageAlt": "桜並木の下を流れる川" },
+      { "title": "A Perfect Day in Nara", "description": "How to interact with deer and explore ancient temples smoothly.", "imageAlt": "奈良公園の鹿" }
+    ]
+  },
+  "sns": {
+    "heading": "SNS",
+    "follow": "FOLLOW US",
+    "items": [
+      { "platform": "tiktok", "label": "TikTok", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "instagram", "label": "Instagram", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "facebook", "label": "Facebook", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "whatsapp", "label": "WhatsApp", "handle": "+81-90-8269-1398" }
+    ]
+  },
+  "contact": {
+    "heading": "CONTACT",
+    "description": "まだ検討中でも大丈夫。ちょっとした疑問でも、ぜひお気軽にご連絡ください。",
+    "infoRows": [
+      { "label": "お問合せフォーム", "value": "右記フォームよりお送りください。\n24時間以内に対応致します。" },
+      { "label": "EMAIL", "value": "contact@connectripjapan.com" },
+      { "label": "INSTAGRAM", "value": "@japan_tavel_guide_ctj" },
+      { "label": "TIKTOK", "value": "@japan_tavel_guide_ctj" },
+      { "label": "WHATSAPP", "value": "+81-90-8269-1398" }
+    ],
+    "form": {
+      "nameLabel": "お名前",
+      "namePlaceholder": "Name",
+      "emailLabel": "メールアドレス",
+      "emailPlaceholder": "Email",
+      "messageLabel": "メッセージ",
+      "messagePlaceholder": "Message",
+      "submit": "送信する",
+      "sending": "送信中...",
+      "success": "お問い合わせありがとうございます。担当より24時間以内にご連絡いたします。",
+      "error": "送信に失敗しました。時間をおいて再度お試しください。"
+    }
+  },
+  "finalCta": {
+    "heading": "本物の日本との出会いを、\nここから始めましょう。",
+    "description": "行きたい場所や叶えたい体験をお聞かせください。\n現地を知るローカルチームが、あなたに合った日本旅行をご提案します。",
+    "cta": "日本の旅行プランを予約する",
+    "imageAlt": "伏見稲荷大社の千本鳥居"
+  },
+  "footer": {
+    "tagline": "訪日外国人向け関西トラベルサポート",
+    "navigationHeading": "NAVIGATION",
+    "informationHeading": "INFORMATION",
+    "nav": {
+      "service": "SERVICE",
+      "process": "PROCESS",
+      "plan": "PLAN",
+      "reservation": "RESERVATION",
+      "contact": "CONTACT"
+    },
+    "information": {
+      "careers": "採用情報",
+      "company": "会社概要",
+      "cancellation": "キャンセルポリシー",
+      "terms": "利用規約",
+      "businessInquiry": "お問合せ（企業）"
+    },
+    "copyright": "CONNECTRIP JAPAN. All rights reserved."
+  },
+  "company": {
+    "seo": {
+      "title": "会社概要 | Connectrip Japan",
+      "description": "Connectrip Japan株式会社の会社概要。会社名、所在地、事業内容、旅行業登録情報などをご案内します。"
+    },
+    "heading": "会社概要",
+    "subheading": "COMPANY PROFILE",
+    "rows": [
+      {
+        "label": "会社名",
+        "value": "Connectrip Japan 株式会社",
+        "note": "Connectrip Japan Inc."
+      },
+      { "label": "設立", "value": "2026年◯月◯日" },
+      { "label": "代表者", "value": "代表取締役社長 大泉 陸" },
+      { "label": "所在地", "value": "大阪府大阪市北区中之島4丁目3番20号1013号室" },
+      { "label": "資本金", "value": "1,000,000円" },
+      {
+        "label": "事業内容",
+        "value": [
+          "オーダーメイド旅行の企画・提案",
+          "プライベートガイドサービス",
+          "パッケージツアーの企画・販売",
+          "訪日外国人向け旅行サポート",
+          "旅行相談・旅程作成",
+          "宿泊施設・交通機関・体験プログラム等の手配",
+          "通訳・翻訳サポート"
+        ]
+      },
+      {
+        "label": "旅行業登録",
+        "value": "大阪府知事登録旅行業 第◯-◯◯◯◯号",
+        "note": "※登録後に記載"
+      },
+      {
+        "label": "所属団体",
+        "value": "全国旅行業協会〈ANTA〉等",
+        "note": "※加入後に記載"
+      },
+      { "label": "国内旅行業務\n取扱管理者", "value": "大泉 陸" }
+    ],
+    "footerSignature": "Connectrip Japan 株式会社"
+  },
+  "cancelPolicy": {
+    "seo": {
+      "title": "キャンセルポリシー | Connectrip Japan",
+      "description": "Connectrip Japanのキャンセルポリシー。旅行相談料、ツアー予約後のキャンセル料、返金方法などをご案内します。"
+    },
+    "heading": "キャンセルポリシー",
+    "subheading": "CANCELLATION POLICY",
+    "intro": "Connectrip Japanをご利用いただき、誠にありがとうございます。\nお客様に安心してサービスをご利用いただくため、以下のキャンセルポリシーを定めております。\nご予約前に必ずご確認ください。",
+    "sections": [
+      {
+        "number": 1,
+        "title": "旅行相談・プラン作成料について",
+        "body": "当社では、お客様一人ひとりに合わせたオーダーメイドの旅行プランをご提案しております。\n旅行相談をご希望の場合は、デポジットとして300 USDをお支払いいただきます。デポジットのお支払い確認後、旅行相談およびプラン作成を開始いたします。\n旅行のお申し込みが確定した場合、お支払いいただいた300 USDを旅行代金の総額から差し引きいたします。\nなお、旅行相談のみをご利用いただき、お申し込みに至らなかった場合、2回目以降の旅行相談につきましては、相談料として300 USDを頂戴いたします。\nまた、プラン内容の修正は2回まで無料で対応いたします。3回目以降の修正につきましては、1回につき80 USDの追加料金を申し受けます。"
+      },
+      {
+        "number": 2,
+        "title": "ツアー予約後のキャンセル",
+        "body": "ホテル・交通機関・体験施設等の予約確定後にキャンセルされる場合は、各施設・各事業者が定めるキャンセル料に加え、当社手配手数料をご請求いたします。\n返金額は、実際に発生したキャンセル料・決済手数料・返金手数料を差し引いた金額となります。"
+      },
+      {
+        "number": 3,
+        "title": "プライベートガイド・パッケージツアーのキャンセル",
+        "body": "ツアー開始日を基準として、以下のキャンセル料を申し受けます。",
+        "table": {
+          "headers": ["キャンセル日", "キャンセル料"],
+          "rows": [
+            ["15日前まで", "無料"],
+            ["14〜8日前", "ツアー料金の30%"],
+            ["7〜3日前", "ツアー料金の50%"],
+            ["2日前〜前日", "ツアー料金の80%"],
+            ["当日・無連絡", "ツアー料金の100%"]
+          ]
+        },
+        "note": "※宿泊施設・交通機関・チケット等の実費は別途ご負担いただきます。"
+      },
+      {
+        "number": 4,
+        "title": "日程変更について",
+        "body": "可能な限り日程変更に対応いたします。\nただし、既に予約済みの施設・交通機関に変更・取消料が発生する場合は、お客様のご負担となります。"
+      },
+      {
+        "number": 5,
+        "title": "当社都合によるキャンセル",
+        "body": "天災、災害、交通機関の運休、政府の要請、その他やむを得ない事情によりサービスの提供が困難となった場合は、状況に応じて日程変更または返金対応を行います。\n当社の責めに帰すべき事由によりサービスを提供できない場合は、お支払いいただいた対象サービス料金を返金いたします。"
+      },
+      {
+        "number": 6,
+        "title": "無連絡キャンセル",
+        "body": "集合時間を30分経過してもご連絡がない場合は、無連絡キャンセルとして取り扱う場合があります。\nこの場合、返金はいたしかねます。"
+      },
+      {
+        "number": 7,
+        "title": "返金方法",
+        "body": "返金が発生する場合は、原則としてご利用いただいた決済方法にて返金いたします。\n返金までの日数は、ご利用のクレジットカード会社または決済サービスにより異なります。"
+      },
+      {
+        "number": 8,
+        "title": "お問い合わせ",
+        "body": "キャンセル・変更をご希望の場合は、できるだけ早くお問い合わせください。\n営業時間外にいただいたご連絡は、翌営業日の受付となります。\nキャンセル料は当社が連絡を確認した日時を基準として適用されます。"
+      }
+    ],
+    "footerSignature": "Connectrip Japan株式会社 ｜ 本ポリシーは予告なく変更される場合があります。"
+  }
+}

@@ -1,0 +1,29 @@
+import { useTranslations } from "next-intl";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Container } from "@/components/ui/Container";
+import { IssueCard } from "@/components/cards/IssueCard";
+import { issueImages } from "@/data/images";
+
+export function IssuesSection() {
+  const t = useTranslations("issues");
+  const items = t.raw("items") as { title: string; imageAlt: string }[];
+
+  return (
+    <section className="bg-navy-dark py-[60px] md:py-[100px]">
+      <Container>
+        <SectionHeading heading={t("heading")} />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((item, index) => (
+            <IssueCard
+              key={item.title}
+              title={item.title}
+              image={issueImages[index]}
+              imageAlt={item.imageAlt}
+              delay={(index % 3) * 0.08}
+            />
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}

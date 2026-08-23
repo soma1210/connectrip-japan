@@ -1,0 +1,309 @@
+{
+  "seo": {
+    "title": "Connectrip Japan | Japan Travel Support",
+    "description": "Premium Japan travel support service centered on Osaka, Kyoto, Nara and Hyogo. Customized tours, local experiences and private travel planning in one place."
+  },
+  "nav": {
+    "service": "SERVICE",
+    "value": "VALUE",
+    "process": "PROCESS",
+    "plan": "PLAN",
+    "faq": "FAQ",
+    "gallery": "GALLERY",
+    "contact": "CONTACT",
+    "reserve": "Reserve"
+  },
+  "header": {
+    "logoLine1": "CONNECTRIP",
+    "logoLine2": "JAPAN"
+  },
+  "hero": {
+    "eyebrow": "JAPAN TRAVEL SUPPORT",
+    "heading": "Connecting people and hearts through travel.",
+    "description": "Centered on the Kansai region (Osaka, Kyoto, Nara and Hyogo),\nwe provide travel arrangements and guiding across all of Japan, in one place.",
+    "cta": "Book your Japan travel plan",
+    "imageAlt": "A snow-covered old town at night in Takayama",
+    "slideAlts": [
+      "Osaka Castle",
+      "Mountains reflected in a lake in autumn colors",
+      "Mt. Fuji above a lake",
+      "The snow-covered gassho-zukuri village of Shirakawago",
+      "Nachi Falls and a three-story pagoda",
+      "The Great Buddha of Nara",
+      "Otaru Canal at dusk",
+      "The bamboo grove of Arashiyama, Kyoto",
+      "Tottori Sand Dunes",
+      "Deer in Nara Park"
+    ]
+  },
+  "issues": {
+    "heading": "ISSUES",
+    "items": [
+      { "title": "Worried about the language barrier", "imageAlt": "A traveler who has lost their way" },
+      { "title": "Not confident navigating complex transit.", "imageAlt": "People moving through a train station" },
+      { "title": "Want more than tourist spots —\na truly local experience", "imageAlt": "An exchange with local residents" },
+      { "title": "Want to build a travel plan\nmade just for us.", "imageAlt": "Planning a trip together" },
+      { "title": "Not sure which restaurants match\nour food culture and lifestyle.", "imageAlt": "A Japanese meal spread" },
+      { "title": "Want a trip that satisfies\nboth kids and adults.", "imageAlt": "A family traveling together" }
+    ]
+  },
+  "service": {
+    "heading": "SERVICE",
+    "description": "Connectrip Japan was born from a simple idea.\nJapan is home to countless attractions beyond its world-famous sights — local culture, food and scenery that remain largely unknown.\nNot because people aren't interested, but because language and cultural barriers keep them from ever making that connection.\nRemoving that barrier, and connecting travelers with regions, people with culture, to create genuine encounters with the real Japan — that is where Connectrip Japan begins.",
+    "imageAlt": "Cherry blossoms, Mt. Fuji and a torii gate",
+    "cta": "Book your Japan travel plan",
+    "cards": [
+      { "number": "1", "title": "Travel Consultation & Planning", "description": "We design a Japan trip built entirely around your budget and wishes." },
+      { "number": "2", "title": "Hotel & Transport Arrangements", "description": "We handle the bookings you need — hotels, Shinkansen, rental cars and more." },
+      { "number": "3", "title": "Recommended Spots", "description": "From famous sights to hidden gems, we suggest places that are genuinely worth your time, from a local perspective." },
+      { "number": "4", "title": "Restaurant & Experience Booking", "description": "We arrange reservations for restaurants and cultural experiences to make your trip even more enjoyable." },
+      { "number": "5", "title": "Private Guide", "description": "A local guide accompanies you, so you can enjoy Japan with complete peace of mind." },
+      { "number": "6", "title": "English Support", "description": "From pre-trip questions to on-the-ground troubles, we support you carefully in English." }
+    ]
+  },
+  "value": {
+    "heading": "OUR VALUE",
+    "cta": "Book your Japan travel plan",
+    "cards": [
+      { "number": "1", "title": "Real Suggestions from Local Japanese", "description": "Not popular rankings from tourist sites — recommendations from the perspective of Japanese people who actually live there." },
+      { "number": "2", "title": "Kansai Specialist Team", "description": "Because we're based around Osaka, Kyoto, Nara and Hyogo, we can share the latest local information." },
+      { "number": "3", "title": "More Than Just Sightseeing", "description": "We propose trips that go beyond shrines and temples — local shopping streets, eateries and genuine encounters with people." },
+      { "number": "4", "title": "A Trip Made Just for You", "description": "We don't sell the same plan twice — every itinerary is built from scratch around your wishes." },
+      { "number": "5", "title": "Support Before You Even Book", "description": "Not just bookings — feel free to ask us any question or concern in English before your trip." },
+      { "number": "6", "title": "Like Having a Friend in Japan", "description": "Not a travel agency — we support your trip the way a friend living in Japan would." }
+    ]
+  },
+  "process": {
+    "heading": "PROCESS",
+    "cta": "Book your Japan travel plan",
+    "steps": [
+      { "number": "1", "title": "Inquiry", "description": "Send us your travel dates, preferred areas, budget and experiences you're interested in through our contact form.", "imageAlt": "Making an inquiry on a smartphone" },
+      { "number": "2", "title": "Hearing & Consultation", "description": "We confirm your preferred travel style and requests, then suggest the best direction for your trip.", "imageAlt": "An online consultation" },
+      { "number": "3", "title": "Travel Plan Proposal", "description": "We propose a custom-made trip or package tour, and you review the itinerary, accommodations and experiences.", "imageAlt": "Reviewing an itinerary on a map" },
+      { "number": "4", "title": "Booking & Payment", "description": "Once you confirm the details, we proceed with payment and arrangements after the plan is finalized.", "imageAlt": "Japanese yen banknotes" },
+      { "number": "5", "title": "Pre-Departure Support", "description": "We answer any last questions and confirm final details, so you can depart with complete peace of mind.", "imageAlt": "A traveler walking through an airport" }
+    ]
+  },
+  "reviews": {
+    "heading": "REVIEWS",
+    "items": [
+      { "name": "Emily", "country": "United States", "countryCode": "US", "date": "2026.06.01", "rating": 5, "tag": "KYOTO PRIVATE TOUR", "quote": "Our guide showed us parts of Kyoto we never would have found on our own. It felt like traveling with a close friend, not a tour company." },
+      { "name": "Lucas", "country": "Australia", "countryCode": "AU", "date": "2026.06.08", "rating": 5, "tag": "KANSAI CUSTOM PLAN", "quote": "Every detail was tailored to what we actually wanted. Hotels, trains, even dinner reservations — all handled for us." },
+      { "name": "Sophia", "country": "United Kingdom", "countryCode": "GB", "date": "2026.06.15", "rating": 5, "tag": "OSAKA FOOD & CULTURE PLAN", "quote": "From street food in Namba to a quiet tea ceremony, this was the most authentic trip to Japan I've had." }
+    ]
+  },
+  "plan": {
+    "heading": "PLAN",
+    "subheading": "Every plan can be customized to fit your wishes.",
+    "cta": "Book your Japan travel plan",
+    "learnMore": "LEARN MORE",
+    "cards": [
+      { "title": "Custom Made", "description": "We start from zero, hearing your wishes, to create an original travel plan.", "imageAlt": "A traveler in a kimono walking a street" },
+      { "title": "Package Tour", "description": "A reassuring, ready-made plan that takes you efficiently around popular sights.", "imageAlt": "Visitors at Sensoji Temple" },
+      { "title": "VIP Plan (By Consultation)", "description": "A premium travel plan built around your special requests. Contact us for details.", "imageAlt": "The steering wheel of a luxury car" }
+    ]
+  },
+  "faq": {
+    "heading": "FAQ",
+    "items": [
+      { "question": "Can I consult in English?", "answer": "Yes — from initial consultation through on-trip support, everything is available in English." },
+      { "question": "Do you cover areas outside Kansai?", "answer": "Yes, while we're centered on Osaka, Kyoto, Nara and Hyogo, we also arrange travel anywhere in Japan." },
+      { "question": "How many days in advance should I get in touch?", "answer": "It depends on your request, but we recommend reaching out one to two months before your trip. If you're short on time, contact us anyway — we'll do what we can." },
+      { "question": "Can I use this service for a solo trip?", "answer": "Absolutely. We make sure solo travelers can use our service with complete peace of mind." },
+      { "question": "What's the difference between custom-made travel and a package tour?", "answer": "A custom-made trip is built from scratch around your wishes; a package tour is a ready-made plan that efficiently covers popular spots." },
+      { "question": "Can you help with places I found on TikTok or Instagram?", "answer": "Yes — send us a screenshot or link of the post, and we'll check the local details and work it into your plan." },
+      { "question": "Can you also book restaurants and experiences?", "answer": "Yes, we handle reservations for restaurants and cultural experiences as well." },
+      { "question": "Is a private guide available?", "answer": "Yes, we offer plans that include a local guide who accompanies you." },
+      { "question": "Can I request arrangements only, without a guide?", "answer": "Yes, we can also handle only the hotel and transport arrangements, without a guide." },
+      { "question": "Is it okay if I don't speak Japanese?", "answer": "No problem at all. You can rely on English communication from start to finish." }
+    ]
+  },
+  "gallery": {
+    "heading": "GALLERY",
+    "items": [
+      { "imageAlt": "A pathway through a Japanese garden in autumn colors" },
+      { "imageAlt": "A snow-covered Japanese house" },
+      { "imageAlt": "An autumn garden seen from a traditional veranda" }
+    ]
+  },
+  "vlog": {
+    "heading": "VLOG",
+    "readMore": "Read article",
+    "posts": [
+      { "title": "10 Hidden Gems in Kyoto You Can't Miss", "description": "Discover the secret spots loved by locals away from the crowds.", "imageAlt": "A video introducing hidden spots in Kyoto" },
+      { "title": "Osaka Street Food Guide", "description": "A local's guide to the best takoyaki and okonomiyaki in Namba.", "imageAlt": "A river beneath a row of cherry blossom trees" },
+      { "title": "A Perfect Day in Nara", "description": "How to interact with deer and explore ancient temples smoothly.", "imageAlt": "Deer in Nara Park" }
+    ]
+  },
+  "sns": {
+    "heading": "SNS",
+    "follow": "FOLLOW US",
+    "items": [
+      { "platform": "tiktok", "label": "TikTok", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "instagram", "label": "Instagram", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "facebook", "label": "Facebook", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "whatsapp", "label": "WhatsApp", "handle": "+81-90-8269-1398" }
+    ]
+  },
+  "contact": {
+    "heading": "CONTACT",
+    "description": "It's okay if you're still just thinking it over. Even the smallest question is welcome — feel free to reach out.",
+    "infoRows": [
+      { "label": "Contact Form", "value": "Please send us a message using the form.\nWe respond within 24 hours." },
+      { "label": "EMAIL", "value": "contact@connectripjapan.com" },
+      { "label": "INSTAGRAM", "value": "@japan_tavel_guide_ctj" },
+      { "label": "TIKTOK", "value": "@japan_tavel_guide_ctj" },
+      { "label": "WHATSAPP", "value": "+81-90-8269-1398" }
+    ],
+    "form": {
+      "nameLabel": "Name",
+      "namePlaceholder": "Name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Email",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Message",
+      "submit": "Send",
+      "sending": "Sending...",
+      "success": "Thank you for reaching out. We'll get back to you within 24 hours.",
+      "error": "Something went wrong. Please try again in a moment."
+    }
+  },
+  "finalCta": {
+    "heading": "Let's begin your encounter\nwith the real Japan, right here.",
+    "description": "Tell us the places you want to visit and the experiences you're hoping for.\nOur local team on the ground will suggest a Japan trip made for you.",
+    "cta": "Book your Japan travel plan",
+    "imageAlt": "The thousand torii gates of Fushimi Inari Shrine"
+  },
+  "footer": {
+    "tagline": "Kansai travel support for visitors to Japan",
+    "navigationHeading": "NAVIGATION",
+    "informationHeading": "INFORMATION",
+    "nav": {
+      "service": "SERVICE",
+      "process": "PROCESS",
+      "plan": "PLAN",
+      "reservation": "RESERVATION",
+      "contact": "CONTACT"
+    },
+    "information": {
+      "careers": "Careers",
+      "company": "Company Profile",
+      "cancellation": "Cancellation Policy",
+      "terms": "Terms of Use",
+      "businessInquiry": "Business Inquiries"
+    },
+    "copyright": "CONNECTRIP JAPAN. All rights reserved."
+  },
+  "company": {
+    "seo": {
+      "title": "Company Profile | Connectrip Japan",
+      "description": "Company profile for Connectrip Japan Inc. — company name, address, business activities, and travel agency registration details."
+    },
+    "heading": "Company Profile",
+    "subheading": "COMPANY PROFILE",
+    "rows": [
+      {
+        "label": "Company Name",
+        "value": "Connectrip Japan Inc.",
+        "note": "Connectrip Japan 株式会社"
+      },
+      { "label": "Founded", "value": "◯◯, 2026" },
+      { "label": "Representative", "value": "Riku Oizumi, President & CEO" },
+      {
+        "label": "Address",
+        "value": "Suite 1013, 4-3-20 Nakanoshima, Kita-ku, Osaka, Japan"
+      },
+      { "label": "Capital", "value": "¥1,000,000" },
+      {
+        "label": "Business Activities",
+        "value": [
+          "Planning and proposing custom-made travel",
+          "Private guide services",
+          "Planning and sale of package tours",
+          "Travel support for visitors to Japan",
+          "Travel consultation and itinerary planning",
+          "Arrangement of accommodation, transport and experience programs",
+          "Interpretation and translation support"
+        ]
+      },
+      {
+        "label": "Travel Agency Registration",
+        "value": "Osaka Prefectural Governor Registered Travel Agency No. ◯-◯◯◯◯",
+        "note": "To be added upon registration"
+      },
+      {
+        "label": "Affiliations",
+        "value": "All Nippon Travel Agents Association (ANTA), etc.",
+        "note": "To be added upon membership"
+      },
+      {
+        "label": "Domestic Travel Services Manager",
+        "value": "Riku Oizumi"
+      }
+    ],
+    "footerSignature": "Connectrip Japan Inc."
+  },
+  "cancelPolicy": {
+    "seo": {
+      "title": "Cancellation Policy | Connectrip Japan",
+      "description": "Connectrip Japan's cancellation policy — consultation fees, cancellation fees after booking, and how refunds are handled."
+    },
+    "heading": "Cancellation Policy",
+    "subheading": "CANCELLATION POLICY",
+    "intro": "Thank you for choosing Connectrip Japan.\nTo help you use our service with confidence, we have set out the cancellation policy below.\nPlease be sure to review it before booking.",
+    "sections": [
+      {
+        "number": 1,
+        "title": "Travel Consultation & Planning Fee",
+        "body": "We propose a fully custom-made travel plan for each and every customer.\nTo request a travel consultation, a deposit of 300 USD is required. Once the deposit is confirmed, we begin the consultation and plan-creation process.\nIf you go on to confirm your booking, the 300 USD deposit is deducted from your total travel cost.\nIf you use the consultation only and do not proceed to a booking, a consultation fee of 300 USD will be charged for any second or later consultation.\nUp to two revisions to the plan are free of charge. From the third revision onward, an additional fee of 80 USD per revision applies."
+      },
+      {
+        "number": 2,
+        "title": "Cancellation After a Tour Is Booked",
+        "body": "If you cancel after a hotel, transport, or experience reservation has been confirmed, you will be charged the cancellation fee set by the relevant facility or operator, in addition to our arrangement fee.\nThe refunded amount will be the total paid, less any cancellation fees, payment processing fees, and refund handling fees actually incurred."
+      },
+      {
+        "number": 3,
+        "title": "Cancelling a Private Guide or Package Tour",
+        "body": "The following cancellation fees apply, based on the tour start date.",
+        "table": {
+          "headers": ["Cancellation Date", "Cancellation Fee"],
+          "rows": [
+            ["15+ days before", "Free"],
+            ["8–14 days before", "30% of tour price"],
+            ["3–7 days before", "50% of tour price"],
+            ["1–2 days before", "80% of tour price"],
+            ["Same day / no-show", "100% of tour price"]
+          ]
+        },
+        "note": "Actual costs for accommodation, transport, tickets, etc. are charged separately."
+      },
+      {
+        "number": 4,
+        "title": "Changing Your Itinerary",
+        "body": "We will accommodate itinerary changes wherever possible.\nHowever, if a change or cancellation fee is charged by an already-booked facility or transport provider, that cost will be borne by the customer."
+      },
+      {
+        "number": 5,
+        "title": "Cancellation on Our Part",
+        "body": "If we are unable to provide the service due to natural disaster, transport suspension, government request, or other unavoidable circumstances, we will offer a rescheduled itinerary or a refund depending on the situation.\nIf we are unable to provide the service due to reasons attributable to us, we will refund the amount paid for the affected service."
+      },
+      {
+        "number": 6,
+        "title": "No-Show Cancellation",
+        "body": "If we do not hear from you within 30 minutes of the agreed meeting time, this may be treated as a no-show cancellation.\nIn this case, no refund will be issued."
+      },
+      {
+        "number": 7,
+        "title": "Refund Method",
+        "body": "Refunds are, in principle, issued to the original payment method used.\nThe time it takes for a refund to be processed varies depending on your credit card company or payment service."
+      },
+      {
+        "number": 8,
+        "title": "Contact Us",
+        "body": "If you wish to cancel or make a change, please contact us as early as possible.\nMessages received outside business hours will be handled on the next business day.\nCancellation fees are applied based on the date and time we confirm receipt of your message."
+      }
+    ],
+    "footerSignature": "Connectrip Japan Inc. | This policy may be updated without prior notice."
+  }
+}
