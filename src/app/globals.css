@@ -21,9 +21,9 @@
   --color-cream: var(--color-cream);
   --color-cream-dark: var(--color-cream-dark);
 
-  --font-heading-en: var(--font-cormorant);
-  --font-heading-jp: var(--font-noto-serif-jp);
-  --font-body: var(--font-noto-sans-jp);
+  --font-heading-en: var(--font-shippori-mincho-b1);
+  --font-heading-jp: var(--font-shippori-mincho-b1);
+  --font-body: var(--font-shippori-mincho-b1);
 
   --container-app: 1200px;
 }
@@ -32,7 +32,7 @@ body {
   background: var(--color-navy);
   color: var(--color-cream);
   font-family: var(--font-body);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.9;
 }
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+import { Shippori_Mincho_B1 } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -8,22 +8,10 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "../globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const shipporiMinchoB1 = Shippori_Mincho_B1({
+  variable: "--font-shippori-mincho-b1",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
-
-const notoSerifJp = Noto_Serif_JP({
-  variable: "--font-noto-serif-jp",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
-
-const notoSansJp = Noto_Sans_JP({
-  variable: "--font-noto-sans-jp",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export function generateStaticParams() {
@@ -74,7 +62,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${cormorant.variable} ${notoSerifJp.variable} ${notoSansJp.variable} h-full antialiased`}
+      className={`${shipporiMinchoB1.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-navy text-cream">
         <NextIntlClientProvider>
