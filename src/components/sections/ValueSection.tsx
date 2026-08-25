@@ -17,7 +17,7 @@ export function ValueSection() {
     <section id="value" className="bg-navy-dark scroll-mt-20 py-[60px] md:py-[100px]">
       <Container>
         <SectionHeading heading={t("heading")} />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
           {cards.map((card, index) => (
             <ValueCard
               key={card.number}
@@ -30,7 +30,7 @@ export function ValueSection() {
           ))}
         </div>
         <div className="mt-14 flex justify-center">
-          <CtaButton href="#contact">{t("cta")}</CtaButton>
+          <CtaButton href="/reservation">{t("cta")}</CtaButton>
         </div>
       </Container>
     </section>

@@ -12,7 +12,7 @@ export function IssuesSection() {
     <section className="bg-navy-dark py-[60px] md:py-[100px]">
       <Container>
         <SectionHeading heading={t("heading")} />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
           {items.map((item, index) => (
             <IssueCard
               key={item.title}

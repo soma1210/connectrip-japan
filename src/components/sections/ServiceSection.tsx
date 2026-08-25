@@ -26,12 +26,12 @@ export function ServiceSection() {
               {t("description")}
             </p>
           </FadeIn>
-          <FadeIn delay={0.1} className="relative aspect-[4/3] overflow-hidden">
+          <FadeIn delay={0.1} className="relative aspect-[4/3] overflow-hidden border border-gold/30">
             <PlaceholderImage src={serviceImage} alt={t("imageAlt")} sizes="(min-width: 1024px) 50vw, 100vw" />
           </FadeIn>
         </div>
 
-        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
           {cards.map((card, index) => (
             <ServiceCard
               key={card.number}
@@ -45,7 +45,7 @@ export function ServiceSection() {
         </div>
 
         <div className="mt-14 flex justify-center">
-          <CtaButton href="#contact">{t("cta")}</CtaButton>
+          <CtaButton href="/reservation">{t("cta")}</CtaButton>
         </div>
       </Container>
     </section>

@@ -168,6 +168,46 @@
       "error": "Something went wrong. Please try again in a moment."
     }
   },
+  "reservation": {
+    "seo": {
+      "title": "Reservation | Connectrip Japan",
+      "description": "Tell us your travel dates and wishes. Our local team on the ground will suggest a Japan trip made for you."
+    },
+    "heading": "RESERVATION",
+    "subheading": "Let's experience the real Japan.",
+    "description": "Tell us your travel dates and wishes. Our local team on the ground will suggest a Japan trip made for you. We respond within 24 hours.",
+    "form": {
+      "nameLabel": "Name (required)",
+      "namePlaceholder": "Jane Smith",
+      "emailLabel": "Email (required)",
+      "emailPlaceholder": "jane@example.com",
+      "countryLabel": "Country / Region of residence (required)",
+      "countryPlaceholder": "e.g. Australia / Singapore / United States",
+      "startDateLabel": "Start date (required)",
+      "endDateLabel": "End date (required)",
+      "travelersLabel": "Number of travelers (required)",
+      "adultsLabel": "Adults",
+      "childrenLabel": "Children",
+      "travelersPlaceholder": "Select",
+      "travelerCounts": ["1", "2", "3", "4", "5+"],
+      "areasLabel": "Areas you'd like to visit (select any)",
+      "areas": ["Osaka", "Kyoto", "Nara", "Hyogo", "Tokyo", "Mt. Fuji", "Hokkaido", "Kyushu", "Other"],
+      "servicesLabel": "Services you're interested in (select any)",
+      "services": ["Custom-made travel", "Package tour", "Private guide", "Hotel arrangement", "Restaurant booking", "Experience booking", "Travel consultation"],
+      "interestsLabel": "Experiences you're interested in (select any)",
+      "interests": ["Japanese food", "Hot springs", "Shrines & temples", "Nature & scenery", "Shopping", "Anime & games", "Theme parks", "Skiing & snow", "Local experiences", "Other"],
+      "budgetLabel": "Approximate budget (per person, excluding flights)",
+      "budgetOptions": ["Under ¥100,000", "¥100,000–300,000", "¥300,000–500,000", "Over ¥500,000", "Not decided yet"],
+      "messageLabel": "Requests & Message",
+      "messageNote": "Feel free to share places you'd like to visit, spots you found on social media, dietary needs, hotel preferences, or anything else.",
+      "messagePlaceholder": "Write anything you'd like us to know",
+      "policyLinkLabel": "*Cancellation Policy",
+      "submit": "Send",
+      "sending": "Sending...",
+      "success": "Thank you for your reservation request. We'll get back to you within 24 hours.",
+      "error": "Something went wrong. Please try again in a moment."
+    }
+  },
   "finalCta": {
     "heading": "Let's begin your encounter\nwith the real Japan, right here.",
     "description": "Tell us the places you want to visit and the experiences you're hoping for.\nOur local team on the ground will suggest a Japan trip made for you.",

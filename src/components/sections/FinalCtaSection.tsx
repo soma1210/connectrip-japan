@@ -24,7 +24,7 @@ export function FinalCtaSection() {
           </p>
         </FadeIn>
         <FadeIn delay={0.3}>
-          <CtaButton href="#contact" className="mt-10">
+          <CtaButton href="/reservation" className="mt-10">
             {t("cta")}
           </CtaButton>
         </FadeIn>
