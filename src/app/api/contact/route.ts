@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sendMail } from "@/lib/mailer";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -14,9 +15,13 @@ export async function POST(request: Request) {
     );
   }
 
-  // TODO: wire this up to a real destination (email provider, Supabase, CRM, etc.)
-  // once that infrastructure exists. For now we just acknowledge receipt.
-  console.log("Contact form submission:", { name, email, message });
+  const text = [`Name: ${name}`, `Email: ${email}`, `Message:\n${message}`].join("\n");
+
+  await sendMail({
+    subject: `[Connectrip Japan] New contact message from ${name}`,
+    text,
+    replyTo: email,
+  });
 
   return NextResponse.json({ success: true });
 }

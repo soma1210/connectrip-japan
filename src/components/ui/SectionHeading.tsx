@@ -20,7 +20,7 @@ export function SectionHeading({
         className,
       )}
     >
-      <h2 className="font-heading-en text-5xl font-bold tracking-[0.08em] text-gold md:text-6xl">
+      <h2 className="ml-6 font-heading-en text-5xl font-bold tracking-[0.08em] text-gold md:ml-10 md:text-6xl">
         {heading}
       </h2>
       {subheading ? (

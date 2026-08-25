@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer";
 
-const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM, RESERVATION_TO_EMAIL } =
+const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM, CONTACT_TO_EMAIL } =
   process.env;
 
 const isConfigured = Boolean(
-  SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD && RESERVATION_TO_EMAIL,
+  SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD && CONTACT_TO_EMAIL,
 );
 
 const transporter = isConfigured
@@ -33,7 +33,7 @@ export async function sendMail({
 
   await transporter.sendMail({
     from: SMTP_FROM || SMTP_USER,
-    to: RESERVATION_TO_EMAIL,
+    to: CONTACT_TO_EMAIL,
     replyTo,
     subject,
     text,

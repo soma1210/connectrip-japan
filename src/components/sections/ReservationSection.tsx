@@ -256,7 +256,7 @@ export function ReservationSection() {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="bg-red px-8 py-4 text-sm tracking-[0.08em] text-cream transition-colors hover:bg-red-hover disabled:opacity-60"
+              className="border border-gold bg-red px-8 py-4 text-sm tracking-[0.08em] text-cream transition-colors hover:bg-red-hover disabled:opacity-60"
             >
               {status === "sending" ? tf("sending") : tf("submit")}
             </button>

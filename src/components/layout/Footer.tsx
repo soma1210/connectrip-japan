@@ -13,11 +13,11 @@ const SNS_ICONS = {
 } as const;
 
 const FOOTER_NAV = [
-  { key: "service", href: "#service" },
-  { key: "process", href: "#process" },
-  { key: "plan", href: "#plan" },
+  { key: "service", hash: "service" },
+  { key: "process", hash: "process" },
+  { key: "plan", hash: "plan" },
   { key: "reservation", href: "/reservation" },
-  { key: "contact", href: "#contact" },
+  { key: "contact", hash: "contact" },
 ] as const;
 
 const INFORMATION_LINKS: Record<string, string> = {
@@ -77,14 +77,14 @@ export function Footer() {
           </p>
           <nav className="mt-4 flex flex-col gap-3">
             {FOOTER_NAV.map((item) =>
-              item.href.startsWith("#") ? (
-                <a
+              "hash" in item ? (
+                <Link
                   key={item.key}
-                  href={item.href}
+                  href={{ pathname: "/", hash: item.hash }}
                   className="text-sm text-cream/70 transition-colors hover:text-gold"
                 >
                   {t(`nav.${item.key}`)}
-                </a>
+                </Link>
               ) : (
                 <Link
                   key={item.key}

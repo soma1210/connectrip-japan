@@ -8,13 +8,13 @@ import { Link } from "@/i18n/navigation";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 const NAV_ITEMS = [
-  { key: "service", href: "#service" },
-  { key: "value", href: "#value" },
-  { key: "process", href: "#process" },
-  { key: "plan", href: "#plan" },
-  { key: "faq", href: "#faq" },
-  { key: "gallery", href: "#gallery" },
-  { key: "contact", href: "#contact" },
+  { key: "service", hash: "service" },
+  { key: "value", hash: "value" },
+  { key: "process", hash: "process" },
+  { key: "plan", hash: "plan" },
+  { key: "faq", hash: "faq" },
+  { key: "gallery", hash: "gallery" },
+  { key: "contact", hash: "contact" },
 ] as const;
 
 export function Header() {
@@ -36,13 +36,13 @@ export function Header() {
 
         <nav className="hidden items-center gap-8 lg:flex">
           {NAV_ITEMS.map((item) => (
-            <a
+            <Link
               key={item.key}
-              href={item.href}
+              href={{ pathname: "/", hash: item.hash }}
               className="text-xs tracking-[0.1em] text-cream/80 transition-colors hover:text-gold"
             >
               {t(item.key)}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -50,7 +50,7 @@ export function Header() {
           <LanguageSwitch />
           <Link
             href="/reservation"
-            className="bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream transition-colors hover:bg-red-hover"
+            className="border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream transition-colors hover:bg-red-hover"
           >
             {t("reserve")}
           </Link>
@@ -71,21 +71,21 @@ export function Header() {
         <div className="border-t border-gold/20 bg-navy lg:hidden">
           <Container className="flex flex-col gap-5 py-6">
             {NAV_ITEMS.map((item) => (
-              <a
+              <Link
                 key={item.key}
-                href={item.href}
+                href={{ pathname: "/", hash: item.hash }}
                 onClick={() => setOpen(false)}
                 className="text-sm tracking-[0.1em] text-cream/80"
               >
                 {t(item.key)}
-              </a>
+              </Link>
             ))}
             <div className="flex items-center justify-between pt-2">
               <LanguageSwitch />
               <Link
                 href="/reservation"
                 onClick={() => setOpen(false)}
-                className="bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream"
+                className="border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream"
               >
                 {t("reserve")}
               </Link>

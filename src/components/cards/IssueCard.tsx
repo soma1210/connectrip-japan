@@ -20,7 +20,7 @@ export function IssueCard({
       <div className="absolute left-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-cream/60">
         <Check className="h-4 w-4 text-cream" />
       </div>
-      <p className="absolute bottom-6 left-5 right-5 whitespace-pre-line font-medium text-cream text-[clamp(0.75rem,6cqw,1.25rem)]">
+      <p className="absolute bottom-6 left-5 right-5 whitespace-pre-line font-medium text-cream text-[clamp(0.75rem,6cqw,1.25rem)] [text-shadow:0_2px_6px_rgba(0,0,0,0.65)]">
         {title}
       </p>
     </FadeIn>

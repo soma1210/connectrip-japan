@@ -100,7 +100,7 @@
     "cards": [
       { "title": "Custom Made", "description": "We start from zero, hearing your wishes, to create an original travel plan.", "imageAlt": "A traveler in a kimono walking a street" },
       { "title": "Package Tour", "description": "A reassuring, ready-made plan that takes you efficiently around popular sights.", "imageAlt": "Visitors at Sensoji Temple" },
-      { "title": "VIP Plan (By Consultation)", "description": "A premium travel plan built around your special requests. Contact us for details.", "imageAlt": "The steering wheel of a luxury car" }
+      { "title": "VIP Plan (By Consultation)", "description": "A premium travel plan built around your special requests. Contact us for details.", "imageAlt": "The front grille of a luxury car" }
     ]
   },
   "faq": {

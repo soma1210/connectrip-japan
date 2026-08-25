@@ -18,7 +18,7 @@ export function ProcessSection() {
     <section id="process" className="bg-navy scroll-mt-20 py-[60px] md:py-[100px]">
       <Container>
         <SectionHeading heading={t("heading")} />
-        <div className="border-t border-gold/20">
+        <div className="flex flex-col gap-4">
           {steps.map((step, index) => (
             <ProcessItem
               key={step.number}

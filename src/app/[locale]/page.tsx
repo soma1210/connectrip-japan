@@ -38,8 +38,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <GallerySection />
       <VlogSection />
       <SnsSection />
-      <FinalCtaSection />
       <ContactSection />
+      <FinalCtaSection />
     </>
   );
 }
