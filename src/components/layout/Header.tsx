@@ -2,9 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
+import { logoImage } from "@/data/images";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 const NAV_ITEMS = [
@@ -25,12 +27,22 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-dashed border-gold/30 bg-navy/95 backdrop-blur">
       <Container className="flex h-20 items-center justify-between">
-        <a href="#" className="flex flex-col leading-none">
-          <span className="font-heading-en text-lg tracking-[0.12em] text-cream">
-            {th("logoLine1")}
-          </span>
-          <span className="font-heading-en text-lg tracking-[0.12em] text-cream">
-            {th("logoLine2")}
+        <a href="#" className="flex items-center gap-3">
+          <Image
+            src={logoImage}
+            alt="Connectrip Japan"
+            width={200}
+            height={200}
+            className="h-16 w-16"
+            priority
+          />
+          <span className="flex flex-col leading-none">
+            <span className="font-heading-en text-lg tracking-[0.12em] text-cream">
+              {th("logoLine1")}
+            </span>
+            <span className="font-heading-en text-lg tracking-[0.12em] text-cream">
+              {th("logoLine2")}
+            </span>
           </span>
         </a>
 

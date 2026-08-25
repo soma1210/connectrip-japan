@@ -1,8 +1,10 @@
 import { useTranslations } from "next-intl";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import { socialLinks } from "@/data/social-links";
+import { logoImage } from "@/data/images";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 const SNS_ICONS = {
@@ -41,13 +43,22 @@ export function Footer() {
     <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
       <Container className="grid gap-12 py-16 md:grid-cols-3 md:gap-8">
         <div>
-          <div className="flex flex-col leading-none">
-            <span className="font-heading-en text-lg tracking-[0.12em] text-cream">
-              {th("logoLine1")}
-            </span>
-            <span className="font-heading-en text-lg tracking-[0.12em] text-cream">
-              {th("logoLine2")}
-            </span>
+          <div className="flex items-center gap-3">
+            <Image
+              src={logoImage}
+              alt="Connectrip Japan"
+              width={200}
+              height={200}
+              className="h-16 w-16"
+            />
+            <div className="flex flex-col leading-none">
+              <span className="font-heading-en text-lg tracking-[0.12em] text-cream">
+                {th("logoLine1")}
+              </span>
+              <span className="font-heading-en text-lg tracking-[0.12em] text-cream">
+                {th("logoLine2")}
+              </span>
+            </div>
           </div>
           <p className="mt-4 max-w-xs text-sm text-cream/60">{t("tagline")}</p>
           <LanguageSwitch variant="boxed" className="mt-6" />
