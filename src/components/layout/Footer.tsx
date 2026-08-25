@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
+import { socialLinks } from "@/data/social-links";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 const SNS_ICONS = {
@@ -55,12 +56,15 @@ export function Footer() {
               (platform) => {
                 const Icon = SNS_ICONS[platform];
                 return (
-                  <span
+                  <a
                     key={platform}
-                    className="flex h-9 w-9 items-center justify-center border border-cream/20 text-cream/70"
+                    href={socialLinks[platform]}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="flex h-9 w-9 items-center justify-center border border-cream/20 text-cream/70 transition-colors hover:border-gold hover:text-gold"
                   >
                     <Icon className="h-4 w-4" />
-                  </span>
+                  </a>
                 );
               },
             )}
