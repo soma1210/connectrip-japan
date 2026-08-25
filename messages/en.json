@@ -106,16 +106,16 @@
   "faq": {
     "heading": "FAQ",
     "items": [
-      { "question": "Can I consult in English?", "answer": "Yes — from initial consultation through on-trip support, everything is available in English." },
-      { "question": "Do you cover areas outside Kansai?", "answer": "Yes, while we're centered on Osaka, Kyoto, Nara and Hyogo, we also arrange travel anywhere in Japan." },
-      { "question": "How many days in advance should I get in touch?", "answer": "It depends on your request, but we recommend reaching out one to two months before your trip. If you're short on time, contact us anyway — we'll do what we can." },
-      { "question": "Can I use this service for a solo trip?", "answer": "Absolutely. We make sure solo travelers can use our service with complete peace of mind." },
-      { "question": "What's the difference between custom-made travel and a package tour?", "answer": "A custom-made trip is built from scratch around your wishes; a package tour is a ready-made plan that efficiently covers popular spots." },
-      { "question": "Can you help with places I found on TikTok or Instagram?", "answer": "Yes — send us a screenshot or link of the post, and we'll check the local details and work it into your plan." },
-      { "question": "Can you also book restaurants and experiences?", "answer": "Yes, we handle reservations for restaurants and cultural experiences as well." },
-      { "question": "Is a private guide available?", "answer": "Yes, we offer plans that include a local guide who accompanies you." },
-      { "question": "Can I request arrangements only, without a guide?", "answer": "Yes, we can also handle only the hotel and transport arrangements, without a guide." },
-      { "question": "Is it okay if I don't speak Japanese?", "answer": "No problem at all. You can rely on English communication from start to finish." }
+      { "question": "Can I consult in English?", "answer": "Yes. We support you in English from your initial inquiry through on-trip assistance." },
+      { "question": "Do you cover areas outside Kansai?", "answer": "Yes. We're based in Kansai, but we handle travel planning and arrangements across all of Japan." },
+      { "question": "How many days in advance should I get in touch?", "answer": "We recommend reaching out 3 to 6 months before your trip. We'll do our best to accommodate last-minute requests as well." },
+      { "question": "Can I use this service for a solo trip?", "answer": "Absolutely. We support everything from solo travelers to families and groups." },
+      { "question": "What's the difference between custom-made travel and a package tour?", "answer": "A custom-made trip is built from scratch around your wishes. A package tour follows a pre-set itinerary." },
+      { "question": "Can you help with places I found on TikTok or Instagram?", "answer": "Yes. Share the post's URL or a screenshot with us, and we'll check the details and guide you on how to add it to your itinerary and how to get there." },
+      { "question": "Can you also book restaurants and experiences?", "answer": "Yes, we support bookings for restaurants, cultural experiences, activities and more." },
+      { "question": "Is a private guide available?", "answer": "Yes, we offer private guide services centered on Osaka, Kyoto, Nara and Hyogo." },
+      { "question": "Can I request arrangements only, without a guide?", "answer": "Yes, we also accept requests for travel planning and arrangements only, without a guide." },
+      { "question": "Is it okay if I don't speak Japanese?", "answer": "No problem. We support you in English from before your trip through the entire journey, so you can travel with peace of mind." }
     ]
   },
   "gallery": {
