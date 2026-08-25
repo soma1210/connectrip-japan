@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Container } from "@/components/ui/Container";
+import { Link } from "@/i18n/navigation";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 const NAV_ITEMS = [
@@ -47,12 +48,12 @@ export function Header() {
 
         <div className="hidden items-center gap-4 lg:flex">
           <LanguageSwitch />
-          <a
-            href="#contact"
+          <Link
+            href="/reservation"
             className="bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream transition-colors hover:bg-red-hover"
           >
             {t("reserve")}
-          </a>
+          </Link>
         </div>
 
         <button
@@ -81,13 +82,13 @@ export function Header() {
             ))}
             <div className="flex items-center justify-between pt-2">
               <LanguageSwitch />
-              <a
-                href="#contact"
+              <Link
+                href="/reservation"
                 onClick={() => setOpen(false)}
                 className="bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream"
               >
                 {t("reserve")}
-              </a>
+              </Link>
             </div>
           </Container>
         </div>

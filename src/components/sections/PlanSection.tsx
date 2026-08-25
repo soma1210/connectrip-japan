@@ -31,7 +31,7 @@ export function PlanSection() {
           ))}
         </div>
         <div className="mt-14 flex justify-center">
-          <CtaButton href="#contact">{t("cta")}</CtaButton>
+          <CtaButton href="/reservation">{t("cta")}</CtaButton>
         </div>
       </Container>
     </section>

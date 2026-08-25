@@ -24,7 +24,7 @@ export function HeroSection() {
         <p className="mt-6 whitespace-pre-line text-sm leading-loose text-cream/85 md:text-base">
           {t("description")}
         </p>
-        <CtaButton href="#contact" className="mt-10">
+        <CtaButton href="/reservation" className="mt-10">
           {t("cta")}
         </CtaButton>
       </FadeIn>

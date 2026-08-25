@@ -168,6 +168,46 @@
       "error": "送信に失敗しました。時間をおいて再度お試しください。"
     }
   },
+  "reservation": {
+    "seo": {
+      "title": "ご予約 | Connectrip Japan",
+      "description": "旅行日程やご希望をお聞かせください。現地を知るローカルチームが、お客様一人ひとりに合わせた日本旅行をご提案します。"
+    },
+    "heading": "RESERVATION",
+    "subheading": "本当の日本を体験しましょう",
+    "description": "旅行日程やご希望をお聞かせください。現地を知るローカルチームが、お客様一人ひとりに合わせた日本旅行をご提案します。お問い合わせには24時間以内にご返信いたします。",
+    "form": {
+      "nameLabel": "お名前（必須）",
+      "namePlaceholder": "Jane Smith",
+      "emailLabel": "メールアドレス（必須）",
+      "emailPlaceholder": "jane@example.com",
+      "countryLabel": "お住まいの国・地域（必須）",
+      "countryPlaceholder": "例：Australia / Singapore / United States",
+      "startDateLabel": "開始日（必須）",
+      "endDateLabel": "終了日（必須）",
+      "travelersLabel": "旅行人数（必須）",
+      "adultsLabel": "大人",
+      "childrenLabel": "子供",
+      "travelersPlaceholder": "選択してください",
+      "travelerCounts": ["1", "2", "3", "4", "5人以上"],
+      "areasLabel": "行きたいエリア（複数選択可）",
+      "areas": ["大阪", "京都", "奈良", "兵庫", "東京", "富士山", "北海道", "九州", "その他"],
+      "servicesLabel": "ご希望のサービス（複数選択可）",
+      "services": ["オーダーメイド旅行", "パッケージツアー", "プライベートガイド", "ホテル手配", "レストラン予約", "体験予約", "旅行相談"],
+      "interestsLabel": "興味のある体験（複数選択可）",
+      "interests": ["日本食", "温泉", "神社・寺院", "自然・絶景", "ショッピング", "アニメ・ゲーム", "テーマパーク", "スキー・雪遊び", "ローカル体験", "その他"],
+      "budgetLabel": "おおよそのご予算　※飛行機代除く（1名あたり）",
+      "budgetOptions": ["10万円未満", "10万円〜30万円", "30万円〜50万円", "50万円以上", "まだ決めていない"],
+      "messageLabel": "ご要望・メッセージ",
+      "messageNote": "行きたい場所やSNSで見たスポット、食事制限、ホテルのご希望などございましたらご自由にご記入ください。",
+      "messagePlaceholder": "ご自由にご記入ください",
+      "policyLinkLabel": "※キャンセルポリシー",
+      "submit": "送信する",
+      "sending": "送信中...",
+      "success": "ご予約リクエストありがとうございます。担当より24時間以内にご連絡いたします。",
+      "error": "送信に失敗しました。時間をおいて再度お試しください。"
+    }
+  },
   "finalCta": {
     "heading": "本物の日本との出会いを、\nここから始めましょう。",
     "description": "行きたい場所や叶えたい体験をお聞かせください。\n現地を知るローカルチームが、あなたに合った日本旅行をご提案します。",

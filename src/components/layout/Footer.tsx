@@ -15,7 +15,7 @@ const FOOTER_NAV = [
   { key: "service", href: "#service" },
   { key: "process", href: "#process" },
   { key: "plan", href: "#plan" },
-  { key: "reservation", href: "#contact" },
+  { key: "reservation", href: "/reservation" },
   { key: "contact", href: "#contact" },
 ] as const;
 
@@ -72,15 +72,25 @@ export function Footer() {
             {t("navigationHeading")}
           </p>
           <nav className="mt-4 flex flex-col gap-3">
-            {FOOTER_NAV.map((item) => (
-              <a
-                key={item.key}
-                href={item.href}
-                className="text-sm text-cream/70 transition-colors hover:text-gold"
-              >
-                {t(`nav.${item.key}`)}
-              </a>
-            ))}
+            {FOOTER_NAV.map((item) =>
+              item.href.startsWith("#") ? (
+                <a
+                  key={item.key}
+                  href={item.href}
+                  className="text-sm text-cream/70 transition-colors hover:text-gold"
+                >
+                  {t(`nav.${item.key}`)}
+                </a>
+              ) : (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  className="text-sm text-cream/70 transition-colors hover:text-gold"
+                >
+                  {t(`nav.${item.key}`)}
+                </Link>
+              ),
+            )}
           </nav>
         </div>
 

@@ -15,12 +15,12 @@ export function SectionHeading({
   return (
     <FadeIn
       className={cn(
-        "mb-10 md:mb-14",
+        "mt-10 mb-10 md:mt-20 md:mb-14",
         align === "center" && "text-center",
         className,
       )}
     >
-      <h2 className="font-heading-en text-4xl tracking-[0.08em] text-gold md:text-5xl">
+      <h2 className="font-heading-en text-5xl font-bold tracking-[0.08em] text-gold md:text-6xl">
         {heading}
       </h2>
       {subheading ? (
