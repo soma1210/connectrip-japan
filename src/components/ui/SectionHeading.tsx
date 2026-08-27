@@ -15,7 +15,7 @@ export function SectionHeading({
   return (
     <FadeIn
       className={cn(
-        "mt-10 mb-10 md:mt-20 md:mb-14",
+        "mt-6 mb-8 md:mt-14 md:mb-12",
         align === "center" && "text-center",
         className,
       )}

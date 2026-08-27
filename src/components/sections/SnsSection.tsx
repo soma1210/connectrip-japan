@@ -14,7 +14,7 @@ export function SnsSection() {
   const items = t.raw("items") as SnsItem[];
 
   return (
-    <section className="bg-navy-dark py-[60px] md:py-[100px]">
+    <section className="bg-navy-dark py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <div className="grid grid-cols-1 divide-x divide-y divide-navy/10 bg-cream sm:grid-cols-2 lg:grid-cols-4">

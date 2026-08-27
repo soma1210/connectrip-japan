@@ -18,7 +18,7 @@ export function BlogCard({
 }) {
   return (
     <div className="w-[85%] shrink-0 snap-start sm:w-[45%] lg:w-[calc(33.333%-11px)]">
-      <div className="relative aspect-[4/3] overflow-hidden border border-gold/30">
+      <div className="relative aspect-[3/2] overflow-hidden border border-gold/30">
         <PlaceholderImage src={image} alt={imageAlt} sizes="(min-width: 1024px) 33vw, 80vw" />
       </div>
       <div className="mt-4">

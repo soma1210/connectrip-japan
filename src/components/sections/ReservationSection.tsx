@@ -117,7 +117,7 @@ export function ReservationSection() {
   }
 
   return (
-    <section className="bg-navy-dark py-[60px] md:py-[100px]">
+    <section className="bg-navy-dark py-12 md:py-20">
       <Container className="max-w-3xl">
         <FadeIn className="mb-10 md:mb-14">
           <p className="font-heading-en text-sm tracking-[0.2em] text-gold">

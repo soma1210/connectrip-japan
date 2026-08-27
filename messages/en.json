@@ -24,6 +24,7 @@
     "cta": "Book your Japan travel plan",
     "imageAlt": "A snow-covered old town at night in Takayama",
     "slideAlts": [
+      "A five-story pagoda over Kyoto's skyline at sunset",
       "Osaka Castle",
       "Mountains reflected in a lake in autumn colors",
       "Mt. Fuji above a lake",
@@ -33,7 +34,9 @@
       "Otaru Canal at dusk",
       "The bamboo grove of Arashiyama, Kyoto",
       "Tottori Sand Dunes",
-      "Deer in Nara Park"
+      "Deer in Nara Park",
+      "Cherry blossoms lit up over the Meguro River at night",
+      "Shibuya Crossing at night"
     ]
   },
   "issues": {
@@ -247,11 +250,11 @@
         "value": "Connectrip Japan Inc.",
         "note": "Connectrip Japan 株式会社"
       },
-      { "label": "Founded", "value": "◯◯, 2026" },
+      { "label": "Founded", "value": "September 1, 2026" },
       { "label": "Representative", "value": "Riku Oizumi, President & CEO" },
       {
         "label": "Address",
-        "value": "Suite 1013, 4-3-20 Nakanoshima, Kita-ku, Osaka, Japan"
+        "value": "1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan"
       },
       { "label": "Capital", "value": "¥1,000,000" },
       {
@@ -265,16 +268,6 @@
           "Arrangement of accommodation, transport and experience programs",
           "Interpretation and translation support"
         ]
-      },
-      {
-        "label": "Travel Agency Registration",
-        "value": "Osaka Prefectural Governor Registered Travel Agency No. ◯-◯◯◯◯",
-        "note": "To be added upon registration"
-      },
-      {
-        "label": "Affiliations",
-        "value": "All Nippon Travel Agents Association (ANTA), etc.",
-        "note": "To be added upon membership"
       },
       {
         "label": "Domestic Travel Services Manager",

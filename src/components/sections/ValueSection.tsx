@@ -14,7 +14,7 @@ export function ValueSection() {
   }[];
 
   return (
-    <section id="value" className="bg-navy-dark scroll-mt-20 py-[60px] md:py-[100px]">
+    <section id="value" className="bg-navy-dark scroll-mt-20 py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <div className="grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
@@ -29,7 +29,7 @@ export function ValueSection() {
             />
           ))}
         </div>
-        <div className="mt-14 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <CtaButton href="/reservation">{t("cta")}</CtaButton>
         </div>
       </Container>

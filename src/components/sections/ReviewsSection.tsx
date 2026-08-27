@@ -33,7 +33,7 @@ export async function ReviewsSection() {
       : (t.raw("items") as Review[]);
 
   return (
-    <section className="bg-navy-dark py-[60px] md:py-[100px]">
+    <section className="bg-navy-dark py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <div className="grid gap-4 md:grid-cols-3">

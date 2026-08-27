@@ -15,7 +15,7 @@ export function ProcessSection() {
   }[];
 
   return (
-    <section id="process" className="bg-navy scroll-mt-20 py-[60px] md:py-[100px]">
+    <section id="process" className="bg-navy scroll-mt-20 py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <div className="flex flex-col gap-4">
@@ -31,7 +31,7 @@ export function ProcessSection() {
             />
           ))}
         </div>
-        <div className="mt-14 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <CtaButton href="/reservation">{t("cta")}</CtaButton>
         </div>
       </Container>

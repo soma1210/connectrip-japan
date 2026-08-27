@@ -9,7 +9,7 @@ export function IssuesSection() {
   const items = t.raw("items") as { title: string; imageAlt: string }[];
 
   return (
-    <section className="bg-navy-dark py-[60px] md:py-[100px]">
+    <section className="bg-navy-dark py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <div className="grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">

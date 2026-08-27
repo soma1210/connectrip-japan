@@ -1,4 +1,5 @@
 export const heroSlides = [
+  "/images/hero/slides/11-kyoto-sunset-pagoda.jpg",
   "/images/hero/slides/01-osaka-castle.jpg",
   "/images/hero/slides/02-autumn-lake.jpg",
   "/images/hero/slides/03-mt-fuji.jpg",
@@ -9,6 +10,8 @@ export const heroSlides = [
   "/images/hero/slides/08-kyoto-bamboo.jpg",
   "/images/hero/slides/09-tottori-dunes.jpg",
   "/images/hero/slides/10-nara-deer.jpg",
+  "/images/hero/slides/12-sakura-canal-night.jpg",
+  "/images/hero/slides/13-shibuya-crossing-night.jpg",
 ];
 
 export const issueImages = [

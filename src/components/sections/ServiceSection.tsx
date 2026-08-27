@@ -16,7 +16,7 @@ export function ServiceSection() {
   }[];
 
   return (
-    <section id="service" className="bg-navy scroll-mt-20 py-[60px] md:py-[100px]">
+    <section id="service" className="bg-navy scroll-mt-20 py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
 
@@ -26,12 +26,12 @@ export function ServiceSection() {
               {t("description")}
             </p>
           </FadeIn>
-          <FadeIn delay={0.1} className="relative aspect-[4/3] overflow-hidden border border-gold/30">
+          <FadeIn delay={0.1} className="relative aspect-[3/2] overflow-hidden border border-gold/30">
             <PlaceholderImage src={serviceImage} alt={t("imageAlt")} sizes="(min-width: 1024px) 50vw, 100vw" />
           </FadeIn>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
           {cards.map((card, index) => (
             <ServiceCard
               key={card.number}
@@ -44,7 +44,7 @@ export function ServiceSection() {
           ))}
         </div>
 
-        <div className="mt-14 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <CtaButton href="/reservation">{t("cta")}</CtaButton>
         </div>
       </Container>

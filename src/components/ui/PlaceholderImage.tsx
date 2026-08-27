@@ -11,12 +11,14 @@ export function PlaceholderImage({
   sizes,
   className,
   priority,
+  objectPosition,
 }: {
   src: string;
   alt: string;
   sizes?: string;
   className?: string;
   priority?: boolean;
+  objectPosition?: string;
 }) {
   const [errored, setErrored] = useState(false);
 
@@ -41,6 +43,7 @@ export function PlaceholderImage({
       sizes={sizes ?? "100vw"}
       priority={priority}
       className={cn("object-cover", className)}
+      style={objectPosition ? { objectPosition } : undefined}
       onError={() => setErrored(true)}
     />
   );

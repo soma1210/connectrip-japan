@@ -14,7 +14,7 @@ export function PlanSection() {
   }[];
 
   return (
-    <section id="plan" className="bg-navy scroll-mt-20 py-[60px] md:py-[100px]">
+    <section id="plan" className="bg-navy scroll-mt-20 py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} subheading={t("subheading")} />
         <div className="grid gap-4 md:grid-cols-3">
@@ -30,7 +30,7 @@ export function PlanSection() {
             />
           ))}
         </div>
-        <div className="mt-14 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <CtaButton href="/reservation">{t("cta")}</CtaButton>
         </div>
       </Container>

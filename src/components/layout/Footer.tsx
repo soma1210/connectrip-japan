@@ -29,7 +29,7 @@ export function Footer() {
 
   return (
     <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
-      <Container className="grid gap-12 py-16 md:grid-cols-3 md:gap-8">
+      <Container className="grid gap-10 py-14 md:grid-cols-3 md:gap-8">
         <div>
           <div className="flex items-center gap-3">
             <Image

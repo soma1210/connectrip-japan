@@ -23,7 +23,7 @@ export async function GallerySection() {
         }));
 
   return (
-    <section id="gallery" className="bg-navy scroll-mt-20 py-[60px] md:py-[100px]">
+    <section id="gallery" className="bg-navy scroll-mt-20 py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <Carousel>

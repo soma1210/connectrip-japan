@@ -8,7 +8,7 @@ export function FaqSection() {
   const items = t.raw("items") as { question: string; answer: string }[];
 
   return (
-    <section id="faq" className="bg-navy-dark scroll-mt-20 py-[60px] md:py-[100px]">
+    <section id="faq" className="bg-navy-dark scroll-mt-20 py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <FaqAccordion items={items} />

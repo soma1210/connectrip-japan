@@ -34,7 +34,7 @@ export async function VlogSection() {
         }));
 
   return (
-    <section className="bg-navy py-[60px] md:py-[100px]">
+    <section className="bg-navy py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <Carousel>
