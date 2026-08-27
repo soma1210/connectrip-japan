@@ -1,8 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
-import { Carousel } from "@/components/ui/Carousel";
-import { GalleryCard } from "@/components/cards/GalleryCard";
+import { GalleryMarquee } from "./GalleryMarquee";
 import { galleryImages } from "@/data/images";
 import { getGalleryItems } from "@/lib/data/gallery";
 
@@ -23,14 +22,10 @@ export async function GallerySection() {
         }));
 
   return (
-    <section id="gallery" className="bg-navy scroll-mt-20 py-12 md:py-20">
+    <section id="gallery" className="bg-navy scroll-mt-20 pt-12 pb-6 md:pt-20 md:pb-10">
       <Container>
         <SectionHeading heading={t("heading")} />
-        <Carousel>
-          {items.map((item) => (
-            <GalleryCard key={item.image} image={item.image} imageAlt={item.imageAlt} />
-          ))}
-        </Carousel>
+        <GalleryMarquee items={items} />
       </Container>
     </section>
   );

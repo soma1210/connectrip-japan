@@ -41,6 +41,7 @@
   },
   "issues": {
     "heading": "ISSUES",
+    "subheading": "海外から日本を旅する中で、こんなお悩みはありませんか？",
     "items": [
       { "title": "言語の壁が不安", "imageAlt": "道に迷った旅行者のイメージ" },
       { "title": "複雑な移動に自信がない。", "imageAlt": "駅を行き交う人々" },
@@ -66,6 +67,7 @@
   },
   "value": {
     "heading": "OUR VALUE",
+    "subheading": "Connectrip Japanが選ばれる理由を、6つのポイントでご紹介します。",
     "cta": "日本の旅行プランを予約する",
     "cards": [
       { "number": "1", "title": "日本人ローカルによるリアルな提案", "description": "観光サイトの人気ランキングではなく、実際に現地で暮らす日本人の目線でご提案します。" },
@@ -78,6 +80,7 @@
   },
   "process": {
     "heading": "PROCESS",
+    "subheading": "お問い合わせから旅行当日まで、安心してご利用いただける5つのステップです。",
     "cta": "日本の旅行プランを予約する",
     "steps": [
       { "number": "1", "title": "お問い合わせ", "description": "旅行時期、ご希望エリア、ご予算、ご興味のある体験などをお問い合わせフォームよりお送りください。", "imageAlt": "スマートフォンで問い合わせをする様子" },
@@ -89,6 +92,7 @@
   },
   "reviews": {
     "heading": "REVIEWS",
+    "subheading": "実際にご利用いただいたお客様から届いた、生の声をご紹介します。",
     "items": [
       { "name": "Emily", "country": "United States", "countryCode": "US", "date": "2026.06.01", "rating": 5, "tag": "KYOTO PRIVATE TOUR", "quote": "自分たちだけでは出会えなかった京都の一面を、ガイドさんが案内してくれました。旅行会社というより、親しい友人と旅しているようでした。" },
       { "name": "Lucas", "country": "Australia", "countryCode": "AU", "date": "2026.06.08", "rating": 5, "tag": "KANSAI CUSTOM PLAN", "quote": "私たちが本当に望んでいたことに合わせて、すべてが調整されていました。ホテルも電車も、夕食の予約まで手配してくれました。" },
@@ -108,6 +112,7 @@
   },
   "faq": {
     "heading": "FAQ",
+    "subheading": "よくいただくご質問をまとめました。気になる点はお気軽にご確認ください。",
     "items": [
       { "question": "英語での相談は可能ですか？", "answer": "はい。お問い合わせから旅行中のサポートまで、英語で対応しております。" },
       { "question": "関西以外のエリアも対応していますか？", "answer": "はい。関西を中心としておりますが、日本全国の旅行計画・手配に対応しております。" },
@@ -123,14 +128,32 @@
   },
   "gallery": {
     "heading": "GALLERY",
+    "subheading": "これまでにご案内した旅先の風景や瞬間の一部をご覧ください。",
     "items": [
-      { "imageAlt": "紅葉に包まれた日本庭園の小道" },
-      { "imageAlt": "雪化粧した日本の家屋" },
-      { "imageAlt": "縁側から見る紅葉の庭" }
+      { "imageAlt": "伏見稲荷大社の千本鳥居" },
+      { "imageAlt": "大阪城" },
+      { "imageAlt": "金閣寺（鹿苑寺）" },
+      { "imageAlt": "紅葉に染まる湖畔の山々" },
+      { "imageAlt": "富士山と湖" },
+      { "imageAlt": "忠霊塔と富士山" },
+      { "imageAlt": "雪に包まれた白川郷の合掌造り集落" },
+      { "imageAlt": "那智の滝と三重塔" },
+      { "imageAlt": "姫路城" },
+      { "imageAlt": "奈良の大仏" },
+      { "imageAlt": "小樽運河の夕景" },
+      { "imageAlt": "東京タワーの夜景" },
+      { "imageAlt": "京都嵐山の竹林" },
+      { "imageAlt": "鳥取砂丘" },
+      { "imageAlt": "大阪道頓堀の夜景" },
+      { "imageAlt": "奈良公園の鹿" },
+      { "imageAlt": "夕焼けに染まる京都の五重塔と市街地" },
+      { "imageAlt": "夜桜に彩られた目黒川" },
+      { "imageAlt": "夜の渋谷スクランブル交差点" }
     ]
   },
   "vlog": {
     "heading": "VLOG",
+    "subheading": "現地だから分かるおすすめスポットやグルメ情報を発信しています。",
     "readMore": "記事を読む",
     "posts": [
       { "title": "10 Hidden Gems in Kyoto You Can't Miss", "description": "Discover the secret spots loved by locals away from the crowds.", "imageAlt": "京都の隠れた名所を紹介する動画" },
@@ -140,6 +163,7 @@
   },
   "sns": {
     "heading": "SNS",
+    "subheading": "最新の旅情報やお得な情報をSNSでも配信中です。ぜひフォローしてください。",
     "follow": "FOLLOW US",
     "items": [
       { "platform": "tiktok", "label": "TikTok", "handle": "@japan_tavel_guide_ctj" },

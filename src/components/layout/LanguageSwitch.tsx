@@ -7,7 +7,11 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/cn";
 
-const LOCALE_LABELS: Record<string, string> = { en: "English", ja: "日本語" };
+const LOCALE_LABELS: Record<string, string> = {
+  en: "English",
+  ja: "日本語",
+  vi: "Tiếng Việt",
+};
 
 export function LanguageSwitch({ className }: { className?: string }) {
   const locale = useLocale();

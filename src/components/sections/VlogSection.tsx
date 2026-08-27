@@ -34,9 +34,9 @@ export async function VlogSection() {
         }));
 
   return (
-    <section className="bg-navy py-12 md:py-20">
+    <section className="bg-navy pt-6 pb-12 md:pt-10 md:pb-20">
       <Container>
-        <SectionHeading heading={t("heading")} />
+        <SectionHeading heading={t("heading")} subheading={t("subheading")} />
         <Carousel>
           {posts.map((post) => (
             <BlogCard

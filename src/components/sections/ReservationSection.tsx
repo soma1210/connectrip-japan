@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 
@@ -119,14 +120,9 @@ export function ReservationSection() {
   return (
     <section className="bg-navy-dark py-12 md:py-20">
       <Container className="max-w-3xl">
-        <FadeIn className="mb-10 md:mb-14">
-          <p className="font-heading-en text-sm tracking-[0.2em] text-gold">
-            {t("heading")}
-          </p>
-          <h2 className="mt-3 font-heading-jp text-3xl text-cream md:text-4xl">
-            {t("subheading")}
-          </h2>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-cream/75">
+        <SectionHeading heading={t("heading")} subheading={t("subheading")} />
+        <FadeIn className="-mt-8 mb-10 md:-mt-10 md:mb-14">
+          <p className="max-w-2xl text-sm leading-relaxed text-cream/75">
             {t("description")}
           </p>
         </FadeIn>

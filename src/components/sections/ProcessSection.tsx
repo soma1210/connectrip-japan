@@ -17,7 +17,7 @@ export function ProcessSection() {
   return (
     <section id="process" className="bg-navy scroll-mt-20 py-12 md:py-20">
       <Container>
-        <SectionHeading heading={t("heading")} />
+        <SectionHeading heading={t("heading")} subheading={t("subheading")} />
         <div className="flex flex-col gap-4">
           {steps.map((step, index) => (
             <ProcessItem

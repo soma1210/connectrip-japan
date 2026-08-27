@@ -41,6 +41,7 @@
   },
   "issues": {
     "heading": "ISSUES",
+    "subheading": "Do any of these worries sound familiar when planning a trip to Japan?",
     "items": [
       { "title": "Worried about the language barrier", "imageAlt": "A traveler who has lost their way" },
       { "title": "Not confident navigating complex transit.", "imageAlt": "People moving through a train station" },
@@ -66,6 +67,7 @@
   },
   "value": {
     "heading": "OUR VALUE",
+    "subheading": "Here are six reasons travelers choose Connectrip Japan.",
     "cta": "Book your Japan travel plan",
     "cards": [
       { "number": "1", "title": "Real Suggestions from Local Japanese", "description": "Not popular rankings from tourist sites — recommendations from the perspective of Japanese people who actually live there." },
@@ -78,6 +80,7 @@
   },
   "process": {
     "heading": "PROCESS",
+    "subheading": "From your first inquiry to the day you travel — five simple steps, start to finish.",
     "cta": "Book your Japan travel plan",
     "steps": [
       { "number": "1", "title": "Inquiry", "description": "Send us your travel dates, preferred areas, budget and experiences you're interested in through our contact form.", "imageAlt": "Making an inquiry on a smartphone" },
@@ -89,6 +92,7 @@
   },
   "reviews": {
     "heading": "REVIEWS",
+    "subheading": "Real feedback from travelers who experienced Japan with us.",
     "items": [
       { "name": "Emily", "country": "United States", "countryCode": "US", "date": "2026.06.01", "rating": 5, "tag": "KYOTO PRIVATE TOUR", "quote": "Our guide showed us parts of Kyoto we never would have found on our own. It felt like traveling with a close friend, not a tour company." },
       { "name": "Lucas", "country": "Australia", "countryCode": "AU", "date": "2026.06.08", "rating": 5, "tag": "KANSAI CUSTOM PLAN", "quote": "Every detail was tailored to what we actually wanted. Hotels, trains, even dinner reservations — all handled for us." },
@@ -108,6 +112,7 @@
   },
   "faq": {
     "heading": "FAQ",
+    "subheading": "Answers to the questions we hear most often — feel free to browse.",
     "items": [
       { "question": "Can I consult in English?", "answer": "Yes. We support you in English from your initial inquiry through on-trip assistance." },
       { "question": "Do you cover areas outside Kansai?", "answer": "Yes. We're based in Kansai, but we handle travel planning and arrangements across all of Japan." },
@@ -123,14 +128,32 @@
   },
   "gallery": {
     "heading": "GALLERY",
+    "subheading": "A glimpse of the places and moments we've guided travelers through.",
     "items": [
-      { "imageAlt": "A pathway through a Japanese garden in autumn colors" },
-      { "imageAlt": "A snow-covered Japanese house" },
-      { "imageAlt": "An autumn garden seen from a traditional veranda" }
+      { "imageAlt": "The thousand torii gates of Fushimi Inari Shrine" },
+      { "imageAlt": "Osaka Castle" },
+      { "imageAlt": "Kinkaku-ji, the Golden Pavilion" },
+      { "imageAlt": "Mountains reflected in a lake in autumn colors" },
+      { "imageAlt": "Mt. Fuji above a lake" },
+      { "imageAlt": "Chureito Pagoda with Mt. Fuji" },
+      { "imageAlt": "The snow-covered gassho-zukuri village of Shirakawago" },
+      { "imageAlt": "Nachi Falls and a three-story pagoda" },
+      { "imageAlt": "Himeji Castle" },
+      { "imageAlt": "The Great Buddha of Nara" },
+      { "imageAlt": "Otaru Canal at dusk" },
+      { "imageAlt": "Tokyo Tower at night" },
+      { "imageAlt": "The bamboo grove of Arashiyama, Kyoto" },
+      { "imageAlt": "Tottori Sand Dunes" },
+      { "imageAlt": "Dotonbori, Osaka at night" },
+      { "imageAlt": "Deer in Nara Park" },
+      { "imageAlt": "A five-story pagoda over Kyoto's skyline at sunset" },
+      { "imageAlt": "Cherry blossoms lit up over the Meguro River at night" },
+      { "imageAlt": "Shibuya Crossing at night" }
     ]
   },
   "vlog": {
     "heading": "VLOG",
+    "subheading": "Local tips on hidden spots and great food, straight from the ground in Japan.",
     "readMore": "Read article",
     "posts": [
       { "title": "10 Hidden Gems in Kyoto You Can't Miss", "description": "Discover the secret spots loved by locals away from the crowds.", "imageAlt": "A video introducing hidden spots in Kyoto" },
@@ -140,6 +163,7 @@
   },
   "sns": {
     "heading": "SNS",
+    "subheading": "Follow us for the latest travel tips and updates on social media.",
     "follow": "FOLLOW US",
     "items": [
       { "platform": "tiktok", "label": "TikTok", "handle": "@japan_tavel_guide_ctj" },

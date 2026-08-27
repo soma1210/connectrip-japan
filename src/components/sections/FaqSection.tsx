@@ -10,7 +10,7 @@ export function FaqSection() {
   return (
     <section id="faq" className="bg-navy-dark scroll-mt-20 py-12 md:py-20">
       <Container>
-        <SectionHeading heading={t("heading")} />
+        <SectionHeading heading={t("heading")} subheading={t("subheading")} />
         <FaqAccordion items={items} />
       </Container>
     </section>

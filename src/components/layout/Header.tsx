@@ -20,7 +20,7 @@ const NAV_ITEMS = [
 ] as const;
 
 const contactButtonClass =
-  "border border-gold text-gold px-6 py-2.5 text-xs tracking-[0.1em] transition-colors hover:bg-gold hover:text-navy";
+  "whitespace-nowrap border border-gold text-gold px-6 py-2.5 text-xs tracking-[0.1em] transition-colors hover:bg-gold hover:text-navy";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -30,7 +30,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-dashed border-gold/30 bg-navy/95 backdrop-blur">
-      <Container className="flex h-20 items-center justify-between">
+      <Container className="flex h-20 items-center justify-between max-w-[1340px]!">
         <a href="#" className="flex items-center gap-3">
           <Image
             src={logoImage}
@@ -50,7 +50,7 @@ export function Header() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-10 lg:flex">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.key}
@@ -62,14 +62,14 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-4 lg:flex">
+        <div className="hidden items-center gap-5 lg:flex">
           <LanguageSwitch />
           <Link href="/contact" className={contactButtonClass}>
             {t("contact")}
           </Link>
           <Link
             href="/reservation"
-            className="border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream transition-colors hover:bg-red-hover"
+            className="whitespace-nowrap border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream transition-colors hover:bg-red-hover"
           >
             {t("reserve")}
           </Link>

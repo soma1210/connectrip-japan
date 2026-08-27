@@ -35,13 +35,14 @@ export async function generateMetadata({
       languages: {
         ja: "/",
         en: "/en",
+        vi: "/vi",
       },
     },
     openGraph: {
       title: t("title"),
       description: t("description"),
       siteName: "Connectrip Japan",
-      locale: locale === "ja" ? "ja_JP" : "en_US",
+      locale: locale === "ja" ? "ja_JP" : locale === "vi" ? "vi_VN" : "en_US",
       type: "website",
     },
   };

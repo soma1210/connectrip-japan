@@ -16,7 +16,7 @@ export function ValueSection() {
   return (
     <section id="value" className="bg-navy-dark scroll-mt-20 py-12 md:py-20">
       <Container>
-        <SectionHeading heading={t("heading")} />
+        <SectionHeading heading={t("heading")} subheading={t("subheading")} />
         <div className="grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
           {cards.map((card, index) => (
             <ValueCard

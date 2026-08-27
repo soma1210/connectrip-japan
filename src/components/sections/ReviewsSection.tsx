@@ -35,7 +35,7 @@ export async function ReviewsSection() {
   return (
     <section className="bg-navy-dark py-12 md:py-20">
       <Container>
-        <SectionHeading heading={t("heading")} />
+        <SectionHeading heading={t("heading")} subheading={t("subheading")} />
         <div className="grid gap-4 md:grid-cols-3">
           {items.map((item, index) => (
             <ReviewCard key={item.name} {...item} delay={index * 0.08} />

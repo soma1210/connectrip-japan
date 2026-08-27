@@ -56,9 +56,25 @@ export const planImages = [
 ];
 
 export const galleryImages = [
-  "/images/gallery/gallery-1.jpg",
-  "/images/gallery/gallery-2.jpg",
-  "/images/gallery/gallery-3.jpg",
+  "/images/gallery/gallery-fushimi-inari.jpg",
+  "/images/hero/slides/01-osaka-castle.jpg",
+  "/images/gallery/gallery-kinkakuji.jpg",
+  "/images/hero/slides/02-autumn-lake.jpg",
+  "/images/hero/slides/03-mt-fuji.jpg",
+  "/images/gallery/gallery-chureito-fuji.jpg",
+  "/images/hero/slides/04-shirakawago-snow.jpg",
+  "/images/hero/slides/05-nachi-falls.jpg",
+  "/images/gallery/gallery-himeji-castle.jpg",
+  "/images/hero/slides/06-nara-daibutsu.jpg",
+  "/images/hero/slides/07-otaru-canal.jpg",
+  "/images/gallery/gallery-tokyo-tower.jpg",
+  "/images/hero/slides/08-kyoto-bamboo.jpg",
+  "/images/hero/slides/09-tottori-dunes.jpg",
+  "/images/gallery/gallery-dotonbori.jpg",
+  "/images/hero/slides/10-nara-deer.jpg",
+  "/images/hero/slides/11-kyoto-sunset-pagoda.jpg",
+  "/images/hero/slides/12-sakura-canal-night.jpg",
+  "/images/hero/slides/13-shibuya-crossing-night.jpg",
 ];
 
 export const vlogImages = [

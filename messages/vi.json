@@ -1,0 +1,391 @@
+{
+  "seo": {
+    "title": "Connectrip Japan | Hỗ Trợ Du Lịch Nhật Bản",
+    "description": "Dịch vụ hỗ trợ du lịch Nhật Bản cao cấp dành cho du khách quốc tế, tập trung tại Osaka, Kyoto, Nara và Hyogo. Lên kế hoạch riêng, trải nghiệm địa phương và hướng dẫn viên cá nhân — tất cả trong một."
+  },
+  "nav": {
+    "service": "SERVICE",
+    "value": "VALUE",
+    "process": "PROCESS",
+    "plan": "PLAN",
+    "faq": "FAQ",
+    "gallery": "GALLERY",
+    "contact": "Liên hệ",
+    "reserve": "Đặt lịch"
+  },
+  "header": {
+    "logoLine1": "CONNECTRIP",
+    "logoLine2": "JAPAN"
+  },
+  "hero": {
+    "eyebrow": "JAPAN TRAVEL SUPPORT",
+    "heading": "Kết nối con người và trái tim qua những chuyến đi.",
+    "description": "Tập trung tại vùng Kansai (Osaka, Kyoto, Nara và Hyogo),\nchúng tôi cung cấp dịch vụ sắp xếp và hướng dẫn du lịch trên khắp Nhật Bản, tất cả trong một.",
+    "cta": "Đặt lịch trình du lịch Nhật Bản",
+    "imageAlt": "Khung cảnh phố cổ Takayama phủ tuyết về đêm",
+    "slideAlts": [
+      "Ngôi chùa năm tầng nổi bật trên nền trời hoàng hôn Kyoto",
+      "Lâu đài Osaka",
+      "Dãy núi soi bóng bên hồ trong sắc thu",
+      "Núi Phú Sĩ bên hồ nước",
+      "Ngôi làng Shirakawago mái nhà gassho-zukuri phủ tuyết",
+      "Thác Nachi và ngôi tháp ba tầng",
+      "Tượng Đại Phật Nara",
+      "Kênh đào Otaru lúc hoàng hôn",
+      "Rừng tre Arashiyama, Kyoto",
+      "Đồi cát Tottori",
+      "Đàn hươu tại công viên Nara",
+      "Hoa anh đào rực rỡ ánh đèn bên sông Meguro về đêm",
+      "Giao lộ Shibuya về đêm"
+    ]
+  },
+  "issues": {
+    "heading": "ISSUES",
+    "subheading": "Bạn có đang gặp phải những băn khoăn này khi du lịch Nhật Bản từ nước ngoài không?",
+    "items": [
+      { "title": "Lo lắng về rào cản ngôn ngữ", "imageAlt": "Hình ảnh một du khách bị lạc đường" },
+      { "title": "Không tự tin khi di chuyển phức tạp.", "imageAlt": "Dòng người qua lại tại nhà ga" },
+      { "title": "Muốn có chuyến đi mang đậm\nchất địa phương, không chỉ điểm du lịch", "imageAlt": "Giao lưu cùng người dân địa phương" },
+      { "title": "Muốn tự thiết kế\nlịch trình phù hợp với mình.", "imageAlt": "Lên kế hoạch cho chuyến đi" },
+      { "title": "Không biết quán ăn nào\nphù hợp với khẩu vị và lối sống của mình.", "imageAlt": "Bữa ăn kiểu Nhật" },
+      { "title": "Muốn một chuyến đi\ncả trẻ em lẫn người lớn đều hài lòng.", "imageAlt": "Một gia đình đang đi du lịch" }
+    ]
+  },
+  "service": {
+    "heading": "SERVICE",
+    "description": "CONNECTRIP JAPAN ra đời từ một ý tưởng giản dị.\nNhật Bản không chỉ có những địa điểm nổi tiếng thế giới, mà còn ẩn chứa vô vàn nét văn hóa, ẩm thực và cảnh sắc đặc trưng của từng vùng miền mà ít người biết đến.\nKhông phải vì du khách không quan tâm, mà vì rào cản ngôn ngữ và văn hóa khiến họ khó có thể chạm đến những giá trị đó.\nXóa bỏ rào cản ấy, kết nối du khách với vùng đất, con người với văn hóa, để tạo nên những cuộc gặp gỡ chân thực với Nhật Bản đích thực — đó chính là khởi nguồn của CONNECTRIP JAPAN.",
+    "imageAlt": "Hoa anh đào, núi Phú Sĩ và cổng torii",
+    "cta": "Đặt lịch trình du lịch Nhật Bản",
+    "cards": [
+      { "number": "1", "title": "Tư Vấn & Lên Kế Hoạch Du Lịch", "description": "Chúng tôi thiết kế chuyến đi Nhật Bản riêng cho bạn, phù hợp với ngân sách và mong muốn của bạn." },
+      { "number": "2", "title": "Sắp Xếp Khách Sạn & Di Chuyển", "description": "Chúng tôi hỗ trợ đặt khách sạn, tàu Shinkansen, thuê xe và các dịch vụ cần thiết khác." },
+      { "number": "3", "title": "Gợi Ý Địa Điểm Đáng Đến", "description": "Từ những điểm nổi tiếng đến những nơi ít người biết, chúng tôi gợi ý theo góc nhìn của người bản địa." },
+      { "number": "4", "title": "Đặt Nhà Hàng & Trải Nghiệm", "description": "Chúng tôi hỗ trợ đặt chỗ nhà hàng và các trải nghiệm văn hóa để chuyến đi thêm trọn vẹn." },
+      { "number": "5", "title": "Hướng Dẫn Viên Riêng", "description": "Hướng dẫn viên địa phương đồng hành cùng bạn, giúp bạn an tâm tận hưởng Nhật Bản." },
+      { "number": "6", "title": "Hỗ Trợ Tiếng Anh", "description": "Từ khi tư vấn trước chuyến đi đến khi gặp khó khăn tại chỗ, chúng tôi luôn hỗ trợ tận tình bằng tiếng Anh." }
+    ]
+  },
+  "value": {
+    "heading": "OUR VALUE",
+    "subheading": "Sáu lý do khiến du khách lựa chọn Connectrip Japan.",
+    "cta": "Đặt lịch trình du lịch Nhật Bản",
+    "cards": [
+      { "number": "1", "title": "Gợi Ý Chân Thực Từ Người Nhật Bản Địa Phương", "description": "Không phải bảng xếp hạng phổ biến trên các trang du lịch, mà là góc nhìn từ chính người Nhật đang sinh sống tại địa phương." },
+      { "number": "2", "title": "Đội Ngũ Chuyên Về Kansai", "description": "Nhờ hoạt động tập trung tại Osaka, Kyoto, Nara và Hyogo, chúng tôi luôn nắm bắt thông tin địa phương mới nhất." },
+      { "number": "3", "title": "Nhật Bản Không Chỉ Là Điểm Du Lịch", "description": "Không chỉ đền chùa, chúng tôi còn gợi ý khu phố mua sắm, quán ăn địa phương và cơ hội giao lưu với người dân." },
+      { "number": "4", "title": "Chuyến Đi Dành Riêng Cho Bạn", "description": "Chúng tôi không bán những gói tour giống nhau, mà xây dựng lịch trình từ đầu theo đúng mong muốn của bạn." },
+      { "number": "5", "title": "Tư Vấn Ngay Từ Trước Chuyến Đi", "description": "Không chỉ đặt dịch vụ — bạn có thể thoải mái hỏi bất kỳ điều gì bằng tiếng Anh trước khi khởi hành." },
+      { "number": "6", "title": "Như Một Người Bạn Tại Nhật Bản", "description": "Không phải một công ty du lịch thông thường — chúng tôi đồng hành cùng bạn như một người bạn đang sống tại Nhật." }
+    ]
+  },
+  "process": {
+    "heading": "PROCESS",
+    "subheading": "Từ lúc liên hệ đến ngày khởi hành, đây là 5 bước giúp bạn hoàn toàn an tâm.",
+    "cta": "Đặt lịch trình du lịch Nhật Bản",
+    "steps": [
+      { "number": "1", "title": "Liên Hệ", "description": "Gửi cho chúng tôi thời gian du lịch, khu vực mong muốn, ngân sách và những trải nghiệm bạn quan tâm qua biểu mẫu liên hệ.", "imageAlt": "Gửi liên hệ qua điện thoại thông minh" },
+      { "number": "2", "title": "Trao Đổi & Tư Vấn", "description": "Chúng tôi xác nhận phong cách và mong muốn du lịch của bạn, sau đó đề xuất hướng đi phù hợp nhất cho chuyến đi.", "imageAlt": "Buổi tư vấn trực tuyến" },
+      { "number": "3", "title": "Đề Xuất Lịch Trình", "description": "Chúng tôi đề xuất chuyến đi thiết kế riêng hoặc gói tour có sẵn, bạn sẽ xem lại lịch trình, chỗ ở và các trải nghiệm.", "imageAlt": "Xem lịch trình trên bản đồ" },
+      { "number": "4", "title": "Đặt Lịch & Thanh Toán", "description": "Sau khi bạn xác nhận nội dung, chúng tôi tiến hành thanh toán và các thủ tục sắp xếp sau khi lịch trình được chốt.", "imageAlt": "Tiền giấy Yên Nhật" },
+      { "number": "5", "title": "Hỗ Trợ Trước Khi Khởi Hành", "description": "Chúng tôi giải đáp mọi thắc mắc cuối cùng và xác nhận chi tiết, để bạn khởi hành với sự an tâm tuyệt đối.", "imageAlt": "Du khách đi bộ trong sân bay" }
+    ]
+  },
+  "reviews": {
+    "heading": "REVIEWS",
+    "subheading": "Những chia sẻ chân thực từ khách hàng đã từng sử dụng dịch vụ của chúng tôi.",
+    "items": [
+      { "name": "Emily", "country": "United States", "countryCode": "US", "date": "2026.06.01", "rating": 5, "tag": "KYOTO PRIVATE TOUR", "quote": "Hướng dẫn viên đã đưa chúng tôi khám phá những góc của Kyoto mà tự mình sẽ không bao giờ tìm ra được. Cảm giác như đang đi cùng một người bạn thân, chứ không phải một công ty du lịch." },
+      { "name": "Lucas", "country": "Australia", "countryCode": "AU", "date": "2026.06.08", "rating": 5, "tag": "KANSAI CUSTOM PLAN", "quote": "Mọi chi tiết đều được điều chỉnh đúng theo mong muốn thực sự của chúng tôi. Từ khách sạn, tàu điện cho đến cả đặt chỗ ăn tối — tất cả đều được lo chu đáo." },
+      { "name": "Sophia", "country": "United Kingdom", "countryCode": "GB", "date": "2026.06.15", "rating": 5, "tag": "OSAKA FOOD & CULTURE PLAN", "quote": "Từ ẩm thực đường phố ở Namba đến buổi trà đạo yên tĩnh, đây là chuyến đi Nhật Bản chân thực nhất mà tôi từng trải qua." }
+    ]
+  },
+  "plan": {
+    "heading": "PLAN",
+    "subheading": "Mọi lịch trình đều có thể tùy chỉnh theo mong muốn của bạn.",
+    "cta": "Đặt lịch trình du lịch Nhật Bản",
+    "learnMore": "LEARN MORE",
+    "cards": [
+      { "title": "Thiết Kế Riêng", "description": "Chúng tôi lắng nghe mong muốn của bạn từ đầu để tạo nên một lịch trình du lịch độc nhất.", "imageAlt": "Du khách mặc kimono dạo phố" },
+      { "title": "Tour Trọn Gói", "description": "Lịch trình có sẵn, an tâm và hiệu quả, đưa bạn khám phá các điểm du lịch nổi tiếng.", "imageAlt": "Du khách tham quan chùa Sensoji" },
+      { "title": "Gói VIP (Theo Yêu Cầu)", "description": "Lịch trình cao cấp được thiết kế theo yêu cầu đặc biệt của bạn. Vui lòng liên hệ để biết thêm chi tiết.", "imageAlt": "Mặt ca-lăng của một chiếc xe hơi sang trọng" }
+    ]
+  },
+  "faq": {
+    "heading": "FAQ",
+    "subheading": "Tổng hợp những câu hỏi thường gặp. Hãy thoải mái tham khảo nếu bạn có thắc mắc.",
+    "items": [
+      { "question": "Tôi có thể trao đổi bằng tiếng Anh không?", "answer": "Có. Chúng tôi hỗ trợ bằng tiếng Anh từ khi liên hệ ban đầu cho đến trong suốt chuyến đi." },
+      { "question": "Các bạn có hỗ trợ khu vực ngoài Kansai không?", "answer": "Có. Chúng tôi tập trung tại Kansai, nhưng vẫn hỗ trợ lên kế hoạch và sắp xếp du lịch trên toàn Nhật Bản." },
+      { "question": "Tôi nên liên hệ trước bao nhiêu ngày?", "answer": "Chúng tôi khuyến nghị liên hệ trước 3–6 tháng. Chúng tôi cũng sẽ cố gắng hỗ trợ tối đa cho các yêu cầu gấp." },
+      { "question": "Tôi có thể sử dụng dịch vụ khi đi du lịch một mình không?", "answer": "Hoàn toàn được. Chúng tôi hỗ trợ từ khách đi một mình cho đến gia đình và nhóm đông người." },
+      { "question": "Sự khác biệt giữa du lịch thiết kế riêng và tour trọn gói là gì?", "answer": "Du lịch thiết kế riêng được xây dựng từ đầu theo mong muốn của bạn. Tour trọn gói sử dụng lịch trình đã được sắp xếp sẵn." },
+      { "question": "Tôi có thể hỏi về những địa điểm thấy trên TikTok hoặc Instagram không?", "answer": "Có. Hãy chia sẻ đường dẫn hoặc ảnh chụp màn hình bài đăng, chúng tôi sẽ kiểm tra và hướng dẫn cách đưa vào lịch trình cũng như cách di chuyển đến đó." },
+      { "question": "Các bạn có hỗ trợ đặt nhà hàng và trải nghiệm không?", "answer": "Có, chúng tôi hỗ trợ đặt nhà hàng, trải nghiệm văn hóa và nhiều hoạt động khác." },
+      { "question": "Có dịch vụ hướng dẫn viên riêng không?", "answer": "Có, chúng tôi cung cấp dịch vụ hướng dẫn viên riêng tập trung tại Osaka, Kyoto, Nara và Hyogo." },
+      { "question": "Tôi có thể chỉ nhờ sắp xếp mà không cần hướng dẫn viên không?", "answer": "Có, chúng tôi cũng nhận yêu cầu chỉ lên kế hoạch và sắp xếp du lịch, không cần hướng dẫn viên." },
+      { "question": "Không biết tiếng Nhật có sao không?", "answer": "Không vấn đề gì. Chúng tôi hỗ trợ bằng tiếng Anh từ trước đến trong suốt chuyến đi, giúp bạn an tâm du lịch Nhật Bản." }
+    ]
+  },
+  "gallery": {
+    "heading": "GALLERY",
+    "subheading": "Một vài khoảnh khắc và cảnh sắc từ những chuyến đi chúng tôi đã đồng hành cùng du khách.",
+    "items": [
+      { "imageAlt": "Nghìn cổng torii tại đền Fushimi Inari" },
+      { "imageAlt": "Lâu đài Osaka" },
+      { "imageAlt": "Chùa Vàng Kinkaku-ji" },
+      { "imageAlt": "Dãy núi soi bóng bên hồ trong sắc thu" },
+      { "imageAlt": "Núi Phú Sĩ bên hồ nước" },
+      { "imageAlt": "Tháp Chureito và núi Phú Sĩ" },
+      { "imageAlt": "Ngôi làng Shirakawago mái nhà gassho-zukuri phủ tuyết" },
+      { "imageAlt": "Thác Nachi và ngôi tháp ba tầng" },
+      { "imageAlt": "Lâu đài Himeji" },
+      { "imageAlt": "Tượng Đại Phật Nara" },
+      { "imageAlt": "Kênh đào Otaru lúc hoàng hôn" },
+      { "imageAlt": "Tháp Tokyo về đêm" },
+      { "imageAlt": "Rừng tre Arashiyama, Kyoto" },
+      { "imageAlt": "Đồi cát Tottori" },
+      { "imageAlt": "Khu Dotonbori, Osaka về đêm" },
+      { "imageAlt": "Đàn hươu tại công viên Nara" },
+      { "imageAlt": "Ngôi chùa năm tầng nổi bật trên nền trời hoàng hôn Kyoto" },
+      { "imageAlt": "Hoa anh đào rực rỡ ánh đèn bên sông Meguro về đêm" },
+      { "imageAlt": "Giao lộ Shibuya về đêm" }
+    ]
+  },
+  "vlog": {
+    "heading": "VLOG",
+    "subheading": "Chia sẻ những địa điểm đáng đến và thông tin ẩm thực mà chỉ người bản địa mới biết.",
+    "readMore": "Đọc bài viết",
+    "posts": [
+      { "title": "10 Hidden Gems in Kyoto You Can't Miss", "description": "Discover the secret spots loved by locals away from the crowds.", "imageAlt": "Video giới thiệu những địa điểm bí mật ở Kyoto" },
+      { "title": "Osaka Street Food Guide", "description": "A local's guide to the best takoyaki and okonomiyaki in Namba.", "imageAlt": "Dòng sông chảy dưới hàng cây hoa anh đào" },
+      { "title": "A Perfect Day in Nara", "description": "How to interact with deer and explore ancient temples smoothly.", "imageAlt": "Đàn hươu tại công viên Nara" }
+    ]
+  },
+  "sns": {
+    "heading": "SNS",
+    "subheading": "Cập nhật thông tin du lịch mới nhất và ưu đãi hấp dẫn trên mạng xã hội. Hãy theo dõi chúng tôi nhé.",
+    "follow": "FOLLOW US",
+    "items": [
+      { "platform": "tiktok", "label": "TikTok", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "instagram", "label": "Instagram", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "facebook", "label": "Facebook", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "whatsapp", "label": "WhatsApp", "handle": "+81-90-8269-1398" }
+    ]
+  },
+  "contact": {
+    "seo": {
+      "title": "Liên Hệ | Connectrip Japan",
+      "description": "Nếu bạn có câu hỏi hoặc cần tư vấn, đừng ngần ngại liên hệ với chúng tôi. Đội ngũ phụ trách sẽ phản hồi sớm nhất."
+    },
+    "heading": "CONTACT",
+    "description": "Dù bạn vẫn còn đang cân nhắc cũng không sao. Bất kỳ thắc mắc nhỏ nào, hãy thoải mái liên hệ với chúng tôi.",
+    "infoRows": [
+      { "label": "Biểu Mẫu Liên Hệ", "value": "Vui lòng gửi tin nhắn qua biểu mẫu bên cạnh.\nChúng tôi sẽ phản hồi trong vòng 24 giờ." },
+      { "label": "EMAIL", "value": "contact@connectripjapan.com" },
+      { "label": "INSTAGRAM", "value": "@japan_tavel_guide_ctj" },
+      { "label": "TIKTOK", "value": "@japan_tavel_guide_ctj" },
+      { "label": "WHATSAPP", "value": "+81-90-8269-1398" }
+    ],
+    "form": {
+      "nameLabel": "Họ Tên",
+      "namePlaceholder": "Name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Email",
+      "messageLabel": "Nội Dung",
+      "messagePlaceholder": "Message",
+      "submit": "Gửi",
+      "sending": "Đang gửi...",
+      "success": "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
+      "error": "Gửi không thành công. Vui lòng thử lại sau."
+    }
+  },
+  "reservation": {
+    "seo": {
+      "title": "Đặt Lịch | Connectrip Japan",
+      "description": "Hãy cho chúng tôi biết lịch trình và mong muốn của bạn. Đội ngũ am hiểu địa phương sẽ đề xuất chuyến du lịch Nhật Bản dành riêng cho bạn."
+    },
+    "heading": "RESERVATION",
+    "subheading": "Hãy cùng trải nghiệm Nhật Bản đích thực",
+    "description": "Hãy cho chúng tôi biết lịch trình và mong muốn của bạn. Đội ngũ am hiểu địa phương sẽ đề xuất chuyến du lịch Nhật Bản dành riêng cho bạn. Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
+    "form": {
+      "nameLabel": "Họ tên (bắt buộc)",
+      "namePlaceholder": "Jane Smith",
+      "emailLabel": "Email (bắt buộc)",
+      "emailPlaceholder": "jane@example.com",
+      "countryLabel": "Quốc gia / khu vực sinh sống (bắt buộc)",
+      "countryPlaceholder": "Ví dụ: Australia / Singapore / United States",
+      "startDateLabel": "Ngày bắt đầu (bắt buộc)",
+      "endDateLabel": "Ngày kết thúc (bắt buộc)",
+      "travelersLabel": "Số lượng người tham gia (bắt buộc)",
+      "adultsLabel": "Người lớn",
+      "childrenLabel": "Trẻ em",
+      "travelersPlaceholder": "Vui lòng chọn",
+      "travelerCounts": ["1", "2", "3", "4", "Từ 5 người trở lên"],
+      "areasLabel": "Khu vực muốn đến (có thể chọn nhiều)",
+      "areas": ["Osaka", "Kyoto", "Nara", "Hyogo", "Tokyo", "Núi Phú Sĩ", "Hokkaido", "Kyushu", "Khác"],
+      "servicesLabel": "Dịch vụ mong muốn (có thể chọn nhiều)",
+      "services": ["Du lịch thiết kế riêng", "Tour trọn gói", "Hướng dẫn viên riêng", "Sắp xếp khách sạn", "Đặt nhà hàng", "Đặt trải nghiệm", "Tư vấn du lịch"],
+      "interestsLabel": "Trải nghiệm quan tâm (có thể chọn nhiều)",
+      "interests": ["Ẩm thực Nhật Bản", "Suối nước nóng", "Đền, chùa", "Thiên nhiên & cảnh đẹp", "Mua sắm", "Anime & Game", "Công viên giải trí", "Trượt tuyết & chơi tuyết", "Trải nghiệm địa phương", "Khác"],
+      "budgetLabel": "Ngân sách dự kiến　※Không bao gồm vé máy bay（tính trên 1 người）",
+      "budgetOptions": ["Dưới 100.000 yên", "100.000 – 300.000 yên", "300.000 – 500.000 yên", "Trên 500.000 yên", "Chưa quyết định"],
+      "messageLabel": "Yêu Cầu & Lời Nhắn",
+      "messageNote": "Vui lòng ghi chú tự do về địa điểm muốn đến, nơi bạn thấy trên mạng xã hội, chế độ ăn uống, mong muốn về khách sạn, v.v.",
+      "messagePlaceholder": "Vui lòng ghi chú tự do",
+      "policyLinkLabel": "※Chính sách hủy đặt chỗ",
+      "submit": "Gửi",
+      "sending": "Đang gửi...",
+      "success": "Cảm ơn bạn đã gửi yêu cầu đặt lịch. Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
+      "error": "Gửi không thành công. Vui lòng thử lại sau."
+    }
+  },
+  "finalCta": {
+    "heading": "Hãy bắt đầu hành trình gặp gỡ\nNhật Bản đích thực ngay từ đây.",
+    "description": "Hãy cho chúng tôi biết những nơi bạn muốn đến và trải nghiệm bạn mong muốn.\nĐội ngũ am hiểu địa phương sẽ đề xuất chuyến du lịch Nhật Bản dành riêng cho bạn.",
+    "cta": "Đặt lịch trình du lịch Nhật Bản",
+    "imageAlt": "Hàng ngàn cổng torii tại đền Fushimi Inari"
+  },
+  "footer": {
+    "tagline": "Hỗ trợ du lịch vùng Kansai dành cho du khách đến Nhật Bản",
+    "navigationHeading": "NAVIGATION",
+    "informationHeading": "INFORMATION",
+    "nav": {
+      "service": "SERVICE",
+      "process": "PROCESS",
+      "plan": "PLAN",
+      "reservation": "RESERVATION",
+      "contact": "Liên hệ"
+    },
+    "information": {
+      "careers": "Tuyển dụng",
+      "company": "Giới thiệu công ty",
+      "cancellation": "Chính sách hủy đặt chỗ",
+      "terms": "Điều khoản sử dụng",
+      "businessInquiry": "Liên hệ (doanh nghiệp)"
+    },
+    "copyright": "CONNECTRIP JAPAN. All rights reserved."
+  },
+  "company": {
+    "seo": {
+      "title": "Giới Thiệu Công Ty | Connectrip Japan",
+      "description": "Thông tin giới thiệu công ty Connectrip Japan — tên công ty, địa chỉ, lĩnh vực hoạt động và thông tin đăng ký kinh doanh lữ hành."
+    },
+    "heading": "Giới Thiệu Công Ty",
+    "subheading": "COMPANY PROFILE",
+    "rows": [
+      {
+        "label": "Tên công ty",
+        "value": "Connectrip Japan 株式会社",
+        "note": "Connectrip Japan Inc."
+      },
+      { "label": "Thành lập", "value": "Ngày 1 tháng 9 năm 2026" },
+      { "label": "Đại diện", "value": "Chủ tịch kiêm Tổng Giám đốc Riku Oizumi" },
+      { "label": "Địa chỉ", "value": "1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Nhật Bản" },
+      { "label": "Vốn điều lệ", "value": "1.000.000 yên" },
+      {
+        "label": "Lĩnh vực hoạt động",
+        "value": [
+          "Lên kế hoạch và đề xuất du lịch thiết kế riêng",
+          "Dịch vụ hướng dẫn viên riêng",
+          "Lên kế hoạch và bán tour trọn gói",
+          "Hỗ trợ du lịch dành cho du khách đến Nhật Bản",
+          "Tư vấn du lịch và lập lịch trình",
+          "Sắp xếp chỗ ở, phương tiện di chuyển và các chương trình trải nghiệm",
+          "Hỗ trợ thông dịch và biên dịch"
+        ]
+      },
+      { "label": "Người quản lý\nnghiệp vụ du lịch nội địa", "value": "Riku Oizumi" }
+    ],
+    "footerSignature": "Connectrip Japan 株式会社"
+  },
+  "businessInquiry": {
+    "seo": {
+      "title": "Liên Hệ Doanh Nghiệp | Connectrip Japan",
+      "description": "Vui lòng liên hệ tại đây đối với hợp tác kinh doanh, du lịch đoàn thể, phỏng vấn báo chí và các vấn đề doanh nghiệp khác."
+    },
+    "eyebrow": "Liên Hệ Doanh Nghiệp",
+    "heading": "Liên Hệ Dành Cho Doanh Nghiệp",
+    "description": "Đối với hợp tác kinh doanh, du lịch đoàn thể, phỏng vấn báo chí\nvà các vấn đề doanh nghiệp khác, vui lòng liên hệ tại đây. Chúng tôi sẽ xem xét nội dung và phản hồi sớm nhất.",
+    "form": {
+      "companyLabel": "Tên công ty",
+      "companyPlaceholder": "Connectrip Partner Inc.",
+      "contactNameLabel": "Người phụ trách",
+      "contactNamePlaceholder": "Jane Smith",
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@company.co.jp",
+      "typeLabel": "Loại yêu cầu",
+      "typeOptions": ["Về hợp tác kinh doanh", "Về du lịch đoàn thể", "Về phỏng vấn báo chí", "Khác"],
+      "messageLabel": "Nội dung liên hệ",
+      "messagePlaceholder": "Vui lòng tóm tắt nội dung liên hệ của bạn.",
+      "note": "Thông thường chúng tôi phản hồi trong vòng 2–3 ngày làm việc. Đối với các yêu cầu đặt lịch gấp, vui lòng sử dụng biểu mẫu đặt lịch.",
+      "noteLink": "Đến biểu mẫu đặt lịch →",
+      "submit": "Gửi",
+      "sending": "Đang gửi...",
+      "success": "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ xem xét nội dung và phản hồi sớm nhất.",
+      "error": "Gửi không thành công. Vui lòng thử lại sau."
+    }
+  },
+  "cancelPolicy": {
+    "seo": {
+      "title": "Chính Sách Hủy Đặt Chỗ | Connectrip Japan",
+      "description": "Chính sách hủy đặt chỗ của Connectrip Japan — phí tư vấn du lịch, phí hủy sau khi đặt tour và phương thức hoàn tiền."
+    },
+    "heading": "Chính Sách Hủy Đặt Chỗ",
+    "subheading": "CANCELLATION POLICY",
+    "intro": "Cảm ơn quý khách đã tin tưởng sử dụng dịch vụ của Connectrip Japan.\nĐể quý khách có thể yên tâm sử dụng dịch vụ, chúng tôi quy định chính sách hủy đặt chỗ như dưới đây.\nVui lòng đọc kỹ trước khi đặt lịch.",
+    "sections": [
+      {
+        "number": 1,
+        "title": "Về Phí Tư Vấn & Lên Kế Hoạch Du Lịch",
+        "body": "Chúng tôi đề xuất lịch trình du lịch được thiết kế riêng cho từng khách hàng.\nNếu quý khách muốn được tư vấn du lịch, vui lòng thanh toán khoản đặt cọc 300 USD. Sau khi xác nhận khoản đặt cọc, chúng tôi sẽ bắt đầu quá trình tư vấn và lên kế hoạch.\nNếu quý khách xác nhận đặt tour, khoản 300 USD đã thanh toán sẽ được trừ vào tổng chi phí chuyến đi.\nTrường hợp quý khách chỉ sử dụng dịch vụ tư vấn mà không tiến hành đặt tour, từ lần tư vấn thứ hai trở đi sẽ tính phí tư vấn 300 USD.\nViệc chỉnh sửa nội dung lịch trình được miễn phí tối đa 2 lần. Từ lần chỉnh sửa thứ 3 trở đi, sẽ tính thêm phí 80 USD cho mỗi lần."
+      },
+      {
+        "number": 2,
+        "title": "Hủy Sau Khi Đặt Tour",
+        "body": "Nếu hủy sau khi đã xác nhận đặt khách sạn, phương tiện di chuyển hoặc cơ sở trải nghiệm, quý khách sẽ phải chịu phí hủy do từng cơ sở/đơn vị quy định, cộng thêm phí sắp xếp của chúng tôi.\nSố tiền hoàn lại sẽ là số tiền đã thanh toán, sau khi trừ đi phí hủy, phí xử lý thanh toán và phí hoàn tiền thực tế phát sinh."
+      },
+      {
+        "number": 3,
+        "title": "Hủy Hướng Dẫn Viên Riêng / Tour Trọn Gói",
+        "body": "Phí hủy sau đây sẽ được áp dụng dựa trên ngày bắt đầu tour.",
+        "table": {
+          "headers": ["Ngày hủy", "Phí hủy"],
+          "rows": [
+            ["Trước 15 ngày", "Miễn phí"],
+            ["8–14 ngày trước", "30% giá tour"],
+            ["3–7 ngày trước", "50% giá tour"],
+            ["1–2 ngày trước", "80% giá tour"],
+            ["Trong ngày / không liên lạc", "100% giá tour"]
+          ]
+        },
+        "note": "※Chi phí thực tế của chỗ ở, phương tiện di chuyển, vé, v.v. sẽ do quý khách chi trả riêng."
+      },
+      {
+        "number": 4,
+        "title": "Về Việc Thay Đổi Lịch Trình",
+        "body": "Chúng tôi sẽ cố gắng hỗ trợ thay đổi lịch trình trong khả năng cho phép.\nTuy nhiên, nếu phát sinh phí thay đổi/hủy đối với cơ sở hoặc phương tiện di chuyển đã đặt trước, quý khách sẽ là người chịu chi phí này."
+      },
+      {
+        "number": 5,
+        "title": "Hủy Do Phía Công Ty",
+        "body": "Trong trường hợp thiên tai, tai nạn, gián đoạn giao thông, yêu cầu từ chính phủ hoặc các lý do bất khả kháng khác khiến việc cung cấp dịch vụ trở nên khó khăn, chúng tôi sẽ tiến hành thay đổi lịch trình hoặc hoàn tiền tùy theo tình hình thực tế.\nTrường hợp không thể cung cấp dịch vụ do lỗi thuộc về công ty, chúng tôi sẽ hoàn lại toàn bộ chi phí dịch vụ tương ứng đã thanh toán."
+      },
+      {
+        "number": 6,
+        "title": "Hủy Không Liên Lạc",
+        "body": "Nếu sau 30 phút kể từ giờ hẹn tập trung mà không có liên lạc từ quý khách, chúng tôi có thể coi đây là trường hợp hủy không liên lạc.\nTrong trường hợp này, chúng tôi sẽ không hoàn tiền."
+      },
+      {
+        "number": 7,
+        "title": "Phương Thức Hoàn Tiền",
+        "body": "Về nguyên tắc, việc hoàn tiền sẽ được thực hiện qua phương thức thanh toán mà quý khách đã sử dụng.\nSố ngày để hoàn tất việc hoàn tiền sẽ tùy thuộc vào công ty thẻ tín dụng hoặc dịch vụ thanh toán mà quý khách sử dụng."
+      },
+      {
+        "number": 8,
+        "title": "Liên Hệ",
+        "body": "Nếu quý khách muốn hủy hoặc thay đổi, vui lòng liên hệ với chúng tôi càng sớm càng tốt.\nCác liên hệ ngoài giờ làm việc sẽ được tiếp nhận vào ngày làm việc kế tiếp.\nPhí hủy sẽ được áp dụng dựa trên thời điểm công ty xác nhận đã nhận được liên hệ của quý khách."
+      }
+    ],
+    "footerSignature": "Connectrip Japan 株式会社 ｜ Chính sách này có thể thay đổi mà không cần báo trước."
+  }
+}
