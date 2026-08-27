@@ -38,7 +38,7 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="bg-navy scroll-mt-20 py-12 md:py-20">
+    <section className="bg-navy py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
         <p className="-mt-8 mb-10 max-w-2xl text-sm leading-relaxed text-cream/75 md:mb-14">

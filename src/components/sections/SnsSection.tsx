@@ -17,7 +17,7 @@ export function SnsSection() {
     <section className="bg-navy-dark py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
-        <div className="grid grid-cols-1 divide-x divide-y divide-navy/10 bg-cream sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
           {items.map((item, index) => (
             <SnsCard
               key={item.platform}

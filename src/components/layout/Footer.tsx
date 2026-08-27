@@ -20,8 +20,10 @@ const FOOTER_NAV = [
   { key: "process", hash: "process" },
   { key: "plan", hash: "plan" },
   { key: "reservation", href: "/reservation" },
-  { key: "contact", hash: "contact" },
 ] as const;
+
+const contactButtonClass =
+  "inline-block border border-gold text-gold px-4 py-2 text-xs tracking-[0.1em] transition-colors hover:bg-gold hover:text-navy";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -49,7 +51,12 @@ export function Footer() {
             </div>
           </div>
           <p className="mt-4 max-w-xs text-sm text-cream/60">{t("tagline")}</p>
-          <LanguageSwitch variant="boxed" className="mt-6" />
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <LanguageSwitch />
+            <Link href="/contact" className={contactButtonClass}>
+              {t("nav.contact")}
+            </Link>
+          </div>
           <div className="mt-4 flex flex-wrap gap-3">
             {(["tiktok", "instagram", "whatsapp", "facebook"] as const).map(
               (platform) => {
@@ -75,25 +82,15 @@ export function Footer() {
             {t("navigationHeading")}
           </p>
           <nav className="mt-4 flex flex-col gap-3">
-            {FOOTER_NAV.map((item) =>
-              "hash" in item ? (
-                <Link
-                  key={item.key}
-                  href={{ pathname: "/", hash: item.hash }}
-                  className="text-sm text-cream/70 transition-colors hover:text-gold"
-                >
-                  {t(`nav.${item.key}`)}
-                </Link>
-              ) : (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  className="text-sm text-cream/70 transition-colors hover:text-gold"
-                >
-                  {t(`nav.${item.key}`)}
-                </Link>
-              ),
-            )}
+            {FOOTER_NAV.map((item) => (
+              <Link
+                key={item.key}
+                href={"hash" in item ? { pathname: "/", hash: item.hash } : item.href}
+                className="text-sm text-cream/70 transition-colors hover:text-gold"
+              >
+                {t(`nav.${item.key}`)}
+              </Link>
+            ))}
           </nav>
         </div>
 

@@ -14,7 +14,6 @@ import { GallerySection } from "@/components/sections/GallerySection";
 import { VlogSection } from "@/components/sections/VlogSection";
 import { SnsSection } from "@/components/sections/SnsSection";
 import { FinalCtaSection } from "@/components/sections/FinalCtaSection";
-import { ContactSection } from "@/components/sections/ContactSection";
 
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
@@ -38,7 +37,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <GallerySection />
       <VlogSection />
       <SnsSection />
-      <ContactSection />
       <FinalCtaSection />
     </>
   );

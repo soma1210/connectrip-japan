@@ -10,7 +10,7 @@
     "plan": "PLAN",
     "faq": "FAQ",
     "gallery": "GALLERY",
-    "contact": "CONTACT",
+    "contact": "お問い合わせ",
     "reserve": "予約する"
   },
   "header": {
@@ -149,6 +149,10 @@
     ]
   },
   "contact": {
+    "seo": {
+      "title": "お問い合わせ | Connectrip Japan",
+      "description": "ご質問やご相談がございましたら、お気軽にお問い合わせください。担当者よりご連絡いたします。"
+    },
     "heading": "CONTACT",
     "description": "まだ検討中でも大丈夫。ちょっとした疑問でも、ぜひお気軽にご連絡ください。",
     "infoRows": [
@@ -226,7 +230,7 @@
       "process": "PROCESS",
       "plan": "PLAN",
       "reservation": "RESERVATION",
-      "contact": "CONTACT"
+      "contact": "お問い合わせ"
     },
     "information": {
       "careers": "採用情報",

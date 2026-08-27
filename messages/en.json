@@ -10,7 +10,7 @@
     "plan": "PLAN",
     "faq": "FAQ",
     "gallery": "GALLERY",
-    "contact": "CONTACT",
+    "contact": "Contact",
     "reserve": "Reserve"
   },
   "header": {
@@ -149,6 +149,10 @@
     ]
   },
   "contact": {
+    "seo": {
+      "title": "Contact | Connectrip Japan",
+      "description": "Have a question or need advice? Feel free to reach out — our team will get back to you."
+    },
     "heading": "CONTACT",
     "description": "It's okay if you're still just thinking it over. Even the smallest question is welcome — feel free to reach out.",
     "infoRows": [
@@ -226,7 +230,7 @@
       "process": "PROCESS",
       "plan": "PLAN",
       "reservation": "RESERVATION",
-      "contact": "CONTACT"
+      "contact": "Contact"
     },
     "information": {
       "careers": "Careers",

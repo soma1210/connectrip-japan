@@ -23,8 +23,6 @@ export const issueImages = [
   "/images/issues/issue-6.jpg",
 ];
 
-export const serviceImage = "/images/service/service-intro.jpg";
-
 export const serviceCardImages = [
   "/images/service/service-card-1.jpg",
   "/images/service/service-card-2.jpg",

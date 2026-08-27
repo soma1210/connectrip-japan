@@ -17,8 +17,10 @@ const NAV_ITEMS = [
   { key: "plan", hash: "plan" },
   { key: "faq", hash: "faq" },
   { key: "gallery", hash: "gallery" },
-  { key: "contact", hash: "contact" },
 ] as const;
+
+const contactButtonClass =
+  "border border-gold text-gold px-6 py-2.5 text-xs tracking-[0.1em] transition-colors hover:bg-gold hover:text-navy";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -62,6 +64,9 @@ export function Header() {
 
         <div className="hidden items-center gap-4 lg:flex">
           <LanguageSwitch />
+          <Link href="/contact" className={contactButtonClass}>
+            {t("contact")}
+          </Link>
           <Link
             href="/reservation"
             className="border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream transition-colors hover:bg-red-hover"
@@ -123,13 +128,22 @@ export function Header() {
 
             <div className="flex items-center justify-between pt-2">
               <LanguageSwitch />
-              <Link
-                href="/reservation"
-                onClick={() => setOpen(false)}
-                className="border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream"
-              >
-                {t("reserve")}
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/contact"
+                  onClick={() => setOpen(false)}
+                  className={contactButtonClass}
+                >
+                  {t("contact")}
+                </Link>
+                <Link
+                  href="/reservation"
+                  onClick={() => setOpen(false)}
+                  className="border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream"
+                >
+                  {t("reserve")}
+                </Link>
+              </div>
             </div>
           </Container>
         </div>

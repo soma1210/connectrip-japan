@@ -38,7 +38,7 @@ export function SnsCard({
         href={socialLinks[platform]}
         target="_blank"
         rel="noreferrer noopener"
-        className="group flex h-full flex-col items-center gap-2 overflow-hidden bg-cream px-2 py-8 text-center text-navy transition-opacity hover:opacity-90 @container sm:gap-4 sm:px-6 sm:py-12 lg:py-14"
+        className="group flex h-full flex-col items-center gap-2 overflow-hidden bg-cream px-2 py-6 text-center text-navy transition-opacity hover:opacity-90 @container sm:gap-3 sm:px-6 sm:py-9 lg:py-10"
       >
         <span
           className={cn(
