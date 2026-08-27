@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import { logoImage } from "@/data/images";
+import { informationLinks, informationKeys } from "@/data/information-links";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 const NAV_ITEMS = [
@@ -22,6 +23,7 @@ const NAV_ITEMS = [
 export function Header() {
   const t = useTranslations("nav");
   const th = useTranslations("header");
+  const tf = useTranslations("footer");
   const [open, setOpen] = useState(false);
 
   return (
@@ -92,6 +94,33 @@ export function Header() {
                 {t(item.key)}
               </Link>
             ))}
+
+            <div className="flex flex-col gap-3 border-t border-gold/20 pt-5">
+              <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">
+                {tf("informationHeading")}
+              </p>
+              {informationKeys.map((key) => {
+                const href = informationLinks[key];
+                if (href) {
+                  return (
+                    <Link
+                      key={key}
+                      href={href}
+                      onClick={() => setOpen(false)}
+                      className="text-sm tracking-[0.1em] text-cream/80"
+                    >
+                      {tf(`information.${key}`)}
+                    </Link>
+                  );
+                }
+                return (
+                  <span key={key} className="text-sm tracking-[0.1em] text-cream/40">
+                    {tf(`information.${key}`)}
+                  </span>
+                );
+              })}
+            </div>
+
             <div className="flex items-center justify-between pt-2">
               <LanguageSwitch />
               <Link

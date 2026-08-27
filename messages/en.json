@@ -283,6 +283,33 @@
     ],
     "footerSignature": "Connectrip Japan Inc."
   },
+  "businessInquiry": {
+    "seo": {
+      "title": "Business Inquiries | Connectrip Japan",
+      "description": "For business partnerships, group travel, press inquiries, and other corporate matters, please contact us here."
+    },
+    "eyebrow": "Business Inquiries",
+    "heading": "Business & Corporate Inquiries",
+    "description": "For business partnerships, group travel, press inquiries, and other\ncorporate matters, please reach out here. We'll review your message and get back to you.",
+    "form": {
+      "companyLabel": "Company Name",
+      "companyPlaceholder": "Connectrip Partner Inc.",
+      "contactNameLabel": "Contact Person",
+      "contactNamePlaceholder": "Jane Smith",
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@company.co.jp",
+      "typeLabel": "Inquiry Type",
+      "typeOptions": ["Business Partnership", "Group Travel", "Press / Media", "Other"],
+      "messageLabel": "Message",
+      "messagePlaceholder": "Briefly describe your inquiry.",
+      "note": "We typically respond within 2-3 business days. For urgent inquiries about a travel reservation, please use the reservation form instead.",
+      "noteLink": "Go to the reservation form →",
+      "submit": "Send",
+      "sending": "Sending...",
+      "success": "Thank you for reaching out. We'll review your message and get back to you.",
+      "error": "Something went wrong. Please try again in a moment."
+    }
+  },
   "cancelPolicy": {
     "seo": {
       "title": "Cancellation Policy | Connectrip Japan",

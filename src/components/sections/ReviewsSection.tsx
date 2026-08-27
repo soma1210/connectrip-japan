@@ -1,7 +1,8 @@
-import { useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { ReviewCard } from "@/components/cards/ReviewCard";
+import { getReviews } from "@/lib/data/reviews";
 
 type Review = {
   name: string;
@@ -13,9 +14,23 @@ type Review = {
   quote: string;
 };
 
-export function ReviewsSection() {
-  const t = useTranslations("reviews");
-  const items = t.raw("items") as Review[];
+export async function ReviewsSection() {
+  const locale = await getLocale();
+  const t = await getTranslations("reviews");
+  const dbReviews = await getReviews();
+
+  const items: Review[] =
+    dbReviews.length > 0
+      ? dbReviews.map((review) => ({
+          name: review.name,
+          country: review.country,
+          countryCode: review.countryCode,
+          date: review.reviewDate,
+          rating: review.rating,
+          tag: review.tag,
+          quote: locale === "en" ? review.quoteEn || review.quoteJa : review.quoteJa,
+        }))
+      : (t.raw("items") as Review[]);
 
   return (
     <section className="bg-navy-dark py-[60px] md:py-[100px]">

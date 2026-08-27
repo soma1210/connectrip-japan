@@ -6,12 +6,14 @@ export function BlogCard({
   description,
   image,
   imageAlt,
+  href = "#gallery",
   readMore,
 }: {
   title: string;
   description: string;
   image: string;
   imageAlt: string;
+  href?: string;
   readMore: string;
 }) {
   return (
@@ -24,7 +26,7 @@ export function BlogCard({
         <p className="mt-2 text-sm leading-relaxed text-cream/70">{description}</p>
         <div className="mt-4 border-t border-cream/15 pt-3">
           <a
-            href="#gallery"
+            href={href}
             className="inline-flex items-center gap-2 text-xs tracking-[0.08em] text-red transition-colors hover:text-gold"
           >
             {readMore} <ArrowRight className="h-3.5 w-3.5" />

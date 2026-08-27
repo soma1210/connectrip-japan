@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import { socialLinks } from "@/data/social-links";
 import { logoImage } from "@/data/images";
+import { informationLinks, informationKeys } from "@/data/information-links";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 const SNS_ICONS = {
@@ -20,19 +21,6 @@ const FOOTER_NAV = [
   { key: "plan", hash: "plan" },
   { key: "reservation", href: "/reservation" },
   { key: "contact", hash: "contact" },
-] as const;
-
-const INFORMATION_LINKS: Record<string, string> = {
-  company: "/company",
-  cancellation: "/cancel-policy",
-};
-
-const INFORMATION_KEYS = [
-  "careers",
-  "company",
-  "cancellation",
-  "terms",
-  "businessInquiry",
 ] as const;
 
 export function Footer() {
@@ -114,8 +102,8 @@ export function Footer() {
             {t("informationHeading")}
           </p>
           <div className="mt-4 flex flex-col gap-3">
-            {INFORMATION_KEYS.map((key) => {
-              const href = INFORMATION_LINKS[key];
+            {informationKeys.map((key) => {
+              const href = informationLinks[key];
               if (href) {
                 return (
                   <Link
