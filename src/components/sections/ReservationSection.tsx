@@ -156,6 +156,7 @@ export function ReservationSection() {
           subheading={t("subheading")}
           className="mt-6 mb-0! md:mt-14 md:mb-0!"
           subheadingClassName="mt-6 text-xl text-cream/85 md:mt-8 md:text-3xl"
+          headingLevel="h1"
         />
         <FadeIn className="mt-6 mb-10 md:mt-8 md:mb-14">
           <p className="max-w-2xl text-sm leading-relaxed text-cream/75">

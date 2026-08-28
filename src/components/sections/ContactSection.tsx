@@ -70,7 +70,7 @@ export function ContactSection() {
   return (
     <section className="bg-navy py-12 md:py-20">
       <Container>
-        <SectionHeading heading={t("heading")} />
+        <SectionHeading heading={t("heading")} headingLevel="h1" />
         <p className="mb-10 max-w-2xl text-sm leading-relaxed text-cream/75 md:mb-14">
           {t("description")}
         </p>

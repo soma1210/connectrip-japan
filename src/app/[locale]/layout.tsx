@@ -4,9 +4,13 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
+import { getPathname } from "@/i18n/navigation";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { SITE_URL, buildAlternates } from "@/lib/site";
+import { businessInfo } from "@/data/business-info";
+import { socialLinks } from "@/data/social-links";
 import "../globals.css";
 
 const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
@@ -28,21 +32,13 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "seo" });
 
   return {
-    metadataBase: new URL("https://connectripjapan.com"),
+    metadataBase: new URL(SITE_URL),
     title: {
       default: t("title"),
       template: `%s | Connectrip Japan`,
     },
     description: t("description"),
-    alternates: {
-      languages: {
-        ja: "/",
-        en: "/en",
-        vi: "/vi",
-        ko: "/ko",
-        "zh-TW": "/zh-TW",
-      },
-    },
+    alternates: buildAlternates(locale as Locale, "/"),
     openGraph: {
       title: t("title"),
       description: t("description"),
@@ -59,6 +55,11 @@ export async function generateMetadata({
                 : "en_US",
       type: "website",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+    },
   };
 }
 
@@ -74,6 +75,31 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    name: "Connectrip Japan",
+    legalName: businessInfo.legalNameEn,
+    url: `${SITE_URL}${getPathname({ locale, href: "/" })}`,
+    logo: `${SITE_URL}/images/logo/logo.png`,
+    image: `${SITE_URL}/images/logo/logo.png`,
+    description: t("description"),
+    email: businessInfo.email,
+    telephone: businessInfo.telephone,
+    foundingDate: businessInfo.foundingDate,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: businessInfo.address.streetAddress,
+      addressLocality: businessInfo.address.addressLocality,
+      addressRegion: businessInfo.address.addressRegion,
+      addressCountry: businessInfo.address.addressCountry,
+    },
+    areaServed: businessInfo.areaServed,
+    sameAs: Object.values(socialLinks),
+    inLanguage: locale,
+  };
+
   return (
     <html
       lang={locale}
@@ -81,6 +107,12 @@ export default async function LocaleLayout({
     >
       {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
       <body className="min-h-full flex flex-col bg-navy text-cream">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         {gtmId ? (
           <noscript>
             <iframe

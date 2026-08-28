@@ -1,0 +1,33 @@
+# Connectrip Japan
+
+> Connectrip Japan is a Kansai-based (Osaka, Kyoto, Nara, Hyogo) travel support service for international visitors to Japan, offering custom itinerary planning, package tours, private guides, hotel and transport arrangements, and English-language support.
+
+Connectrip Japan helps travelers visiting Japan overcome language and planning barriers by providing locally-informed, custom travel planning and on-the-ground support across the Kansai region and the rest of Japan. The team is based in Osaka and is run by residents with first-hand local knowledge, not a generic tour aggregator.
+
+## Services
+
+- Travel consultation and custom itinerary planning
+- Package tours of popular Kansai and Japan-wide destinations
+- Private, English-speaking local guides
+- Hotel, Shinkansen, and rental car arrangements
+- Restaurant and cultural experience bookings
+- Support for solo travelers, families, and groups
+
+## Pages
+
+- [Home](https://connectripjapan.com/): Services, value proposition, booking process, plans, and frequently asked questions.
+- [Reservation](https://connectripjapan.com/reservation): Request a custom trip or package tour.
+- [Contact](https://connectripjapan.com/contact): General inquiries.
+- [Business Inquiries](https://connectripjapan.com/business-inquiry): Partnerships, group travel, and press inquiries.
+- [Company](https://connectripjapan.com/company): Company profile and travel agency registration details.
+- [Cancellation Policy](https://connectripjapan.com/cancel-policy): Consultation fees, cancellation fees, and refund policy.
+
+## Languages
+
+The site is available in Japanese (default, no prefix), English (/en), Vietnamese (/vi), Korean (/ko), and Traditional Chinese (/zh-TW). Every page above exists under each language prefix, e.g. https://connectripjapan.com/en/reservation.
+
+## Contact
+
+- Email: contact@connectripjapan.com
+- WhatsApp: +81-90-8269-1398
+- Company: Connectrip Japan Inc. (Connectrip Japan 株式会社), Osaka, Japan
