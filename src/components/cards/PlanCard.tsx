@@ -1,7 +1,11 @@
+"use client";
+
+import { useLocale } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Link } from "@/i18n/navigation";
+import { trackCtaClick } from "@/lib/analytics";
 
 export function PlanCard({
   title,
@@ -9,6 +13,7 @@ export function PlanCard({
   image,
   imageAlt,
   learnMore,
+  ctaId,
   delay = 0,
 }: {
   title: string;
@@ -16,8 +21,11 @@ export function PlanCard({
   image: string;
   imageAlt: string;
   learnMore: string;
+  ctaId: string;
   delay?: number;
 }) {
+  const locale = useLocale();
+
   return (
     <FadeIn delay={delay} className="relative aspect-[4/5] overflow-hidden border border-gold/30 @container">
       <PlaceholderImage src={image} alt={imageAlt} sizes="(min-width: 768px) 33vw, 100vw" />
@@ -29,6 +37,15 @@ export function PlanCard({
         <p className="mt-3 leading-relaxed text-cream/80 text-[clamp(0.6875rem,3.6cqw,0.875rem)]">{description}</p>
         <Link
           href="/reservation"
+          onClick={() =>
+            trackCtaClick({
+              event: "reserve_cta_click",
+              ctaId,
+              ctaText: learnMore,
+              ctaPosition: "section",
+              locale,
+            })
+          }
           className="mt-5 inline-flex items-center gap-2 border-b border-red pb-1 text-xs tracking-[0.1em] text-cream transition-colors hover:text-gold"
         >
           {learnMore} <ArrowRight className="h-3.5 w-3.5" />

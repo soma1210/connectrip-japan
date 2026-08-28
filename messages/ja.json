@@ -174,7 +174,7 @@
   },
   "contact": {
     "seo": {
-      "title": "お問い合わせ | Connectrip Japan",
+      "title": "お問い合わせ",
       "description": "ご質問やご相談がございましたら、お気軽にお問い合わせください。担当者よりご連絡いたします。"
     },
     "heading": "CONTACT",
@@ -203,7 +203,7 @@
   },
   "reservation": {
     "seo": {
-      "title": "ご予約 | Connectrip Japan",
+      "title": "ご予約",
       "description": "旅行日程やご希望をお聞かせください。現地を知るローカルチームが、お客様一人ひとりに合わせた日本旅行をご提案します。"
     },
     "heading": "RESERVATION",
@@ -272,7 +272,7 @@
   },
   "company": {
     "seo": {
-      "title": "会社概要 | Connectrip Japan",
+      "title": "会社概要",
       "description": "Connectrip Japan株式会社の会社概要。会社名、所在地、事業内容、旅行業登録情報などをご案内します。"
     },
     "heading": "会社概要",
@@ -305,7 +305,7 @@
   },
   "businessInquiry": {
     "seo": {
-      "title": "法人・企業向けお問い合わせ | Connectrip Japan",
+      "title": "法人・企業向けお問い合わせ",
       "description": "業務提携、団体旅行、取材など、法人・企業のお客様からのお問い合わせはこちらからご連絡ください。"
     },
     "eyebrow": "法人向けお問い合わせ",
@@ -334,7 +334,7 @@
   },
   "cancelPolicy": {
     "seo": {
-      "title": "キャンセルポリシー | Connectrip Japan",
+      "title": "キャンセルポリシー",
       "description": "Connectrip Japanのキャンセルポリシー。旅行相談料、ツアー予約後のキャンセル料、返金方法などをご案内します。"
     },
     "heading": "キャンセルポリシー",
@@ -397,7 +397,7 @@
   },
   "careers": {
     "seo": {
-      "title": "採用情報 | Connectrip Japan",
+      "title": "採用情報",
       "description": "Connectrip Japanの採用情報ページです。準備が整い次第、公開いたします。"
     },
     "heading": "採用情報",
@@ -406,7 +406,7 @@
   },
   "pricing": {
     "seo": {
-      "title": "料金プラン | Connectrip Japan",
+      "title": "料金プラン",
       "description": "Connectrip Japanの料金プランページです。準備が整い次第、公開いたします。"
     },
     "heading": "料金プラン",

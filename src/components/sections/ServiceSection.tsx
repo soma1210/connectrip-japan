@@ -39,7 +39,9 @@ export function ServiceSection() {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <CtaButton href="/reservation">{t("cta")}</CtaButton>
+          <CtaButton href="/reservation" ctaId="home_service_reserve" ctaPosition="section">
+            {t("cta")}
+          </CtaButton>
         </div>
       </Container>
     </section>

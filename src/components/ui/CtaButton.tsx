@@ -1,8 +1,9 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { cn } from "@/lib/cn";
 import { Link } from "@/i18n/navigation";
-import { sendGTMEvent } from "@next/third-parties/google";
+import { trackCtaClick, type CtaPosition } from "@/lib/analytics";
 import type { ComponentProps, MouseEvent } from "react";
 
 export function CtaButton({
@@ -10,12 +11,17 @@ export function CtaButton({
   className,
   children,
   onClick,
+  ctaId,
+  ctaPosition,
   ...rest
 }: {
   href: string;
   className?: string;
   children: React.ReactNode;
+  ctaId: string;
+  ctaPosition: CtaPosition;
 } & Omit<ComponentProps<"a">, "href" | "className" | "children">) {
+  const locale = useLocale();
   const classes = cn(
     "inline-flex items-center justify-center border border-gold bg-red px-8 py-4 text-center text-sm tracking-[0.08em] text-cream transition-colors hover:bg-red-hover",
     className,
@@ -23,7 +29,13 @@ export function CtaButton({
 
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     if (href === "/reservation") {
-      sendGTMEvent({ event: "reserve_cta_click" });
+      trackCtaClick({
+        event: "reserve_cta_click",
+        ctaId,
+        ctaText: typeof children === "string" ? children : "",
+        ctaPosition,
+        locale,
+      });
     }
     onClick?.(event);
   }

@@ -26,12 +26,15 @@ export function PlanSection() {
               image={planImages[index]}
               imageAlt={card.imageAlt}
               learnMore={t("learnMore")}
+              ctaId={`home_plan_card${index + 1}_reserve`}
               delay={index * 0.08}
             />
           ))}
         </div>
         <div className="mt-12 flex justify-center">
-          <CtaButton href="/reservation">{t("cta")}</CtaButton>
+          <CtaButton href="/reservation" ctaId="home_plan_reserve" ctaPosition="section">
+            {t("cta")}
+          </CtaButton>
         </div>
       </Container>
     </section>

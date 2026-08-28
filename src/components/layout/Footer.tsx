@@ -1,14 +1,14 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import Image from "next/image";
-import { sendGTMEvent } from "@next/third-parties/google";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import { socialLinks } from "@/data/social-links";
 import { logoImage } from "@/data/images";
 import { informationLinks, informationKeys } from "@/data/information-links";
+import { trackCtaClick } from "@/lib/analytics";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 const SNS_ICONS = {
@@ -31,6 +31,7 @@ const contactButtonClass =
 export function Footer() {
   const t = useTranslations("footer");
   const th = useTranslations("header");
+  const locale = useLocale();
 
   return (
     <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
@@ -58,7 +59,15 @@ export function Footer() {
             <LanguageSwitch />
             <Link
               href="/contact"
-              onClick={() => sendGTMEvent({ event: "contact_cta_click" })}
+              onClick={() =>
+                trackCtaClick({
+                  event: "contact_cta_click",
+                  ctaId: "footer_contact",
+                  ctaText: t("nav.contact"),
+                  ctaPosition: "footer",
+                  locale,
+                })
+              }
               className={contactButtonClass}
             >
               {t("nav.contact")}
@@ -95,7 +104,14 @@ export function Footer() {
                 href={"hash" in item ? { pathname: "/", hash: item.hash } : item.href}
                 onClick={
                   item.key === "reservation"
-                    ? () => sendGTMEvent({ event: "reserve_cta_click" })
+                    ? () =>
+                        trackCtaClick({
+                          event: "reserve_cta_click",
+                          ctaId: "footer_reserve",
+                          ctaText: t("nav.reservation"),
+                          ctaPosition: "footer",
+                          locale,
+                        })
                     : undefined
                 }
                 className="text-sm text-cream/70 transition-colors hover:text-gold"

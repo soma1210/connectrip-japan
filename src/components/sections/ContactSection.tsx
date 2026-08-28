@@ -1,13 +1,13 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { CheckCircle2 } from "lucide-react";
-import { sendGTMEvent } from "@next/third-parties/google";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Link } from "@/i18n/navigation";
+import { trackFormSubmit } from "@/lib/analytics";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -15,6 +15,7 @@ export function ContactSection() {
   const t = useTranslations("contact");
   const infoRows = t.raw("infoRows") as { label: string; value: string }[];
   const [status, setStatus] = useState<Status>("idle");
+  const locale = useLocale();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,7 +36,7 @@ export function ContactSection() {
 
       if (!response.ok) throw new Error("Request failed");
       setStatus("success");
-      sendGTMEvent({ event: "contact_submit" });
+      trackFormSubmit({ event: "contact_submit", formType: "contact", locale });
       form.reset();
     } catch {
       setStatus("error");

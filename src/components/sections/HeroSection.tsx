@@ -31,7 +31,12 @@ export function HeroSection() {
           </p>
         </FadeIn>
         <FadeIn delay={2.1} direction="depth">
-          <CtaButton href="/reservation" className="mt-10">
+          <CtaButton
+            href="/reservation"
+            className="mt-10"
+            ctaId="home_hero_reserve"
+            ctaPosition="hero"
+          >
             {t("cta")}
           </CtaButton>
         </FadeIn>

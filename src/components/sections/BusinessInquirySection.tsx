@@ -1,12 +1,12 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { CheckCircle2 } from "lucide-react";
-import { sendGTMEvent } from "@next/third-parties/google";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Link } from "@/i18n/navigation";
+import { trackCtaClick, trackFormSubmit } from "@/lib/analytics";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -18,6 +18,7 @@ export function BusinessInquirySection() {
   const t = useTranslations("businessInquiry");
   const tf = useTranslations("businessInquiry.form");
   const typeOptions = tf.raw("typeOptions") as string[];
+  const locale = useLocale();
   const [status, setStatus] = useState<Status>("idle");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -41,7 +42,11 @@ export function BusinessInquirySection() {
 
       if (!response.ok) throw new Error("Request failed");
       setStatus("success");
-      sendGTMEvent({ event: "business_inquiry_submit" });
+      trackFormSubmit({
+        event: "business_inquiry_submit",
+        formType: "business_inquiry",
+        locale,
+      });
       form.reset();
     } catch {
       setStatus("error");
@@ -151,7 +156,19 @@ export function BusinessInquirySection() {
 
             <p className="text-xs leading-relaxed text-navy/50">
               {tf("note")}{" "}
-              <Link href="/reservation" className="text-red underline hover:text-navy">
+              <Link
+                href="/reservation"
+                onClick={() =>
+                  trackCtaClick({
+                    event: "reserve_cta_click",
+                    ctaId: "business_inquiry_form_reserve_link",
+                    ctaText: tf("noteLink"),
+                    ctaPosition: "form",
+                    locale,
+                  })
+                }
+                className="text-red underline hover:text-navy"
+              >
                 {tf("noteLink")}
               </Link>
             </p>

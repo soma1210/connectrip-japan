@@ -1,14 +1,14 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ChevronDown, CheckCircle2 } from "lucide-react";
-import { sendGTMEvent } from "@next/third-parties/google";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
+import { trackFormSubmit } from "@/lib/analytics";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -59,6 +59,7 @@ export function ReservationSection() {
   const interests = tf.raw("interests") as string[];
   const budgetOptions = tf.raw("budgetOptions") as string[];
   const travelerCounts = tf.raw("travelerCounts") as string[];
+  const locale = useLocale();
   const [status, setStatus] = useState<Status>("idle");
   const startDateRef = useRef<HTMLInputElement>(null);
   const endDateRef = useRef<HTMLInputElement>(null);
@@ -116,7 +117,7 @@ export function ReservationSection() {
 
       if (!response.ok) throw new Error("Request failed");
       setStatus("success");
-      sendGTMEvent({ event: "reservation_submit" });
+      trackFormSubmit({ event: "reservation_submit", formType: "reservation", locale });
       form.reset();
     } catch {
       setStatus("error");

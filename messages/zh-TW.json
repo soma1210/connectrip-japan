@@ -174,7 +174,7 @@
   },
   "contact": {
     "seo": {
-      "title": "聯絡我們 | Connectrip Japan",
+      "title": "聯絡我們",
       "description": "若您有任何問題或需要諮詢，歡迎隨時與我們聯繫，我們將盡快回覆您。"
     },
     "heading": "CONTACT",
@@ -203,7 +203,7 @@
   },
   "reservation": {
     "seo": {
-      "title": "預約 | Connectrip Japan",
+      "title": "預約",
       "description": "請告訴我們您的旅遊行程與需求，熟悉當地的團隊將為您規劃專屬的日本旅程。"
     },
     "heading": "RESERVATION",
@@ -272,7 +272,7 @@
   },
   "company": {
     "seo": {
-      "title": "公司簡介 | Connectrip Japan",
+      "title": "公司簡介",
       "description": "Connectrip Japan 股份有限公司的公司簡介，包含公司名稱、所在地、事業內容及旅行業登記資訊等說明。"
     },
     "heading": "公司簡介",
@@ -305,7 +305,7 @@
   },
   "businessInquiry": {
     "seo": {
-      "title": "企業合作洽詢 | Connectrip Japan",
+      "title": "企業合作洽詢",
       "description": "業務合作、團體旅遊、媒體採訪等企業相關洽詢，請透過此頁面與我們聯繫。"
     },
     "eyebrow": "企業合作洽詢",
@@ -334,7 +334,7 @@
   },
   "cancelPolicy": {
     "seo": {
-      "title": "取消政策 | Connectrip Japan",
+      "title": "取消政策",
       "description": "Connectrip Japan 的取消政策，包含旅遊諮詢費用、預約後取消費用及退款方式等說明。"
     },
     "heading": "取消政策",
@@ -397,7 +397,7 @@
   },
   "careers": {
     "seo": {
-      "title": "徵才資訊 | Connectrip Japan",
+      "title": "徵才資訊",
       "description": "Connectrip Japan 的徵才資訊頁面，準備完成後將盡快公開。"
     },
     "heading": "徵才資訊",
@@ -406,7 +406,7 @@
   },
   "pricing": {
     "seo": {
-      "title": "價目方案 | Connectrip Japan",
+      "title": "價目方案",
       "description": "Connectrip Japan 的價目方案頁面，準備完成後將盡快公開。"
     },
     "heading": "價目方案",
