@@ -196,6 +196,8 @@
       "submit": "Send",
       "sending": "Sending...",
       "success": "Thank you for reaching out. We'll get back to you within 24 hours.",
+      "successHeading": "Thank You",
+      "backToTop": "Back to Home",
       "error": "Something went wrong. Please try again in a moment."
     }
   },
@@ -236,6 +238,8 @@
       "submit": "Send",
       "sending": "Sending...",
       "success": "Thank you for your reservation request. We'll get back to you within 24 hours.",
+      "successHeading": "Thank You",
+      "backToTop": "Back to Home",
       "error": "Something went wrong. Please try again in a moment."
     }
   },
@@ -329,6 +333,8 @@
       "submit": "Send",
       "sending": "Sending...",
       "success": "Thank you for reaching out. We'll review your message and get back to you.",
+      "successHeading": "Thank You",
+      "backToTop": "Back to Home",
       "error": "Something went wrong. Please try again in a moment."
     }
   },

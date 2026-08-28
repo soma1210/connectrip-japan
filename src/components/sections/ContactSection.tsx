@@ -2,9 +2,12 @@
 
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
+import { CheckCircle2 } from "lucide-react";
 import { sendGTMEvent } from "@next/third-parties/google";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
+import { FadeIn } from "@/components/ui/FadeIn";
+import { Link } from "@/i18n/navigation";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -37,6 +40,30 @@ export function ContactSection() {
     } catch {
       setStatus("error");
     }
+  }
+
+  if (status === "success") {
+    return (
+      <section className="flex min-h-[70vh] items-center bg-navy py-20">
+        <Container className="max-w-lg text-center">
+          <FadeIn>
+            <CheckCircle2 className="mx-auto h-14 w-14 text-gold" strokeWidth={1.5} />
+            <h1 className="mt-6 font-heading-jp text-3xl text-cream md:text-4xl">
+              {t("form.successHeading")}
+            </h1>
+            <p className="mt-6 whitespace-pre-line text-sm leading-relaxed text-cream/75">
+              {t("form.success")}
+            </p>
+            <Link
+              href="/"
+              className="mt-10 inline-block border border-gold bg-red px-8 py-4 text-sm tracking-[0.08em] text-cream transition-colors hover:bg-red-hover"
+            >
+              {t("form.backToTop")}
+            </Link>
+          </FadeIn>
+        </Container>
+      </section>
+    );
   }
 
   return (
@@ -104,9 +131,6 @@ export function ContactSection() {
               {status === "sending" ? t("form.sending") : t("form.submit")}
             </button>
 
-            {status === "success" ? (
-              <p className="text-sm text-gold">{t("form.success")}</p>
-            ) : null}
             {status === "error" ? (
               <p className="text-sm text-red">{t("form.error")}</p>
             ) : null}

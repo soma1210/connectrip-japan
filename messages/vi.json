@@ -196,6 +196,8 @@
       "submit": "Gửi",
       "sending": "Đang gửi...",
       "success": "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
+      "successHeading": "Cảm Ơn Bạn",
+      "backToTop": "Về Trang Chủ",
       "error": "Gửi không thành công. Vui lòng thử lại sau."
     }
   },
@@ -236,6 +238,8 @@
       "submit": "Gửi",
       "sending": "Đang gửi...",
       "success": "Cảm ơn bạn đã gửi yêu cầu đặt lịch. Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
+      "successHeading": "Cảm Ơn Bạn",
+      "backToTop": "Về Trang Chủ",
       "error": "Gửi không thành công. Vui lòng thử lại sau."
     }
   },
@@ -323,6 +327,8 @@
       "submit": "Gửi",
       "sending": "Đang gửi...",
       "success": "Cảm ơn bạn đã liên hệ. Chúng tôi sẽ xem xét nội dung và phản hồi sớm nhất.",
+      "successHeading": "Cảm Ơn Bạn",
+      "backToTop": "Về Trang Chủ",
       "error": "Gửi không thành công. Vui lòng thử lại sau."
     }
   },

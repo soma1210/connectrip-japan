@@ -196,6 +196,8 @@
       "submit": "送出",
       "sending": "傳送中...",
       "success": "感謝您的洽詢，我們將於24小時內與您聯繫。",
+      "successHeading": "感謝您",
+      "backToTop": "返回首頁",
       "error": "傳送失敗，請稍後再試一次。"
     }
   },
@@ -236,6 +238,8 @@
       "submit": "送出",
       "sending": "傳送中...",
       "success": "感謝您的預約申請，我們將於24小時內與您聯繫。",
+      "successHeading": "感謝您",
+      "backToTop": "返回首頁",
       "error": "傳送失敗，請稍後再試一次。"
     }
   },
@@ -323,6 +327,8 @@
       "submit": "送出",
       "sending": "傳送中...",
       "success": "感謝您的洽詢，我們確認內容後將由專人回覆。",
+      "successHeading": "感謝您",
+      "backToTop": "返回首頁",
       "error": "傳送失敗，請稍後再試一次。"
     }
   },
