@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { ChevronDown } from "lucide-react";
+import { sendGTMEvent } from "@next/third-parties/google";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -18,10 +20,13 @@ function CheckboxGroup({
   label,
   name,
   options,
+  single = false,
 }: {
   label: string;
   name: string;
   options: string[];
+  /** When true, renders radio inputs so only one option can be selected. */
+  single?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-3">
@@ -33,7 +38,7 @@ function CheckboxGroup({
             className="flex items-center gap-2 text-sm text-cream/85"
           >
             <input
-              type="checkbox"
+              type={single ? "radio" : "checkbox"}
               name={name}
               value={option}
               className="h-4 w-4 border-cream/30 bg-navy-light accent-red"
@@ -111,6 +116,7 @@ export function ReservationSection() {
 
       if (!response.ok) throw new Error("Request failed");
       setStatus("success");
+      sendGTMEvent({ event: "reservation_submit" });
       form.reset();
     } catch {
       setStatus("error");
@@ -118,19 +124,24 @@ export function ReservationSection() {
   }
 
   return (
-    <section className="bg-navy-dark py-12 md:py-20">
-      <Container className="max-w-3xl">
-        <SectionHeading heading={t("heading")} subheading={t("subheading")} />
-        <FadeIn className="-mt-8 mb-10 md:-mt-10 md:mb-14">
+    <section className="bg-navy py-12 md:py-20">
+      <Container>
+        <SectionHeading
+          heading={t("heading")}
+          subheading={t("subheading")}
+          className="mt-6 mb-0! md:mt-14 md:mb-0!"
+          subheadingClassName="mt-6 text-xl text-cream/85 md:mt-8 md:text-3xl"
+        />
+        <FadeIn className="mt-6 mb-10 md:mt-8 md:mb-14">
           <p className="max-w-2xl text-sm leading-relaxed text-cream/75">
             {t("description")}
           </p>
         </FadeIn>
 
-        <FadeIn delay={0.1}>
+        <FadeIn delay={0.1} className="w-full">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-8 border border-gold/30 bg-navy p-6 md:p-10"
+            className="flex flex-col gap-8 border border-gold/30 bg-navy-dark p-6 md:p-10"
           >
             <div className="grid gap-5 sm:grid-cols-2">
               <label className={labelClass}>
@@ -197,29 +208,44 @@ export function ReservationSection() {
               <div className="grid gap-5 sm:grid-cols-2">
                 <label className={labelClass}>
                   {tf("adultsLabel")}
-                  <select name="adults" required defaultValue="" className={inputClass}>
-                    <option value="" disabled>
-                      {tf("travelersPlaceholder")}
-                    </option>
-                    {travelerCounts.map((count) => (
-                      <option key={count} value={count}>
-                        {count}
+                  <div className="relative">
+                    <select
+                      name="adults"
+                      required
+                      defaultValue=""
+                      className={cn(inputClass, "w-full appearance-none pr-10")}
+                    >
+                      <option value="" disabled>
+                        {tf("travelersPlaceholder")}
                       </option>
-                    ))}
-                  </select>
+                      {travelerCounts.map((count) => (
+                        <option key={count} value={count}>
+                          {count}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-cream/50" />
+                  </div>
                 </label>
                 <label className={labelClass}>
                   {tf("childrenLabel")}
-                  <select name="children" defaultValue="" className={inputClass}>
-                    <option value="" disabled>
-                      {tf("travelersPlaceholder")}
-                    </option>
-                    {travelerCounts.map((count) => (
-                      <option key={count} value={count}>
-                        {count}
+                  <div className="relative">
+                    <select
+                      name="children"
+                      defaultValue=""
+                      className={cn(inputClass, "w-full appearance-none pr-10")}
+                    >
+                      <option value="" disabled>
+                        {tf("travelersPlaceholder")}
                       </option>
-                    ))}
-                  </select>
+                      {travelerCounts.map((count) => (
+                        <option key={count} value={count}>
+                          {count}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-cream/50" />
+                  </div>
                 </label>
               </div>
             </div>
@@ -227,7 +253,7 @@ export function ReservationSection() {
             <CheckboxGroup label={tf("areasLabel")} name="areas" options={areas} />
             <CheckboxGroup label={tf("servicesLabel")} name="services" options={services} />
             <CheckboxGroup label={tf("interestsLabel")} name="interests" options={interests} />
-            <CheckboxGroup label={tf("budgetLabel")} name="budget" options={budgetOptions} />
+            <CheckboxGroup label={tf("budgetLabel")} name="budget" options={budgetOptions} single />
 
             <label className={labelClass}>
               {tf("messageLabel")}

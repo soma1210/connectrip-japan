@@ -1,6 +1,9 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import Image from "next/image";
+import { sendGTMEvent } from "@next/third-parties/google";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import { socialLinks } from "@/data/social-links";
@@ -53,7 +56,11 @@ export function Footer() {
           <p className="mt-4 max-w-xs text-sm text-cream/60">{t("tagline")}</p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <LanguageSwitch />
-            <Link href="/contact" className={contactButtonClass}>
+            <Link
+              href="/contact"
+              onClick={() => sendGTMEvent({ event: "contact_cta_click" })}
+              className={contactButtonClass}
+            >
               {t("nav.contact")}
             </Link>
           </div>
@@ -86,6 +93,11 @@ export function Footer() {
               <Link
                 key={item.key}
                 href={"hash" in item ? { pathname: "/", hash: item.hash } : item.href}
+                onClick={
+                  item.key === "reservation"
+                    ? () => sendGTMEvent({ event: "reserve_cta_click" })
+                    : undefined
+                }
                 className="text-sm text-cream/70 transition-colors hover:text-gold"
               >
                 {t(`nav.${item.key}`)}

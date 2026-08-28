@@ -6,11 +6,13 @@ export function SectionHeading({
   subheading,
   align = "left",
   className,
+  subheadingClassName,
 }: {
   heading: string;
   subheading?: string;
   align?: "left" | "center";
   className?: string;
+  subheadingClassName?: string;
 }) {
   return (
     <FadeIn
@@ -24,7 +26,9 @@ export function SectionHeading({
         {heading}
       </h2>
       {subheading ? (
-        <p className="mt-4 text-sm text-cream/70 md:text-base">{subheading}</p>
+        <p className={subheadingClassName ?? "mt-4 text-sm text-cream/70 md:text-base"}>
+          {subheading}
+        </p>
       ) : null}
     </FadeIn>
   );

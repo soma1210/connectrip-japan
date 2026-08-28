@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
+import { sendGTMEvent } from "@next/third-parties/google";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 
@@ -31,6 +32,7 @@ export function ContactSection() {
 
       if (!response.ok) throw new Error("Request failed");
       setStatus("success");
+      sendGTMEvent({ event: "contact_submit" });
       form.reset();
     } catch {
       setStatus("error");
@@ -41,7 +43,7 @@ export function ContactSection() {
     <section className="bg-navy py-12 md:py-20">
       <Container>
         <SectionHeading heading={t("heading")} />
-        <p className="-mt-8 mb-10 max-w-2xl text-sm leading-relaxed text-cream/75 md:mb-14">
+        <p className="mb-10 max-w-2xl text-sm leading-relaxed text-cream/75 md:mb-14">
           {t("description")}
         </p>
 
@@ -59,7 +61,7 @@ export function ContactSection() {
 
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-5 border border-gold/30 p-6 md:p-8"
+            className="flex w-full flex-col gap-5 border border-gold/30 bg-navy-dark p-6 md:p-8"
           >
             <label className="flex flex-col gap-2 text-xs tracking-[0.1em] text-cream/70">
               {t("form.nameLabel")}

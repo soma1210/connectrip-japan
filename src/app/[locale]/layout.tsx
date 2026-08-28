@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Shippori_Mincho_B1 } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -7,6 +8,8 @@ import { routing } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "../globals.css";
+
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
 const shipporiMinchoB1 = Shippori_Mincho_B1({
   variable: "--font-shippori-mincho-b1",
@@ -36,13 +39,24 @@ export async function generateMetadata({
         ja: "/",
         en: "/en",
         vi: "/vi",
+        ko: "/ko",
+        "zh-TW": "/zh-TW",
       },
     },
     openGraph: {
       title: t("title"),
       description: t("description"),
       siteName: "Connectrip Japan",
-      locale: locale === "ja" ? "ja_JP" : locale === "vi" ? "vi_VN" : "en_US",
+      locale:
+        locale === "ja"
+          ? "ja_JP"
+          : locale === "vi"
+            ? "vi_VN"
+            : locale === "ko"
+              ? "ko_KR"
+              : locale === "zh-TW"
+                ? "zh_TW"
+                : "en_US",
       type: "website",
     },
   };
@@ -65,7 +79,18 @@ export default async function LocaleLayout({
       lang={locale}
       className={`${shipporiMinchoB1.variable} h-full antialiased`}
     >
+      {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
       <body className="min-h-full flex flex-col bg-navy text-cream">
+        {gtmId ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        ) : null}
         <NextIntlClientProvider>
           <Header />
           <main className="flex-1">{children}</main>

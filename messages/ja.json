@@ -259,6 +259,7 @@
     "information": {
       "careers": "採用情報",
       "company": "会社概要",
+      "pricing": "料金プラン",
       "cancellation": "キャンセルポリシー",
       "terms": "利用規約",
       "businessInquiry": "お問合せ（企業）"
@@ -278,7 +279,7 @@
         "value": "Connectrip Japan 株式会社",
         "note": "Connectrip Japan Inc."
       },
-      { "label": "設立", "value": "2026年9月1日" },
+      { "label": "設立", "value": "2026年9月7日" },
       { "label": "代表者", "value": "代表取締役社長 大泉 陸" },
       { "label": "所在地", "value": "大阪市西淀川区中島1丁目15番25号" },
       { "label": "資本金", "value": "1,000,000円" },
@@ -387,5 +388,23 @@
       }
     ],
     "footerSignature": "Connectrip Japan株式会社 ｜ 本ポリシーは予告なく変更される場合があります。"
+  },
+  "careers": {
+    "seo": {
+      "title": "採用情報 | Connectrip Japan",
+      "description": "Connectrip Japanの採用情報ページです。準備が整い次第、公開いたします。"
+    },
+    "heading": "採用情報",
+    "subheading": "CAREERS",
+    "message": "採用情報につきましては、現在準備中です。\n内容が整い次第、順次公開いたしますので、今しばらくお待ちください。"
+  },
+  "pricing": {
+    "seo": {
+      "title": "料金プラン | Connectrip Japan",
+      "description": "Connectrip Japanの料金プランページです。準備が整い次第、公開いたします。"
+    },
+    "heading": "料金プラン",
+    "subheading": "PRICING",
+    "message": "料金プランにつきましては、現在準備中です。\n内容が整い次第、順次公開いたしますので、今しばらくお待ちください。"
   }
 }

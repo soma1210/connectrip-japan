@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sendMail } from "@/lib/mailer";
+import { buildFormEmail, sendMail } from "@/lib/mailer";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -17,17 +17,18 @@ export async function POST(request: Request) {
     );
   }
 
-  const text = [
-    `Company: ${company}`,
-    `Contact person: ${contactName}`,
-    `Email: ${email}`,
-    `Inquiry type: ${type}`,
-    `Message:\n${message}`,
-  ].join("\n");
+  const { text, html } = buildFormEmail("法人お問い合わせフォーム", [
+    { label: "会社名", value: company },
+    { label: "ご担当者名", value: contactName },
+    { label: "メールアドレス", value: email },
+    { label: "お問い合わせ種別", value: type },
+    { label: "お問い合わせ内容", value: message },
+  ]);
 
   await sendMail({
-    subject: `[Connectrip Japan] New business inquiry from ${company}`,
+    subject: `[法人お問い合わせ] ${company} 様より`,
     text,
+    html,
     replyTo: email,
   });
 

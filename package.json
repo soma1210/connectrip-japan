@@ -10,6 +10,7 @@
     "db:init": "node scripts/init-db.mjs"
   },
   "dependencies": {
+    "@next/third-parties": "^16.3.3",
     "@vercel/blob": "^2.8.0",
     "@vercel/postgres": "^0.10.0",
     "lucide-react": "^1.33.0",

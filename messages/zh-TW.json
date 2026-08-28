@@ -1,0 +1,410 @@
+{
+  "seo": {
+    "title": "Connectrip Japan | 日本旅遊支援服務",
+    "description": "以大阪、京都、奈良、兵庫為中心，為訪日旅客提供優質日本旅遊支援。客製化行程、在地體驗、私人導遊，一站式服務。"
+  },
+  "nav": {
+    "service": "SERVICE",
+    "value": "VALUE",
+    "process": "PROCESS",
+    "plan": "PLAN",
+    "faq": "FAQ",
+    "gallery": "GALLERY",
+    "contact": "聯絡我們",
+    "reserve": "立即預約"
+  },
+  "header": {
+    "logoLine1": "CONNECTRIP",
+    "logoLine2": "JAPAN"
+  },
+  "hero": {
+    "eyebrow": "JAPAN TRAVEL SUPPORT",
+    "heading": "以旅行，串連人與心。",
+    "description": "以關西地區（大阪、京都、奈良、兵庫）為中心，\n提供日本全國旅遊安排與導覽服務，一站式滿足您的需求。",
+    "cta": "預約日本旅遊行程",
+    "imageAlt": "白雪紛飛的高山古街夜景",
+    "slideAlts": [
+      "夕陽映照下的京都五重塔與市街",
+      "大阪城",
+      "楓紅映照湖畔的群山",
+      "富士山與湖泊",
+      "白雪覆蓋的白川鄉合掌造聚落",
+      "那智瀑布與三重塔",
+      "奈良大佛",
+      "小樽運河的黃昏景色",
+      "京都嵐山竹林",
+      "鳥取沙丘",
+      "奈良公園的鹿",
+      "夜櫻點綴的目黑川",
+      "夜晚的澀谷十字路口"
+    ]
+  },
+  "issues": {
+    "heading": "ISSUES",
+    "subheading": "從海外前往日本旅遊時，您是否也有這些煩惱？",
+    "items": [
+      { "title": "擔心語言不通", "imageAlt": "迷路旅客的意象" },
+      { "title": "對複雜的交通移動沒有信心。", "imageAlt": "車站中來往的人群" },
+      { "title": "不只是觀光景點，\n想要體驗道地在地之旅", "imageAlt": "與當地居民的交流" },
+      { "title": "想打造\n專屬於自己的旅遊行程。", "imageAlt": "規劃旅程的樣子" },
+      { "title": "不知道哪些餐廳\n符合自己的飲食習慣。", "imageAlt": "日式餐點" },
+      { "title": "希望小孩與大人\n都能滿意的旅程。", "imageAlt": "一家人的旅行" }
+    ]
+  },
+  "service": {
+    "heading": "SERVICE",
+    "description": "CONNECTRIP JAPAN 源自於一個單純的想法。\n日本不僅擁有舉世聞名的觀光景點，更蘊藏著許多不為人知的在地文化、美食與風景。\n並非旅客缺乏興趣，而是語言與認知的隔閡，讓人們難以與這些魅力真正連結。\n打破這道隔閡，串連旅客與地方、人與文化，創造與真實日本相遇的機會——這正是 CONNECTRIP JAPAN 的初衷。",
+    "imageAlt": "櫻花、富士山與鳥居",
+    "cta": "預約日本旅遊行程",
+    "cards": [
+      { "number": "1", "title": "旅遊諮詢・行程規劃", "description": "依照您的預算與需求，為您量身打造專屬的日本旅程。" },
+      { "number": "2", "title": "住宿・交通安排", "description": "協助您安排飯店、新幹線、租車等旅途所需事項。" },
+      { "number": "3", "title": "精選景點推薦", "description": "從知名景點到私房秘境，以在地視角推薦真正值得造訪的地方。" },
+      { "number": "4", "title": "餐廳・體驗預約", "description": "協助預約餐廳與文化體驗，讓您的日本旅程更加豐富有趣。" },
+      { "number": "5", "title": "私人導遊", "description": "在地導遊全程陪同，讓您安心享受日本之旅。" },
+      { "number": "6", "title": "英語支援", "description": "從行前諮詢到旅途中遇到的困難，全程提供貼心的英語支援。" }
+    ]
+  },
+  "value": {
+    "heading": "OUR VALUE",
+    "subheading": "以六大特色，介紹選擇 Connectrip Japan 的理由。",
+    "cta": "預約日本旅遊行程",
+    "cards": [
+      { "number": "1", "title": "日本在地人的真實推薦", "description": "不是觀光網站上的熱門排行榜，而是真正生活在當地的日本人視角所提供的建議。" },
+      { "number": "2", "title": "關西專業團隊", "description": "深耕大阪、京都、奈良、兵庫地區，能為您帶來最新的在地資訊。" },
+      { "number": "3", "title": "不只是觀光景點的日本", "description": "不僅止於神社寺廟，更提案結合在地商店街、餐廳與人際交流的旅程。" },
+      { "number": "4", "title": "專屬於您的旅程", "description": "不販售制式化的套裝行程，而是依照您的需求從零開始打造行程。" },
+      { "number": "5", "title": "行前即可開始諮詢", "description": "不僅限於預約服務，行前的任何疑問或不安，都能以英語輕鬆諮詢。" },
+      { "number": "6", "title": "如同在日本的朋友", "description": "不以旅行社的身份，而是以在日本的朋友般的立場，全力支援您的旅程。" }
+    ]
+  },
+  "process": {
+    "heading": "PROCESS",
+    "subheading": "從諮詢到出發當天，安心可靠的5個步驟。",
+    "cta": "預約日本旅遊行程",
+    "steps": [
+      { "number": "1", "title": "洽詢", "description": "請透過洽詢表單告訴我們您的旅遊時間、希望前往的地區、預算及感興趣的體驗。", "imageAlt": "以智慧型手機進行洽詢的樣子" },
+      { "number": "2", "title": "需求了解・諮詢", "description": "確認您希望的旅遊風格與需求，為您提案最適合的旅遊方向。", "imageAlt": "線上諮詢的樣子" },
+      { "number": "3", "title": "旅遊行程提案", "description": "為您提案客製化行程或套裝行程，並確認行程安排、住宿與體驗內容等細節。", "imageAlt": "使用地圖確認行程" },
+      { "number": "4", "title": "預約・付款", "description": "確認內容後，於行程確定後進行付款及各項安排。", "imageAlt": "日圓紙鈔" },
+      { "number": "5", "title": "行前支援", "description": "為您解答行前問題並進行最終確認，讓您安心出發。", "imageAlt": "在機場行走的旅客" }
+    ]
+  },
+  "reviews": {
+    "heading": "REVIEWS",
+    "subheading": "來自實際使用過本服務的顧客，最真實的心聲分享。",
+    "items": [
+      { "name": "Emily", "country": "United States", "countryCode": "US", "date": "2026.06.01", "rating": 5, "tag": "KYOTO PRIVATE TOUR", "quote": "導遊帶我們看見了靠自己絕對找不到的京都風貌。與其說是旅行社服務，更像是和一位親近的朋友一起旅行。" },
+      { "name": "Lucas", "country": "Australia", "countryCode": "AU", "date": "2026.06.08", "rating": 5, "tag": "KANSAI CUSTOM PLAN", "quote": "所有細節都完全符合我們真正的期望，從飯店、電車到晚餐預約，全部都幫我們安排妥當。" },
+      { "name": "Sophia", "country": "United Kingdom", "countryCode": "GB", "date": "2026.06.15", "rating": 5, "tag": "OSAKA FOOD & CULTURE PLAN", "quote": "從難波的街頭小吃到寧靜的茶道體驗，這是我至今造訪過最能感受到真實日本的一次旅行。" }
+    ]
+  },
+  "plan": {
+    "heading": "PLAN",
+    "subheading": "所有行程皆可依您的需求彈性客製化。",
+    "cta": "預約日本旅遊行程",
+    "learnMore": "LEARN MORE",
+    "cards": [
+      { "title": "客製化行程", "description": "從零開始傾聽您的需求，為您打造獨一無二的旅遊行程。", "imageAlt": "穿著和服漫步街頭的旅客" },
+      { "title": "套裝行程", "description": "高效走訪熱門觀光景點，提供安心可靠的套裝行程方案。", "imageAlt": "造訪淺草寺的觀光客" },
+      { "title": "VIP 行程（需洽詢）", "description": "為特殊需求打造的頂級旅遊行程。詳情請與我們聯繫。", "imageAlt": "豪華轎車的水箱護罩" }
+    ]
+  },
+  "faq": {
+    "heading": "FAQ",
+    "subheading": "彙整常見問題，有任何疑問歡迎隨時查閱。",
+    "items": [
+      { "question": "可以用英語諮詢嗎？", "answer": "可以。從洽詢到旅途中的支援，我們全程提供英語服務。" },
+      { "question": "關西以外的地區也能提供服務嗎？", "answer": "可以。雖然以關西為主要據點，但我們也提供日本全國的旅遊規劃與安排服務。" },
+      { "question": "應該提前多久諮詢？", "answer": "建議於出發前3～6個月開始諮詢。若時間較緊迫，我們也會盡力配合。" },
+      { "question": "一個人旅行也能使用這項服務嗎？", "answer": "當然可以。從單人旅行到家庭、團體旅遊，我們都能廣泛支援。" },
+      { "question": "客製化行程與套裝行程有什麼不同？", "answer": "客製化行程是依照您的需求從零開始規劃；套裝行程則是採用預先安排好的行程方案。" },
+      { "question": "在TikTok或Instagram上看到的地點也能諮詢嗎？", "answer": "可以。請提供貼文的網址或截圖，我們確認內容後會協助您規劃加入行程的方式與交通方法。" },
+      { "question": "也能協助預約餐廳或體驗活動嗎？", "answer": "可以，我們提供餐廳、文化體驗、各類活動的預約支援。" },
+      { "question": "有提供私人導遊服務嗎？", "answer": "有的，我們以大阪、京都、奈良、兵庫為中心提供私人導遊服務。" },
+      { "question": "可以只委託安排行程，不需要導遊嗎？", "answer": "可以，我們也接受僅委託旅遊規劃與各項預約安排、不含導遊服務的需求。" },
+      { "question": "不會日文也沒問題嗎？", "answer": "完全沒問題。我們從行前到旅途中皆提供英語支援，讓您安心享受日本之旅。" }
+    ]
+  },
+  "gallery": {
+    "heading": "GALLERY",
+    "subheading": "精選過往為旅客安排行程中的部分風景與難忘瞬間。",
+    "items": [
+      { "imageAlt": "伏見稻荷大社的千本鳥居" },
+      { "imageAlt": "大阪城" },
+      { "imageAlt": "金閣寺（鹿苑寺）" },
+      { "imageAlt": "楓紅映照湖畔的群山" },
+      { "imageAlt": "富士山與湖泊" },
+      { "imageAlt": "忠靈塔與富士山" },
+      { "imageAlt": "白雪覆蓋的白川鄉合掌造聚落" },
+      { "imageAlt": "那智瀑布與三重塔" },
+      { "imageAlt": "姬路城" },
+      { "imageAlt": "奈良大佛" },
+      { "imageAlt": "小樽運河的黃昏景色" },
+      { "imageAlt": "東京鐵塔夜景" },
+      { "imageAlt": "京都嵐山竹林" },
+      { "imageAlt": "鳥取沙丘" },
+      { "imageAlt": "大阪道頓堀夜景" },
+      { "imageAlt": "奈良公園的鹿" },
+      { "imageAlt": "夕陽映照下的京都五重塔與市街" },
+      { "imageAlt": "夜櫻點綴的目黑川" },
+      { "imageAlt": "夜晚的澀谷十字路口" }
+    ]
+  },
+  "vlog": {
+    "heading": "VLOG",
+    "subheading": "分享唯有在地人才知道的推薦景點與美食情報。",
+    "readMore": "閱讀文章",
+    "posts": [
+      { "title": "10 Hidden Gems in Kyoto You Can't Miss", "description": "Discover the secret spots loved by locals away from the crowds.", "imageAlt": "介紹京都隱藏景點的影片" },
+      { "title": "Osaka Street Food Guide", "description": "A local's guide to the best takoyaki and okonomiyaki in Namba.", "imageAlt": "流經櫻花樹下的河川" },
+      { "title": "A Perfect Day in Nara", "description": "How to interact with deer and explore ancient temples smoothly.", "imageAlt": "奈良公園的鹿" }
+    ]
+  },
+  "sns": {
+    "heading": "SNS",
+    "subheading": "最新旅遊資訊與優惠情報，也在社群媒體同步發布，歡迎追蹤我們。",
+    "follow": "FOLLOW US",
+    "items": [
+      { "platform": "tiktok", "label": "TikTok", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "instagram", "label": "Instagram", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "facebook", "label": "Facebook", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "whatsapp", "label": "WhatsApp", "handle": "+81-90-8269-1398" }
+    ]
+  },
+  "contact": {
+    "seo": {
+      "title": "聯絡我們 | Connectrip Japan",
+      "description": "若您有任何問題或需要諮詢，歡迎隨時與我們聯繫，我們將盡快回覆您。"
+    },
+    "heading": "CONTACT",
+    "description": "即使您仍在考慮中也沒關係，即使是小小的疑問，也歡迎隨時與我們聯繫。",
+    "infoRows": [
+      { "label": "聯絡表單", "value": "請透過右側表單與我們聯繫。\n我們將於24小時內回覆您。" },
+      { "label": "EMAIL", "value": "contact@connectripjapan.com" },
+      { "label": "INSTAGRAM", "value": "@japan_tavel_guide_ctj" },
+      { "label": "TIKTOK", "value": "@japan_tavel_guide_ctj" },
+      { "label": "WHATSAPP", "value": "+81-90-8269-1398" }
+    ],
+    "form": {
+      "nameLabel": "姓名",
+      "namePlaceholder": "Name",
+      "emailLabel": "電子郵件",
+      "emailPlaceholder": "Email",
+      "messageLabel": "訊息內容",
+      "messagePlaceholder": "Message",
+      "submit": "送出",
+      "sending": "傳送中...",
+      "success": "感謝您的洽詢，我們將於24小時內與您聯繫。",
+      "error": "傳送失敗，請稍後再試一次。"
+    }
+  },
+  "reservation": {
+    "seo": {
+      "title": "預約 | Connectrip Japan",
+      "description": "請告訴我們您的旅遊行程與需求，熟悉當地的團隊將為您規劃專屬的日本旅程。"
+    },
+    "heading": "RESERVATION",
+    "subheading": "體驗真實的日本",
+    "description": "請告訴我們您的旅遊行程與需求，熟悉當地的團隊將為您規劃專屬的日本旅程。我們將於24小時內回覆您的洽詢。",
+    "form": {
+      "nameLabel": "姓名（必填）",
+      "namePlaceholder": "Jane Smith",
+      "emailLabel": "電子郵件（必填）",
+      "emailPlaceholder": "jane@example.com",
+      "countryLabel": "居住國家・地區（必填）",
+      "countryPlaceholder": "例：Australia / Singapore / United States",
+      "startDateLabel": "出發日期（必填）",
+      "endDateLabel": "結束日期（必填）",
+      "travelersLabel": "旅遊人數（必填）",
+      "adultsLabel": "成人",
+      "childrenLabel": "兒童",
+      "travelersPlaceholder": "請選擇",
+      "travelerCounts": ["1", "2", "3", "4", "5人以上"],
+      "areasLabel": "想造訪的地區（可複選）",
+      "areas": ["大阪", "京都", "奈良", "兵庫", "東京", "富士山", "北海道", "九州", "其他"],
+      "servicesLabel": "希望使用的服務（可複選）",
+      "services": ["客製化行程", "套裝行程", "私人導遊", "住宿安排", "餐廳預約", "體驗預約", "旅遊諮詢"],
+      "interestsLabel": "感興趣的體驗（可複選）",
+      "interests": ["日本料理", "溫泉", "神社・寺廟", "自然美景", "購物", "動漫・遊戲", "主題樂園", "滑雪・雪地活動", "在地體驗", "其他"],
+      "budgetLabel": "預估預算　※不含機票（每人）",
+      "budgetOptions": ["未滿10萬日圓", "10萬～30萬日圓", "30萬～50萬日圓", "50萬日圓以上", "尚未決定"],
+      "messageLabel": "需求・留言",
+      "messageNote": "若有想造訪的地點、在社群媒體上看到的景點、飲食限制、住宿需求等，歡迎自由填寫。",
+      "messagePlaceholder": "請自由填寫",
+      "policyLinkLabel": "※取消政策",
+      "submit": "送出",
+      "sending": "傳送中...",
+      "success": "感謝您的預約申請，我們將於24小時內與您聯繫。",
+      "error": "傳送失敗，請稍後再試一次。"
+    }
+  },
+  "finalCta": {
+    "heading": "與真實的日本相遇，\n就從這裡開始。",
+    "description": "請告訴我們您想造訪的地點與期待的體驗。\n熟悉當地的團隊將為您規劃專屬的日本旅程。",
+    "cta": "預約日本旅遊行程",
+    "imageAlt": "伏見稻荷大社的千本鳥居"
+  },
+  "footer": {
+    "tagline": "為訪日旅客提供的關西旅遊支援服務",
+    "navigationHeading": "NAVIGATION",
+    "informationHeading": "INFORMATION",
+    "nav": {
+      "service": "SERVICE",
+      "process": "PROCESS",
+      "plan": "PLAN",
+      "reservation": "RESERVATION",
+      "contact": "聯絡我們"
+    },
+    "information": {
+      "careers": "徵才資訊",
+      "company": "公司簡介",
+      "pricing": "價目方案",
+      "cancellation": "取消政策",
+      "terms": "使用條款",
+      "businessInquiry": "企業合作洽詢"
+    },
+    "copyright": "CONNECTRIP JAPAN. All rights reserved."
+  },
+  "company": {
+    "seo": {
+      "title": "公司簡介 | Connectrip Japan",
+      "description": "Connectrip Japan 股份有限公司的公司簡介，包含公司名稱、所在地、事業內容及旅行業登記資訊等說明。"
+    },
+    "heading": "公司簡介",
+    "subheading": "COMPANY PROFILE",
+    "rows": [
+      {
+        "label": "公司名稱",
+        "value": "Connectrip Japan 株式会社",
+        "note": "Connectrip Japan Inc."
+      },
+      { "label": "成立日期", "value": "2026年9月7日" },
+      { "label": "代表人", "value": "代表取締役社長 大泉 陸" },
+      { "label": "所在地", "value": "1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan" },
+      { "label": "資本額", "value": "1,000,000日圓" },
+      {
+        "label": "事業內容",
+        "value": [
+          "客製化旅遊之企劃・提案",
+          "私人導遊服務",
+          "套裝行程之企劃・銷售",
+          "訪日旅客旅遊支援",
+          "旅遊諮詢・行程規劃",
+          "住宿設施・交通・體驗行程等安排",
+          "口譯・翻譯支援"
+        ]
+      },
+      { "label": "國內旅行業務\n經理人", "value": "大泉 陸" }
+    ],
+    "footerSignature": "Connectrip Japan 株式会社"
+  },
+  "businessInquiry": {
+    "seo": {
+      "title": "企業合作洽詢 | Connectrip Japan",
+      "description": "業務合作、團體旅遊、媒體採訪等企業相關洽詢，請透過此頁面與我們聯繫。"
+    },
+    "eyebrow": "企業合作洽詢",
+    "heading": "企業合作洽詢",
+    "description": "有關業務合作、團體旅遊、媒體採訪及其他企業相關事宜，\n請透過此頁面與我們聯繫。確認內容後，我們將由專人回覆。",
+    "form": {
+      "companyLabel": "公司名稱",
+      "companyPlaceholder": "Connectrip Partner Inc.",
+      "contactNameLabel": "聯絡人姓名",
+      "contactNamePlaceholder": "Jane Smith",
+      "emailLabel": "電子郵件",
+      "emailPlaceholder": "name@company.co.jp",
+      "typeLabel": "洽詢類型",
+      "typeOptions": ["業務合作相關", "團體旅遊相關", "媒體採訪相關", "其他"],
+      "messageLabel": "洽詢內容",
+      "messagePlaceholder": "請簡述您的洽詢內容。",
+      "note": "我們通常會於2～3個工作天內回覆。若為旅遊預約之緊急事宜，請改用預約表單聯繫。",
+      "noteLink": "前往預約表單 →",
+      "submit": "送出",
+      "sending": "傳送中...",
+      "success": "感謝您的洽詢，我們確認內容後將由專人回覆。",
+      "error": "傳送失敗，請稍後再試一次。"
+    }
+  },
+  "cancelPolicy": {
+    "seo": {
+      "title": "取消政策 | Connectrip Japan",
+      "description": "Connectrip Japan 的取消政策，包含旅遊諮詢費用、預約後取消費用及退款方式等說明。"
+    },
+    "heading": "取消政策",
+    "subheading": "CANCELLATION POLICY",
+    "intro": "感謝您使用 Connectrip Japan 的服務。\n為了讓您安心使用本服務，我們制定以下取消政策，\n敬請於預約前務必詳閱確認。",
+    "sections": [
+      {
+        "number": 1,
+        "title": "關於旅遊諮詢・行程規劃費用",
+        "body": "我們為每位顧客量身打造專屬的客製化旅遊行程。\n如欲申請旅遊諮詢，需先支付保證金 300 美元，確認保證金付款後，將開始進行旅遊諮詢與行程規劃。\n若後續確定申請旅遊，已支付的 300 美元將自旅遊總費用中扣除。\n若僅使用諮詢服務而未確定申請旅遊，第二次以後的諮詢將額外收取 300 美元諮詢費用。\n此外，行程內容修改最多可享2次免費服務，第3次以後每次修改將加收80美元費用。"
+      },
+      {
+        "number": 2,
+        "title": "行程預約確定後的取消",
+        "body": "於飯店、交通、體驗設施等預約確定後取消者，除須支付各設施・業者所訂之取消費用外，亦須支付本公司的安排手續費。\n退款金額將扣除實際產生之取消費用、付款手續費及退款手續費後計算。"
+      },
+      {
+        "number": 3,
+        "title": "私人導遊・套裝行程之取消",
+        "body": "以下取消費用將依行程開始日期為基準計算。",
+        "table": {
+          "headers": ["取消日期", "取消費用"],
+          "rows": [
+            ["15天前", "免費"],
+            ["8～14天前", "行程費用的30%"],
+            ["3～7天前", "行程費用的50%"],
+            ["1～2天前", "行程費用的80%"],
+            ["當天・未告知", "行程費用的100%"]
+          ]
+        },
+        "note": "※住宿設施・交通・票券等實際費用須由顧客另行負擔。"
+      },
+      {
+        "number": 4,
+        "title": "關於行程變更",
+        "body": "我們將盡可能配合行程變更需求。\n惟若已預約確定之設施・交通因此產生變更或取消費用，該費用將由顧客自行負擔。"
+      },
+      {
+        "number": 5,
+        "title": "因本公司因素之取消",
+        "body": "因天災、災害、交通中斷、政府要求或其他不可抗力因素導致服務難以提供時，將視情況進行行程變更或退款處理。\n若因可歸責於本公司之事由而無法提供服務，將全額退還顧客已支付之相關服務費用。"
+      },
+      {
+        "number": 6,
+        "title": "未告知取消",
+        "body": "若超過約定集合時間30分鐘仍未與我們取得聯繫，將視為未告知取消處理。\n此情況將不予退款。"
+      },
+      {
+        "number": 7,
+        "title": "退款方式",
+        "body": "退款原則上將透過顧客原使用之付款方式辦理。\n退款所需時間將依顧客使用之信用卡公司或付款服務而有所不同。"
+      },
+      {
+        "number": 8,
+        "title": "聯絡我們",
+        "body": "如需取消或變更，請盡早與我們聯繫。\n於非營業時間收到之聯繫，將於次一營業日受理。\n取消費用將以本公司確認收到聯繫之日期時間為準。"
+      }
+    ],
+    "footerSignature": "Connectrip Japan 株式会社 ｜ 本政策內容可能於未事先通知的情況下進行變更。"
+  },
+  "careers": {
+    "seo": {
+      "title": "徵才資訊 | Connectrip Japan",
+      "description": "Connectrip Japan 的徵才資訊頁面，準備完成後將盡快公開。"
+    },
+    "heading": "徵才資訊",
+    "subheading": "CAREERS",
+    "message": "徵才資訊目前準備中。\n內容確定後將盡快公開，敬請耐心等候。"
+  },
+  "pricing": {
+    "seo": {
+      "title": "價目方案 | Connectrip Japan",
+      "description": "Connectrip Japan 的價目方案頁面，準備完成後將盡快公開。"
+    },
+    "heading": "價目方案",
+    "subheading": "PRICING",
+    "message": "價目方案目前準備中。\n內容確定後將盡快公開，敬請耐心等候。"
+  }
+}

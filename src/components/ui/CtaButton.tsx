@@ -1,11 +1,15 @@
+"use client";
+
 import { cn } from "@/lib/cn";
 import { Link } from "@/i18n/navigation";
-import type { ComponentProps } from "react";
+import { sendGTMEvent } from "@next/third-parties/google";
+import type { ComponentProps, MouseEvent } from "react";
 
 export function CtaButton({
   href,
   className,
   children,
+  onClick,
   ...rest
 }: {
   href: string;
@@ -17,16 +21,23 @@ export function CtaButton({
     className,
   );
 
+  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (href === "/reservation") {
+      sendGTMEvent({ event: "reserve_cta_click" });
+    }
+    onClick?.(event);
+  }
+
   if (href.startsWith("#")) {
     return (
-      <a href={href} className={classes} {...rest}>
+      <a href={href} className={classes} onClick={handleClick} {...rest}>
         {children}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={classes} {...rest}>
+    <Link href={href} className={classes} onClick={handleClick} {...rest}>
       {children}
     </Link>
   );

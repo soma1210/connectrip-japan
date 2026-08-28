@@ -11,6 +11,8 @@ const LOCALE_LABELS: Record<string, string> = {
   en: "English",
   ja: "日本語",
   vi: "Tiếng Việt",
+  ko: "한국어",
+  "zh-TW": "繁體中文",
 };
 
 export function LanguageSwitch({ className }: { className?: string }) {
@@ -36,7 +38,7 @@ export function LanguageSwitch({ className }: { className?: string }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex items-center gap-1.5 border border-cream/20 px-3 py-1.5 text-xs tracking-[0.05em] text-cream/70 transition-colors hover:border-cream/40 hover:text-cream"
+        className="flex items-center gap-1.5 border border-cream/20 px-2.5 py-1 text-xs tracking-[0.05em] text-cream/70 transition-colors hover:border-cream/40 hover:text-cream"
       >
         <Languages className="h-3.5 w-3.5" />
         Language
@@ -44,7 +46,7 @@ export function LanguageSwitch({ className }: { className?: string }) {
       </button>
 
       {open ? (
-        <div className="absolute left-0 top-full z-20 mt-1 min-w-[8rem] border border-gold/30 bg-navy-dark">
+        <div className="absolute left-0 top-full z-20 mt-1 min-w-[7rem] border border-gold/30 bg-navy-dark">
           {routing.locales.map((loc) => (
             <button
               key={loc}
@@ -55,7 +57,7 @@ export function LanguageSwitch({ className }: { className?: string }) {
               }}
               aria-current={locale === loc}
               className={cn(
-                "block w-full px-4 py-2.5 text-left text-xs tracking-[0.05em] transition-colors",
+                "block w-full px-3 py-1.5 text-left text-xs tracking-[0.05em] transition-colors",
                 locale === loc ? "text-gold" : "text-cream/70 hover:text-cream",
               )}
             >

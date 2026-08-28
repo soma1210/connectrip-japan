@@ -259,6 +259,7 @@
     "information": {
       "careers": "Tuyển dụng",
       "company": "Giới thiệu công ty",
+      "pricing": "Bảng giá",
       "cancellation": "Chính sách hủy đặt chỗ",
       "terms": "Điều khoản sử dụng",
       "businessInquiry": "Liên hệ (doanh nghiệp)"
@@ -278,7 +279,7 @@
         "value": "Connectrip Japan 株式会社",
         "note": "Connectrip Japan Inc."
       },
-      { "label": "Thành lập", "value": "Ngày 1 tháng 9 năm 2026" },
+      { "label": "Thành lập", "value": "Ngày 7 tháng 9 năm 2026" },
       { "label": "Đại diện", "value": "Chủ tịch kiêm Tổng Giám đốc Riku Oizumi" },
       { "label": "Địa chỉ", "value": "1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Nhật Bản" },
       { "label": "Vốn điều lệ", "value": "1.000.000 yên" },
@@ -387,5 +388,23 @@
       }
     ],
     "footerSignature": "Connectrip Japan 株式会社 ｜ Chính sách này có thể thay đổi mà không cần báo trước."
+  },
+  "careers": {
+    "seo": {
+      "title": "Tuyển Dụng | Connectrip Japan",
+      "description": "Trang tuyển dụng của Connectrip Japan. Trang này sẽ được công bố ngay khi sẵn sàng."
+    },
+    "heading": "Tuyển Dụng",
+    "subheading": "CAREERS",
+    "message": "Trang tuyển dụng hiện đang được chuẩn bị.\nChúng tôi sẽ công bố nội dung ngay khi hoàn tất. Xin cảm ơn sự kiên nhẫn của quý khách."
+  },
+  "pricing": {
+    "seo": {
+      "title": "Bảng Giá | Connectrip Japan",
+      "description": "Trang bảng giá của Connectrip Japan. Trang này sẽ được công bố ngay khi sẵn sàng."
+    },
+    "heading": "Bảng Giá",
+    "subheading": "PRICING",
+    "message": "Bảng giá hiện đang được chuẩn bị.\nChúng tôi sẽ công bố nội dung ngay khi hoàn tất. Xin cảm ơn sự kiên nhẫn của quý khách."
   }
 }

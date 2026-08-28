@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
+import { sendGTMEvent } from "@next/third-parties/google";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Link } from "@/i18n/navigation";
@@ -39,6 +40,7 @@ export function BusinessInquirySection() {
 
       if (!response.ok) throw new Error("Request failed");
       setStatus("success");
+      sendGTMEvent({ event: "business_inquiry_submit" });
       form.reset();
     } catch {
       setStatus("error");

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sendMail } from "@/lib/mailer";
+import { buildFormEmail, sendMail } from "@/lib/mailer";
 
 function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -32,24 +32,26 @@ export async function POST(request: Request) {
     );
   }
 
-  const text = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Country / Region: ${country}`,
-    `Travel dates: ${startDate} - ${endDate}`,
-    `Travelers: ${adults} adult(s)${children ? `, ${children} child(ren)` : ""}`,
-    areas.length ? `Areas: ${areas.join(", ")}` : null,
-    services.length ? `Requested services: ${services.join(", ")}` : null,
-    interests.length ? `Interests: ${interests.join(", ")}` : null,
-    budget.length ? `Budget: ${budget.join(", ")}` : null,
-    message ? `Message:\n${message}` : null,
-  ]
-    .filter((line): line is string => Boolean(line))
-    .join("\n");
+  const { text, html } = buildFormEmail("予約フォーム", [
+    { label: "お名前", value: name },
+    { label: "メールアドレス", value: email },
+    { label: "お住まいの国・地域", value: country },
+    { label: "旅行期間", value: `${startDate} 〜 ${endDate}` },
+    {
+      label: "旅行人数",
+      value: `大人 ${adults}名${children ? `、子供 ${children}名` : ""}`,
+    },
+    { label: "行きたいエリア", value: areas.join("、") },
+    { label: "ご希望のサービス", value: services.join("、") },
+    { label: "興味のある体験", value: interests.join("、") },
+    { label: "ご予算", value: budget.join("、") },
+    { label: "ご要望・メッセージ", value: message },
+  ]);
 
   await sendMail({
-    subject: `[Connectrip Japan] New reservation request from ${name}`,
+    subject: `[予約リクエスト] ${name} 様より`,
     text,
+    html,
     replyTo: email,
   });
 

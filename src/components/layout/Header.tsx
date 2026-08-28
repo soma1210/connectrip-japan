@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { sendGTMEvent } from "@next/third-parties/google";
 import { Container } from "@/components/ui/Container";
 import { Link } from "@/i18n/navigation";
 import { logoImage } from "@/data/images";
@@ -50,7 +51,7 @@ export function Header() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-10 lg:flex">
+        <nav className="hidden items-center gap-10 xl:flex">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.key}
@@ -62,13 +63,18 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-5 lg:flex">
+        <div className="hidden items-center gap-5 xl:flex">
           <LanguageSwitch />
-          <Link href="/contact" className={contactButtonClass}>
+          <Link
+            href="/contact"
+            onClick={() => sendGTMEvent({ event: "contact_cta_click" })}
+            className={contactButtonClass}
+          >
             {t("contact")}
           </Link>
           <Link
             href="/reservation"
+            onClick={() => sendGTMEvent({ event: "reserve_cta_click" })}
             className="whitespace-nowrap border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream transition-colors hover:bg-red-hover"
           >
             {t("reserve")}
@@ -78,7 +84,7 @@ export function Header() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="p-2 text-cream lg:hidden"
+          className="p-2 text-cream xl:hidden"
           aria-label="Menu"
           aria-expanded={open}
         >
@@ -87,7 +93,7 @@ export function Header() {
       </Container>
 
       {open ? (
-        <div className="border-t border-gold/20 bg-navy lg:hidden">
+        <div className="border-t border-gold/20 bg-navy xl:hidden">
           <Container className="flex flex-col gap-5 py-6">
             {NAV_ITEMS.map((item) => (
               <Link
@@ -131,14 +137,20 @@ export function Header() {
               <div className="flex items-center gap-3">
                 <Link
                   href="/contact"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    sendGTMEvent({ event: "contact_cta_click" });
+                    setOpen(false);
+                  }}
                   className={contactButtonClass}
                 >
                   {t("contact")}
                 </Link>
                 <Link
                   href="/reservation"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    sendGTMEvent({ event: "reserve_cta_click" });
+                    setOpen(false);
+                  }}
                   className="border border-gold bg-red px-6 py-2.5 text-xs tracking-[0.1em] text-cream"
                 >
                   {t("reserve")}

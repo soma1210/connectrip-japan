@@ -1,0 +1,410 @@
+{
+  "seo": {
+    "title": "Connectrip Japan | 일본 여행 서포트",
+    "description": "오사카·교토·나라·효고를 중심으로 한 외국인 여행객을 위한 프리미엄 일본 여행 서포트. 맞춤 여행, 로컬 체험, 프라이빗 가이드를 한 곳에서."
+  },
+  "nav": {
+    "service": "SERVICE",
+    "value": "VALUE",
+    "process": "PROCESS",
+    "plan": "PLAN",
+    "faq": "FAQ",
+    "gallery": "GALLERY",
+    "contact": "문의하기",
+    "reserve": "예약하기"
+  },
+  "header": {
+    "logoLine1": "CONNECTRIP",
+    "logoLine2": "JAPAN"
+  },
+  "hero": {
+    "eyebrow": "JAPAN TRAVEL SUPPORT",
+    "heading": "여행으로 사람과 마음을 잇다.",
+    "description": "간사이 지역(오사카·교토·나라·효고)을 중심으로,\n일본 전역의 여행 준비와 가이드를 한 번에 제공합니다.",
+    "cta": "일본 여행 플랜 예약하기",
+    "imageAlt": "눈 내리는 다카야마 옛 거리의 야경",
+    "slideAlts": [
+      "노을에 물든 교토의 오층탑과 시가지",
+      "오사카성",
+      "단풍으로 물든 호숫가의 산들",
+      "후지산과 호수",
+      "눈에 덮인 시라카와고 갓쇼즈쿠리 마을",
+      "나치 폭포와 삼중탑",
+      "나라의 대불",
+      "오타루 운하의 저녁 풍경",
+      "교토 아라시야마의 대나무 숲",
+      "돗토리 사구",
+      "나라 공원의 사슴",
+      "밤벚꽃이 물든 메구로강",
+      "밤의 시부야 스크램블 교차로"
+    ]
+  },
+  "issues": {
+    "heading": "ISSUES",
+    "subheading": "해외에서 일본을 여행하며 이런 고민 하고 계시지 않나요?",
+    "items": [
+      { "title": "언어 장벽이 걱정돼요", "imageAlt": "길을 잃은 여행객의 이미지" },
+      { "title": "복잡한 이동 수단이 자신 없어요.", "imageAlt": "역을 오가는 사람들" },
+      { "title": "관광지뿐만 아니라\n현지다운 여행을 하고 싶어요", "imageAlt": "현지 주민과의 교류" },
+      { "title": "우리에게 맞는\n여행 플랜을 만들고 싶어요.", "imageAlt": "여행 계획을 세우는 모습" },
+      { "title": "우리 취향에 맞는\n맛집을 잘 모르겠어요.", "imageAlt": "일본식 식사" },
+      { "title": "아이도 어른도\n만족하는 여행을 하고 싶어요.", "imageAlt": "가족 여행" }
+    ]
+  },
+  "service": {
+    "heading": "SERVICE",
+    "description": "CONNECTRIP JAPAN은 하나의 소박한 생각에서 시작되었습니다.\n일본에는 세계적으로 유명한 관광지뿐 아니라, 그 지역만의 문화와 음식, 풍경 등 알려지지 않은 매력이 수없이 많습니다.\n그 이유는 관심이 없어서가 아니라, 언어와 인식의 장벽으로 인해 그런 매력과 연결될 기회를 얻지 못했기 때문입니다.\n그 장벽을 허물고, 여행자와 지역, 사람과 문화를 이어 진짜 일본과의 만남을 만드는 것. 그것이 CONNECTRIP JAPAN의 원점입니다.",
+    "imageAlt": "벚꽃과 후지산, 토리이",
+    "cta": "일본 여행 플랜 예약하기",
+    "cards": [
+      { "number": "1", "title": "여행 상담·플랜 작성", "description": "예산과 희망 사항에 맞춰 나만의 일본 여행을 설계해 드립니다." },
+      { "number": "2", "title": "호텔·교통 수배", "description": "호텔, 신칸센, 렌터카 등 여행에 필요한 수배를 지원합니다." },
+      { "number": "3", "title": "추천 스팟 소개", "description": "유명 관광지부터 숨은 명소까지, 현지 시선으로 진짜 가치 있는 장소를 제안합니다." },
+      { "number": "4", "title": "레스토랑·체험 예약", "description": "맛집이나 문화 체험 등, 일본 여행을 더욱 즐겁게 만드는 예약을 지원합니다." },
+      { "number": "5", "title": "프라이빗 가이드", "description": "현지 가이드가 동행하여 안심하고 일본을 즐길 수 있도록 돕습니다." },
+      { "number": "6", "title": "영어 서포트", "description": "여행 전 상담부터 여행 중 곤란한 상황까지 영어로 꼼꼼히 지원합니다." }
+    ]
+  },
+  "value": {
+    "heading": "OUR VALUE",
+    "subheading": "Connectrip Japan이 선택받는 이유를 6가지 포인트로 소개합니다.",
+    "cta": "일본 여행 플랜 예약하기",
+    "cards": [
+      { "number": "1", "title": "일본 현지인의 진짜 제안", "description": "관광 사이트의 인기 순위가 아닌, 실제로 현지에 사는 일본인의 시선으로 제안합니다." },
+      { "number": "2", "title": "간사이 전문 팀", "description": "오사카·교토·나라·효고를 중심으로 활동하기 때문에 최신 현지 정보를 안내할 수 있습니다." },
+      { "number": "3", "title": "관광지에 그치지 않는 일본", "description": "신사와 사찰뿐 아니라 현지 상점가와 맛집, 사람과의 교류까지 포함한 여행을 제안합니다." },
+      { "number": "4", "title": "당신만을 위한 여행", "description": "같은 플랜을 판매하는 것이 아니라, 희망 사항에 맞춰 처음부터 일정을 만듭니다." },
+      { "number": "5", "title": "여행 전부터 상담 가능", "description": "예약뿐 아니라 여행 전 궁금한 점이나 불안한 점도 영어로 편하게 상담하실 수 있습니다." },
+      { "number": "6", "title": "일본 속 친구 같은 존재", "description": "여행사가 아닌, 일본에 있는 친구 같은 입장에서 여행을 서포트합니다." }
+    ]
+  },
+  "process": {
+    "heading": "PROCESS",
+    "subheading": "문의부터 여행 당일까지, 안심하고 이용하실 수 있는 5단계입니다.",
+    "cta": "일본 여행 플랜 예약하기",
+    "steps": [
+      { "number": "1", "title": "문의", "description": "여행 시기, 희망 지역, 예산, 관심 있는 체험 등을 문의 폼을 통해 보내주세요.", "imageAlt": "스마트폰으로 문의하는 모습" },
+      { "number": "2", "title": "청취·상담", "description": "희망하는 여행 스타일과 요청 사항을 확인하고, 고객님께 가장 적합한 여행 방향을 제안합니다.", "imageAlt": "온라인 상담 모습" },
+      { "number": "3", "title": "여행 플랜 제안", "description": "맞춤 여행 또는 패키지 투어를 제안해 드립니다. 일정, 숙박 시설, 체험 내용 등을 확인해 주세요.", "imageAlt": "지도를 이용한 일정 확인" },
+      { "number": "4", "title": "예약·결제", "description": "내용을 확인하신 후, 플랜 확정 후 결제와 각종 수배를 진행합니다.", "imageAlt": "일본 엔화 지폐" },
+      { "number": "5", "title": "출발 전 서포트", "description": "여행 전 질문 대응과 최종 확인을 진행하여 안심하고 출발하실 수 있도록 지원합니다.", "imageAlt": "공항을 걷는 여행객" }
+    ]
+  },
+  "reviews": {
+    "heading": "REVIEWS",
+    "subheading": "실제로 이용해 주신 고객님들의 생생한 후기를 소개합니다.",
+    "items": [
+      { "name": "Emily", "country": "United States", "countryCode": "US", "date": "2026.06.01", "rating": 5, "tag": "KYOTO PRIVATE TOUR", "quote": "저희끼리는 만나지 못했을 교토의 모습을 가이드님이 안내해 주셨어요. 여행사라기보다 친한 친구와 여행하는 느낌이었습니다." },
+      { "name": "Lucas", "country": "Australia", "countryCode": "AU", "date": "2026.06.08", "rating": 5, "tag": "KANSAI CUSTOM PLAN", "quote": "저희가 정말 원했던 것에 맞춰 모든 것이 조율되어 있었어요. 호텔도, 전철도, 저녁 예약까지 다 챙겨주셨습니다." },
+      { "name": "Sophia", "country": "United Kingdom", "countryCode": "GB", "date": "2026.06.15", "rating": 5, "tag": "OSAKA FOOD & CULTURE PLAN", "quote": "난바의 길거리 음식부터 조용한 다도 체험까지, 지금까지 다녀본 여행 중 가장 진짜 일본을 느낄 수 있었어요." }
+    ]
+  },
+  "plan": {
+    "heading": "PLAN",
+    "subheading": "모든 플랜은 희망 사항에 맞춰 커스터마이즈 가능합니다.",
+    "cta": "일본 여행 플랜 예약하기",
+    "learnMore": "LEARN MORE",
+    "cards": [
+      { "title": "맞춤 여행", "description": "고객님의 희망 사항을 처음부터 들으며, 나만의 여행 플랜을 만들어 드립니다.", "imageAlt": "기모노를 입고 거리를 걷는 여행객" },
+      { "title": "패키지 투어", "description": "인기 관광지를 효율적으로 둘러보는, 안심할 수 있는 패키지 플랜을 준비했습니다.", "imageAlt": "센소지를 방문한 관광객" },
+      { "title": "VIP 플랜(상담 필요)", "description": "특별한 요청에 부응하는 프리미엄 여행 플랜입니다. 자세한 내용은 문의해 주세요.", "imageAlt": "고급 자동차의 프론트 그릴" }
+    ]
+  },
+  "faq": {
+    "heading": "FAQ",
+    "subheading": "자주 묻는 질문을 모았습니다. 궁금한 점은 편하게 확인해 주세요.",
+    "items": [
+      { "question": "영어로 상담이 가능한가요?", "answer": "네. 문의부터 여행 중 지원까지 모두 영어로 대응해 드립니다." },
+      { "question": "간사이 외 지역도 가능한가요?", "answer": "네. 간사이를 중심으로 활동하지만, 일본 전역의 여행 계획·수배도 지원하고 있습니다." },
+      { "question": "며칠 전에 상담하면 좋을까요?", "answer": "여행 3~6개월 전 상담을 추천드립니다. 급하신 경우도 가능한 한 대응해 드립니다." },
+      { "question": "혼자서도 이용할 수 있나요?", "answer": "물론입니다. 혼자 여행부터 가족·그룹 여행까지 폭넓게 지원합니다." },
+      { "question": "맞춤 여행과 패키지 투어의 차이는 무엇인가요?", "answer": "맞춤 여행은 고객님의 희망 사항에 맞춰 처음부터 일정을 만듭니다. 패키지 투어는 미리 준비된 일정을 이용하는 플랜입니다." },
+      { "question": "틱톡이나 인스타그램에서 본 장소도 상담할 수 있나요?", "answer": "네. 게시물의 URL이나 스크린샷을 보내주시면, 내용을 확인한 뒤 일정에 반영하는 방법과 가는 방법을 안내해 드립니다." },
+      { "question": "레스토랑이나 체험 예약도 부탁할 수 있나요?", "answer": "네, 맛집이나 문화 체험, 액티비티 등 다양한 예약을 지원합니다." },
+      { "question": "프라이빗 가이드를 이용할 수 있나요?", "answer": "네, 오사카·교토·나라·효고를 중심으로 프라이빗 가이드 서비스를 제공하고 있습니다." },
+      { "question": "가이드 없이 수배만 부탁할 수 있나요?", "answer": "네, 가이드 없이 여행 계획과 각종 예약·수배만 의뢰하실 수도 있습니다." },
+      { "question": "일본어를 못해도 괜찮나요?", "answer": "문제없습니다. 여행 전부터 여행 중까지 영어로 지원해 드리므로 안심하고 일본 여행을 즐기실 수 있습니다." }
+    ]
+  },
+  "gallery": {
+    "heading": "GALLERY",
+    "subheading": "지금까지 안내해 드린 여행지의 풍경과 순간을 소개합니다.",
+    "items": [
+      { "imageAlt": "후시미이나리 신사의 천개의 토리이" },
+      { "imageAlt": "오사카성" },
+      { "imageAlt": "긴카쿠지(로쿠온지)" },
+      { "imageAlt": "단풍으로 물든 호숫가의 산들" },
+      { "imageAlt": "후지산과 호수" },
+      { "imageAlt": "추레이토 탑과 후지산" },
+      { "imageAlt": "눈에 덮인 시라카와고 갓쇼즈쿠리 마을" },
+      { "imageAlt": "나치 폭포와 삼중탑" },
+      { "imageAlt": "히메지성" },
+      { "imageAlt": "나라의 대불" },
+      { "imageAlt": "오타루 운하의 저녁 풍경" },
+      { "imageAlt": "도쿄 타워의 야경" },
+      { "imageAlt": "교토 아라시야마의 대나무 숲" },
+      { "imageAlt": "돗토리 사구" },
+      { "imageAlt": "오사카 도톤보리의 야경" },
+      { "imageAlt": "나라 공원의 사슴" },
+      { "imageAlt": "노을에 물든 교토의 오층탑과 시가지" },
+      { "imageAlt": "밤벚꽃이 물든 메구로강" },
+      { "imageAlt": "밤의 시부야 스크램블 교차로" }
+    ]
+  },
+  "vlog": {
+    "heading": "VLOG",
+    "subheading": "현지이기에 알 수 있는 추천 스팟과 맛집 정보를 전해드립니다.",
+    "readMore": "기사 읽기",
+    "posts": [
+      { "title": "10 Hidden Gems in Kyoto You Can't Miss", "description": "Discover the secret spots loved by locals away from the crowds.", "imageAlt": "교토의 숨은 명소를 소개하는 영상" },
+      { "title": "Osaka Street Food Guide", "description": "A local's guide to the best takoyaki and okonomiyaki in Namba.", "imageAlt": "벚꽃 나무 아래를 흐르는 강" },
+      { "title": "A Perfect Day in Nara", "description": "How to interact with deer and explore ancient temples smoothly.", "imageAlt": "나라 공원의 사슴" }
+    ]
+  },
+  "sns": {
+    "heading": "SNS",
+    "subheading": "최신 여행 정보와 다양한 혜택을 SNS에서도 만나보세요. 팔로우해 주세요.",
+    "follow": "FOLLOW US",
+    "items": [
+      { "platform": "tiktok", "label": "TikTok", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "instagram", "label": "Instagram", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "facebook", "label": "Facebook", "handle": "@japan_tavel_guide_ctj" },
+      { "platform": "whatsapp", "label": "WhatsApp", "handle": "+81-90-8269-1398" }
+    ]
+  },
+  "contact": {
+    "seo": {
+      "title": "문의하기 | Connectrip Japan",
+      "description": "질문이나 상담이 필요하시면 편하게 문의해 주세요. 담당자가 답변해 드립니다."
+    },
+    "heading": "CONTACT",
+    "description": "아직 고민 중이셔도 괜찮습니다. 작은 궁금증이라도 편하게 연락해 주세요.",
+    "infoRows": [
+      { "label": "문의 폼", "value": "오른쪽 폼으로 보내주세요.\n24시간 이내에 답변드립니다." },
+      { "label": "EMAIL", "value": "contact@connectripjapan.com" },
+      { "label": "INSTAGRAM", "value": "@japan_tavel_guide_ctj" },
+      { "label": "TIKTOK", "value": "@japan_tavel_guide_ctj" },
+      { "label": "WHATSAPP", "value": "+81-90-8269-1398" }
+    ],
+    "form": {
+      "nameLabel": "이름",
+      "namePlaceholder": "Name",
+      "emailLabel": "이메일 주소",
+      "emailPlaceholder": "Email",
+      "messageLabel": "메시지",
+      "messagePlaceholder": "Message",
+      "submit": "보내기",
+      "sending": "전송 중...",
+      "success": "문의해 주셔서 감사합니다. 담당자가 24시간 이내에 연락드리겠습니다.",
+      "error": "전송에 실패했습니다. 잠시 후 다시 시도해 주세요."
+    }
+  },
+  "reservation": {
+    "seo": {
+      "title": "예약 | Connectrip Japan",
+      "description": "여행 일정과 희망 사항을 알려주세요. 현지를 잘 아는 로컬 팀이 고객님에게 맞춘 일본 여행을 제안해 드립니다."
+    },
+    "heading": "RESERVATION",
+    "subheading": "진짜 일본을 경험해 보세요",
+    "description": "여행 일정과 희망 사항을 알려주세요. 현지를 잘 아는 로컬 팀이 고객님에게 맞춘 일본 여행을 제안해 드립니다. 문의는 24시간 이내에 답변드립니다.",
+    "form": {
+      "nameLabel": "이름(필수)",
+      "namePlaceholder": "Jane Smith",
+      "emailLabel": "이메일 주소(필수)",
+      "emailPlaceholder": "jane@example.com",
+      "countryLabel": "거주 국가·지역(필수)",
+      "countryPlaceholder": "예: Australia / Singapore / United States",
+      "startDateLabel": "시작일(필수)",
+      "endDateLabel": "종료일(필수)",
+      "travelersLabel": "여행 인원(필수)",
+      "adultsLabel": "성인",
+      "childrenLabel": "어린이",
+      "travelersPlaceholder": "선택해 주세요",
+      "travelerCounts": ["1", "2", "3", "4", "5명 이상"],
+      "areasLabel": "가고 싶은 지역(복수 선택 가능)",
+      "areas": ["오사카", "교토", "나라", "효고", "도쿄", "후지산", "홋카이도", "규슈", "기타"],
+      "servicesLabel": "희망하는 서비스(복수 선택 가능)",
+      "services": ["맞춤 여행", "패키지 투어", "프라이빗 가이드", "호텔 수배", "레스토랑 예약", "체험 예약", "여행 상담"],
+      "interestsLabel": "관심 있는 체험(복수 선택 가능)",
+      "interests": ["일본 요리", "온천", "신사·사찰", "자연·절경", "쇼핑", "애니메이션·게임", "테마파크", "스키·눈놀이", "현지 체험", "기타"],
+      "budgetLabel": "예상 예산 ※항공권 제외(1인 기준)",
+      "budgetOptions": ["10만 엔 미만", "10만~30만 엔", "30만~50만 엔", "50만 엔 이상", "아직 미정"],
+      "messageLabel": "요청 사항·메시지",
+      "messageNote": "가고 싶은 장소나 SNS에서 본 스팟, 식사 제한, 호텔 희망 사항 등이 있으시면 자유롭게 적어주세요.",
+      "messagePlaceholder": "자유롭게 적어주세요",
+      "policyLinkLabel": "※취소 정책",
+      "submit": "보내기",
+      "sending": "전송 중...",
+      "success": "예약 요청 감사합니다. 담당자가 24시간 이내에 연락드리겠습니다.",
+      "error": "전송에 실패했습니다. 잠시 후 다시 시도해 주세요."
+    }
+  },
+  "finalCta": {
+    "heading": "진짜 일본과의 만남을,\n지금 여기서 시작하세요.",
+    "description": "가고 싶은 장소와 원하는 체험을 알려주세요.\n현지를 잘 아는 로컬 팀이 당신에게 맞는 일본 여행을 제안해 드립니다.",
+    "cta": "일본 여행 플랜 예약하기",
+    "imageAlt": "후시미이나리 신사의 천개의 토리이"
+  },
+  "footer": {
+    "tagline": "외국인 여행객을 위한 간사이 여행 서포트",
+    "navigationHeading": "NAVIGATION",
+    "informationHeading": "INFORMATION",
+    "nav": {
+      "service": "SERVICE",
+      "process": "PROCESS",
+      "plan": "PLAN",
+      "reservation": "RESERVATION",
+      "contact": "문의하기"
+    },
+    "information": {
+      "careers": "채용 정보",
+      "company": "회사 소개",
+      "pricing": "요금 플랜",
+      "cancellation": "취소 정책",
+      "terms": "이용약관",
+      "businessInquiry": "기업 문의"
+    },
+    "copyright": "CONNECTRIP JAPAN. All rights reserved."
+  },
+  "company": {
+    "seo": {
+      "title": "회사 소개 | Connectrip Japan",
+      "description": "Connectrip Japan 주식회사의 회사 소개. 회사명, 소재지, 사업 내용, 여행업 등록 정보 등을 안내합니다."
+    },
+    "heading": "회사 소개",
+    "subheading": "COMPANY PROFILE",
+    "rows": [
+      {
+        "label": "회사명",
+        "value": "Connectrip Japan 株式会社",
+        "note": "Connectrip Japan Inc."
+      },
+      { "label": "설립", "value": "2026년 9월 7일" },
+      { "label": "대표자", "value": "대표이사 사장 오이즈미 리쿠" },
+      { "label": "소재지", "value": "1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan" },
+      { "label": "자본금", "value": "1,000,000엔" },
+      {
+        "label": "사업 내용",
+        "value": [
+          "맞춤 여행 기획·제안",
+          "프라이빗 가이드 서비스",
+          "패키지 투어 기획·판매",
+          "외국인 여행객을 위한 여행 서포트",
+          "여행 상담·일정 작성",
+          "숙박 시설·교통편·체험 프로그램 등 수배",
+          "통역·번역 서포트"
+        ]
+      },
+      { "label": "국내 여행업무\n취급관리자", "value": "오이즈미 리쿠" }
+    ],
+    "footerSignature": "Connectrip Japan 株式会社"
+  },
+  "businessInquiry": {
+    "seo": {
+      "title": "법인·기업 문의 | Connectrip Japan",
+      "description": "업무 제휴, 단체 여행, 취재 등 법인·기업 고객님의 문의는 이쪽으로 연락해 주세요."
+    },
+    "eyebrow": "법인 문의",
+    "heading": "법인·기업 문의",
+    "description": "업무 제휴, 단체 여행, 취재, 기타 법인 문의는\n이쪽으로 연락해 주세요. 내용을 확인한 후 담당자가 답변드립니다.",
+    "form": {
+      "companyLabel": "회사명",
+      "companyPlaceholder": "Connectrip Partner Inc.",
+      "contactNameLabel": "담당자명",
+      "contactNamePlaceholder": "Jane Smith",
+      "emailLabel": "이메일 주소",
+      "emailPlaceholder": "name@company.co.jp",
+      "typeLabel": "문의 종류",
+      "typeOptions": ["업무 제휴 관련", "단체 여행 관련", "취재 관련", "기타"],
+      "messageLabel": "문의 내용",
+      "messagePlaceholder": "문의 내용을 간단히 적어주세요.",
+      "note": "보통 2~3영업일 이내에 답변드립니다. 여행 예약과 관련해 급하신 문의는 예약 폼을 이용해 주세요.",
+      "noteLink": "예약 폼으로 이동 →",
+      "submit": "보내기",
+      "sending": "전송 중...",
+      "success": "문의해 주셔서 감사합니다. 내용을 확인한 후 담당자가 답변드립니다.",
+      "error": "전송에 실패했습니다. 잠시 후 다시 시도해 주세요."
+    }
+  },
+  "cancelPolicy": {
+    "seo": {
+      "title": "취소 정책 | Connectrip Japan",
+      "description": "Connectrip Japan의 취소 정책. 여행 상담료, 투어 예약 후 취소료, 환불 방법 등을 안내합니다."
+    },
+    "heading": "취소 정책",
+    "subheading": "CANCELLATION POLICY",
+    "intro": "Connectrip Japan을 이용해 주셔서 진심으로 감사드립니다.\n고객님께서 안심하고 서비스를 이용하실 수 있도록 아래와 같이 취소 정책을 정하고 있습니다.\n예약 전 반드시 확인해 주세요.",
+    "sections": [
+      {
+        "number": 1,
+        "title": "여행 상담·플랜 작성료에 대해",
+        "body": "저희는 고객님 한 분 한 분에게 맞춘 맞춤 여행 플랜을 제안해 드립니다.\n여행 상담을 원하시는 경우, 보증금으로 300 USD를 결제해 주셔야 합니다. 보증금 결제 확인 후 여행 상담 및 플랜 작성을 시작합니다.\n여행 신청이 확정될 경우, 결제하신 300 USD는 전체 여행 비용에서 차감됩니다.\n다만 상담만 이용하시고 신청에 이르지 않으신 경우, 두 번째 이후의 상담부터는 상담료로 300 USD를 청구합니다.\n또한 플랜 내용 수정은 2회까지 무료로 대응해 드립니다. 3회 이상 수정 시에는 1회당 80 USD의 추가 요금이 발생합니다."
+      },
+      {
+        "number": 2,
+        "title": "투어 예약 후 취소",
+        "body": "호텔·교통편·체험 시설 등의 예약이 확정된 후 취소하시는 경우, 각 시설·사업자가 정한 취소료에 더해 저희의 수배 수수료를 청구합니다.\n환불 금액은 실제로 발생한 취소료·결제 수수료·환불 수수료를 차감한 금액입니다."
+      },
+      {
+        "number": 3,
+        "title": "프라이빗 가이드·패키지 투어 취소",
+        "body": "투어 시작일을 기준으로 아래와 같은 취소료가 발생합니다.",
+        "table": {
+          "headers": ["취소일", "취소료"],
+          "rows": [
+            ["15일 전까지", "무료"],
+            ["8~14일 전", "투어 요금의 30%"],
+            ["3~7일 전", "투어 요금의 50%"],
+            ["1~2일 전", "투어 요금의 80%"],
+            ["당일·무통보", "투어 요금의 100%"]
+          ]
+        },
+        "note": "※숙박 시설·교통편·티켓 등의 실비는 별도로 부담해 주셔야 합니다."
+      },
+      {
+        "number": 4,
+        "title": "일정 변경에 대해",
+        "body": "가능한 한 일정 변경에 대응해 드립니다.\n다만 이미 예약이 확정된 시설·교통편에 변경·취소 수수료가 발생하는 경우, 고객님께서 부담하셔야 합니다."
+      },
+      {
+        "number": 5,
+        "title": "당사 사정에 의한 취소",
+        "body": "천재지변, 재해, 교통편 운행 중단, 정부의 요청, 기타 불가피한 사정으로 서비스 제공이 어려워진 경우, 상황에 따라 일정 변경 또는 환불로 대응해 드립니다.\n당사의 귀책 사유로 서비스를 제공할 수 없는 경우, 결제하신 해당 서비스 요금을 환불해 드립니다."
+      },
+      {
+        "number": 6,
+        "title": "무통보 취소",
+        "body": "약속된 집합 시간을 30분 경과해도 연락이 없는 경우, 무통보 취소로 처리될 수 있습니다.\n이 경우 환불은 불가합니다."
+      },
+      {
+        "number": 7,
+        "title": "환불 방법",
+        "body": "환불이 발생하는 경우, 원칙적으로 이용하신 결제 방법으로 환불해 드립니다.\n환불까지 걸리는 기간은 이용하신 신용카드사 또는 결제 서비스에 따라 다릅니다."
+      },
+      {
+        "number": 8,
+        "title": "문의",
+        "body": "취소·변경을 원하시는 경우, 가능한 한 빨리 연락해 주세요.\n영업시간 외에 받은 연락은 다음 영업일에 접수됩니다.\n취소료는 당사가 연락을 확인한 일시를 기준으로 적용됩니다."
+      }
+    ],
+    "footerSignature": "Connectrip Japan 株式会社 ｜ 본 정책은 예고 없이 변경될 수 있습니다."
+  },
+  "careers": {
+    "seo": {
+      "title": "채용 정보 | Connectrip Japan",
+      "description": "Connectrip Japan의 채용 정보 페이지입니다. 준비가 완료되는 대로 공개됩니다."
+    },
+    "heading": "채용 정보",
+    "subheading": "CAREERS",
+    "message": "채용 정보는 현재 준비 중입니다.\n내용이 준비되는 대로 순차적으로 공개하겠습니다. 잠시만 기다려 주세요."
+  },
+  "pricing": {
+    "seo": {
+      "title": "요금 플랜 | Connectrip Japan",
+      "description": "Connectrip Japan의 요금 플랜 페이지입니다. 준비가 완료되는 대로 공개됩니다."
+    },
+    "heading": "요금 플랜",
+    "subheading": "PRICING",
+    "message": "요금 플랜은 현재 준비 중입니다.\n내용이 준비되는 대로 순차적으로 공개하겠습니다. 잠시만 기다려 주세요."
+  }
+}

@@ -259,6 +259,7 @@
     "information": {
       "careers": "Careers",
       "company": "Company Profile",
+      "pricing": "Pricing",
       "cancellation": "Cancellation Policy",
       "terms": "Terms of Use",
       "businessInquiry": "Business Inquiries"
@@ -278,7 +279,7 @@
         "value": "Connectrip Japan Inc.",
         "note": "Connectrip Japan 株式会社"
       },
-      { "label": "Founded", "value": "September 1, 2026" },
+      { "label": "Founded", "value": "September 7, 2026" },
       { "label": "Representative", "value": "Riku Oizumi, President & CEO" },
       {
         "label": "Address",
@@ -393,5 +394,23 @@
       }
     ],
     "footerSignature": "Connectrip Japan Inc. | This policy may be updated without prior notice."
+  },
+  "careers": {
+    "seo": {
+      "title": "Careers | Connectrip Japan",
+      "description": "Careers at Connectrip Japan. This page will be published once it's ready."
+    },
+    "heading": "Careers",
+    "subheading": "CAREERS",
+    "message": "Our careers page is currently being prepared.\nWe'll publish the details here as soon as they're ready. Thank you for your patience."
+  },
+  "pricing": {
+    "seo": {
+      "title": "Pricing | Connectrip Japan",
+      "description": "Pricing plans for Connectrip Japan. This page will be published once it's ready."
+    },
+    "heading": "Pricing",
+    "subheading": "PRICING",
+    "message": "Our pricing plans are currently being prepared.\nWe'll publish the details here as soon as they're ready. Thank you for your patience."
   }
 }
