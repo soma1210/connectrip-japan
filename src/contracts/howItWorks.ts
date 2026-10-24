@@ -4,17 +4,17 @@ import type { PageViewModel } from "./pages";
 import type { Tbd } from "./status";
 
 /**
- * Two flows (Website v1 §6-7, WORKING_BASELINE). Step keys follow the
- * baseline outline; titles and descriptions are TBD copy.
+ * Two flows, four steps each (T-05 Home Working Baseline, W1-D05). Step keys
+ * follow the baseline outline; wording is Working Baseline copy.
  *
- * - Ready-made:    Choose → Date / Guests → Pay → Confirmed → Enjoy
- * - Private Guide: Inquiry → Plan Together → Confirm → Pay → Enjoy
+ * - Ready-made:    Find an Experience → Choose Your Date → Book → Explore Osaka
+ * - Private Guide: Tell Us What You Want → We Plan Together → Confirm Your Day → Explore Kansai
  */
 export type HowItWorksFlowKey = "ready_made" | "private_guide";
 
-export type ReadyMadeStepKey = "choose" | "date_guests" | "pay" | "confirmed" | "enjoy";
+export type ReadyMadeStepKey = "find" | "choose_date" | "book" | "explore";
 
-export type PrivateGuideStepKey = "inquiry" | "plan_together" | "confirm" | "pay" | "enjoy";
+export type PrivateGuideStepKey = "tell_us" | "plan_together" | "confirm" | "explore";
 
 type StepKeyFor<K extends HowItWorksFlowKey> = K extends "ready_made"
   ? ReadyMadeStepKey

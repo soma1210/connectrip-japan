@@ -2,9 +2,7 @@ import type { HomeSectionKey, HomeViewModel } from "../pages";
 import { proposed, tbd } from "../status";
 import { experienceSummariesFixture } from "./experiences";
 import { howItWorksFlowsFixture } from "./howItWorks";
-import { peopleFixture } from "./people";
 import { FIXTURE_SOURCE, fixtureCta, fixtureHrefs, fixtureImage, fixtureText } from "./shared";
-import { socialProofFixture } from "./socialProof";
 import { travelGuideArticleSummariesFixture } from "./travelGuide";
 
 const core: HomeViewModel["content"]["hero"]["core"] = [
@@ -15,16 +13,14 @@ const core: HomeViewModel["content"]["hero"]["core"] = [
   { key: "guide_only", label: fixtureText("Guide-only") },
 ];
 
-/** Website v1 §6 Working Baseline order. Astra / Human review may change it. */
+/** T-05 Home Working Baseline order (W1-D05). Guides / Social Proof are on hold. */
 const baselineOrder: HomeSectionKey[] = [
   "hero",
   "featuredExperiences",
   "privateGuide",
   "whyConnectrip",
-  "guides",
   "howItWorks",
   "travelGuide",
-  "socialProof",
   "finalCta",
 ];
 
@@ -38,7 +34,7 @@ export const homeFixture: HomeViewModel = {
     noindex: true,
   },
   content: {
-    sectionOrder: proposed(baselineOrder, "Website v1 Business Decision §6 (WORKING_BASELINE)"),
+    sectionOrder: proposed(baselineOrder, "T-05 Home Working Baseline (W1-D05)"),
     hero: {
       headline: fixtureText("Headline"),
       supporting: fixtureText("Supporting line"),
@@ -69,11 +65,6 @@ export const homeFixture: HomeViewModel = {
         FIXTURE_SOURCE,
       ),
     },
-    guides: {
-      heading: fixtureText("Meet our guides heading"),
-      people: peopleFixture,
-      aboutLink: fixtureCta("about", fixtureHrefs.about, "section", "secondary", "About link"),
-    },
     howItWorks: {
       heading: fixtureText("How it works heading"),
       flows: howItWorksFlowsFixture,
@@ -85,7 +76,6 @@ export const homeFixture: HomeViewModel = {
       articles: travelGuideArticleSummariesFixture,
       viewAll: fixtureCta("travelGuide", fixtureHrefs.travelGuide, "section", "secondary", "View all articles"),
     },
-    socialProof: socialProofFixture,
     finalCta: {
       heading: fixtureText("Final CTA heading"),
       supporting: fixtureText("Supporting line"),
@@ -120,10 +110,8 @@ export const homeFixtureTbd: HomeViewModel = {
       image: tbd(),
     },
     whyConnectrip: { heading: tbd(), items: tbd() },
-    guides: { heading: tbd(), people: [{ id: "fixture-person-tbd", name: tbd(), role: tbd(), photo: tbd() }] },
     howItWorks: { ...homeFixture.content.howItWorks, heading: tbd() },
     travelGuide: { ...homeFixture.content.travelGuide, heading: tbd(), supporting: tbd(), articles: [] },
-    socialProof: { ...socialProofFixture, heading: tbd() },
     finalCta: { ...homeFixture.content.finalCta, heading: tbd(), supporting: tbd() },
   },
 };

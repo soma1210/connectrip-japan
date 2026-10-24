@@ -40,6 +40,8 @@ guide profiles, SEO / AIO, consent, language scope) is TBD.
   | How It Works | `HowItWorksViewModel` |
   | Osaka Travel Guide | `TravelGuideListViewModel` |
   | Guide Article | `TravelGuideArticleViewModel` |
+  | About | `AboutViewModel` (added in T-04) |
+  | Privacy Policy / Terms | `LegalPageViewModel` (added in T-04; legal text TBD) |
 
 - Render every `Tbd<T>` by its `status`:
   - `TBD` → a visible placeholder (design the empty state). Never invent copy.
@@ -157,3 +159,15 @@ It runs as part of `tsc --noEmit` and `next build`.
 - `HowItWorksStep` moved to `howItWorks.ts` with step keys.
 - New: `booking.ts`, `privateGuide.ts`, `howItWorks.ts`, `travelGuide.ts`,
   `socialProof.ts`.
+
+## T-05 changes (Home Working Baseline, W1-D05 / W1-D06)
+
+- `HomeContent.guides` and `HomeContent.socialProof` are optional (on hold,
+  kept for re-adding later). `HomeSectionKey` still includes them.
+- `HomeContent.hero.positioning` is optional.
+- `HomeContent.privateGuide` gained optional `areas` and `interests`.
+- How It Works step keys are four per flow:
+  `find / choose_date / book / explore` and
+  `tell_us / plan_together / confirm / explore`.
+- Private Guide interests (Home, Private Guide page, Inquiry form) share one
+  list, including `local_neighborhoods`.
