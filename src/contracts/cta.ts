@@ -9,6 +9,7 @@ export type CtaPosition =
   | "mobile_menu"
   | "hero"
   | "section"
+  | "card"
   | "footer"
   | "inline";
 
@@ -22,8 +23,13 @@ export type CtaSpec<D extends CtaDestination = CtaDestination> = {
   label: Tbd<string>;
   position: CtaPosition;
   emphasis: "primary" | "secondary";
-  /** Set when the CTA carries a selected experience into Inquiry. */
+  /** Set when the CTA carries a selected experience (Detail, Booking). */
   experienceId?: string;
+  /**
+   * Set when the CTA cannot be used yet (e.g. booking is not open for a
+   * product). Render a disabled state; do not hide the CTA.
+   */
+  disabled?: boolean;
 };
 
 /**

@@ -20,10 +20,13 @@ export type SocialLink = {
 };
 
 export type SiteNav = {
-  /** Sitemap §6: Experiences / How It Works / About. Home is the logo. */
+  /**
+   * Header navigation. Must include Private Guide (Working Decision, T-03).
+   * Other items and their order are PROPOSED. Home is the logo.
+   */
   primary: NavItem[];
-  /** Always-visible path to Inquiry, outside the menu. */
-  headerCta: CtaSpec<"inquiry">;
+  /** Always-visible primary CTA, outside the menu: Experiences (T-03). */
+  headerCta: CtaSpec<"experiences">;
   footer: {
     links: NavItem[];
     legal: NavItem[];

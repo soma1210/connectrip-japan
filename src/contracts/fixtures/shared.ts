@@ -1,6 +1,6 @@
 import type { CtaDestination, CtaPosition, CtaSpec } from "../cta";
 import type { ImageAsset } from "../media";
-import type { RouteKey } from "../routes";
+import type { ParameterizedRouteKey, RouteKey } from "../routes";
 import { proposed, type ProposedValue } from "../status";
 
 /**
@@ -13,10 +13,12 @@ export function fixtureText(text: string): ProposedValue<string> {
   return proposed(`[FIXTURE] ${text}`, FIXTURE_SOURCE);
 }
 
-/** URLs follow the Sitemap Working Baseline; all PROPOSED. */
-export const fixtureHrefs: Record<Exclude<RouteKey, "experienceDetail">, string> = {
+/** Fixture URLs only. Final URLs, slugs and redirects are TBD. */
+export const fixtureHrefs: Record<Exclude<RouteKey, ParameterizedRouteKey>, string> = {
   home: "/",
   experiences: "/experiences",
+  privateGuide: "/private-guide",
+  travelGuide: "/osaka-travel-guide",
   howItWorks: "/how-it-works",
   about: "/about",
   inquiry: "/inquiry",
@@ -26,6 +28,14 @@ export const fixtureHrefs: Record<Exclude<RouteKey, "experienceDetail">, string>
 
 export function fixtureExperienceHref(slug: string) {
   return `/experiences/${slug}`;
+}
+
+export function fixtureBookingHref(slug: string) {
+  return `/experiences/${slug}/book`;
+}
+
+export function fixtureArticleHref(slug: string) {
+  return `/osaka-travel-guide/${slug}`;
 }
 
 export function fixtureCta<D extends CtaDestination>(
