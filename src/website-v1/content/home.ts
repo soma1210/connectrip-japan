@@ -1,10 +1,15 @@
-import type { AreaKey, HomeSectionKey, HomeViewModel, PrivateGuideActivity, WhyItem } from "@/contracts";
+import type { AreaKey, HomeSectionKey, HomeViewModel, PrivateGuideActivity, SnsAccountPlatform, WhyItem } from "@/contracts";
 import { routeHref } from "../routes";
 import { getExperienceSummaries } from "./experiences";
 import { getHowItWorksFlows } from "./howItWorks";
 import { ACTIVITY_LABELS, AREA_LABELS } from "./privateGuide";
-import { getArticleSummaries } from "./travelGuide";
-import { PHOTO_SOURCE, cta, pageName, pageSeo, photos, proposed, tbd } from "./shared";
+import { getHomeArticleSummaries, getHomeTravelGuideGroups } from "./travelGuide";
+import { getConnectripSelectOsakaViewModel } from "./select/osaka";
+import { HERO_IMAGES, HERO_PLACEHOLDER_SOURCE } from "../assets/heroImages";
+import { valueCardImages } from "@/data/images";
+import { socialLinks } from "@/data/social-links";
+import currentSiteJa from "../../../messages/ja.json";
+import { cta, pageName, pageSeo, proposed, tbd } from "./shared";
 
 /** T-05 Home Working Baseline (W1-D05). Wording is not final copy. */
 const T05 = "T-05 Home WORKING_BASELINE (W1-D05). Not final copy";
@@ -17,18 +22,64 @@ const t05 = (text: string) => proposed(text, T05);
  */
 export const HOME_SECTION_BASELINE: HomeSectionKey[] = [
   "hero",
+  "connectripSelect",
   "featuredExperiences",
   "privateGuide",
   "whyConnectrip",
   "howItWorks",
   "travelGuide",
+  "sns",
   "finalCta",
 ];
 
-/** Pillar titles are Working Baseline; English descriptions are TBD. */
-const WHY_ITEMS: WhyItem[] = ["Local Knowledge", "Flexible Experiences", "Beyond the Tourist Spots"].map((title) => ({
-  title: t05(title),
-  description: tbd(`${title}: English description TBD`),
+/**
+ * Final CTA background: Fushimi Inari torii gates, Kyoto (Human instruction
+ * 2026-10-24, replaces Osaka Castle). Provided by the human; licence not
+ * verified yet, preview only.
+ */
+const FINAL_CTA_IMAGE_SOURCE = "Human-provided photo (2026-10-24). Licence NOT_VERIFIED, preview only";
+const FINAL_CTA_IMAGE = {
+  src: "/images/v1/sections/kyoto-fushimi-inari-torii.jpg",
+  alt: "Vermilion torii gates at Fushimi Inari Taisha, Kyoto",
+  width: 2400,
+  height: 1611,
+  rights: "NOT_VERIFIED" as const,
+  consent: "NOT_APPLICABLE" as const,
+};
+
+/**
+ * OUR VALUE, reused as-is from the current site (messages/ja.json `value`,
+ * images from `valueCardImages`). WORKING_BASELINE (W1-D07): ported to review
+ * on screen, not approved copy. Not translated or edited on purpose.
+ * Supersedes the T-05 "Why Connectrip" pillars (Local Knowledge / Flexible
+ * Experiences / Beyond the Tourist Spots), kept in Obsidian as history.
+ */
+/**
+ * SNS, reused as-is from the current site (messages/ja.json `sns`, links from
+ * `socialLinks`). WORKING_BASELINE (W1-D08). Displayed handles are kept
+ * verbatim even where they differ from the link URLs (reported as TBD).
+ */
+const SNS_SOURCE = "Current site SNS section (messages/ja.json sns, data/social-links). WORKING_BASELINE (W1-D08)";
+
+const OUR_VALUE_SOURCE = "Current site OUR VALUE (messages/ja.json value). WORKING_BASELINE (W1-D07), not approved";
+const ourValue = currentSiteJa.value;
+const VALUE_IMAGE_SIZES: [number, number][] = [
+  [960, 720], [960, 720], [960, 720], [960, 720], [960, 720], [1213, 910],
+];
+const OUR_VALUE_ITEMS: WhyItem[] = ourValue.cards.map((card, i) => ({
+  title: proposed(card.title, OUR_VALUE_SOURCE),
+  description: proposed(card.description, OUR_VALUE_SOURCE),
+  image: proposed(
+    {
+      src: valueCardImages[i],
+      alt: card.title,
+      width: VALUE_IMAGE_SIZES[i][0],
+      height: VALUE_IMAGE_SIZES[i][1],
+      rights: "NOT_VERIFIED" as const,
+      consent: "NOT_VERIFIED" as const,
+    },
+    OUR_VALUE_SOURCE,
+  ),
 }));
 
 export function getHomeViewModel(): HomeViewModel {
@@ -37,11 +88,13 @@ export function getHomeViewModel(): HomeViewModel {
     seo: pageSeo("Home", routeHref("home")),
     content: {
       sectionOrder: proposed(HOME_SECTION_BASELINE, T05),
+      // Own section after the Hero (Human instruction 2026-10-24).
+      connectripSelect: getConnectripSelectOsakaViewModel().content,
       hero: {
         headline: t05("Experience Kansai Like a Local."),
         supporting: t05("Discover Osaka through local experiences, or create your own day with a private guide."),
         core: [],
-        images: proposed([photos.osakaCastle, photos.dotonbori], PHOTO_SOURCE),
+        images: proposed(HERO_IMAGES.map((h) => h.image), HERO_PLACEHOLDER_SOURCE),
         primaryCta: cta("v1_home_hero_experiences", "experiences", routeHref("experiences"), "hero", "primary", t05("Explore Experiences")),
         secondaryCta: cta("v1_home_hero_private", "privateGuide", routeHref("privateGuide"), "hero", "secondary", t05("Plan a Private Day")),
       },
@@ -60,8 +113,9 @@ export function getHomeViewModel(): HomeViewModel {
         cta: cta("v1_home_private", "privateGuide", routeHref("privateGuide"), "section", "primary", t05("Plan a Private Day")),
       },
       whyConnectrip: {
-        heading: t05("Why Connectrip"),
-        items: proposed(WHY_ITEMS, T05),
+        heading: proposed(ourValue.heading, OUR_VALUE_SOURCE),
+        supporting: proposed(ourValue.subheading, OUR_VALUE_SOURCE),
+        items: proposed(OUR_VALUE_ITEMS, OUR_VALUE_SOURCE),
       },
       howItWorks: {
         heading: pageName("How It Works"),
@@ -69,14 +123,30 @@ export function getHomeViewModel(): HomeViewModel {
         link: cta("v1_home_how", "howItWorks", routeHref("howItWorks"), "section", "secondary", pageName("How It Works")),
       },
       travelGuide: {
-        heading: t05("Explore Osaka Before You Arrive."),
-        // Up to three latest / featured articles. Titles and content are TBD.
-        articles: getArticleSummaries(),
+        heading: t05("Explore Osaka Like a Local."),
+        // Ended / out-of-period articles never appear (W1-D10).
+        articles: getHomeArticleSummaries(),
+        // Latest in Osaka (fresh) + Explore Osaka (evergreen), up to three each.
+        groups: getHomeTravelGuideGroups(),
         viewAll: cta("v1_home_travel_guide", "travelGuide", routeHref("travelGuide"), "section", "secondary", t05("Explore Osaka Travel Guide")),
+      },
+      sns: {
+        heading: proposed(currentSiteJa.sns.heading, SNS_SOURCE),
+        supporting: proposed(currentSiteJa.sns.subheading, SNS_SOURCE),
+        followLabel: proposed(currentSiteJa.sns.follow, SNS_SOURCE),
+        accounts: currentSiteJa.sns.items.map((item) => {
+          const platform = item.platform as SnsAccountPlatform;
+          return {
+            platform,
+            label: proposed(item.label, SNS_SOURCE),
+            handle: proposed(item.handle, SNS_SOURCE),
+            href: socialLinks[platform],
+          };
+        }),
       },
       finalCta: {
         heading: t05("Ready to Experience Kansai Your Way?"),
-        image: proposed(photos.osakaCastle, PHOTO_SOURCE),
+        image: proposed(FINAL_CTA_IMAGE, FINAL_CTA_IMAGE_SOURCE),
         browseExperiences: cta("v1_home_final_experiences", "experiences", routeHref("experiences"), "section", "primary", t05("Explore Experiences")),
         planPrivateDay: cta("v1_home_final_private", "privateGuide", routeHref("privateGuide"), "section", "secondary", t05("Plan a Private Day")),
       },

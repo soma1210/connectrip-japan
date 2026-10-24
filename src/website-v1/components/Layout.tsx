@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
 import type { Brand, LayoutViewModel } from "@/contracts";
 import { Container } from "@/components/ui/Container";
@@ -6,6 +7,14 @@ import { routeHref } from "../routes";
 import { CtaLink } from "./CtaLink";
 import { MobileMenu } from "./MobileMenu";
 import { TbdText } from "./Tbd";
+
+const SOCIAL_ICONS = {
+  tiktok: FaTiktok,
+  instagram: FaInstagram,
+  whatsapp: FaWhatsapp,
+  facebook: FaFacebookF,
+  youtube: FaYoutube,
+} as const;
 
 /** Preview notice. The v1 preview is noindex and not approved content. */
 export function PreviewBanner() {
@@ -76,15 +85,30 @@ export function V1Footer({ layout }: { layout: LayoutViewModel }) {
           <BrandMark brand={layout.brand} />
           <div className="mt-6">
             <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">SNS</p>
-            <div className="mt-3">
+            <div className="mt-4">
               {footer.social.status === "TBD" ? (
                 <TbdText value={footer.social} slot="SNS links" />
               ) : (
-                footer.social.value.map((link) => (
-                  <a key={link.platform} href={link.href} className="mr-3 text-sm text-cream/70 hover:text-gold">
-                    {link.platform}
-                  </a>
-                ))
+                // Same icon buttons as the current site's Footer.
+                <div className="flex flex-wrap gap-3">
+                  {footer.social.value.map((link) => {
+                    const Icon = SOCIAL_ICONS[link.platform];
+                    const name = link.label.status === "TBD" ? link.platform : link.label.value;
+                    return (
+                      <a
+                        key={link.platform}
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        aria-label={name}
+                        title={name}
+                        className="flex h-10 w-10 items-center justify-center border border-cream/20 text-cream/70 transition-colors hover:border-gold hover:text-gold"
+                      >
+                        <Icon className="h-4 w-4" />
+                      </a>
+                    );
+                  })}
+                </div>
               )}
             </div>
           </div>

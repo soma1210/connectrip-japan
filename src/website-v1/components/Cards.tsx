@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ExperienceSummary, PersonPreview, Tbd, TravelGuideArticleSummary } from "@/contracts";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { CtaLink } from "./CtaLink";
+import { PreviewFlags } from "./guide/GuideParts";
 import { formatDuration, formatMoney } from "./format";
 import { TbdImage, TbdMark, TbdText } from "./Tbd";
 
@@ -49,6 +50,7 @@ export function ArticleCard({ item, delay = 0 }: { item: TravelGuideArticleSumma
     <FadeIn delay={delay} className="flex flex-col">
       <Link href={item.href} className="relative block aspect-[4/3] overflow-hidden border border-gold/30">
         <TbdImage value={item.image} slot="Article photo" sizes="(min-width: 1024px) 33vw, 90vw" />
+        <PreviewFlags flags={item.previewFlags} className="absolute top-3 left-3" />
       </Link>
       <div className="mt-4 flex flex-1 flex-col">
         {item.category ? (

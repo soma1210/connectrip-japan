@@ -18,4 +18,9 @@ export type SeoMeta = {
   ogImage?: Tbd<ImageAsset>;
   noindex: boolean;
   breadcrumb?: BreadcrumbItem[];
+  /** Open Graph type. Defaults to "website". */
+  ogType?: "website" | "article";
+  /** Articles only: ISO dates, shown on the page as Published / Updated. */
+  publishedTime?: string;
+  modifiedTime?: string;
 };

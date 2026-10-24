@@ -1,5 +1,6 @@
 import { proposed, tbd } from "../status";
 import type {
+  TravelGuideArticleRecord,
   TravelGuideArticleSummary,
   TravelGuideArticleViewModel,
   TravelGuideListViewModel,
@@ -96,4 +97,50 @@ export const travelGuideArticleFixture: TravelGuideArticleViewModel = {
     privateGuideCta: { ...privateGuideCta, position: "section" },
     relatedArticles: [travelGuideArticleSummariesFixture[1]],
   },
+};
+
+/**
+ * Phase 1 record (W1-D10): the stored shape of an article. `demo: true`, so it
+ * can never pass the publish gate.
+ */
+export const travelGuideArticleRecordFixture: TravelGuideArticleRecord = {
+  id: "fixture-record",
+  slug: "fixture-record",
+  area: "osaka",
+  locale: "en",
+  articleType: "roundup",
+  topics: ["events"],
+  editorialState: "draft",
+  demo: true,
+  title: "[FIXTURE] Record title",
+  quickAnswer: "[FIXTURE] Quick answer.",
+  summary: "[FIXTURE] Summary.",
+  hero: fixtureImage(1200, 800, "Article image placeholder"),
+  author: { kind: "organization", name: "Connectrip Japan" },
+  coversFrom: "2099-01-01",
+  coversTo: "2099-01-31",
+  body: [
+    {
+      type: "event",
+      event: {
+        id: "fixture-event",
+        name: "[FIXTURE] Event",
+        venue: "[FIXTURE] Venue",
+        startDate: "2099-01-10",
+        endDate: "2099-01-12",
+        verification: { verificationMethod: "unverified" },
+      },
+    },
+    {
+      type: "localInsight",
+      insight: {
+        id: "fixture-insight",
+        kind: "tip",
+        text: "[FIXTURE] Tip.",
+        verification: { verificationMethod: "on_site", verifiedBy: { id: "fixture-staff" }, verifiedAt: "2099-01-05" },
+      },
+    },
+  ],
+  sources: [],
+  conversion: { relatedExperiences: [], privateGuide: { intensity: "soft" }, relatedArticleIds: [] },
 };

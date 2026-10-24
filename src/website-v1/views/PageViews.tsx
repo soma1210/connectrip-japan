@@ -13,6 +13,7 @@ import { PersonCard } from "../components/Cards";
 import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { PreviewInquiryForm } from "../components/PreviewInquiryForm";
+import { PrivateGuideBooking } from "../components/booking/PrivateGuideBooking";
 import { TbdImage, TbdMark, TbdText, textOr } from "../components/Tbd";
 
 export function PrivateGuideView({ vm }: { vm: PrivateGuideViewModel }) {
@@ -22,6 +23,13 @@ export function PrivateGuideView({ vm }: { vm: PrivateGuideViewModel }) {
       <div className="relative">
         <PageIntro headline={c.intro.headline} supporting={c.intro.supporting} slot="Private Guide" />
       </div>
+
+      {/* Slot booking (W1-D16): the standard way to book a Private Guide. */}
+      {c.booking ? (
+        <Section id="book">
+          <PrivateGuideBooking model={c.booking} />
+        </Section>
+      ) : null}
       <Section>
         <div className="grid items-start gap-10 md:grid-cols-2">
           <FadeIn className="relative aspect-[4/3] overflow-hidden border border-gold/30">
@@ -53,7 +61,8 @@ export function PrivateGuideView({ vm }: { vm: PrivateGuideViewModel }) {
               <TbdText value={c.pricingNote} slot="Pricing note" as="p" className="text-sm text-cream/80" />
             </div>
             <div className="flex flex-wrap gap-4">
-              <CtaLink cta={c.inquiryCta} />
+              {/* With slot booking, Inquiry is the quieter option (W1-D16). */}
+              <CtaLink cta={c.inquiryCta} variant={c.booking ? "text" : undefined} />
               {c.experiencesCta ? <CtaLink cta={c.experiencesCta} /> : null}
             </div>
           </div>
@@ -61,8 +70,9 @@ export function PrivateGuideView({ vm }: { vm: PrivateGuideViewModel }) {
       </Section>
 
       <Section tone="navy-dark">
-        <div className="grid gap-10 md:grid-cols-2">
-          <FlowSteps flow={c.flow} showDescriptions />
+        <div className={c.booking ? "grid gap-10" : "grid gap-10 md:grid-cols-2"}>
+          {/* The inquiry-first flow is replaced by the booking steps above (W1-D16). */}
+          {c.booking ? null : <FlowSteps flow={c.flow} showDescriptions />}
           <div>
             <h2 className="mb-4 font-heading-en text-xs tracking-[0.2em] text-cream/50 italic">EXAMPLE DAYS</h2>
             {c.exampleDays && c.exampleDays.status === "TBD" ? <TbdBlock value={c.exampleDays} slot="Example days" /> : null}

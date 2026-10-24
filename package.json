@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:init": "node scripts/init-db.mjs"
+    "db:init": "node scripts/init-db.mjs",
+    "check:v1-guides": "bun scripts/check-v1-guides.ts"
   },
   "dependencies": {
     "@next/third-parties": "^16.3.3",

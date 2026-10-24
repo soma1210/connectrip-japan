@@ -16,8 +16,11 @@ import type {
   PriceStructure,
   SiteNav,
   SocialMetric,
+  LocalInsight,
   Tbd,
   TravelGuideArticle,
+  TravelGuideArticleRecord,
+  VerificationRecord,
   VerifiedReview,
 } from "..";
 import {
@@ -34,6 +37,7 @@ import {
   privateGuideInquiryFormFixture,
   socialProofFixture,
   travelGuideArticleFixture,
+  travelGuideArticleRecordFixture,
   travelGuideListFixture,
 } from "../fixtures";
 
@@ -89,6 +93,28 @@ export const articleWithoutPrivateGuideCta: TravelGuideArticle = {
   ...travelGuideArticleFixture.content,
   // @ts-expect-error privateGuideCta is required
   privateGuideCta: undefined,
+};
+
+// --- Travel Guide Phase 1 (W1-D10) -------------------------------------------
+
+// "Checked on site" needs who and when.
+// @ts-expect-error verifiedBy / verifiedAt are required for on-site checks
+export const onSiteWithoutRecord: VerificationRecord = { verificationMethod: "on_site" };
+
+// Connectrip Local Insight only exists with an on-site record (K-3).
+export const insightFromOfficialSource: LocalInsight = {
+  id: "x",
+  kind: "tip",
+  text: "x",
+  // @ts-expect-error a Local Insight cannot rest on an official source alone
+  verification: { verificationMethod: "official_source", sourceId: "s", verifiedBy: { id: "a" }, verifiedAt: "2099-01-01" },
+};
+
+// The public author is the organization (K-3).
+export const articleWithPersonAuthor: TravelGuideArticleRecord = {
+  ...travelGuideArticleRecordFixture,
+  // @ts-expect-error author is Connectrip Japan
+  author: { kind: "person", name: "Someone" },
 };
 
 // --- Experience / money -----------------------------------------------------
@@ -205,6 +231,7 @@ export const fixturesTypecheck = [
   howItWorksFixture,
   travelGuideListFixture,
   travelGuideArticleFixture,
+  travelGuideArticleRecordFixture,
   inquiryFormFixture,
   privateGuideInquiryFormFixture,
 ] as const;

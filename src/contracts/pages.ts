@@ -9,7 +9,8 @@ import type { RouteKey } from "./routes";
 import type { SeoMeta } from "./seo";
 import type { SocialProofContent } from "./socialProof";
 import type { Tbd } from "./status";
-import type { TravelGuideArticleSummary } from "./travelGuide";
+import type { SelectMapContent } from "./select";
+import type { GuideArticleGroup, TravelGuideArticleSummary } from "./travelGuide";
 
 /** What a page-level View component receives from its route. */
 export type PageViewModel<K extends RouteKey, C> = {
@@ -33,6 +34,8 @@ export type OrientationCoreItem = {
  */
 export type HomeSectionKey =
   | "hero"
+  /** Connectrip Select — Explore Osaka map (Human instruction 2026-10-24). */
+  | "connectripSelect"
   | "featuredExperiences"
   | "privateGuide"
   | "whyConnectrip"
@@ -40,7 +43,26 @@ export type HomeSectionKey =
   | "howItWorks"
   | "travelGuide"
   | "socialProof"
+  /** SNS accounts section (W1-D08). Not Social Proof: no follower counts. */
+  | "sns"
   | "finalCta";
+
+export type SnsAccountPlatform = "tiktok" | "instagram" | "facebook" | "whatsapp";
+
+/** One SNS account card. Links only; never follower / view counts. */
+export type SnsAccount = {
+  platform: SnsAccountPlatform;
+  label: Tbd<string>;
+  handle: Tbd<string>;
+  href: string;
+};
+
+export type SnsSectionContent = {
+  heading: Tbd<string>;
+  supporting?: Tbd<string>;
+  followLabel: Tbd<string>;
+  accounts: SnsAccount[];
+};
 
 export type WhyItem = {
   title: Tbd<string>;
@@ -55,6 +77,11 @@ export type WhyItem = {
 export type HomeContent = {
   /** Render sections in this order. While TBD, use the baseline order. */
   sectionOrder: Tbd<HomeSectionKey[]>;
+  /**
+   * Connectrip Select — Osaka illustrated map, its own section between the
+   * Hero and Featured Experiences (Human instruction 2026-10-24).
+   */
+  connectripSelect?: SelectMapContent;
   /** Connectrip / Osaka / Local Experience / Guide must be understood here. */
   hero: {
     headline: Tbd<string>;
@@ -87,8 +114,10 @@ export type HomeContent = {
     /** T-05: interest candidates, same set as the Inquiry form. */
     interests?: PrivateGuideActivityItem[];
   };
+  /** Value section. Since W1-D07 it carries the current site's OUR VALUE (Working Baseline). */
   whyConnectrip: {
     heading: Tbd<string>;
+    supporting?: Tbd<string>;
     items: Tbd<WhyItem[]>;
   };
   /**
@@ -110,10 +139,14 @@ export type HomeContent = {
     supporting?: Tbd<string>;
     /** May be empty: design the empty state. */
     articles: TravelGuideArticleSummary[];
+    /** Latest in Osaka / Explore Osaka. When present, rendered instead of `articles`. */
+    groups?: GuideArticleGroup[];
     viewAll: CtaSpec<"travelGuide">;
   };
   /** On hold since T-05 (W1-D05): omitted until real reviews / track record exist. */
   socialProof?: SocialProofContent;
+  /** W1-D08: the current site's SNS section, ported as a Working Baseline. */
+  sns?: SnsSectionContent;
   finalCta: {
     heading: Tbd<string>;
     supporting?: Tbd<string>;
@@ -195,3 +228,74 @@ export type LegalPageViewModel<K extends "privacy" | "terms" = "privacy" | "term
   K,
   LegalPageContent
 >;
+
+// ---------------------------------------------------------------------------
+// Pages ported from the current site as a Working Baseline (W1-D09). Each
+// page's content travels as one Tbd value: PROPOSED (ported, not approved)
+// until a human approves it, TBD if removed.
+
+export type CompanyProfileRow = {
+  label: string;
+  value: string | string[];
+  note?: string;
+};
+
+export type CompanyProfileData = {
+  heading: string;
+  subheading: string;
+  rows: CompanyProfileRow[];
+  footerSignature?: string;
+};
+
+export type CompanyProfileViewModel = PageViewModel<"company", Tbd<CompanyProfileData>>;
+
+export type CancellationPolicySection = {
+  number: number;
+  title: string;
+  body: string;
+  note?: string;
+  table?: { headers: [string, string]; rows: [string, string][] };
+};
+
+export type CancellationPolicyData = {
+  heading: string;
+  subheading: string;
+  intro: string;
+  sections: CancellationPolicySection[];
+  footerSignature?: string;
+};
+
+export type CancellationPolicyViewModel = PageViewModel<"cancelPolicy", Tbd<CancellationPolicyData>>;
+
+export type BusinessInquiryCopy = {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  companyLabel: string;
+  companyPlaceholder: string;
+  contactNameLabel: string;
+  contactNamePlaceholder: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  typeLabel: string;
+  typeOptions: string[];
+  messageLabel: string;
+  messagePlaceholder: string;
+  note: string;
+  noteLink: string;
+  submit: string;
+  sending: string;
+  success: string;
+  successHeading: string;
+  backToTop: string;
+  error: string;
+};
+
+export type BusinessInquiryContent = {
+  copy: Tbd<BusinessInquiryCopy>;
+  /** Target of the note link (current site: the reservation form). */
+  noteLinkHref: string;
+  homeHref: string;
+};
+
+export type BusinessInquiryViewModel = PageViewModel<"businessInquiry", BusinessInquiryContent>;

@@ -16,5 +16,6 @@ export type * from "./inquiry";
 export type * from "./howItWorks";
 export type * from "./privateGuide";
 export type * from "./travelGuide";
+export type * from "./select";
 export type * from "./socialProof";
 export type * from "./pages";

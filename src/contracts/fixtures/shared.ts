@@ -18,12 +18,16 @@ export const fixtureHrefs: Record<Exclude<RouteKey, ParameterizedRouteKey>, stri
   home: "/",
   experiences: "/experiences",
   privateGuide: "/private-guide",
-  travelGuide: "/osaka-travel-guide",
+  travelGuide: "/travel-guide/osaka",
   howItWorks: "/how-it-works",
   about: "/about",
   inquiry: "/inquiry",
   privacy: "/privacy",
   terms: "/terms",
+  company: "/company",
+  cancelPolicy: "/cancel-policy",
+  businessInquiry: "/business-inquiry",
+  connectripSelect: "/connectrip-select/osaka",
 };
 
 export function fixtureExperienceHref(slug: string) {
@@ -35,7 +39,7 @@ export function fixtureBookingHref(slug: string) {
 }
 
 export function fixtureArticleHref(slug: string) {
-  return `/osaka-travel-guide/${slug}`;
+  return `/travel-guide/osaka/${slug}`;
 }
 
 export function fixtureCta<D extends CtaDestination>(

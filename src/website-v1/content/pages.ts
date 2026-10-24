@@ -2,6 +2,7 @@ import type { AboutViewModel, LayoutViewModel, LegalPageViewModel, NavItem } fro
 import { routeHref, type StaticRouteKey } from "../routes";
 import { baselineText, cta, pageName, pageSeo, proposed, tbd } from "./shared";
 import { getGuideSlots } from "./people";
+import { socialLinks } from "@/data/social-links";
 
 const PAGE_NAMES: Record<Exclude<StaticRouteKey, "home">, string> = {
   experiences: "Experiences",
@@ -12,6 +13,11 @@ const PAGE_NAMES: Record<Exclude<StaticRouteKey, "home">, string> = {
   inquiry: "Inquiry",
   privacy: "Privacy Policy",
   terms: "Terms",
+  // Current site Footer labels (messages/en.json footer.information).
+  company: "Company Profile",
+  cancelPolicy: "Cancellation Policy",
+  businessInquiry: "Business Inquiries",
+  connectripSelect: "Connectrip Select",
 };
 
 function navItem(route: Exclude<StaticRouteKey, "home">): NavItem {
@@ -43,8 +49,25 @@ export function getLayoutViewModel(): LayoutViewModel {
           navItem("about"),
           navItem("inquiry"),
         ],
-        legal: [navItem("privacy"), navItem("terms")],
-        social: tbd("SNS accounts not verified"),
+        legal: [
+          navItem("company"),
+          navItem("cancelPolicy"),
+          navItem("businessInquiry"),
+          navItem("privacy"),
+          navItem("terms"),
+        ],
+        // Same accounts and order as the current site's Footer (data/social-links).
+        social: proposed(
+          (["tiktok", "instagram", "whatsapp", "facebook"] as const).map((platform) => ({
+            platform,
+            href: socialLinks[platform],
+            label: proposed(
+              { tiktok: "TikTok", instagram: "Instagram", whatsapp: "WhatsApp", facebook: "Facebook" }[platform],
+              "Current site Footer",
+            ),
+          })),
+          "Current site Footer SNS links (data/social-links). WORKING_BASELINE (W1-D08)",
+        ),
       },
     },
   };

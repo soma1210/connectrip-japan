@@ -22,6 +22,7 @@ export {
   travelGuideArticleSummariesFixture,
   travelGuideListFixture,
   travelGuideArticleFixture,
+  travelGuideArticleRecordFixture,
 } from "./travelGuide";
 export { socialProofFixture } from "./socialProof";
 export { homeFixture, homeFixtureTbd } from "./home";

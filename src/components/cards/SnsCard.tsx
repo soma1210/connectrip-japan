@@ -22,12 +22,15 @@ export function SnsCard({
   label,
   handle,
   follow,
+  href,
   delay = 0,
 }: {
   platform: keyof typeof ICONS;
   label: string;
   handle: string;
   follow: string;
+  /** Defaults to the shared `socialLinks` URL for the platform. */
+  href?: string;
   delay?: number;
 }) {
   const Icon = ICONS[platform];
@@ -35,7 +38,7 @@ export function SnsCard({
   return (
     <FadeIn delay={delay} className="h-full">
       <a
-        href={socialLinks[platform]}
+        href={href ?? socialLinks[platform]}
         target="_blank"
         rel="noreferrer noopener"
         className="group flex h-full flex-col items-center gap-2 overflow-hidden bg-cream px-2 py-6 text-center text-navy transition-opacity hover:opacity-90 @container sm:gap-3 sm:px-6 sm:py-9 lg:py-10"

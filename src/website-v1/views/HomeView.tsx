@@ -2,22 +2,31 @@ import type { ReactNode } from "react";
 import type { HomeContent, HomeSectionKey, HomeViewModel } from "@/contracts";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
+import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ValueCard } from "@/components/cards/ValueCard";
+import { SnsCard } from "@/components/cards/SnsCard";
 import { HeroBackgroundSlider } from "@/components/sections/HeroBackgroundSlider";
 import { Section, SectionTitle, TbdBlock } from "../components/Blocks";
 import { ArticleCard, ExperienceCard, PersonCard } from "../components/Cards";
+import { ArticleGroup } from "../components/guide/ArticleGroup";
 import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
-import { TbdImage, TbdMark, TbdText } from "../components/Tbd";
+import { TbdImage, TbdMark, TbdText, textOr } from "../components/Tbd";
+import { heroFocus } from "../assets/heroImages";
 import { SocialProofBlock } from "./SocialProofBlock";
+import { SelectSection } from "../components/select/SelectSection";
 
 /** Used only while `sectionOrder` is TBD (T-05 Home Working Baseline). */
 const BASELINE_ORDER: HomeSectionKey[] = [
   "hero",
+  "connectripSelect",
   "featuredExperiences",
   "privateGuide",
   "whyConnectrip",
   "howItWorks",
   "travelGuide",
+  "sns",
   "finalCta",
 ];
 
@@ -27,7 +36,13 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
       {hero.images.status === "TBD" ? (
         <TbdImage value={hero.images} slot="Hero photos" />
       ) : (
-        <HeroBackgroundSlider images={hero.images.value.map((i) => i.src)} alts={hero.images.value.map((i) => i.alt)} />
+        <HeroBackgroundSlider
+          images={hero.images.value.map((i) => i.src)}
+          alts={hero.images.value.map((i) => i.alt)}
+          objectPositions={hero.images.value.map((i) => heroFocus(i.src))}
+          shuffle={false}
+          preloadNext
+        />
       )}
       <div className="absolute inset-0 bg-navy-dark/55" />
       <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/90 via-navy-dark/5 to-transparent" />
@@ -138,26 +153,41 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
   );
 }
 
+/**
+ * OUR VALUE (W1-D07, WORKING_BASELINE): same layout as the current site's
+ * ValueSection — SectionHeading, 1 / 2 / 3-column grid, reused ValueCard.
+ * The current site's CTA (to /reservation) is not ported.
+ */
 function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
   return (
-    <Section id="why">
-      <SectionTitle heading={section.heading} slot="Why Connectrip" />
-      {section.items.status === "TBD" ? (
-        <TbdBlock value={section.items} slot="USP items" />
-      ) : (
-        <div className="grid gap-5 md:grid-cols-3">
-          {section.items.value.map((item, i) => (
-            // ValueCard styling (number in red, title in gold) without a photo.
-            <FadeIn key={i} delay={i * 0.1} className="flex flex-col gap-4 border border-gold/30 bg-navy-dark/40 p-6 md:p-8">
-              <p className="font-medium text-gold text-lg md:text-xl">
-                <span className="text-red">{i + 1}.</span> <TbdText value={item.title} slot="Pillar title" />
-              </p>
-              <TbdText value={item.description} slot="Pillar description" as="p" className="text-sm leading-relaxed text-cream/80" />
-            </FadeIn>
-          ))}
-        </div>
-      )}
-    </Section>
+    <section id="value" lang="ja" className="bg-navy-dark py-12 md:py-20">
+      <Container>
+        {section.heading.status === "TBD" ? (
+          <SectionTitle heading={section.heading} supporting={section.supporting} slot="OUR VALUE" />
+        ) : (
+          <SectionHeading
+            heading={section.heading.value}
+            subheading={section.supporting && section.supporting.status !== "TBD" ? section.supporting.value : undefined}
+          />
+        )}
+        {section.items.status === "TBD" ? (
+          <TbdBlock value={section.items} slot="OUR VALUE items" />
+        ) : (
+          <div className="grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
+            {section.items.value.map((item, i) => (
+              <ValueCard
+                key={i}
+                number={String(i + 1)}
+                title={textOr(item.title, "")}
+                description={textOr(item.description, "")}
+                image={item.image && item.image.status !== "TBD" ? item.image.value.src : ""}
+                delay={(i % 3) * 0.08}
+              />
+            ))}
+          </div>
+        )}
+      </Container>
+    </section>
   );
 }
 
@@ -196,11 +226,20 @@ function HowItWorks({ section }: { section: HomeContent["howItWorks"] }) {
 }
 
 function TravelGuide({ section }: { section: HomeContent["travelGuide"] }) {
+  const groups = section.groups?.filter((g) => g.articles.length > 0);
+  const empty = groups ? groups.length === 0 : section.articles.length === 0;
   return (
     <Section id="travel-guide" tone="navy-dark">
       <SectionTitle heading={section.heading} supporting={section.supporting} slot="Osaka Travel Guide" />
-      {section.articles.length === 0 ? (
+      {empty ? (
         <TbdBlock value={{ status: "TBD", note: "No articles yet" }} slot="Articles" />
+      ) : groups ? (
+        // Latest in Osaka + Explore Osaka: up to three cards each, two on mobile.
+        <div className="flex flex-col gap-12 md:gap-16">
+          {groups.map((group) => (
+            <ArticleGroup key={group.key} group={group} mobileMax={2} headingAs="h3" />
+          ))}
+        </div>
       ) : (
         <div className="grid gap-8 md:grid-cols-3">
           {section.articles.map((item, i) => (
@@ -212,6 +251,40 @@ function TravelGuide({ section }: { section: HomeContent["travelGuide"] }) {
         <CtaLink cta={section.viewAll} />
       </div>
     </Section>
+  );
+}
+
+/**
+ * SNS (W1-D08, WORKING_BASELINE): same layout as the current site's
+ * SnsSection, reusing SnsCard. Accounts only; no follower or view counts.
+ */
+function Sns({ section }: { section: NonNullable<HomeContent["sns"]> }) {
+  return (
+    <section id="sns" lang="ja" className="bg-navy-dark py-12 md:py-20">
+      <Container>
+        {section.heading.status === "TBD" ? (
+          <SectionTitle heading={section.heading} supporting={section.supporting} slot="SNS" />
+        ) : (
+          <SectionHeading
+            heading={section.heading.value}
+            subheading={section.supporting && section.supporting.status !== "TBD" ? section.supporting.value : undefined}
+          />
+        )}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+          {section.accounts.map((account, index) => (
+            <SnsCard
+              key={account.platform}
+              platform={account.platform}
+              label={textOr(account.label, "")}
+              handle={textOr(account.handle, "")}
+              follow={textOr(section.followLabel, "")}
+              href={account.href}
+              delay={index * 0.06}
+            />
+          ))}
+        </div>
+      </Container>
+    </section>
   );
 }
 
@@ -241,6 +314,7 @@ export function HomeView({ vm }: { vm: HomeViewModel }) {
 
   const sections: Record<HomeSectionKey, ReactNode | null> = {
     hero: <Hero hero={c.hero} />,
+    connectripSelect: c.connectripSelect ? <SelectSection content={c.connectripSelect} /> : null,
     featuredExperiences: <FeaturedExperiences section={c.featuredExperiences} />,
     privateGuide: <PrivateGuide section={c.privateGuide} />,
     whyConnectrip: <WhyConnectrip section={c.whyConnectrip} />,
@@ -253,6 +327,7 @@ export function HomeView({ vm }: { vm: HomeViewModel }) {
         <SocialProofBlock content={c.socialProof} />
       </Section>
     ) : null,
+    sns: c.sns ? <Sns section={c.sns} /> : null,
     finalCta: <FinalCta section={c.finalCta} />,
   };
 

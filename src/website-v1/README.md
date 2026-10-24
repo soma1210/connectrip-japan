@@ -32,3 +32,33 @@ at `/` (`[locale]` routes). All preview pages are `noindex`.
   backend are TBD. The Inquiry form submits to a mock handler only.
 - Photos reused from the current site are marked rights / consent
   `NOT_VERIFIED`; they must be cleared before v1 goes public.
+
+## Travel Guide (Phase 1, W1-D10)
+
+Design: Obsidian `04_TRAVEL/Website v1/04_AIO_SEO/Travel Guide Content Platform.md`.
+
+| Path | Role |
+|---|---|
+| `content/guides/<area>/*.ts` | Article records (`TravelGuideArticleRecord`). Add new ones to `content/guides/index.ts` |
+| `content/guides/freshness.ts` | Event / period / needs-review states and "checked" labels, computed from dates (Japan time) |
+| `content/guides/validate.ts` | Publish gate. A published record with errors stops the build |
+| `content/travelGuide.ts` | Hub / article / Home view models |
+| `metadata.ts` · `structuredData.ts` | Title, canonical, OG, X, robots · `Article` + `BreadcrumbList` JSON-LD |
+| `sitemap.ts` | Travel Guide sitemap entries (wired into `src/app/sitemap.ts` at v1 launch) |
+| `config.ts` | `V1_PREVIEW`: drafts visible with labels, everything noindex |
+
+URLs: `/v1/travel-guide/osaka` (hub), `/v1/travel-guide/osaka/{slug}` (article),
+`/v1/travel-guide` → hub (307). Production drops the `/v1` prefix.
+
+```bash
+bun run check:v1-guides   # self-tests + publish-gate report for every article
+```
+
+- `osaka-events-this-month` is a DEMO / PLACEHOLDER / NOT FOR PRODUCTION
+  record (`demo: true`). It cannot pass the gate. Replace it with events
+  checked against official information before publishing.
+- `updatedAt` / `publishedAt` are set by people when content changes. Never
+  use build times.
+- "Checked on site" and Connectrip Local Insight need a verification record
+  (who, how, when). Images need `assetRights` with verified rights and no
+  watermark.

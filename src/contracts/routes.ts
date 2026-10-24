@@ -19,7 +19,13 @@ export type RouteKey =
   | "about"
   | "inquiry"
   | "privacy"
-  | "terms";
+  | "terms"
+  /** Ported from the current site as a Working Baseline (W1-D09). */
+  | "company"
+  | "cancelPolicy"
+  | "businessInquiry"
+  /** Connectrip Select map (Osaka first). */
+  | "connectripSelect";
 
 /** Routes whose href depends on a record (an experience, an article). */
 export type ParameterizedRouteKey = "experienceDetail" | "booking" | "guideArticle";

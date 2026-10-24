@@ -10,7 +10,7 @@ export type NavItem = {
   label: Tbd<string>;
 };
 
-export type SocialPlatform = "instagram" | "tiktok" | "facebook" | "youtube";
+export type SocialPlatform = "instagram" | "tiktok" | "facebook" | "youtube" | "whatsapp";
 
 export type SocialLink = {
   platform: SocialPlatform;

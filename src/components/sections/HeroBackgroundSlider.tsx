@@ -14,13 +14,22 @@ const OBJECT_POSITIONS: Record<string, string> = {
 export function HeroBackgroundSlider({
   images,
   alts,
+  objectPositions,
+  shuffle = true,
+  preloadNext = false,
 }: {
   images: string[];
   alts: string[];
+  /** Per-image CSS object-position (crop focus), by index. */
+  objectPositions?: (string | undefined)[];
+  /** Keep the first slide and shuffle the rest. Set false for a fixed order. */
+  shuffle?: boolean;
+  /** Load the next slide in the background so transitions never show a blank frame. */
+  preloadNext?: boolean;
 }) {
   const [order] = useState(() => {
     const indices = images.map((_, i) => i);
-    if (indices.length <= 2) return indices;
+    if (!shuffle || indices.length <= 2) return indices;
     const rest = indices.slice(1);
     for (let i = rest.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -39,6 +48,7 @@ export function HeroBackgroundSlider({
   }, [order.length]);
 
   const index = order[position] ?? 0;
+  const nextIndex = order[(position + 1) % order.length] ?? 0;
 
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -56,10 +66,16 @@ export function HeroBackgroundSlider({
             alt={alts[index] ?? ""}
             sizes="100vw"
             priority={index === 0}
-            objectPosition={OBJECT_POSITIONS[images[index]]}
+            objectPosition={objectPositions?.[index] ?? OBJECT_POSITIONS[images[index]]}
           />
         </motion.div>
       </AnimatePresence>
+      {preloadNext && nextIndex !== index ? (
+        // Invisible copy of the next slide so it is loaded before it fades in.
+        <div className="pointer-events-none absolute inset-0 opacity-0" aria-hidden>
+          <PlaceholderImage src={images[nextIndex]} alt="" sizes="100vw" objectPosition={objectPositions?.[nextIndex]} />
+        </div>
+      ) : null}
     </div>
   );
 }
