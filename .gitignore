@@ -48,3 +48,6 @@ next-env.d.ts
 
 # local dev data store for forms when no database is connected
 /.data
+
+# netlify
+.netlify
