@@ -1,4 +1,4 @@
-// One-time setup: creates the gallery/vlog/reviews tables in the connected
+// Setup: creates the gallery/vlog/reviews and guide-application tables in the connected
 // Vercel Postgres database. Run with `bun run db:init` after linking
 // Postgres to this project (so POSTGRES_URL is available, e.g. via
 // `vercel env pull .env.local`).
