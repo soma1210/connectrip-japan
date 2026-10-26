@@ -25,6 +25,7 @@ import {
   guideStorageMode,
   listGuideApplications,
 } from "@/lib/data/guide-applications";
+import { ClickableRow } from "./ClickableRow";
 import { StatusBadge } from "./StatusBadge";
 
 const controlClass =
@@ -212,13 +213,13 @@ export default async function AdminGuideApplicationsPage({
 
           {/* Tablets and up: table */}
           <div className="hidden overflow-x-auto rounded-lg border border-navy/15 bg-white md:block">
-            <table className="w-full min-w-[960px] text-left text-sm">
+            <table className="w-full min-w-[980px] text-left text-sm">
               <thead className="border-b border-navy/10 bg-navy/[0.03] text-xs text-navy/60">
                 <tr>
-                  {["名前・居住", "ステータス", "言語・レベル", "対応エリア", "ガイド経験", "職業", "稼働", "目的", "応募日"].map(
+                  {["名前・居住", "ステータス", "言語・レベル", "対応エリア", "ガイド経験", "職業", "稼働", "目的", "応募日", ""].map(
                     (heading) => (
-                      <th key={heading} className="whitespace-nowrap px-4 py-3 font-medium">
-                        {heading}
+                      <th key={heading || "detail"} className="whitespace-nowrap px-4 py-3 font-medium">
+                        {heading || <span className="sr-only">詳細</span>}
                       </th>
                     ),
                   )}
@@ -226,25 +227,28 @@ export default async function AdminGuideApplicationsPage({
               </thead>
               <tbody className="divide-y divide-navy/10">
                 {applications.map((app) => (
-                  <tr key={app.id} className="align-top transition-colors hover:bg-cream/70">
-                    <td className="min-w-36 px-4 py-3">
+                  <ClickableRow key={app.id} href={`/admin/guide-applications/${app.id}`}>
+                    <td className="min-w-32 px-4 py-3">
                       <Link
                         href={`/admin/guide-applications/${app.id}`}
-                        className="font-semibold underline-offset-2 hover:underline"
+                        className="font-semibold text-navy underline decoration-navy/30 underline-offset-4 group-hover:decoration-navy"
                       >
                         {app.name}
+                        <span aria-hidden className="ml-1 inline-block text-navy/40 transition-transform group-hover:translate-x-0.5 group-hover:text-navy">
+                          →
+                        </span>
                       </Link>
                       <p className="mt-0.5 text-xs text-navy/50">
                         {app.prefecture} {app.city}
                       </p>
                     </td>
-                    <td className="min-w-32 px-4 py-3">
+                    <td className="min-w-28 px-3 py-3">
                       <StatusBadge status={app.pipeline_status} statuses={statuses} />
                       <p className="mt-1.5 text-xs text-navy/50">
                         {formatChoice(INTERVIEW_PREFERENCES, app.interview_preference)}
                       </p>
                     </td>
-                    <td className="min-w-44 px-4 py-3 text-xs">
+                    <td className="min-w-40 px-3 py-3 text-xs">
                       <LanguageList app={app} />
                     </td>
                     <td className="min-w-28 px-4 py-3 text-xs">
@@ -260,13 +264,21 @@ export default async function AdminGuideApplicationsPage({
                       </p>
                       <p className="text-navy/50">{shortDays(app.available_days)}</p>
                     </td>
-                    <td className="min-w-40 max-w-56 px-4 py-3 text-xs text-navy/70">
+                    <td className="min-w-32 max-w-48 px-3 py-3 text-xs text-navy/70">
                       <p className="line-clamp-3">
                         {formatChoices(GUIDE_PURPOSES, app.guide_purposes, app.guide_purposes_other)}
                       </p>
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 text-xs text-navy/60">{formatDate(app.created_at)}</td>
-                  </tr>
+                    <td className="whitespace-nowrap py-3 pl-2 pr-4 text-right">
+                      <Link
+                        href={`/admin/guide-applications/${app.id}`}
+                        className="inline-flex items-center rounded-md border border-navy/20 bg-white px-3 py-1.5 text-xs font-medium text-navy transition-colors hover:border-navy group-hover:border-navy/50"
+                      >
+                        詳細を見る →
+                      </Link>
+                    </td>
+                  </ClickableRow>
                 ))}
               </tbody>
             </table>

@@ -93,6 +93,24 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
+/** Free-text answers (motivation, self-introduction…): label above, full-width readable block. */
+function LongRow({ label, text, highlight = false }: { label: string; text: string; highlight?: boolean }) {
+  return (
+    <div className="flex flex-col gap-2 px-4 py-4">
+      <dt className={`text-xs leading-relaxed ${highlight ? "font-semibold text-navy" : "text-navy/55"}`}>{label}</dt>
+      <dd
+        className={`whitespace-pre-wrap break-words rounded-md leading-[1.9] ${
+          highlight
+            ? "border-l-4 border-gold bg-cream/70 px-4 py-3 text-[15px]"
+            : "bg-navy/[0.03] px-3 py-2.5 text-sm"
+        }`}
+      >
+        {text}
+      </dd>
+    </div>
+  );
+}
+
 const empty = <span className="text-navy/35">—</span>;
 
 export default async function AdminGuideApplicationDetailPage({
@@ -106,8 +124,11 @@ export default async function AdminGuideApplicationDetailPage({
 
   return (
     <div className="relative left-1/2 flex w-[min(1100px,calc(100vw-2rem))] -translate-x-1/2 flex-col gap-6">
-      <Link href="/admin/guide-applications" className="w-fit text-xs text-navy/60 hover:underline">
-        ← 応募者一覧
+      <Link
+        href="/admin/guide-applications"
+        className="w-fit rounded-md border border-navy/20 bg-white px-3 py-2 text-sm text-navy transition-colors hover:border-navy"
+      >
+        ← 応募者一覧に戻る
       </Link>
 
       {/* Summary */}
@@ -237,12 +258,26 @@ export default async function AdminGuideApplicationDetailPage({
                   );
                 }
                 const text = answerText(question, app);
+                const label = `Q${question.number}. ${question.label}`;
+                if (question.type === "textarea" && text) {
+                  return (
+                    <LongRow
+                      key={question.number}
+                      label={label}
+                      text={text}
+                      highlight={question.field === "self_introduction"}
+                    />
+                  );
+                }
                 return (
-                  <Row key={question.number} label={`Q${question.number}. ${question.label}`}>
+                  <Row key={question.number} label={label}>
                     {text || (question.visibleWhen ? <span className="text-navy/35">（該当なし）</span> : empty)}
                   </Row>
                 );
               })}
+              {section.id === "interview" ? (
+                <Row label="応募日時">{formatDate(app.created_at, true)}</Row>
+              ) : null}
             </Group>
           ))}
           <Group title="同意">
