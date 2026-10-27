@@ -17,8 +17,8 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   return (
     <div className="min-h-screen bg-cream text-navy">
       <header className="border-b border-navy/10 bg-white">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
-          <nav className="flex gap-6 text-sm">
+        <div className="mx-auto flex max-w-4xl items-start justify-between gap-4 px-6 py-4">
+          <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
             <Link href="/admin" className="font-medium hover:text-navy/70">
               管理画面
             </Link>
@@ -31,9 +31,15 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <Link href="/admin/reviews" className="hover:text-navy/70">
               レビュー
             </Link>
+            <Link href="/admin/guide-applications" className="hover:text-navy/70">
+              ガイド応募
+            </Link>
+            <Link href="/admin/partner-applications" className="hover:text-navy/70">
+              パートナー応募
+            </Link>
           </nav>
           <form action={logout}>
-            <button type="submit" className="text-xs text-navy/50 hover:text-navy">
+            <button type="submit" className="whitespace-nowrap text-xs text-navy/50 hover:text-navy">
               ログアウト
             </button>
           </form>

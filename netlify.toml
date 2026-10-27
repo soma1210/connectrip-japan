@@ -1,0 +1,9 @@
+# Netlify build for the Next.js app (Guide Community).
+#
+# The mkdir works around a bug in @netlify/plugin-nextjs (<= 5.16.4): with
+# Next 16's Node.js-runtime proxy (src/proxy.ts) it writes
+# server/functions-config-manifest.json into the server handler before that
+# folder exists (ENOENT). The adapter clears this folder in onPreBuild and fills
+# it in onBuild; the build command runs in between, so pre-creating it is safe.
+[build]
+  command = "bun run build && mkdir -p .netlify/functions-internal/___netlify-server-handler/.next/server"

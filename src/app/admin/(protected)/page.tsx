@@ -37,6 +37,20 @@ export default function AdminDashboardPage() {
           <p className="text-lg font-medium">レビュー</p>
           <p className="mt-1 text-sm text-navy/60">口コミの追加・削除</p>
         </Link>
+        <Link
+          href="/admin/guide-applications"
+          className="border border-navy/15 bg-white p-6 transition-colors hover:border-navy/40"
+        >
+          <p className="text-lg font-medium">ガイド応募</p>
+          <p className="mt-1 text-sm text-navy/60">応募者の確認・ステータス管理</p>
+        </Link>
+        <Link
+          href="/admin/partner-applications"
+          className="border border-navy/15 bg-white p-6 transition-colors hover:border-navy/40"
+        >
+          <p className="text-lg font-medium">パートナー応募</p>
+          <p className="mt-1 text-sm text-navy/60">パートナーアンケートの確認・営業ステータス管理</p>
+        </Link>
       </div>
     </div>
   );

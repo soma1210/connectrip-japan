@@ -52,7 +52,7 @@ export function Header() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-10 xl:flex">
+        <nav className="hidden items-center gap-5 xl:flex min-[1366px]:gap-7">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.key}
@@ -62,6 +62,12 @@ export function Header() {
               {t(item.key)}
             </Link>
           ))}
+          <Link
+            href="/partner"
+            className="whitespace-nowrap text-xs tracking-[0.1em] text-cream/80 transition-colors hover:text-gold"
+          >
+            {t("partner")}
+          </Link>
         </nav>
 
         <div className="hidden items-center gap-5 xl:flex">
@@ -122,6 +128,13 @@ export function Header() {
                 {t(item.key)}
               </Link>
             ))}
+            <Link
+              href="/partner"
+              onClick={() => setOpen(false)}
+              className="text-sm tracking-[0.1em] text-cream/80"
+            >
+              {t("partner")}
+            </Link>
 
             <div className="flex flex-col gap-3 border-t border-gold/20 pt-5">
               <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">

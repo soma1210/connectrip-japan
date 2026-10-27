@@ -19,9 +19,12 @@ export function verifyAdminPassword(input: string) {
 }
 
 export async function isAdminAuthenticated() {
+  // Read cookies first so every page behind this check renders per request.
+  // Otherwise a build without ADMIN_PASSWORD prerenders /admin as a static
+  // redirect to /admin/login, which loops with the login page once signed in.
+  const cookieStore = await cookies();
   const token = expectedToken();
   if (!token) return false;
-  const cookieStore = await cookies();
   return cookieStore.get(COOKIE_NAME)?.value === token;
 }
 

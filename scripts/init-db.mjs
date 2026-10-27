@@ -1,4 +1,4 @@
-// One-time setup: creates the gallery/vlog/reviews tables in the connected
+// Setup: creates the gallery/vlog/reviews and guide-application tables in the connected
 // Vercel Postgres database. Run with `bun run db:init` after linking
 // Postgres to this project (so POSTGRES_URL is available, e.g. via
 // `vercel env pull .env.local`).
@@ -16,7 +16,13 @@ if (!process.env.POSTGRES_URL) {
   process.exit(1);
 }
 
-const schema = readFileSync(join(__dirname, "../sql/schema.sql"), "utf8");
+// With no argument this runs sql/schema.sql, as before. Pass a path to run
+// only that file instead (e.g. an additive table set):
+//   node scripts/init-db.mjs sql/partner-applications.sql
+const file = process.argv[2]
+  ? join(process.cwd(), process.argv[2])
+  : join(__dirname, "../sql/schema.sql");
+const schema = readFileSync(file, "utf8");
 const statements = schema
   .split(";")
   .map((s) => s.trim())
