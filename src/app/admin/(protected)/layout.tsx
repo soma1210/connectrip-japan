@@ -34,6 +34,9 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <Link href="/admin/guide-applications" className="hover:text-navy/70">
               ガイド応募
             </Link>
+            <Link href="/admin/partner-applications" className="hover:text-navy/70">
+              パートナー応募
+            </Link>
           </nav>
           <form action={logout}>
             <button type="submit" className="whitespace-nowrap text-xs text-navy/50 hover:text-navy">
