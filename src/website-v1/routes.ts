@@ -44,6 +44,22 @@ export function experienceHref(slug: string): string {
   return withBase(`${STATIC_PATHS.experiences}/${slug}`);
 }
 
+/**
+ * Recruiting pages (Human instruction 2026-10-27). Website-local, so the shared
+ * `RouteKey` contract stays unchanged. Partner pages follow the base path
+ * (`/v1/partner` now, `/partner` at launch). Guide Community is a standalone
+ * page with its own root layout outside `/v1`, so its path never changes.
+ */
+export type RecruitRouteKey = "guideCommunity" | "partner" | "partnerApply";
+
+const GUIDE_COMMUNITY_PATH = "/guide-community";
+const PARTNER_PATH = "/partner";
+
+export function recruitHref(key: RecruitRouteKey): string {
+  if (key === "guideCommunity") return GUIDE_COMMUNITY_PATH;
+  return withBase(key === "partner" ? PARTNER_PATH : `${PARTNER_PATH}/apply`);
+}
+
 /** Booking Flow page. Not built in the preview (booking backend is out of scope). */
 export function bookingHref(slug: string): string {
   return withBase(`${STATIC_PATHS.experiences}/${slug}/book`);

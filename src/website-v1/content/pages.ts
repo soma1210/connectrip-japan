@@ -1,5 +1,5 @@
 import type { AboutViewModel, LayoutViewModel, LegalPageViewModel, NavItem } from "@/contracts";
-import { routeHref, type StaticRouteKey } from "../routes";
+import { recruitHref, routeHref, type StaticRouteKey } from "../routes";
 import { baselineText, cta, pageName, pageSeo, proposed, tbd } from "./shared";
 import { getGuideSlots } from "./people";
 import { socialLinks } from "@/data/social-links";
@@ -22,6 +22,25 @@ const PAGE_NAMES: Record<Exclude<StaticRouteKey, "home">, string> = {
 
 function navItem(route: Exclude<StaticRouteKey, "home">): NavItem {
   return { id: `v1_nav_${route}`, route, href: routeHref(route), label: pageName(PAGE_NAMES[route]) };
+}
+
+/**
+ * RECRUIT group (Human instruction 2026-10-27): a header dropdown, a mobile
+ * accordion and Footer INFORMATION links. Website-local, not part of
+ * `LayoutViewModel`, because recruiting pages have no shared `RouteKey`.
+ * `external`: Guide Community has its own root layout, so it needs a full page load.
+ */
+export type RecruitLink = { id: string; href: string; label: string; external: boolean };
+export type RecruitNav = { label: string; items: RecruitLink[] };
+
+export function getRecruitNav(): RecruitNav {
+  return {
+    label: "RECRUIT",
+    items: [
+      { id: "v1_nav_recruit_guide", href: recruitHref("guideCommunity"), label: "Guide Recruitment", external: true },
+      { id: "v1_nav_recruit_partner", href: recruitHref("partner"), label: "Partner Recruitment", external: false },
+    ],
+  };
 }
 
 /**

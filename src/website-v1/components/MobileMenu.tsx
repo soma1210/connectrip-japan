@@ -5,10 +5,12 @@ import { Menu, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import type { NavItem } from "@/contracts";
 import { Container } from "@/components/ui/Container";
+import type { RecruitNav } from "../content/pages";
+import { RecruitAccordion } from "./RecruitMenu";
 import { TbdText } from "./Tbd";
 
 /** Mobile navigation, same behaviour and styles as the current site's Header. */
-export function MobileMenu({ items, children }: { items: NavItem[]; children: ReactNode }) {
+export function MobileMenu({ items, recruit, children }: { items: NavItem[]; recruit: RecruitNav; children: ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -31,6 +33,7 @@ export function MobileMenu({ items, children }: { items: NavItem[]; children: Re
                 <TbdText value={item.label} slot="Nav label" />
               </Link>
             ))}
+            <RecruitAccordion recruit={recruit} onNavigate={() => setOpen(false)} />
             <div className="border-t border-gold/20 pt-5" onClick={() => setOpen(false)}>
               {children}
             </div>

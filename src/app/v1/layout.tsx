@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Shippori_Mincho_B1 } from "next/font/google";
-import { getLayoutViewModel } from "@/website-v1/content/pages";
+import { getLayoutViewModel, getRecruitNav } from "@/website-v1/content/pages";
 import { PreviewBanner, V1Footer, V1Header } from "@/website-v1/components/Layout";
 import "../globals.css";
 
@@ -24,13 +24,14 @@ export const metadata: Metadata = {
  */
 export default function WebsiteV1Layout({ children }: { children: ReactNode }) {
   const layout = getLayoutViewModel();
+  const recruit = getRecruitNav();
   return (
     <html lang="en" className={`${shipporiMinchoB1.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-navy text-cream">
         <PreviewBanner />
-        <V1Header layout={layout} />
+        <V1Header layout={layout} recruit={recruit} />
         <main className="flex-1">{children}</main>
-        <V1Footer layout={layout} />
+        <V1Footer layout={layout} recruit={recruit} />
       </body>
     </html>
   );

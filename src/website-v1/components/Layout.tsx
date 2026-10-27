@@ -5,7 +5,9 @@ import type { Brand, LayoutViewModel } from "@/contracts";
 import { Container } from "@/components/ui/Container";
 import { routeHref } from "../routes";
 import { CtaLink } from "./CtaLink";
+import type { RecruitNav } from "../content/pages";
 import { MobileMenu } from "./MobileMenu";
+import { RecruitDropdown } from "./RecruitMenu";
 import { TbdText } from "./Tbd";
 
 const SOCIAL_ICONS = {
@@ -48,7 +50,7 @@ function BrandMark({ brand }: { brand: Brand }) {
 }
 
 /** Same structure and styles as the current site's Header. */
-export function V1Header({ layout }: { layout: LayoutViewModel }) {
+export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
   const { nav } = layout;
   return (
     <header className="sticky top-0 z-50 border-b border-dashed border-gold/30 bg-navy/95 backdrop-blur">
@@ -61,13 +63,14 @@ export function V1Header({ layout }: { layout: LayoutViewModel }) {
               <TbdText value={item.label} slot="Nav label" />
             </Link>
           ))}
+          <RecruitDropdown recruit={recruit} />
         </nav>
 
         <div className="hidden xl:block">
           <CtaLink cta={nav.headerCta} size="sm" />
         </div>
 
-        <MobileMenu items={nav.primary}>
+        <MobileMenu items={nav.primary} recruit={recruit}>
           <CtaLink cta={nav.headerCta} size="sm" />
         </MobileMenu>
       </Container>
@@ -76,7 +79,7 @@ export function V1Header({ layout }: { layout: LayoutViewModel }) {
 }
 
 /** Same structure and styles as the current site's Footer. */
-export function V1Footer({ layout }: { layout: LayoutViewModel }) {
+export function V1Footer({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
   const { footer } = layout.nav;
   return (
     <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
@@ -133,6 +136,18 @@ export function V1Footer({ layout }: { layout: LayoutViewModel }) {
                 <TbdText value={item.label} slot="Nav label" />
               </Link>
             ))}
+            {/* Same targets as the header RECRUIT menu; Guide Community needs a full page load. */}
+            {recruit.items.map((item) =>
+              item.external ? (
+                <a key={item.id} href={item.href} className="text-sm text-cream/70 transition-colors hover:text-gold">
+                  {item.label}
+                </a>
+              ) : (
+                <Link key={item.id} href={item.href} className="text-sm text-cream/70 transition-colors hover:text-gold">
+                  {item.label}
+                </Link>
+              ),
+            )}
           </nav>
         </div>
       </Container>
