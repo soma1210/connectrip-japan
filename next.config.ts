@@ -21,6 +21,19 @@ const nextConfig: NextConfig = {
       ? [{ source: "/", destination: "/v1", permanent: false }]
       : [];
   },
+  // Netlify test deploys (*.netlify.app): keep every page, including HTML
+  // rendered by the Next.js server, out of search engines. netlify.toml headers
+  // only reach static files. Matched by host, so a custom domain
+  // (connectripjapan.com) is not affected.
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: ".*\\.netlify\\.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);
