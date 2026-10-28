@@ -44,7 +44,15 @@ export type PrivateGuideContent = {
   activities: PrivateGuideActivityItem[];
   areas: PrivateGuideAreaItem[];
   exampleDays?: Tbd<ExampleDay[]>;
+  /** Shared Private Guide flow (Home / How It Works). The product page shows `bookingSteps` instead when present. */
   flow: HowItWorksFlow<"private_guide">;
+  /** Why a private guide rather than a fixed tour (product page). */
+  why?: { heading: Tbd<string>; points: { title: Tbd<string>; description: Tbd<string> }[] };
+  /**
+   * Booking-first steps for the product page (Human Decision 2026-10-25):
+   * choose plan → date & time → book → plan the day together → explore.
+   */
+  bookingSteps?: { heading: Tbd<string>; steps: { title: Tbd<string>; description: Tbd<string> }[] };
   /** Price is given per request after consultation (amounts TBD). */
   pricingNote: Tbd<string>;
   /** Real guides only (WD-003). */
@@ -52,7 +60,12 @@ export type PrivateGuideContent = {
   faq?: Tbd<FaqItem[]>;
   /** Questions before booking (secondary since W1-D16). */
   inquiryCta: CtaSpec<"inquiry">;
-  /** Slot booking UI (W1-D16). Prototype data until plans and prices are decided. */
+  /**
+   * The page's next step: book (primary → booking page) or ask first
+   * (secondary → Inquiry). Booking and Inquiry stay separate routes.
+   */
+  bookingEntry?: { book: CtaSpec<"privateGuideBooking">; ask: CtaSpec<"inquiry"> };
+  /** Slot booking UI (W1-D16), embedded. Since the unified flow it lives on the booking page. */
   booking?: PrivateGuideBookingModel;
   /** For travellers who prefer a ready-made experience. */
   experiencesCta?: CtaSpec<"experiences">;
@@ -125,4 +138,6 @@ export type PrivateGuideBookingModel = {
   bookLabel: Tbd<string>;
   /** "Have questions before booking?" → Inquiry. Must stay less prominent than Book Now. */
   questions: { prompt: Tbd<string>; cta: CtaSpec<"inquiry"> };
+  /** Prototype only: after the demo Book Now, a link to preview the Private Day Planner. */
+  plannerPreview?: CtaSpec<"privateDayPlanner">;
 };

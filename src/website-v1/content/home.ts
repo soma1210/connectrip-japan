@@ -48,9 +48,9 @@ const FINAL_CTA_IMAGE = {
 };
 
 /**
- * OUR VALUE, reused as-is from the current site (messages/ja.json `value`,
- * images from `valueCardImages`). WORKING_BASELINE (W1-D07): ported to review
- * on screen, not approved copy. Not translated or edited on purpose.
+ * OUR VALUE: the current site's section (W1-D07, images from
+ * `valueCardImages`) with English copy for Website v1 (Human instruction
+ * 2026-10-24). The current site keeps its Japanese copy in messages/ja.json.
  * Supersedes the T-05 "Why Connectrip" pillars (Local Knowledge / Flexible
  * Experiences / Beyond the Tourist Spots), kept in Obsidian as history.
  */
@@ -60,9 +60,42 @@ const FINAL_CTA_IMAGE = {
  * verbatim even where they differ from the link URLs (reported as TBD).
  */
 const SNS_SOURCE = "Current site SNS section (messages/ja.json sns, data/social-links). WORKING_BASELINE (W1-D08)";
+/** English heading / description for Website v1 (Human instruction 2026-10-25); messages/ja.json stays for the current site. */
+const SNS_COPY_SOURCE = "SNS English copy (Human instruction 2026-10-25). WORKING_BASELINE (W1-D08)";
+const SNS_HEADING = "Stay Connected";
+const SNS_SUPPORTING = "Follow us for the latest Kansai travel tips, local discoveries, and inspiration for your trip to Japan.";
 
-const OUR_VALUE_SOURCE = "Current site OUR VALUE (messages/ja.json value). WORKING_BASELINE (W1-D07), not approved";
-const ourValue = currentSiteJa.value;
+const OUR_VALUE_SOURCE = "OUR VALUE English copy (Human instruction 2026-10-24). WORKING_BASELINE (W1-D07)";
+const ourValue = {
+  heading: "OUR VALUE",
+  subheading: "Six reasons to explore Kansai with Connectrip Japan.",
+  cards: [
+    {
+      title: "Real Local Insight",
+      description: "Go beyond tourist rankings with recommendations from locals who actually know the area.",
+    },
+    {
+      title: "Kansai Expertise",
+      description: "Based in Kansai, we bring you up-to-date local knowledge across Osaka, Kyoto, Nara, Kobe, and beyond.",
+    },
+    {
+      title: "Beyond the Tourist Spots",
+      description: "Discover local neighborhoods, food, culture, and everyday Japan beyond the famous sights.",
+    },
+    {
+      title: "Your Day, Your Way",
+      description: "Rather than following a fixed itinerary, shape your day around the places and experiences that interest you.",
+    },
+    {
+      title: "Support Before Your Trip",
+      description: "Have questions before you arrive? We’re here to help you prepare and make the most of your time in Kansai.",
+    },
+    {
+      title: "A Local Friend in Japan",
+      description: "Explore with someone who feels less like a tour company and more like a local friend by your side.",
+    },
+  ],
+};
 const VALUE_IMAGE_SIZES: [number, number][] = [
   [960, 720], [960, 720], [960, 720], [960, 720], [960, 720], [1213, 910],
 ];
@@ -131,8 +164,8 @@ export function getHomeViewModel(): HomeViewModel {
         viewAll: cta("v1_home_travel_guide", "travelGuide", routeHref("travelGuide"), "section", "secondary", t05("Explore Osaka Travel Guide")),
       },
       sns: {
-        heading: proposed(currentSiteJa.sns.heading, SNS_SOURCE),
-        supporting: proposed(currentSiteJa.sns.subheading, SNS_SOURCE),
+        heading: proposed(SNS_HEADING, SNS_COPY_SOURCE),
+        supporting: proposed(SNS_SUPPORTING, SNS_COPY_SOURCE),
         followLabel: proposed(currentSiteJa.sns.follow, SNS_SOURCE),
         accounts: currentSiteJa.sns.items.map((item) => {
           const platform = item.platform as SnsAccountPlatform;

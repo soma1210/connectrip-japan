@@ -1,93 +1,178 @@
-import type { PrivateGuideAvailability, PrivateGuideBookingModel, PrivateGuidePlan } from "@/contracts";
+import type {
+  BookingInterest,
+  PrivateGuideAvailability,
+  PrivateGuideBookingModel,
+  PrivateGuideBookingPageViewModel,
+  PrivateGuidePlan,
+  SelfReportedSource,
+} from "@/contracts";
+import { approved } from "@/contracts";
+import { fromMinutes, toMinutes } from "../booking/privateGuideSlots";
 import { routeHref } from "../routes";
 import { addDays, jstToday } from "./guides/freshness";
-import { cta, proposed, tbd } from "./shared";
+import { getCountryOptions } from "./countries";
+import { PRIVATE_GUIDE_V1, PRIVATE_GUIDE_V1_SOURCE } from "./privateGuidePolicy";
+import { cta, pageSeo, proposed } from "./shared";
 
 /**
- * Private Guide slot booking (W1-D16): prototype data for the UI review.
+ * Private Guide slot booking (W1-D16) with the Private Guide v1 product
+ * conditions (HUMAN_DECISION 2026-10-25, Working Baseline — see
+ * `privateGuidePolicy.ts`): 4 h / 6 h / 8 h plans and prices, hourly starts
+ * inside 08:00–20:00.
  *
  * ┌──────────────────────────────────────────────────────────────────────┐
- * │ DEMO / PROTOTYPE DATA — NOT A PRODUCT DECISION                       │
- * │ Plans (4 h / 8 h), prices, start times, selling window, lead time    │
- * │ and every unavailable date or time below are invented for the UI.    │
- * │ Book Now never creates a booking or opens a payment (`prototype`).   │
+ * │ PROTOTYPE — open dates are MOCK availability, not real guide         │
+ * │ capacity. Continue to Payment never creates a booking or a payment.  │
  * └──────────────────────────────────────────────────────────────────────┘
  */
-const DEMO_SOURCE = "DEMO / PROTOTYPE product data (not a Human Decision)";
-const FLOW_SOURCE = "Private Guide slot booking flow (W1-D16)";
+const FLOW_SOURCE = "Private Guide slot booking flow (W1-D16) / Private Guide v1 journey (HUMAN_DECISION 2026-10-25). PROPOSED copy";
+const UNIFIED_SOURCE = "Private Guide Unified Booking Flow v1 (Human brief 2026-10-25). PROPOSED copy";
 
-const DEMO_PLANS: PrivateGuidePlan[] = [
-  {
-    id: "demo-private-guide-4h",
-    name: proposed("4-Hour Private Guide", DEMO_SOURCE),
-    summary: proposed("A half day with a local guide. Plan it together after booking.", DEMO_SOURCE),
-    durationMinutes: 240,
-    pricing: proposed({ kind: "per_group", amount: { amount: 30000, currency: "JPY" } }, DEMO_SOURCE),
-    demo: true,
-  },
-  {
-    id: "demo-private-guide-8h",
-    name: proposed("8-Hour Private Guide", DEMO_SOURCE),
-    summary: proposed("A full day with a local guide. Plan it together after booking.", DEMO_SOURCE),
-    durationMinutes: 480,
-    pricing: proposed({ kind: "per_group", amount: { amount: 55000, currency: "JPY" } }, DEMO_SOURCE),
-    demo: true,
-  },
-];
+const PLANS: PrivateGuidePlan[] = PRIVATE_GUIDE_V1.plans.map((p) => ({
+  id: p.id,
+  name: approved(`${p.hours}-Hour Private Guide`, PRIVATE_GUIDE_V1_SOURCE),
+  summary: approved([p.tagline, p.spots.replace(/^approx\./, "Approx.")].filter(Boolean).join(" \u00b7 "), PRIVATE_GUIDE_V1_SOURCE),
+  durationMinutes: p.hours * 60,
+  pricing: approved({ kind: "per_group", amount: { amount: p.price, currency: "JPY" } }, PRIVATE_GUIDE_V1_SOURCE),
+  demo: false,
+}));
 
-/** Mock start times every 30 minutes, 08:00–15:00 (UI review only). */
-const MOCK_START_TIMES = Array.from({ length: 15 }, (_, i) => {
-  const minutes = 8 * 60 + i * 30;
-  return `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${minutes % 60 === 0 ? "00" : "30"}`;
-});
-
-/** Repeating patterns so every UI state (closed day, partly blocked day) can be reviewed. */
-const MOCK_BLOCKED_PATTERNS: { from: string; to: string }[][] = [
-  [],
-  [{ from: "12:00", to: "13:30" }],
-  [
-    { from: "09:00", to: "10:00" },
-    { from: "15:00", to: "16:30" },
-  ],
-  [{ from: "13:00", to: "15:00" }],
-];
+/** Hourly candidates from the window start; each plan keeps only starts that end by the window end. */
+function hourlyStartTimes(): string[] {
+  const { windowStart, windowEnd, startIntervalMinutes } = PRIVATE_GUIDE_V1.hours;
+  const shortest = Math.min(...PRIVATE_GUIDE_V1.plans.map((p) => p.hours)) * 60;
+  const times: string[] = [];
+  for (let m = toMinutes(windowStart); m + shortest <= toMinutes(windowEnd); m += startIntervalMinutes) times.push(fromMinutes(m));
+  return times;
+}
 
 /**
- * Mock availability for the next 10 weeks: no same-day or next-day slots,
- * every 9th day closed, partly blocked days in rotation. Generated from
- * today's Japan date so the prototype never shows only past dates.
+ * MOCK availability for the next 10 weeks (not real guide capacity): every
+ * 9th day closed, no blocked ranges. Starts today so the 48 h / 24 h booking
+ * cutoff can be seen; the cutoff itself is applied in the booking UI.
  */
 function mockAvailability(now: Date): PrivateGuideAvailability {
   const today = jstToday(now);
   const dates: string[] = [];
-  const blocked: PrivateGuideAvailability["blocked"] = {};
-  for (let i = 2; i < 72; i++) {
+  for (let i = 0; i < 72; i++) {
     if (i % 9 === 4) continue;
-    const date = addDays(today, i);
-    dates.push(date);
-    const pattern = MOCK_BLOCKED_PATTERNS[i % MOCK_BLOCKED_PATTERNS.length];
-    if (pattern.length > 0) blocked[date] = pattern;
+    dates.push(addDays(today, i));
   }
-  return { source: "mock", dates, startTimes: MOCK_START_TIMES, windowStart: "08:00", windowEnd: "19:00", blocked };
+  const { windowStart, windowEnd } = PRIVATE_GUIDE_V1.hours;
+  return { source: "mock", dates, startTimes: hourlyStartTimes(), windowStart, windowEnd, blocked: {} };
 }
 
 export function getPrivateGuideBookingModel(now: Date = new Date()): PrivateGuideBookingModel {
   return {
     mode: "prototype",
-    plans: DEMO_PLANS,
+    plans: PLANS,
     availability: mockAvailability(now),
     steps: [
-      proposed("Book your time slot and pay online", FLOW_SOURCE),
-      proposed("Connectrip confirms your booking", FLOW_SOURCE),
-      proposed("We plan your day together", FLOW_SOURCE),
-      proposed("Explore with your local guide", FLOW_SOURCE),
+      proposed("Choose your plan, date and start time, then book and pay online", FLOW_SOURCE),
+      proposed("Connectrip secures your guide and confirms your booking", FLOW_SOURCE),
+      proposed("Tell us your wishes in the Private Day Planner", FLOW_SOURCE),
+      proposed("We plan the day together and share your final plan", FLOW_SOURCE),
+      proposed("Experience Kansai with your private guide", FLOW_SOURCE),
     ],
-    cancellationNote: tbd("Cancellation policy for Private Guide bookings TBD"),
-    bookLabel: proposed("Book Now", FLOW_SOURCE),
+    // Shown from PRIVATE_GUIDE_V1.cancellation by the booking UI (Working Baseline).
+    cancellationNote: approved("See the current cancellation policy.", PRIVATE_GUIDE_V1_SOURCE),
+    // Payment is not connected yet: the primary CTA says what comes next.
+    bookLabel: proposed("Continue to Payment", UNIFIED_SOURCE),
     questions: {
       prompt: proposed("Have questions before booking?", FLOW_SOURCE),
       cta: cta("v1_private_booking_questions", "inquiry", routeHref("inquiry"), "section", "secondary", proposed("Contact us", FLOW_SOURCE)),
     },
+    // Prototype only: lets reviewers see the step after booking.
+    plannerPreview: cta(
+      "v1_private_booking_planner_preview",
+      "privateDayPlanner",
+      routeHref("privateDayPlanner"),
+      "inline",
+      "secondary",
+      proposed("Preview the Private Day Planner", "Private Day Planner v1 (PROTOTYPE)"),
+    ),
   };
 }
 
+
+const INTEREST_SOURCE = "Booking preferences v1 (Human brief 2026-10-25). Not the Inquiry service interests";
+const SOURCE_SOURCE = "Self-reported discovery source v1 (Human brief 2026-10-25)";
+
+/**
+ * What the traveller wants to do on their Private Guide day. A different list
+ * from the Inquiry service interests (Private Tours, Planning, Interpreter
+ * Only, ...): do not merge the two taxonomies.
+ */
+export const BOOKING_INTEREST_LABELS: Record<BookingInterest, string> = {
+  food_dining: "Food & Dining",
+  culture_heritage: "Culture & Heritage",
+  shopping: "Shopping",
+  famous_sights: "Famous Sights",
+  hidden_gems: "Hidden Gems",
+  local_neighborhoods: "Local Neighborhoods",
+  family_activities: "Family Activities",
+  active_experiences: "Active Experiences",
+  other: "Other",
+};
+
+export const SELF_REPORTED_SOURCE_LABELS: Record<SelfReportedSource, string> = {
+  google: "Google",
+  instagram: "Instagram",
+  tiktok: "TikTok",
+  youtube: "YouTube",
+  ai_chatgpt: "AI / ChatGPT",
+  friend_family: "Friend or Family",
+  travel_agent: "Travel Agent",
+  hotel: "Hotel",
+  other: "Other",
+};
+
+/** Private Guide booking page: the unified flow (PROTOTYPE / PENDING HUMAN VISUAL REVIEW). */
+export function getPrivateGuideBookingPageViewModel(now: Date = new Date()): PrivateGuideBookingPageViewModel {
+  return {
+    route: "privateGuideBooking",
+    seo: pageSeo("Book a Private Guide", routeHref("privateGuideBooking")),
+    content: {
+      intro: {
+        headline: proposed("Book a Private Guide", UNIFIED_SOURCE),
+        supporting: proposed(
+          "Choose your plan, date and start time, tell us a little about your trip, then continue to payment. After payment, Connectrip secures your guide and confirms your booking, then we plan the day together.",
+          UNIFIED_SOURCE,
+        ),
+      },
+      booking: getPrivateGuideBookingModel(now),
+      details: {
+        heading: proposed("About your trip", UNIFIED_SOURCE),
+        supporting: proposed("So we can confirm your booking and start planning your day.", UNIFIED_SOURCE),
+        countries: getCountryOptions(),
+        interests: (Object.keys(BOOKING_INTEREST_LABELS) as BookingInterest[]).map((value) => ({
+          value,
+          label: proposed(BOOKING_INTEREST_LABELS[value], INTEREST_SOURCE),
+        })),
+        tripDescription: {
+          label: proposed("Tell us about your trip", UNIFIED_SOURCE),
+          help: proposed(
+            "Tell us what you\u2019re hoping to experience, where you\u2019re planning to visit, or anything else that would help us understand your trip.",
+            UNIFIED_SOURCE,
+          ),
+          placeholder: proposed("e.g. First time in Japan with our two kids. We love food markets and quiet temples\u2026", UNIFIED_SOURCE),
+          maxLength: 1000,
+        },
+        sources: (Object.keys(SELF_REPORTED_SOURCE_LABELS) as SelfReportedSource[]).map((value) => ({
+          value,
+          label: proposed(SELF_REPORTED_SOURCE_LABELS[value], SOURCE_SOURCE),
+        })),
+        consent: {
+          label: proposed(
+            "I agree to the Booking Terms and the Privacy Policy, and understand Connectrip will use these details to confirm and plan my booking.",
+            "PROPOSED / LEGAL REVIEW REQUIRED. Booking consent only: not the Inquiry or marketing consent",
+          ),
+          termsHref: routeHref("terms"),
+          privacyHref: routeHref("privacy"),
+        },
+      },
+      paymentNotice: proposed("Payment is not connected in this prototype.", UNIFIED_SOURCE),
+      backCta: cta("v1_booking_back_private_guide", "privateGuide", routeHref("privateGuide"), "section", "secondary", proposed("Back to Private Guide", UNIFIED_SOURCE)),
+    },
+  };
+}

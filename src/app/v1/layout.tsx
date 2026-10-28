@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { Shippori_Mincho_B1 } from "next/font/google";
 import { getLayoutViewModel, getRecruitNav } from "@/website-v1/content/pages";
 import { PreviewBanner, V1Footer, V1Header } from "@/website-v1/components/Layout";
+import { openingBootScript } from "@/website-v1/components/opening/openingBoot";
+import { routeHref } from "@/website-v1/routes";
 import "../globals.css";
 
 // Same font setup as the current site.
@@ -26,8 +28,11 @@ export default function WebsiteV1Layout({ children }: { children: ReactNode }) {
   const layout = getLayoutViewModel();
   const recruit = getRecruitNav();
   return (
-    <html lang="en" className={`${shipporiMinchoB1.variable} h-full antialiased`}>
+    // suppressHydrationWarning: the opening boot script sets data-v1-opening / overflow on <html> before hydration.
+    <html lang="en" className={`${shipporiMinchoB1.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col bg-navy text-cream">
+        {/* Home Opening Experience: decides before first paint whether to play (Home, first load per session). */}
+        <script dangerouslySetInnerHTML={{ __html: openingBootScript(routeHref("home")) }} />
         <PreviewBanner />
         <V1Header layout={layout} recruit={recruit} />
         <main className="flex-1">{children}</main>

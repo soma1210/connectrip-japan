@@ -30,6 +30,10 @@ const STATIC_PATHS: Record<StaticRouteKey, string> = {
   businessInquiry: "/business-inquiry",
   /** Connectrip Select, Osaka map (v0.1). Other areas later: `/connectrip-select/{area}`. */
   connectripSelect: "/connectrip-select/osaka",
+  /** Private Day Planner v1 (PROTOTYPE). Later reached from the booking (by booking id). */
+  privateDayPlanner: "/private-guide/plan",
+  /** Private Guide Unified Booking Flow v1 (PROTOTYPE). */
+  privateGuideBooking: "/private-guide/book",
 };
 
 function withBase(path: string) {

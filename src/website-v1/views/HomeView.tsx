@@ -14,8 +14,14 @@ import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { TbdImage, TbdMark, TbdText, textOr } from "../components/Tbd";
 import { heroFocus } from "../assets/heroImages";
+import { formatMoney } from "../components/format";
+import { PRIVATE_GUIDE_V1 } from "../content/privateGuidePolicy";
+import { cn } from "@/lib/cn";
 import { SocialProofBlock } from "./SocialProofBlock";
 import { SelectSection } from "../components/select/SelectSection";
+import { HomeOpeningExperience } from "../components/opening/HomeOpeningExperience";
+import openingStyles from "../components/opening/HomeOpeningExperience.module.css";
+import { OPENING_TOTAL_MS } from "../components/opening/openingBoot";
 
 /** Used only while `sectionOrder` is TBD (T-05 Home Working Baseline). */
 const BASELINE_ORDER: HomeSectionKey[] = [
@@ -31,8 +37,11 @@ const BASELINE_ORDER: HomeSectionKey[] = [
 ];
 
 function Hero({ hero }: { hero: HomeContent["hero"] }) {
+  const first = hero.images.status === "TBD" ? undefined : hero.images.value[0];
   return (
-    <section className="relative flex min-h-[620px] items-center justify-center overflow-hidden md:h-[88vh]">
+    <section data-v1-hero className="relative flex min-h-[620px] items-center justify-center overflow-hidden md:h-[88vh]">
+      {/* Home Opening Experience v0.4: overlay on top; the Hero below is always in the HTML. */}
+      {first ? <HomeOpeningExperience image={{ src: first.src, focus: heroFocus(first.src) }} /> : null}
       {hero.images.status === "TBD" ? (
         <TbdImage value={hero.images} slot="Hero photos" />
       ) : (
@@ -42,12 +51,13 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
           objectPositions={hero.images.value.map((i) => heroFocus(i.src))}
           shuffle={false}
           preloadNext
+          startDelayMs={OPENING_TOTAL_MS}
         />
       )}
       <div className="absolute inset-0 bg-navy-dark/55" />
       <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/90 via-navy-dark/5 to-transparent" />
 
-      <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center">
+      <div className={`relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center ${openingStyles.heroCopy}`}>
         {hero.core.length > 0 ? (
           <FadeIn delay={0.2}>
             <ul className="flex flex-wrap justify-center gap-2">
@@ -70,9 +80,9 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
             <TbdText value={hero.positioning} slot="Positioning line" as="p" className="text-sm text-cream/70" />
           </FadeIn>
         ) : null}
-        <FadeIn delay={0.9} className="mt-4 flex flex-col items-center gap-4 sm:flex-row">
-          <CtaLink cta={hero.primaryCta} />
-          {hero.secondaryCta ? <CtaLink cta={hero.secondaryCta} /> : null}
+        <FadeIn delay={0.9} className="mt-4 flex w-full flex-col items-center gap-4 sm:w-auto sm:flex-row">
+          <CtaLink cta={hero.primaryCta} pair />
+          {hero.secondaryCta ? <CtaLink cta={hero.secondaryCta} pair /> : null}
         </FadeIn>
       </div>
     </section>
@@ -96,6 +106,38 @@ function FeaturedExperiences({ section }: { section: HomeContent["featuredExperi
         <CtaLink cta={section.viewAll} />
       </div>
     </Section>
+  );
+}
+
+/**
+ * Compact Private Guide pricing for Home (Human Decision 2026-10-25): plans
+ * and prices only, read from the Private Guide v1 policy. Group surcharges,
+ * child pricing and policies stay on the Private Guide page.
+ */
+function PrivateGuidePriceStrip() {
+  const { plans, group } = PRIVATE_GUIDE_V1;
+  return (
+    <div className="mt-8">
+      <p className="mb-3 font-heading-en text-xs tracking-[0.2em] text-cream/50 italic">PRICING</p>
+      <dl className="grid border border-gold/30 sm:grid-cols-3">
+        {plans.map((p) => (
+          <div
+            key={p.id}
+            className={cn(
+              "flex items-baseline justify-between gap-3 border-gold/20 px-5 py-3.5 not-last:border-b sm:flex-col sm:gap-1 sm:py-4 sm:not-last:border-r sm:not-last:border-b-0",
+              p.popular && "bg-gold/[0.06]",
+            )}
+          >
+            <dt className="flex flex-wrap items-center gap-2 text-sm text-gold">
+              {p.hours} Hours
+              {p.popular ? <span className="bg-gold px-1.5 py-0.5 text-[9px] tracking-[0.15em] text-navy">MOST POPULAR</span> : null}
+            </dt>
+            <dd className="font-heading-en text-xl text-cream">{formatMoney({ amount: p.price, currency: "JPY" })}</dd>
+          </div>
+        ))}
+      </dl>
+      <p className="mt-2 text-xs text-cream/55">Private group price · Up to {group.includedGuests} paying guests included</p>
+    </div>
   );
 }
 
@@ -140,6 +182,7 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
               </ul>
             </div>
           ) : null}
+          <PrivateGuidePriceStrip />
           <div className="mt-8 flex flex-wrap gap-4">
             <CtaLink cta={section.cta} />
             {section.learnMore ? <CtaLink cta={section.learnMore} /> : null}
@@ -160,7 +203,7 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
  */
 function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
   return (
-    <section id="value" lang="ja" className="bg-navy-dark py-12 md:py-20">
+    <section id="value" className="bg-navy-dark py-12 md:py-20">
       <Container>
         {section.heading.status === "TBD" ? (
           <SectionTitle heading={section.heading} supporting={section.supporting} slot="OUR VALUE" />
@@ -215,8 +258,8 @@ function HowItWorks({ section }: { section: HomeContent["howItWorks"] }) {
     <Section id="how-it-works">
       <SectionTitle heading={section.heading} slot="How It Works" />
       <div className="grid gap-6 md:grid-cols-2">
-        <FlowSteps flow={section.flows.readyMade} />
-        <FlowSteps flow={section.flows.privateGuide} />
+        <FlowSteps flow={section.flows.readyMade} pairCta />
+        <FlowSteps flow={section.flows.privateGuide} pairCta />
       </div>
       <div className="mt-10">
         <CtaLink cta={section.link} variant="text" />
@@ -260,7 +303,7 @@ function TravelGuide({ section }: { section: HomeContent["travelGuide"] }) {
  */
 function Sns({ section }: { section: NonNullable<HomeContent["sns"]> }) {
   return (
-    <section id="sns" lang="ja" className="bg-navy-dark py-12 md:py-20">
+    <section id="sns" className="bg-navy-dark py-12 md:py-20">
       <Container>
         {section.heading.status === "TBD" ? (
           <SectionTitle heading={section.heading} supporting={section.supporting} slot="SNS" />

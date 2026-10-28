@@ -4,7 +4,16 @@ import { CtaLink } from "./CtaLink";
 import { TbdText } from "./Tbd";
 
 /** One How It Works flow. Step rows follow the current site's ProcessItem styling. */
-export function FlowSteps<K extends HowItWorksFlowKey>({ flow, showDescriptions = false }: { flow: HowItWorksFlow<K>; showDescriptions?: boolean }) {
+export function FlowSteps<K extends HowItWorksFlowKey>({
+  flow,
+  showDescriptions = false,
+  pairCta = false,
+}: {
+  flow: HowItWorksFlow<K>;
+  showDescriptions?: boolean;
+  /** Side-by-side flows: same CTA box in each card, pinned to the card bottom so the two line up. */
+  pairCta?: boolean;
+}) {
   return (
     <FadeIn className="flex flex-col border border-gold/30 bg-navy-dark/40 p-6 md:p-8">
       <TbdText value={flow.title} slot="Flow title" as="h3" className="font-heading-en text-2xl tracking-wide text-gold" />
@@ -22,8 +31,8 @@ export function FlowSteps<K extends HowItWorksFlowKey>({ flow, showDescriptions 
         ))}
       </ol>
       {flow.note ? <TbdText value={flow.note} slot="Flow note" as="p" className="mt-4 text-xs text-cream/60" /> : null}
-      <div className="mt-6">
-        <CtaLink cta={flow.cta} size="sm" />
+      <div className={pairCta ? "mt-auto pt-6" : "mt-6"}>
+        <CtaLink cta={flow.cta} size="sm" pair={pairCta} />
       </div>
     </FadeIn>
   );

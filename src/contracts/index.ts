@@ -15,6 +15,8 @@ export type * from "./booking";
 export type * from "./inquiry";
 export type * from "./howItWorks";
 export type * from "./privateGuide";
+export type * from "./privateDayPlanner";
+export type * from "./privateGuideBookingRequest";
 export type * from "./travelGuide";
 export type * from "./select";
 export type * from "./socialProof";

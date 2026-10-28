@@ -28,6 +28,8 @@ export const fixtureHrefs: Record<Exclude<RouteKey, ParameterizedRouteKey>, stri
   cancelPolicy: "/cancel-policy",
   businessInquiry: "/business-inquiry",
   connectripSelect: "/connectrip-select/osaka",
+  privateDayPlanner: "/private-guide/plan",
+  privateGuideBooking: "/private-guide/book",
 };
 
 export function fixtureExperienceHref(slug: string) {

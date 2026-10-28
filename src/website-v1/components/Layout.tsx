@@ -32,7 +32,7 @@ function BrandMark({ brand }: { brand: Brand }) {
   return (
     <Link href={routeHref("home")} className="flex items-center gap-3">
       {brand.logo.status !== "TBD" ? (
-        <Image src={brand.logo.value.src} alt={brand.logo.value.alt} width={200} height={200} className="h-14 w-14 md:h-16 md:w-16" priority />
+        <Image src={brand.logo.value.src} alt={brand.logo.value.alt} width={200} height={200} className="h-14 w-14 md:h-16 md:w-16" priority data-v1-brand-logo="" />
       ) : null}
       {words.length > 0 ? (
         <span className="flex flex-col leading-none">

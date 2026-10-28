@@ -18,6 +18,9 @@ const PAGE_NAMES: Record<Exclude<StaticRouteKey, "home">, string> = {
   cancelPolicy: "Cancellation Policy",
   businessInquiry: "Business Inquiries",
   connectripSelect: "Connectrip Select",
+  // Not in the navigation: reached after a Private Guide booking (PROTOTYPE).
+  privateDayPlanner: "Private Day Planner",
+  privateGuideBooking: "Book a Private Guide",
 };
 
 function navItem(route: Exclude<StaticRouteKey, "home">): NavItem {

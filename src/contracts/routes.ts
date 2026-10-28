@@ -25,7 +25,11 @@ export type RouteKey =
   | "cancelPolicy"
   | "businessInquiry"
   /** Connectrip Select map (Osaka first). */
-  | "connectripSelect";
+  | "connectripSelect"
+  /** Private Day Planner: preferences after a Private Guide booking (PROTOTYPE). */
+  | "privateDayPlanner"
+  /** Private Guide booking page: the unified booking flow (PROTOTYPE). */
+  | "privateGuideBooking";
 
 /** Routes whose href depends on a record (an experience, an article). */
 export type ParameterizedRouteKey = "experienceDetail" | "booking" | "guideArticle";
