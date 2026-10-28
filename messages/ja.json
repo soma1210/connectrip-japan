@@ -10,7 +10,9 @@
     "plan": "PLAN",
     "faq": "FAQ",
     "gallery": "GALLERY",
-    "partner": "パートナー募集",
+    "recruit": "RECRUIT",
+    "recruitGuide": "ガイド募集",
+    "recruitPartner": "パートナー募集",
     "contact": "お問い合わせ",
     "reserve": "予約する"
   },

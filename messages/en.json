@@ -10,7 +10,9 @@
     "plan": "PLAN",
     "faq": "FAQ",
     "gallery": "GALLERY",
-    "partner": "Partners",
+    "recruit": "RECRUIT",
+    "recruitGuide": "Guide Recruitment",
+    "recruitPartner": "Partner Recruitment",
     "contact": "Contact",
     "reserve": "Reserve"
   },
