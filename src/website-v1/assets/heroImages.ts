@@ -8,9 +8,8 @@ import type { ImageAsset } from "@/contracts";
  * order). Osaka comes first: Website v1 is Osaka-first; Kyoto / Kobe / Nara
  * show the Kansai brand.
  *
- * DEVELOPMENT / PLACEHOLDER ASSETS. Licences are not verified, and the two
- * Adobe Stock images carry watermarks. All must be replaced with licensed,
- * watermark-free files before production.
+ * DEVELOPMENT / PLACEHOLDER ASSETS. Licences are not verified. All must be
+ * confirmed or replaced with licensed files before production.
  */
 export type HeroRegion = "osaka" | "kyoto" | "kobe" | "nara";
 
@@ -49,11 +48,12 @@ export const HERO_IMAGES: HeroImage[] = [
   // Osaka
   hero("osaka", "osaka-castle.jpg", "Osaka Castle", 1706, 960, "38% 40%"),
   hero("osaka", "osaka-dojima-river-night.jpg", "Dojima River and the Nakanoshima skyline at night, Osaka", 1920, 1276, "50% 55%"),
-  hero("osaka", "osaka-shinsekai-tsutenkaku.jpg", "Tsutenkaku Tower and the lights of Shinsekai, Osaka", 1410, 942, "58% 45%", "WATERMARKED_PLACEHOLDER"),
+  hero("osaka", "osaka-shinsekai-day.jpg", "Tsutenkaku Tower above the shop signs of Shinsekai, Osaka", 2400, 1595, "48% 40%"),
   hero("osaka", "osaka-daruma.jpg", "Rows of red daruma dolls, Osaka", 2400, 1600, "50% 45%"),
   hero("osaka", "osaka-dotonbori.jpg", "Dotonbori canal at night, Namba, Osaka", 1307, 1599, "55% 55%"),
   // Kyoto
   hero("kyoto", "kyoto-kinkakuji.jpg", "Kinkaku-ji, the Golden Pavilion, Kyoto", 2400, 1600, "52% 55%"),
+  hero("kyoto", "kyoto-yasaka-pagoda-night.jpg", "Yasaka Pagoda above a quiet stone-paved street at night, Kyoto", 2400, 1600, "66% 50%"),
   // Kobe
   hero("kobe", "kobe-port-tower.jpg", "Kobe Port Tower at night", 2400, 1600, "28% 50%"),
   // Nara
@@ -61,7 +61,7 @@ export const HERO_IMAGES: HeroImage[] = [
 ];
 
 export const HERO_PLACEHOLDER_SOURCE =
-  "DEVELOPMENT / PLACEHOLDER ASSET: licence NOT_VERIFIED, two Adobe Stock watermarked files. Replace before production";
+  "DEVELOPMENT / PLACEHOLDER ASSET: licence NOT_VERIFIED. Confirm or replace before production";
 
 /** Crop focus for a hero image by src (undefined for unknown images). */
 export function heroFocus(src: string): string | undefined {

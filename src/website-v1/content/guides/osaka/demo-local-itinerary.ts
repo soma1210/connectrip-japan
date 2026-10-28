@@ -3,8 +3,7 @@ import { demoImage } from "../demo";
 
 /**
  * DEMO / PLACEHOLDER / NOT FOR PRODUCTION. An evergreen `itinerary` record to
- * review the template. Its hero is a watermarked stock preview on purpose: the
- * publish gate must reject it (W1-D10 K-5).
+ * review the template. The publish gate must reject it (W1-D10 K-5).
  */
 export const demoLocalItinerary: TravelGuideArticleRecord = {
   id: "demo-local-itinerary",
@@ -19,7 +18,7 @@ export const demoLocalItinerary: TravelGuideArticleRecord = {
   title: "[DEMO] Local itinerary (placeholder)",
   quickAnswer: "[DEMO] Placeholder quick answer: how to spend a few days. Not a real itinerary.",
   summary: "[DEMO] Placeholder day-by-day itinerary for Osaka. NOT FOR PRODUCTION.",
-  hero: demoImage("osaka-shinsekai-tsutenkaku.jpg", "Tsutenkaku Tower and Shinsekai", 1410, 942, true),
+  hero: demoImage("osaka-dojima-river-night.jpg", "Dojima River and the Nakanoshima skyline at night", 1920, 1276),
   author: { kind: "organization", name: "Connectrip Japan" },
 
   body: [

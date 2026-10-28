@@ -1,15 +1,29 @@
 import Link from "next/link";
-import { ArrowRight, Clock3, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { PartnerSurveyForm } from "@/components/partner-survey/PartnerSurveyForm";
-import { FIELDS, INDUSTRIES, STEPS } from "@/features/partner-survey/config/questions";
 import { recruitHref, routeHref } from "../routes";
 
 // Partner Recruitment (ported from the current site's /partner, 2026-10-27).
 // The partner pages are Japanese only: they address businesses in Japan.
+// 2026-10-28: the old survey's question list was removed; this page only introduces the partner program.
+
+const PARTNER_TYPES = [
+  "飲食店",
+  "ホテル・宿泊施設",
+  "体験・アクティビティ事業者",
+  "旅行会社・旅行代理店",
+  "観光施設",
+  "その他の観光関連事業者",
+];
+
+const COLLABORATION = [
+  { title: "旅行者へのご紹介", text: "ガイドツアーや旅のご相談の中で、訪日旅行者に貴社の店舗・施設・体験をご紹介します。" },
+  { title: "旅程への組み込み", text: "プライベートガイドの旅程や体験プランに、地域ならではの場所として組み込みます。" },
+  { title: "地域の魅力を一緒に発信", text: "地域の文化や魅力を、Connectrip Japanのサイトや旅の現場を通じて一緒に伝えます。" },
+];
 
 const FLOW = [
-  { title: "アンケートに回答", text: "貴社の体験・サービスと提携条件をお聞かせください。未確定の条件は「要相談」で構いません。" },
+  { title: "アンケートに回答", text: "事業者向けアンケートで、貴社の事業内容をお聞かせください。" },
   { title: "回答内容を確認", text: "Connectrip Japanが回答内容を確認し、必要に応じて担当者よりご連絡します。" },
   { title: "条件のご相談・提携の検討", text: "連携の可能性について、条件を含めてご相談します。" },
 ];
@@ -46,9 +60,6 @@ export function PartnerRecruitView() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs text-cream/70">
             <span className="inline-flex items-center gap-1.5 border border-gold/30 px-3 py-1.5">
-              <Clock3 className="h-3.5 w-3.5 text-gold" /> 回答の目安 5〜10分
-            </span>
-            <span className="inline-flex items-center gap-1.5 border border-gold/30 px-3 py-1.5">
               <ShieldCheck className="h-3.5 w-3.5 text-gold" /> 回答内容は一般公開されません
             </span>
           </div>
@@ -66,46 +77,35 @@ export function PartnerRecruitView() {
               <p className="text-xs tracking-[0.2em] text-red">WHO WE ARE LOOKING FOR</p>
               <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">募集している事業者様</h2>
               <p className="mt-4 text-sm leading-relaxed text-navy/65">
-                旅行者向けの体験・サービスを提供している、次のような事業者様からのご回答をお待ちしています。
+                訪日旅行者を迎える、次のような事業者様との連携を広げていきたいと考えています。
               </p>
             </div>
-            <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
-              {INDUSTRIES.map((industry) => (
+            <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3">
+              {PARTNER_TYPES.map((type) => (
                 <li
-                  key={industry.value}
+                  key={type}
                   className="flex min-h-20 items-center justify-center border border-navy/15 bg-white px-3 py-5 text-center text-sm shadow-sm"
                 >
-                  {industry.value === "other" ? "その他 旅行者向けサービス" : industry.label}
+                  {type}
                 </li>
               ))}
             </ul>
           </section>
 
-          {/* What the survey asks */}
+          {/* What we want to do together */}
           <section>
             <div className="text-center">
-              <p className="text-xs tracking-[0.2em] text-red">QUESTIONNAIRE</p>
-              <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">アンケートでお伺いする内容</h2>
-              <p className="mt-4 text-sm leading-relaxed text-navy/65">
-                4つのステップでご回答いただき、最後に内容を確認してから送信します。
-              </p>
+              <p className="text-xs tracking-[0.2em] text-red">COLLABORATION</p>
+              <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">一緒に取り組みたいこと</h2>
             </div>
-            <ol className="mt-10 grid gap-4 md:grid-cols-2">
-              {STEPS.map((step, index) => (
-                <li key={step.id} className="border border-navy/15 bg-white p-6 shadow-sm md:p-8">
-                  <p className="text-xs tracking-[0.2em] text-red">STEP {String(index + 1).padStart(2, "0")}</p>
-                  <h3 className="mt-2 font-heading-jp text-xl">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-navy/65">{step.subtitle}</p>
-                  <ul className="mt-4 flex flex-wrap gap-2">
-                    {step.fields.map((key) => (
-                      <li key={key} className="bg-cream px-2.5 py-1 text-xs text-navy/75">
-                        {FIELDS[key].label}
-                      </li>
-                    ))}
-                  </ul>
+            <ul className="mt-10 grid gap-4 md:grid-cols-3">
+              {COLLABORATION.map((item) => (
+                <li key={item.title} className="border border-navy/15 bg-white p-6 shadow-sm md:p-8">
+                  <h3 className="font-heading-jp text-lg">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-navy/65">{item.text}</p>
                 </li>
               ))}
-            </ol>
+            </ul>
           </section>
 
           {/* Flow */}
@@ -156,10 +156,27 @@ export function PartnerRecruitView() {
   );
 }
 
+// The simple survey form was removed (2026-10-28). The URL stays; the new survey will be placed here.
 export function PartnerApplyView() {
   return (
     <div lang="ja">
-      <PartnerSurveyForm homeHref={routeHref("home")} />
+      <section className="bg-cream py-24 text-center text-navy md:py-32">
+        <Container className="max-w-2xl">
+          <p className="text-xs tracking-[0.25em] text-red">PARTNER SURVEY</p>
+          <h1 className="mt-5 font-heading-jp text-2xl leading-relaxed md:text-3xl">現在準備中です。</h1>
+          <p className="mt-6 text-sm leading-loose text-navy/70 md:text-base">
+            新しい事業者向けアンケートを近日公開予定です。
+          </p>
+          <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm">
+            <Link href={recruitHref("partner")} className="text-red underline underline-offset-4 hover:text-navy">
+              パートナー募集ページへ戻る
+            </Link>
+            <Link href={routeHref("home")} className="text-red underline underline-offset-4 hover:text-navy">
+              トップページへ
+            </Link>
+          </div>
+        </Container>
+      </section>
     </div>
   );
 }
