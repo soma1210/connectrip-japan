@@ -64,7 +64,6 @@ export default async function AdminDashboardPage() {
           <SummaryCard
             title="ガイド応募"
             description="ガイド応募者の管理"
-            unit="Applicants"
             counts={guides}
             freshLabel="新規（アンケート回答）"
             cta="ガイド応募を見る"
@@ -73,7 +72,6 @@ export default async function AdminDashboardPage() {
           <SummaryCard
             title="事業者アンケート"
             description="飲食店、ホテル、体験事業者、旅行会社などの回答管理"
-            unit="Partners"
             counts={partners}
             freshLabel="新規"
             cta="事業者回答を見る"
@@ -105,7 +103,6 @@ export default async function AdminDashboardPage() {
 function SummaryCard({
   title,
   description,
-  unit,
   counts,
   freshLabel,
   cta,
@@ -113,7 +110,6 @@ function SummaryCard({
 }: {
   title: string;
   description: string;
-  unit: string;
   counts: Counts;
   freshLabel: string;
   cta: string;
@@ -130,8 +126,9 @@ function SummaryCard({
       </div>
       <div className="flex flex-wrap items-end gap-x-8 gap-y-2">
         <p>
+          <span className="mr-1.5 text-sm text-slate-500">現在</span>
           <span className="text-3xl font-semibold tabular-nums">{counts ? counts.total : "—"}</span>
-          <span className="ml-1.5 text-sm text-slate-500">{unit}</span>
+          <span className="ml-1 text-sm text-slate-500">件</span>
         </p>
         <p className="text-sm text-slate-600">
           {freshLabel}{" "}

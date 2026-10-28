@@ -16,10 +16,15 @@ const nextConfig: NextConfig = {
   },
   // Local Website v1 preview only (`bun run dev:v1`, port 3002): open the
   // preview at the root. Without WEBSITE_V1_PREVIEW_ROOT nothing changes.
+  //
+  // Connectrip uses one official URL per form; this app's copies of the guide
+  // form and the partner survey send people there instead (admin stays here).
   async redirects() {
-    return process.env.WEBSITE_V1_PREVIEW_ROOT === "1"
-      ? [{ source: "/", destination: "/v1", permanent: false }]
-      : [];
+    return [
+      { source: "/guide-community", destination: "https://connectrip-guide-community.netlify.app/guide-community", permanent: false },
+      { source: "/v1/partner/apply", destination: "https://connectrip-partner-survey.netlify.app/partner/survey", permanent: false },
+      ...(process.env.WEBSITE_V1_PREVIEW_ROOT === "1" ? [{ source: "/", destination: "/v1", permanent: false }] : []),
+    ];
   },
   // Netlify test deploys (*.netlify.app): keep every page, including HTML
   // rendered by the Next.js server, out of search engines. netlify.toml headers
