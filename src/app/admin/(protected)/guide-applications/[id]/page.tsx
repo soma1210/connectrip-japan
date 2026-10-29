@@ -16,8 +16,12 @@ import {
 } from "@/features/guide-community/format";
 import type { GuideApplication } from "@/features/guide-community/types";
 import { getGuideApplication, getPipelineStatuses } from "@/lib/data/guide-applications";
+import { listInterviewsForApplication } from "@/lib/data/guide-interviews";
+import { isCalendarConfigured } from "@/lib/google-calendar";
+import { isMailConfigured } from "@/lib/mailer";
 import { StatusBadge } from "../StatusBadge";
 import { saveAdminFields } from "./actions";
+import { InterviewPanel } from "./InterviewPanel";
 
 /** Display text for one question's answer, driven by the same config as the form. */
 function answerText(question: Question, app: GuideApplication): string {
@@ -119,7 +123,11 @@ export default async function AdminGuideApplicationDetailPage({
 }: PageProps<"/admin/guide-applications/[id]">) {
   const { id } = await params;
   const { saved } = await searchParams;
-  const [app, statuses] = await Promise.all([getGuideApplication(id), getPipelineStatuses()]);
+  const [app, statuses, interviews] = await Promise.all([
+    getGuideApplication(id),
+    getPipelineStatuses(),
+    listInterviewsForApplication(id),
+  ]);
   if (!app) notFound();
 
   return (
@@ -165,7 +173,14 @@ export default async function AdminGuideApplicationDetailPage({
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
         {/* Internal Management — first on phones, right column on desktop */}
-        <aside className="lg:sticky lg:top-6 lg:order-2">
+        {/* Not sticky: with the interview panel the column can be taller than the screen. */}
+        <aside className="flex flex-col gap-4 lg:order-2">
+          <InterviewPanel
+            applicationId={app.id}
+            interviews={interviews}
+            calendarConfigured={isCalendarConfigured}
+            mailConfigured={isMailConfigured}
+          />
           <form
             action={saveAdminFields.bind(null, app.id)}
             className="overflow-hidden rounded-lg border-2 border-navy bg-white"

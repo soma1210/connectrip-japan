@@ -25,6 +25,8 @@ import {
   guideStorageMode,
   listGuideApplications,
 } from "@/lib/data/guide-applications";
+import { listPendingInterviews } from "@/lib/data/guide-interviews";
+import { formatInterviewRange } from "@/features/guide-interviews/format";
 import { ClickableRow } from "./ClickableRow";
 import { StatusBadge } from "./StatusBadge";
 
@@ -85,7 +87,10 @@ export default async function AdminGuideApplicationsPage({
 }: PageProps<"/admin/guide-applications">) {
   const statuses = await getPipelineStatuses();
   const filters = parseFilters(await searchParams, statuses);
-  const applications = await listGuideApplications(filters);
+  const [applications, pendingInterviews] = await Promise.all([
+    listGuideApplications(filters),
+    listPendingInterviews(),
+  ]);
   const statusOptions = statuses.map((status) => ({ value: status, label: status }));
   const activeCount = Object.values(filters).filter(Boolean).length;
 
@@ -105,6 +110,29 @@ export default async function AdminGuideApplicationsPage({
           応募フォームを開く ↗
         </Link>
       </div>
+
+      {pendingInterviews.length > 0 ? (
+        <section className="rounded-lg border-2 border-gold bg-white">
+          <h2 className="border-b border-gold/40 bg-gold/10 px-4 py-2.5 text-sm font-semibold">
+            承認待ちの面談（{pendingInterviews.length}件）
+          </h2>
+          <ul className="divide-y divide-navy/10">
+            {pendingInterviews.map((interview) => (
+              <li key={interview.id}>
+                <Link
+                  href={`/admin/guide-applications/${interview.guide_application_id}`}
+                  className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 text-sm hover:bg-navy/[0.03]"
+                >
+                  <span className="font-medium">{interview.applicant_name}</span>
+                  <span className="text-navy/70">
+                    {formatInterviewRange(interview.requested_start_at!, interview.requested_end_at!)} →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {guideStorageMode === "local-file" ? (
         <p className="rounded-md border border-gold/60 bg-gold/10 px-4 py-3 text-sm">

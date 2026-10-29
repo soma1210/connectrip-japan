@@ -16,7 +16,7 @@ const transporter = isConfigured
     })
   : null;
 
-function escapeHtml(value: string): string {
+export function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -69,26 +69,37 @@ export function buildFormEmail(formLabel: string, fields: EmailField[]) {
   return { text, html };
 }
 
+/** True when sendMail actually sends (SMTP_* and CONTACT_TO_EMAIL are set). */
+export const isMailConfigured = isConfigured;
+
 export async function sendMail({
+  to,
   subject,
   text,
   html,
   replyTo,
 }: {
+  /** Recipient. Defaults to Connectrip's own inbox (CONTACT_TO_EMAIL). */
+  to?: string;
   subject: string;
   text: string;
   html?: string;
   replyTo?: string;
 }): Promise<{ sent: boolean; messageId?: string }> {
   if (!transporter) {
-    console.log("[mailer] SMTP is not configured (see .env.example). Logging submission instead:");
-    console.log({ subject, replyTo, text });
+    if (to) {
+      // Mail to an outside recipient can carry private links: log that it was skipped, not its body.
+      console.log("[mailer] SMTP is not configured (see .env.example). Not sent:", { subject });
+    } else {
+      console.log("[mailer] SMTP is not configured (see .env.example). Logging submission instead:");
+      console.log({ subject, replyTo, text });
+    }
     return { sent: false };
   }
 
   const info = await transporter.sendMail({
     from: SMTP_FROM || SMTP_USER,
-    to: CONTACT_TO_EMAIL,
+    to: to ?? CONTACT_TO_EMAIL,
     replyTo,
     subject,
     text,
