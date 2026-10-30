@@ -52,6 +52,7 @@ const ADMIN_STATUS: Record<AdminFailureCode, number> = {
   CALENDAR_ERROR: 502,
   MEET_FAILED: 502,
   DB_FAILED: 500,
+  PUBLIC_URL_NOT_CONFIGURED: 500,
 };
 
 export function adminError(code: AdminFailureCode, message: string) {

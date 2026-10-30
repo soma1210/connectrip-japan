@@ -48,12 +48,21 @@ import {
   sendRequestNoticeToAdmin,
 } from "@/lib/interview-email";
 import type { GuideInterview } from "@/features/guide-interviews/types";
+import { PublicBaseUrlError, resolvePublicBaseUrl } from "@/features/guide-interviews/base-url";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/** The site origin used in links we email. Prefer the configured public URL over the request's. */
+/**
+ * The site origin used in links we email. Production requires
+ * INTERVIEW_PUBLIC_BASE_URL (https, not local) and throws PublicBaseUrlError
+ * otherwise; development falls back to the request's origin.
+ */
 export function publicBaseUrl(requestOrigin: string): string {
-  return (process.env.INTERVIEW_PUBLIC_BASE_URL || requestOrigin).replace(/\/+$/, "");
+  return resolvePublicBaseUrl({
+    configured: process.env.INTERVIEW_PUBLIC_BASE_URL,
+    requestOrigin,
+    production: process.env.NODE_ENV === "production",
+  });
 }
 
 export const bookingUrl = (baseUrl: string, token: string) => `${baseUrl}/interview/${token}`;
@@ -155,11 +164,20 @@ export async function requestInterview(
     throw error;
   }
 
+  // The slot is already held: a misconfigured base URL must not fail the
+  // request, so the notice falls back to a path the admin can open by hand.
+  let adminUrl: string;
+  try {
+    adminUrl = adminApplicationUrl(publicBaseUrl(requestOrigin), interview.guide_application_id);
+  } catch (error) {
+    console.error("[interviews] request notice without a full admin link:", (error as Error).message);
+    adminUrl = adminApplicationUrl("", interview.guide_application_id);
+  }
   await sendRequestNoticeToAdmin({
     name: view.name,
     start,
     end: new Date(interview.requested_end_at!),
-    adminUrl: adminApplicationUrl(publicBaseUrl(requestOrigin), interview.guide_application_id),
+    adminUrl,
   });
 
   return {
@@ -179,7 +197,8 @@ export type AdminFailureCode =
   | "CALENDAR_AUTH"
   | "CALENDAR_ERROR"
   | "MEET_FAILED"
-  | "DB_FAILED";
+  | "DB_FAILED"
+  | "PUBLIC_URL_NOT_CONFIGURED";
 
 export type AdminResult<T = object> = ({ ok: true } & T) | { ok: false; code: AdminFailureCode };
 
@@ -192,6 +211,10 @@ function adminFailure(error: unknown): { ok: false; code: AdminFailureCode } {
   if (error instanceof CalendarAuthError) return { ok: false, code: "CALENDAR_AUTH" };
   if (error instanceof MeetCreationError) return { ok: false, code: "MEET_FAILED" };
   if (error instanceof CalendarApiError) return { ok: false, code: "CALENDAR_ERROR" };
+  if (error instanceof PublicBaseUrlError) {
+    console.error("[interviews]", error.message);
+    return { ok: false, code: "PUBLIC_URL_NOT_CONFIGURED" };
+  }
   console.error("[interviews] unexpected error", error);
   return { ok: false, code: "DB_FAILED" };
 }
@@ -202,8 +225,10 @@ export async function issueInvitation(
   requestOrigin: string,
 ): Promise<AdminResult<{ link: string; emailSent: boolean }>> {
   try {
+    // Resolve the link origin first, so a misconfigured site never creates an invitation without a usable link.
+    const baseUrl = publicBaseUrl(requestOrigin);
     const { interview, token } = await createInvitation(applicationId);
-    const link = bookingUrl(publicBaseUrl(requestOrigin), token);
+    const link = bookingUrl(baseUrl, token);
     const email = await sendInvitationEmail({
       to: interview.applicant_email,
       name: interview.applicant_name,
@@ -363,6 +388,12 @@ export async function requestAnotherTime(
   const interview = await getInterview(id);
   if (!interview) return { ok: false, code: "NOT_FOUND" };
   if (interview.status !== "PENDING_APPROVAL") return { ok: false, code: "WRONG_STATUS" };
+  // Check the link origin before cancelling, so the applicant is never left without a link.
+  try {
+    publicBaseUrl(requestOrigin);
+  } catch (error) {
+    return adminFailure(error);
+  }
   const cancelled = await cancelInterviewByAdmin(id, "別の時間を依頼");
   if (!cancelled.ok) return cancelled;
   return issueInvitation(interview.guide_application_id, requestOrigin);

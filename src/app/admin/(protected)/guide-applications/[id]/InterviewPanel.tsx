@@ -132,7 +132,7 @@ export function InterviewPanel({
             className={`flex flex-col gap-2 rounded-md px-3 py-2 text-xs ${result.ok ? "bg-emerald-50 text-emerald-900" : "bg-red/5 text-red"}`}
           >
             <p>{result.message}</p>
-            {result.link ? <CopyField label="予約リンク（この画面でしか表示されません）" value={result.link} /> : null}
+            {result.link ? <CopyField label="面談URL（この画面でのみ表示・コピーできます）" value={result.link} /> : null}
           </div>
         ) : null}
 
@@ -237,7 +237,7 @@ export function InterviewPanel({
                       onClick={() =>
                         run(
                           () => requestAnotherTimeAction(applicationId, current.id),
-                          "この申請を取り消し、新しい予約リンクを応募者へ送ります。よろしいですか？",
+                          "この申請を取り消し、新しい面談URLを応募者へ送ります。よろしいですか？",
                         )
                       }
                     >
@@ -285,9 +285,9 @@ export function InterviewPanel({
                 type="button"
                 disabled={pending}
                 className={secondary}
-                onClick={() => run(() => sendInvitationAction(applicationId), "新しいリンクを発行して送ります。今のリンクは使えなくなります。よろしいですか？")}
+                onClick={() => run(() => sendInvitationAction(applicationId), "新しい面談URLを発行します（メールが設定されていれば応募者へ送信）。今のURLは使えなくなります。よろしいですか？")}
               >
-                リンクを再発行
+                面談URLを再発行
               </button>
               <button type="button" disabled={pending} className={danger} onClick={() => run(() => cancelAction(applicationId, current.id), "面談の案内を取り消します。よろしいですか？")}>
                 案内を取り消す
@@ -300,9 +300,9 @@ export function InterviewPanel({
               type="button"
               disabled={pending}
               className={primary}
-              onClick={() => run(() => sendInvitationAction(applicationId), "応募者へ面談予約リンクを送ります。よろしいですか？")}
+              onClick={() => run(() => sendInvitationAction(applicationId), "面談URLを発行します（メールが設定されていれば応募者へ送信）。発行後、この画面でURLをコピーできます。よろしいですか？")}
             >
-              {pending ? "処理中…" : "面談案内を送る"}
+              {pending ? "処理中…" : "面談URLを発行"}
             </button>
           ) : null}
         </div>

@@ -12,4 +12,6 @@ export const ADMIN_FAILURE_MESSAGES: Record<AdminFailureCode, string> = {
   CALENDAR_ERROR: "Google Calendar でエラーが発生しました。時間をおいて再度お試しください。予定は作成されていません。",
   MEET_FAILED: "Google Meet を作成できませんでした。予定は取り消しました。再度お試しください。",
   DB_FAILED: "保存に失敗しました。Calendar の予定は取り消しました。再度お試しください。",
+  PUBLIC_URL_NOT_CONFIGURED:
+    "面談URLの基準（INTERVIEW_PUBLIC_BASE_URL）が未設定か、https の公開URLではありません。Netlify の環境変数を確認してください。リンクは発行していません。",
 };

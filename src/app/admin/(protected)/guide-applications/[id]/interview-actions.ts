@@ -52,7 +52,7 @@ export async function sendInvitationAction(applicationId: string): Promise<Inter
   await requireAdmin();
   const result = await issueInvitation(applicationId, await requestOrigin());
   if (!result.ok) return failed(result);
-  return done(applicationId, { ok: true, message: mailNote(result.emailSent, "予約リンク"), link: result.link });
+  return done(applicationId, { ok: true, message: mailNote(result.emailSent, "面談URL"), link: result.link });
 }
 
 export async function approveAction(applicationId: string, interviewId: string): Promise<InterviewActionState> {
@@ -87,7 +87,7 @@ export async function requestAnotherTimeAction(applicationId: string, interviewI
   if (!result.ok) return failed(result);
   return done(applicationId, {
     ok: true,
-    message: `この申請を取り消し、新しい予約リンクを発行しました。${mailNote(result.emailSent, "予約リンク")}`,
+    message: `この申請を取り消し、新しい面談URLを発行しました。${mailNote(result.emailSent, "面談URL")}`,
     link: result.link,
   });
 }

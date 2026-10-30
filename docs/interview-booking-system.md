@@ -254,7 +254,10 @@ HP 本体を公開する前に、面談予約システムだけを専用の Netl
 - 招待メールの予約リンク（`<base>/interview/<token>`）と、Admin への申請通知メールの管理画面リンクを組み立てる基準 URL。末尾の `/` は取り除かれる（`src/lib/interviews.ts` の `publicBaseUrl()`）。
 - **Production では、実際の公開 URL（`https://` で始まる本番サイトの origin）を環境変数として設定する前提とする。** コードには既定値を持たせない。
 - **Production で `localhost`・`127.0.0.1`・Preview の URL を使わない。** これらが入っていると、応募者に届くリンクが開けない。
-- 未設定の場合はリクエストの origin（Server Action では `x-forwarded-host` / `host` ヘッダー）を使う。Production ではこの代替に頼らず、必ず設定する。
+- **コードで強制する**（2026-10-30）：`NODE_ENV=production` では `INTERVIEW_PUBLIC_BASE_URL` が必須で、`https://` で始まり、local address（`localhost`・`127.x`・`0.0.0.0`・`[::1]`）でないこと。満たさないと面談URLの発行・「別の時間を依頼」は `PUBLIC_URL_NOT_CONFIGURED` で止まり、招待も取消も作らない（Admin に原因を表示）。応募者の申請は止めず、Admin への通知メールのリンクだけ相対パスにする。判定は `src/features/guide-interviews/base-url.ts`（`base-url.test.ts`）
+- 開発環境（`next dev`）だけ、未設定ならリクエストの origin（Server Action では `x-forwarded-host` / `host` ヘッダー）を使う
+- 面談専用 site の値：`https://connectrip-guide-interviews.netlify.app`（応募者URLは `https://connectrip-guide-interviews.netlify.app/interview/<token>`）
+- Admin の応募者詳細の「面談URLを発行」「面談URLを再発行」で発行し、その場で表示される面談URLをコピーできる（token の平文は保存しないため、後から再表示はできない）
 - 本番の公開 URL の値：Unknown / 要確認（人間が決めて Netlify に設定する。公式 HP `connectripjapan.com` は現在 Framer で、Site Not Found の未解決事項がある）。
 - ローカル開発の `.env.local` では localhost の値になっている（2026-10-30 の結合試験で、port 3100 で起動しても予約リンクが `localhost:3000` になったことで確認）。ローカルで別の port を使うときはリンクの port が実際と合わないことがあるが、Production には影響しない。
 - 本番 Deploy 前の確認（人間）：Netlify の環境変数に設定されていること、値が `https://` の本番 origin で `localhost` を含まないこと。Admin で予約リンクを発行し、表示されたリンクのホストが本番であることを確認する。
@@ -443,3 +446,4 @@ Astra は DB・API・Calendar 連携・予約ルール・セキュリティ・�
 | 2026-10-30 | Astra の UI 仕上げ（§13-6）を `70b8558` で commit。公開ページ `/guide-interview` を追加し sitemap に掲載（§8-4）。ローカル Turbopack の `/en/contact` 500 と `SITE_URL` のドメインを §11-14・15 に記録 |
 | 2026-10-30 | 面談システムを専用 Netlify site で先行公開する準備：`INTERVIEW_ONLY_SITE=1` で配信範囲を絞る（§10-2）。`/guide-interview` を noindex にし、canonical と sitemap から外した（§8-4） |
 | 2026-10-30 | 面談専用 site の外部リンクを修正（応募フォーム・mailto、§8-4・§10-2）。Google OAuth 用の Privacy Policy `/privacy` を追加（§8-5） |
+| 2026-10-30 | Production で localhost の面談URLを作れないようにした（§10-1）。Admin の文言を「面談URLを発行 / 再発行」に統一 |
