@@ -14,16 +14,10 @@ const ROUTES: { href: string; priority: number; changeFrequency: "weekly" | "mon
   { href: "/pricing", priority: 0.4, changeFrequency: "monthly" },
 ];
 
-// Standalone pages outside the next-intl locale routing: one URL each, no hreflang.
-// Never list personal booking links (/interview/[token]) or /admin here.
-const UNLOCALIZED_ROUTES: { href: string; priority: number; changeFrequency: "weekly" | "monthly" }[] = [
-  { href: "/guide-interview", priority: 0.5, changeFrequency: "monthly" },
-];
-
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
-  const localized: MetadataRoute.Sitemap = ROUTES.map(({ href, priority, changeFrequency }) => {
+  return ROUTES.map(({ href, priority, changeFrequency }) => {
     const languages = Object.fromEntries(
       routing.locales.map((locale) => [
         locale,
@@ -44,13 +38,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
       },
     };
   });
-
-  const unlocalized: MetadataRoute.Sitemap = UNLOCALIZED_ROUTES.map(({ href, priority, changeFrequency }) => ({
-    url: `${SITE_URL}${href}`,
-    lastModified,
-    changeFrequency,
-    priority,
-  }));
-
-  return [...localized, ...unlocalized];
 }

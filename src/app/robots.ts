@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
+import { isInterviewOnlySite } from "@/features/guide-interviews/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/admin", "/api", "/interview"],
     },
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    // The interview-only site serves no sitemap (and is noindex throughout).
+    ...(isInterviewOnlySite() ? {} : { sitemap: `${SITE_URL}/sitemap.xml` }),
   };
 }

@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import "../globals.css";
 import "@/components/interview/interview-ui.css";
-import { SITE_URL } from "@/lib/site";
 
 // Standalone root layout for the public Guide Interview page (/guide-interview).
 // It only explains the interview; booking stays on the personal
@@ -12,8 +11,10 @@ export const metadata: Metadata = {
   title: "Guide Interview | Connectrip Japan",
   description:
     "How the Connectrip Japan guide interview works: a 30-minute online interview on Google Meet for people who want to guide travelers in Kansai. No guiding experience required.",
-  // One public URL, outside the locale routing (listed in sitemap.ts).
-  alternates: { canonical: `${SITE_URL}/guide-interview` },
+  // Not for search engines yet: the interview system goes live on its own site
+  // before connectripjapan.com. Index it (and add a canonical and a sitemap
+  // entry) once the page moves to the main domain.
+  robots: { index: false, follow: false },
 };
 
 export default function GuideInterviewRootLayout({ children }: { children: ReactNode }) {

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { clearAdminSession, isAdminAuthenticated } from "@/lib/admin-auth";
+import { isInterviewOnlySite } from "@/features/guide-interviews/site";
 
 async function logout() {
   "use server";
@@ -18,6 +19,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     <div className="min-h-screen bg-cream text-navy">
       <header className="border-b border-navy/10 bg-white">
         <div className="mx-auto flex max-w-4xl items-start justify-between gap-4 px-6 py-4">
+          {isInterviewOnlySite() ? (
+            // The interview-only site serves the applications screens only (src/proxy.ts).
+            <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              <Link href="/admin/guide-applications" className="font-medium hover:text-navy/70">
+                ガイド応募
+              </Link>
+            </nav>
+          ) : (
           <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
             <Link href="/admin" className="font-medium hover:text-navy/70">
               管理画面
@@ -38,6 +47,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               パートナー応募
             </Link>
           </nav>
+          )}
           <form action={logout}>
             <button type="submit" className="whitespace-nowrap text-xs text-navy/50 hover:text-navy">
               ログアウト

@@ -185,8 +185,9 @@ INVITED / PENDING_APPROVAL / CONFIRMED → CANCELLED
 
 - 内容（英語）：Hero（Connectrip Japan / Guide Interview / Join our guide community in Kansai）、面談概要（オンライン・約 30 分・Google Meet・ガイド経験不問・関西で活動できる方）、流れ（Apply → Application review → Interview invitation → Choose a date → Interview）、CTA（`Apply as a Guide` → `/guide-community`、`Already invited?` → ページ内の案内。予約はメールの専用リンクからだけ、リンクは 14 日有効、期限切れ・紛失時は `/en/contact` へ連絡）
 - **Google Calendar・API・DB に一切アクセスしない静的ページ。** 空き枠は表示しない。予約できるのは `/interview/[token]` を受け取った面談対象者だけ（設計は変えない）
-- ファイル：`src/app/guide-interview/layout.tsx`（独立した root layout、`interview-ui.css` を共用、canonical `${SITE_URL}/guide-interview`）、`page.tsx`。`src/proxy.ts` の matcher で next-intl から除外（`/guide-community` と同じ扱い）
-- 検索エンジンに公開する（`noindex` なし）。`src/app/sitemap.ts` の `UNLOCALIZED_ROUTES` に 1 URL だけ載せる（hreflang なし）。`/interview/[token]` と `/admin` は sitemap に載せず、robots で disallow のまま
+- ファイル：`src/app/guide-interview/layout.tsx`（独立した root layout、`interview-ui.css` を共用）、`page.tsx`。`src/proxy.ts` で next-intl の対象外（`/guide-community` と同じ扱い）
+- **当面は SEO 公開しない**（変更 2026-10-30）：面談システムを HP 本体より先に専用の Netlify site で公開するため、`noindex, nofollow` とし、canonical を付けず、sitemap にも載せない。HP 公開時に `connectripjapan.com/guide-interview` へ移す段階で、index・canonical・sitemap を戻す
+- `/interview/[token]` と `/admin` は sitemap に載せず、robots で disallow のまま
 
 ## 9. メール（確定）
 
@@ -219,11 +220,24 @@ Admin の操作で、現在の申請を削除せず `PENDING_APPROVAL → CANCEL
 | `GOOGLE_CALENDAR_REFRESH_TOKEN` | 壮真のアカウントの refresh token | 新規 |
 | `GOOGLE_CALENDAR_ID` | 対象カレンダー（未設定なら `primary`） | 新規 |
 | `INTERVIEW_PUBLIC_BASE_URL` | 予約リンクの URL を組み立てる基準 | 新規 |
+| `INTERVIEW_ONLY_SITE` | `1` で面談専用 site として動かす（§10-2）。既存の production site には設定しない | 新規 |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASSWORD` / `SMTP_FROM` | メール送信 | 既存 |
 | `POSTGRES_URL` | DB | 既存 |
 | `ADMIN_PASSWORD` | Admin 認証 | 既存 |
 
 値はどこにも書かない。Netlify / Vercel への設定は人間が行う。
+
+### 10-2. 面談専用 site（`INTERVIEW_ONLY_SITE=1`、確定 2026-10-30）
+
+HP 本体を公開する前に、面談予約システムだけを専用の Netlify site で先行運用する。同じアプリを使い、`src/proxy.ts` がフラグのあるときだけ配信する範囲を絞る。
+
+- 配信する：`/guide-interview`、`/interview/*`、`/api/interviews/*`、`/admin/login`、`/admin/guide-applications/**`、`/_next/*`（ビルド成果物）、`/favicon.ico`、`/robots.txt`。`/admin` は `/admin/guide-applications` へ redirect（ログイン後の行き先）
+- それ以外はすべて 404：HP 本体（全 locale）、`/guide-community`、`/partner`、Admin の gallery / vlog / reviews / partner-applications、他の API、`/sitemap.xml`、`public/` のファイル
+- すべての応答に `X-Robots-Tag: noindex, nofollow`。robots.txt から sitemap の行を外す
+- Admin のナビは「ガイド応募」だけを表示する
+- 判定は純粋関数 `src/features/guide-interviews/site.ts` の `interviewSiteRoute()`（`site.test.ts` でテスト）
+- フラグなしの動作は従来どおり（proxy の matcher を広げたが、従来除外していたパスは next-intl を通さずにそのまま通す）
+- 応募の受付（`/guide-community`）は既存の production site のまま。両 site が同じ本番 DB を使う
 
 ### 10-1. `INTERVIEW_PUBLIC_BASE_URL`（確定 2026-10-30）
 
@@ -250,8 +264,8 @@ Admin の操作で、現在の申請を削除せず `PENDING_APPROVAL → CANCEL
 11. ~~開発用 DB の準備~~ → 解決（2026-10-30）：Neon branch `guide-interviews-dev`（endpoint `ep-lively-dust-aob9gecd`）に migration を適用し、結合試験に使用。Workspace の R0（Preview / Development が本番 DB を向いている問題）は別途未解決
 12. ~~申請時の Admin への通知~~ → 解決（2026-10-30）：送る。失敗しても申請は成立（§9）
 13. 本番の `INTERVIEW_PUBLIC_BASE_URL` の値（§10-1）
-14. **本番前確認**：ローカルの `next dev`（Turbopack）で、メインサイトの locale ページ（`/en/contact`、`/en` など）が Google Font（Shippori Mincho）の解決エラー `Can't resolve '@vercel/turbopack-next/internal/font/google/font'` で 500 になる。一度発生すると同じ dev server の他の route（Admin・`/interview` を含む）も 500 になり、dev server の再起動で戻る。面談予約システムの変更とは無関係で、`bun run build` は成功する。本番 Deploy 前に、`/guide-interview` の「contact Connectrip Japan」リンク先 `/en/contact` が本番で表示できることを確認する（2026-10-30 記録、未修正）
-15. `SITE_URL`（`src/lib/site.ts`）は `https://connectripjapan.com`。`/guide-interview` の canonical と sitemap もこのドメインを使う。公式 HP（Framer）は Site Not Found の未解決事項があり、本番でこのページを配信するドメインとの関係は Unknown / 要確認
+14. **本番前確認**：ローカルの `next dev`（Turbopack）で、メインサイトの locale ページ（`/en/contact`、`/en` など）が Google Font（Shippori Mincho）の解決エラー `Can't resolve '@vercel/turbopack-next/internal/font/google/font'` で 500 になる。一度発生すると同じ dev server の他の route（Admin・`/interview` を含む）も 500 になり、dev server の再起動で戻る。面談予約システムの変更とは無関係で、`bun run build` は成功する。本番 Deploy 前に、`/guide-interview` の「contact Connectrip Japan」リンク先 `/en/contact` が本番で表示できることを確認する（2026-10-30 記録、未修正）。追記：ローカルの production build（`next start`）では `/en/contact` は 200。ただし面談専用 site（§10-2）では `/en/contact` も `/guide-community` も配信しないため、`/guide-interview` の「contact Connectrip Japan」と「Apply as a Guide」は、面談専用 site では 404 になる。Deploy 前に、リンク先（例：既存の production site の `/guide-community`、問い合わせ先）を決めて直す必要がある（Unknown / 要確認、未修正）。また、ローカルの `next start` では `/`・`/reservation` など default locale のページが 307 で同じ URL へ redirect を繰り返す（変更前の proxy でも同じ。Netlify の production site では起きない。未調査）
+15. `SITE_URL`（`src/lib/site.ts`）は `https://connectripjapan.com`。→ 当面の対応（2026-10-30）：`/guide-interview` は面談専用 site で noindex とし、canonical・sitemap から外した（§8-4）。HP 公開時に戻す
 
 ## 12. テスト項目
 
@@ -417,3 +431,4 @@ Astra は DB・API・Calendar 連携・予約ルール・セキュリティ・�
 | 2026-10-30 | 開発用 DB と実 Google Calendar で結合試験を実施（§12-1）。承認直後の進捗ドロップダウンの不具合を修正し、`check-interview-db.mjs` を repo に含めることにした（§13-5）。`INTERVIEW_PUBLIC_BASE_URL` の Production の前提を §10-1 に明記。§11-11 を解決、§11-13 を追加 |
 | 2026-10-30 | 上記を `0040db4` で commit（この文書も `feature/guide-interviews` に移した）。header と §13-5 の commit 状態を更新 |
 | 2026-10-30 | Astra の UI 仕上げ（§13-6）を `70b8558` で commit。公開ページ `/guide-interview` を追加し sitemap に掲載（§8-4）。ローカル Turbopack の `/en/contact` 500 と `SITE_URL` のドメインを §11-14・15 に記録 |
+| 2026-10-30 | 面談システムを専用 Netlify site で先行公開する準備：`INTERVIEW_ONLY_SITE=1` で配信範囲を絞る（§10-2）。`/guide-interview` を noindex にし、canonical と sitemap から外した（§8-4） |
