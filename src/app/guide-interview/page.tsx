@@ -1,11 +1,14 @@
-import Link from "next/link";
+import { GUIDE_APPLICATION_FORM_URL } from "@/features/guide-interviews/site";
 
 // Public explainer for the guide interview. Styling follows the applicant
 // booking page (BookingShell, interview-ui.css). No availability is shown
 // here: only invited applicants book, through their personal link.
 
-const APPLY_HREF = "/guide-community";
-const CONTACT_HREF = "/en/contact";
+// Absolute links: this page is served from the interview-only site, which does
+// not serve /guide-community or the main site's contact page. Revisit when the
+// page moves to connectripjapan.com.
+const APPLY_HREF = GUIDE_APPLICATION_FORM_URL;
+const CONTACT_HREF = "mailto:contact@connectripjapan.com";
 
 const OVERVIEW = [
   { label: "Format", value: "Online interview" },
@@ -38,9 +41,9 @@ export default function GuideInterviewPage() {
         <h1 className="mt-4 font-serif text-4xl tracking-tight sm:text-5xl">Guide Interview</h1>
         <p className="mt-3 text-lg text-navy/80 sm:text-xl">Join our guide community in Kansai</p>
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-          <Link href={APPLY_HREF} className="interview-primary inline-flex items-center justify-center">
+          <a href={APPLY_HREF} className="interview-primary inline-flex items-center justify-center">
             Apply as a Guide
-          </Link>
+          </a>
           <a href="#already-invited" className="interview-secondary inline-flex items-center justify-center bg-white">
             Already invited? Check your interview booking link
           </a>
@@ -87,12 +90,12 @@ export default function GuideInterviewPage() {
         <p className="mt-3 text-sm text-white/80">
           Start with the guide application form. We will contact you by email about the next steps.
         </p>
-        <Link
+        <a
           href={APPLY_HREF}
           className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-gold px-5 py-3 text-sm font-semibold text-navy hover:bg-gold/90 sm:w-auto"
         >
           Apply as a Guide
-        </Link>
+        </a>
       </section>
 
       {/* Already invited */}
@@ -109,9 +112,9 @@ export default function GuideInterviewPage() {
           </p>
           <p>Booking links are personal and stay valid for 14 days. Please do not share yours with anyone.</p>
           <p>
-            If your link has expired or you cannot find the email, please{" "}
+            If your link has expired or you cannot find the email, please email us at{" "}
             <a href={CONTACT_HREF} className="font-medium text-navy underline underline-offset-2 hover:text-navy/70">
-              contact Connectrip Japan
+              contact@connectripjapan.com
             </a>{" "}
             and we will send you a new one.
           </p>

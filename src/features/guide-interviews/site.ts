@@ -8,6 +8,12 @@
 
 export const isInterviewOnlySite = () => process.env.INTERVIEW_ONLY_SITE === "1";
 
+/**
+ * The guide application form on the existing production site. The
+ * interview-only site does not serve /guide-community, so its links go here.
+ */
+export const GUIDE_APPLICATION_FORM_URL = "https://connectrip-guide-community.netlify.app/guide-community";
+
 /** Where the admin lands after login on the interview-only site (/admin itself is not served). */
 export const INTERVIEW_ADMIN_HOME = "/admin/guide-applications";
 

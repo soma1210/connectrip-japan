@@ -27,6 +27,7 @@ import {
 } from "@/lib/data/guide-applications";
 import { listPendingInterviews } from "@/lib/data/guide-interviews";
 import { formatInterviewRange } from "@/features/guide-interviews/format";
+import { GUIDE_APPLICATION_FORM_URL, isInterviewOnlySite } from "@/features/guide-interviews/site";
 import { ClickableRow } from "./ClickableRow";
 import { StatusBadge } from "./StatusBadge";
 
@@ -103,7 +104,7 @@ export default async function AdminGuideApplicationsPage({
           <p className="mt-1 text-sm text-navy/60">Connectrip Guide Community の応募一覧</p>
         </div>
         <Link
-          href="/guide-community"
+          href={isInterviewOnlySite() ? GUIDE_APPLICATION_FORM_URL : "/guide-community"}
           target="_blank"
           className="rounded-md border border-navy/20 bg-white px-3 py-2 text-xs hover:border-navy/50"
         >
