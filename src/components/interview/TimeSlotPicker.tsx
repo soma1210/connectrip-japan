@@ -12,7 +12,7 @@ export function TimeSlotPicker({
   onSelect: (time: string) => void;
 }) {
   return (
-    <ul className="grid grid-cols-3 gap-2 sm:grid-cols-6" aria-label="Available times">
+    <ul className="grid grid-cols-4 gap-2 sm:grid-cols-6" aria-label="Available times">
       {slots.map((time) => {
         const active = time === selected;
         return (
@@ -21,8 +21,8 @@ export function TimeSlotPicker({
               type="button"
               aria-pressed={active}
               onClick={() => onSelect(time)}
-              className={`w-full rounded-md border px-2 py-2 text-sm font-medium tabular-nums transition-colors ${
-                active ? "border-navy bg-navy text-white" : "border-navy/20 bg-white hover:border-navy/50"
+              className={`min-h-11 w-full rounded-lg border px-2 py-2 text-sm font-medium tabular-nums transition-colors ${
+                active ? "border-navy bg-navy text-white ring-2 ring-navy ring-offset-2" : "border-navy/20 bg-white hover:border-navy/50"
               }`}
             >
               {time}

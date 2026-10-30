@@ -355,6 +355,30 @@ Admin の操作で、現在の申請を削除せず `PENDING_APPROVAL → CANCEL
 
 確認：ブラウザで承認 → 再読み込みなしでドロップダウンが「面談予定」→「保存する」後も DB・画面とも「面談予定」。`tsc --noEmit`・`eslint`・`next build`・`bun test src/features/guide-interviews`（27 pass）がすべて成功。
 
+### 13-6. UI/UX 仕上げ（2026-10-30）
+
+- 既存の navy / gold / cream トークンを使い、応募者ページのヘッダー、白いカード、余白、文字サイズ、focus / disabled 表示を統一。応募者ページ内だけ可読性重視の本文フォントと serif 見出しを指定し、サイト全体のフォントは変更しない。
+- 日付はスマホ3列・PC5列、時間はスマホ4列・PC6列。44px以上の時間ボタン、選択中のリング、空き枠0の日の disabled を追加。利用可能日・時間は従来の API 応答を使い、予約枠の算出は変更していない。
+- 選択日時（JST と既存のローカル時刻補足）、確認画面、申請中のボタン無効化とクライアントの連打ガード、状態の読み上げ、確認見出しへのフォーカスを整備。
+- 取得中はスケルトンと説明を表示。ルートの loading.tsx も追加。空き枠取得エラーに再試行を追加し、申請失敗時は既知の公開メッセージだけを表示する。
+- PENDING_APPROVAL は申請受付であり確定ではないことを明示。CONFIRMED はメール送信成功を断定しない案内へ修正。応募者画面に Meet URL は表示しない。
+- Admin は承認を primary とし、badge・日時・Meet URL・操作群を整理。狭い画面では操作を縦並びにする。URL入力に label、コピー成功・失敗の案内、処理中表示を追加。
+- 変更ファイル：`src/components/interview/{BookingCalendar,BookingFlow,InterviewStatus,TimeSlotPicker}.tsx`、新規 `BookingShell.tsx` / `BookingLoading.tsx` / `interview-ui.css`、`src/app/interview/layout.tsx` / `[token]/page.tsx` / 新規 `[token]/loading.tsx`、`src/app/admin/(protected)/guide-applications/[id]/InterviewPanel.tsx`、この文書。
+- DB / migration / API / Calendar / FreeBusy / Meet生成 / OAuth / token / 予約ルール / status設計 / 認証 / メール処理 / privacy仕様の変更なし。環境変数の追加・変更なし。push / deploy は行わない。
+
+検証：
+
+- `tsc --noEmit`、`eslint`、`git diff --check` 成功。`bun test` は既存27件 pass（426 assertions）。
+- `next build --webpack` 成功（72ページ生成）。通常の `bun run build`（Turbopack）は実行環境で内部ポートの bind が拒否され失敗した。コードやビルド設定で回避する変更はしていない。通常ビルドは制限のない環境で再確認する。
+- アプリ内ブラウザで実コンポーネント＋表示用の模擬データを検証。390 / 768 / 1280px、応募者9状態（choose / loading / error / empty / requested / confirmed / invalid / expired / closed）＋Admin7状態の計48パターンで横はみ出しなし、ボタン44px以上。Adminは既存PCサイドバー相当の幅で検証。
+- キーボードで時刻選択→確認→申請受付、取得失敗から再試行、送信中disabled、長いMeet URL、コピー成功を確認。画面の代表例を目視確認。実DB・Calendar・メール・Admin認証を通した結合試験は今回再実行していない。表示用fixtureと検証スクリプトはリポジトリ外に置き、出荷物に含めない。
+
+残課題・本番前の人間確認：
+
+- 実機Safari / Chrome、スクリーンリーダー、実際の応募詳細ページ全体に組み込んだAdmin表示、メールから開く導線を確認する。
+- 技術仕様§13-4にあるinvalid文言の差とclosed表示の扱いは、今回の依頼文の例と既存の状態分岐を維持。セキュリティ仕様の判断に関わるため勝手に変更していない。
+- SMTP未設定時のAdmin既存案内（Meet URLをコピーして応募者へ送る）と「応募者には確定メールのみ」という運用方針の整合は、人間側で確認する。既存の案内やメール処理を変更していない。
+
 ## 14. 実装担当
 
 | 担当 | 範囲 |

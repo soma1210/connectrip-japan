@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import "../globals.css";
+import "@/components/interview/interview-ui.css";
+import { BookingShell } from "@/components/interview/BookingShell";
 
 // Standalone root layout for the applicant interview booking page
-// (/interview/[token]). Plain on purpose: the final design is done separately.
+// (/interview/[token]).
 
 export const metadata: Metadata = {
   title: "Guide Interview | Connectrip Japan",
@@ -17,7 +19,7 @@ export default function InterviewRootLayout({ children }: { children: ReactNode 
   return (
     <html lang="en">
       <body className="antialiased" style={{ background: "#f5f3ee", color: "#162e4c" }}>
-        {children}
+        <BookingShell>{children}</BookingShell>
       </body>
     </html>
   );

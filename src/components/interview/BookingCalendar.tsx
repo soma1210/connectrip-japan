@@ -31,12 +31,13 @@ export function BookingCalendar({
             <button
               type="button"
               aria-pressed={active}
+              disabled={day.slots.length === 0}
               onClick={() => onSelect(day.date)}
-              className={`flex w-full flex-col items-center rounded-md border px-2 py-2.5 text-sm transition-colors ${
-                active ? "border-navy bg-navy text-white" : "border-navy/20 bg-white hover:border-navy/50"
+              className={`flex w-full flex-col items-center min-h-16 rounded-lg border px-2 py-3 text-sm transition-colors ${
+                active ? "border-navy bg-navy text-white ring-2 ring-navy ring-offset-2" : "border-navy/20 bg-white hover:border-navy/50"
               }`}
             >
-              <span className={`text-xs ${active ? "text-white/70" : "text-navy/55"}`}>{weekday}</span>
+              <span className={`text-xs ${active ? "text-white/85" : "text-navy/75"}`}>{weekday}</span>
               <span className="font-semibold">{monthDay}</span>
             </button>
           </li>

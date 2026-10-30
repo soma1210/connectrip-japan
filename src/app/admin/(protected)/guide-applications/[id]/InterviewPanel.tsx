@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import "@/components/interview/interview-ui.css";
+import { useId, useState, useTransition } from "react";
 import { formatDate } from "@/features/guide-community/format";
 import { formatInterviewRange } from "@/features/guide-interviews/format";
 import { INTERVIEW_STATUS_LABELS, type GuideInterview } from "@/features/guide-interviews/types";
@@ -15,7 +16,7 @@ import {
   type InterviewActionState,
 } from "./interview-actions";
 
-const buttonClass = "h-9 rounded-md px-3 text-sm font-medium disabled:opacity-50";
+const buttonClass = "min-h-11 rounded-lg px-3 py-2 text-sm font-medium leading-relaxed disabled:opacity-50";
 const primary = `${buttonClass} bg-navy text-white hover:bg-navy/90`;
 const secondary = `${buttonClass} border border-navy/20 bg-white text-navy hover:border-navy/50`;
 const danger = `${buttonClass} border border-red/40 bg-white text-red hover:bg-red/5`;
@@ -24,9 +25,9 @@ const STATUS_TONES: Record<GuideInterview["status"], string> = {
   INVITED: "bg-navy/5 text-navy/70 ring-navy/15",
   PENDING_APPROVAL: "bg-gold/15 text-navy ring-gold/50",
   APPROVING: "bg-gold/15 text-navy ring-gold/50",
-  CONFIRMED: "bg-emerald-600 text-white ring-emerald-600",
+  CONFIRMED: "bg-emerald-50 text-emerald-900 ring-emerald-300",
   REJECTED: "bg-red/5 text-red ring-red/30",
-  CANCELLED: "bg-navy/5 text-navy/50 ring-navy/10",
+  CANCELLED: "bg-navy/5 text-navy/70 ring-navy/10",
   COMPLETED: "bg-emerald-50 text-emerald-900 ring-emerald-200",
 };
 
@@ -40,21 +41,29 @@ function InterviewBadge({ status }: { status: GuideInterview["status"] }) {
 
 function CopyField({ label, value }: { label: string; value: string }) {
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
+  const inputId = useId();
   return (
     <div className="flex flex-col gap-1">
-      <span className="text-[11px] text-navy/55">{label}</span>
+      <label htmlFor={inputId} className="text-xs text-navy/75">{label}</label>
       <div className="flex gap-1.5">
-        <input readOnly value={value} onFocus={(e) => e.currentTarget.select()} className="h-8 min-w-0 flex-1 rounded border border-navy/15 bg-navy/[0.03] px-2 text-xs" />
+        <input id={inputId} aria-describedby={copyError ? `${inputId}-feedback` : undefined} readOnly value={value} onFocus={(e) => e.currentTarget.select()} className="interview-copy h-11 min-w-0 flex-1 rounded border border-navy/15 bg-navy/[0.03] px-2 text-xs" />
         <button
           type="button"
-          className="h-8 shrink-0 rounded border border-navy/20 px-2 text-xs hover:border-navy/50"
+          className="min-h-11 shrink-0 rounded-lg border border-navy/20 px-2 text-xs hover:border-navy/50"
           onClick={() => {
-            navigator.clipboard.writeText(value).then(() => setCopied(true), () => {});
+            setCopyError(false);
+            if (!navigator.clipboard) { setCopyError(true); return; }
+            navigator.clipboard.writeText(value).then(() => {
+              setCopied(true);
+              window.setTimeout(() => setCopied(false), 2500);
+            }, () => setCopyError(true));
           }}
         >
-          {copied ? "コピー済み" : "コピー"}
+          <span aria-live="polite">{copied ? "コピー済み" : "コピー"}</span>
         </button>
       </div>
+      {copyError ? <p id={`${inputId}-feedback`} role="status" className="text-xs text-red">コピーできませんでした。URLを選択して手動でコピーしてください。</p> : null}
     </div>
   );
 }
@@ -62,7 +71,7 @@ function CopyField({ label, value }: { label: string; value: string }) {
 function Detail({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="grid grid-cols-[5.5rem_1fr] gap-2 text-sm">
-      <span className="text-xs leading-5 text-navy/55">{label}</span>
+      <span className="text-xs leading-5 text-navy/75">{label}</span>
       <span className="min-w-0 break-words">{children}</span>
     </div>
   );
@@ -99,13 +108,13 @@ export function InterviewPanel({
   }
 
   return (
-    <section className="overflow-hidden rounded-lg border-2 border-navy bg-white">
+    <section className="interview-ui interview-admin overflow-hidden rounded-xl border border-navy/20 bg-white shadow-sm">
       <div className="bg-navy px-4 py-3 text-white">
-        <p className="text-sm font-semibold tracking-wide">面談予約</p>
+        <h2 className="text-base font-semibold tracking-wide">面談予約</h2>
         <p className="text-[11px] text-white/70">管理者のみ・応募者には表示されません</p>
       </div>
 
-      <div className="flex flex-col gap-4 p-4">
+      <div className="flex flex-col gap-5 p-4 sm:p-5">
         {!calendarConfigured ? (
           <p className="rounded-md border border-gold/60 bg-gold/10 px-3 py-2 text-xs">
             Google Calendar が未接続です。空き枠の表示と承認はできません（GOOGLE_* 環境変数を設定）。
@@ -128,9 +137,9 @@ export function InterviewPanel({
         ) : null}
 
         {current ? (
-          <div className="flex flex-col gap-2.5">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-medium text-navy/60">面談ステータス</span>
+          <div className="flex flex-col gap-3 rounded-lg bg-cream/60 p-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs font-medium text-navy/75">面談ステータス</span>
               <InterviewBadge status={current.status} />
             </div>
 
@@ -165,9 +174,10 @@ export function InterviewPanel({
             ) : null}
           </div>
         ) : (
-          <p className="text-sm text-navy/60">面談の案内はまだ送っていません。</p>
+          <p className="text-sm text-navy/75">面談の案内はまだ送っていません。</p>
         )}
 
+        {pending ? <p role="status" className="text-sm text-navy/75">処理中です。しばらくお待ちください…</p> : null}
         {/* Actions */}
         <div className="flex flex-col gap-2">
           {current?.status === "PENDING_APPROVAL" || current?.status === "APPROVING" ? (
@@ -188,7 +198,7 @@ export function InterviewPanel({
               {current.status === "PENDING_APPROVAL" ? (
                 rejecting ? (
                   <div className="flex flex-col gap-2 rounded-md border border-navy/15 p-3">
-                    <label className="flex flex-col gap-1 text-xs text-navy/60">
+                    <label className="flex flex-col gap-1 text-xs text-navy/75">
                       却下理由（社内用・任意）
                       <textarea
                         rows={2}
@@ -210,13 +220,13 @@ export function InterviewPanel({
                       >
                         却下する
                       </button>
-                      <button type="button" className={secondary} onClick={() => setRejecting(false)}>
+                      <button type="button" disabled={pending} className={secondary} onClick={() => setRejecting(false)}>
                         戻る
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
                     <button type="button" disabled={pending} className={danger} onClick={() => setRejecting(true)}>
                       却下
                     </button>
@@ -240,7 +250,7 @@ export function InterviewPanel({
           ) : null}
 
           {current?.status === "CONFIRMED" ? (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
               <button type="button" disabled={pending} className={secondary} onClick={() => run(() => resendConfirmationAction(applicationId, current.id))}>
                 確定メールを再送
               </button>
@@ -256,7 +266,7 @@ export function InterviewPanel({
               <button
                 type="button"
                 disabled={pending}
-                className={`${danger} col-span-2`}
+                className={`${danger} min-[400px]:col-span-2`}
                 onClick={() =>
                   run(
                     () => cancelAction(applicationId, current.id),
@@ -270,7 +280,7 @@ export function InterviewPanel({
           ) : null}
 
           {current?.status === "INVITED" ? (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
               <button
                 type="button"
                 disabled={pending}
@@ -299,18 +309,18 @@ export function InterviewPanel({
 
         {history.length > 0 ? (
           <details className="text-xs">
-            <summary className="cursor-pointer text-navy/55">過去の面談・案内（{history.length}件）</summary>
+            <summary className="cursor-pointer text-navy/75">過去の面談・案内（{history.length}件）</summary>
             <ul className="mt-2 flex flex-col divide-y divide-navy/10">
               {history.map((interview) => (
                 <li key={interview.id} className="flex flex-col gap-1 py-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-navy/55">{formatDate(interview.created_at, true)}</span>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-navy/75">{formatDate(interview.created_at, true)}</span>
                     <InterviewBadge status={interview.status} />
                   </div>
                   {interview.requested_start_at && interview.requested_end_at ? (
                     <span>{formatInterviewRange(interview.requested_start_at, interview.requested_end_at)}</span>
                   ) : null}
-                  {interview.status_reason ? <span className="text-navy/55">{interview.status_reason}</span> : null}
+                  {interview.status_reason ? <span className="text-navy/75">{interview.status_reason}</span> : null}
                 </li>
               ))}
             </ul>

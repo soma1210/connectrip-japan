@@ -17,13 +17,13 @@ const time = (iso: string) =>
 
 /** "Monday, November 2, 2026 · 14:00–14:30 (Japan Time)" */
 export function formatSlot(startIso: string, endIso: string) {
-  return `${dateTime(startIso)} · ${time(startIso)}–${time(endIso)} (Japan Time)`;
+  return `${dateTime(startIso)} · ${time(startIso)}–${time(endIso)} JST`;
 }
 
 export function StatusCard({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-navy/15 bg-white p-6">
-      <h2 className="text-lg font-semibold">{title}</h2>
+    <div role="status" className="flex flex-col gap-5 rounded-xl border border-navy/15 border-t-[3px] border-t-gold bg-white p-6 shadow-sm sm:p-8">
+      <h2 className="font-serif text-2xl leading-snug sm:text-3xl">{title}</h2>
       {children}
     </div>
   );
@@ -44,7 +44,7 @@ export function InterviewStatus(
     case "expired":
       return (
         <StatusCard title="This link has expired">
-          <p className="text-sm text-navy/70">Please contact Connectrip Japan and we will send you a new link.</p>
+          <p className="text-sm text-navy/70">Please contact Connectrip Japan for a new interview booking link.</p>
         </StatusCard>
       );
     case "closed":
@@ -55,14 +55,14 @@ export function InterviewStatus(
       );
     case "unavailable":
       return (
-        <StatusCard title="Booking is temporarily unavailable">
-          <p className="text-sm text-navy/70">Please try again later.</p>
+        <StatusCard title="We couldn’t load the available times.">
+          <p className="text-sm text-navy/70">Please try again in a moment.</p>
         </StatusCard>
       );
     case "requested":
       return (
-        <StatusCard title="Your interview request has been submitted.">
-          <p className="rounded-md bg-navy/[0.04] px-3 py-2 text-sm font-medium">{formatSlot(props.start, props.end)}</p>
+        <StatusCard title="Interview Request Submitted">
+          <p className="rounded-lg bg-cream px-4 py-4 text-base font-medium">{formatSlot(props.start, props.end)}</p>
           <p className="text-sm text-navy/70">
             We will send you a confirmation email once your interview has been approved.
           </p>
@@ -70,9 +70,9 @@ export function InterviewStatus(
       );
     case "confirmed":
       return (
-        <StatusCard title="Your interview is confirmed.">
-          <p className="rounded-md bg-navy/[0.04] px-3 py-2 text-sm font-medium">{formatSlot(props.start, props.end)}</p>
-          <p className="text-sm text-navy/70">The Google Meet link has been sent to you by email.</p>
+        <StatusCard title="Your Interview Is Confirmed">
+          <p className="rounded-lg bg-cream px-4 py-4 text-base font-medium">{formatSlot(props.start, props.end)}</p>
+          <p className="text-sm text-navy/70">Please check your confirmation email for the Google Meet link. If it has not arrived, please contact Connectrip Japan.</p>
         </StatusCard>
       );
   }
