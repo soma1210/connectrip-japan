@@ -11,7 +11,7 @@
 | 状態 | 結合試験完了・本番前（開発用 DB と実 Google Calendar で予約フロー全体を確認。§12-1） |
 | 最終更新 | 2026-10-30 |
 | 分岐元 | `feature/guide-community`（`8ce631b`） |
-| 実装 | worktree `~/Projects/connectrip-japan-guide-interviews`（branch `feature/guide-interviews`）。HEAD `13eb26c` ＋ 未 commit の修正（§13-5） |
+| 実装 | worktree `~/Projects/connectrip-japan-guide-interviews`（branch `feature/guide-interviews`）。`13eb26c`（予約フローの実装）＋ `0040db4`（結合試験後の修正とこの文書。§13-5）。いずれも commit 済み・未 push |
 
 記法：**確定** = 人間が決定した仕様。**ドラフト** = 先行ドラフト実装にあり、人間の決定ではないもの。**Unknown / 要確認** = 未決定。
 
@@ -319,7 +319,7 @@ Admin の操作で、現在の申請を削除せず `PENDING_APPROVAL → CANCEL
 | 設定 | `src/app/robots.ts`（変更） | `/interview` を disallow |
 | 設定 | `tsconfig.json`（変更） | `**/*.test.ts` を exclude |
 | 手順 | `scripts/google-calendar-auth.mjs` | refresh token を取得する一度きりのスクリプト。PKCE と state を使い、localhost で受ける。scope は `calendar.freebusy`・`calendar.events.owned` だけ。コメントに Google Cloud の手順（同意画面を "In production" にする）を記載 |
-| 手順 | `scripts/check-interview-db.mjs`（repo に含める。§13-5） | `preflight`：接続先の Neon endpoint id・DB 名・件数を表示（秘密は出さない）。`verify`：migration 後にテーブル・拡張・制約・index を確認。本番に migration を適用する前にも、接続先の確認に使う |
+| 手順 | `scripts/check-interview-db.mjs`（`0040db4` で追加。§13-5） | `preflight`：接続先の Neon endpoint id・DB 名・件数を表示（秘密は出さない）。`verify`：migration 後にテーブル・拡張・制約・index を確認。本番に migration を適用する前にも、接続先の確認に使う |
 
 ### 13-3. 実装されている処理
 
@@ -343,15 +343,15 @@ Admin の操作で、現在の申請を削除せず `PENDING_APPROVAL → CANCEL
 | 仕様と不一致 | **④ 文言**：確定した例は `This interview booking link is invalid.` だが、ドラフトは API が `This booking link is not valid. Please check the link in your email.`、画面が見出し `This link is not valid` を使う（期限切れはほぼ一致）。また、確定仕様にない `closed` 状態（`This link is no longer active`）があり、「そのリンクが以前は有効だった」ことが分かる。内部状態を出さない方針に照らして、invalid と同じ表示にするか判断が必要／確定表示の `The Google Meet link has been sent to you by email.` は、確定メールの送信に失敗した場合は事実と異なる |
 | 人間作業が必要 | 開発用 DB の準備と migration の適用（`check-interview-db.mjs preflight` で接続先が開発用だと確認してから。本番は人間）／Google Cloud：Calendar API の有効化、OAuth client（Desktop app）、同意画面を本番前に "In production" へ／壮真のアカウントで `google-calendar-auth.mjs` を実行して refresh token を取得／Netlify の環境変数（§10）／既存の SMTP 設定で応募者宛てに送れるか確認／§11 の 3〜6・8・10・11 の判断／`check-interview-db.mjs` を commit するか（untracked のまま） |
 
-2026-10-30 の結合試験後の状態：開発用 DB の準備・migration・refresh token の取得は完了。`check-interview-db.mjs` は repo に含めることに決定。残る人間作業は、本番 migration、Netlify の環境変数（§10、特に §10-1）、OAuth 同意画面の公開状態、SMTP で応募者宛てに送れるかの確認、§11 の判断。
+2026-10-30 の結合試験後の状態：開発用 DB の準備・migration・refresh token の取得は完了。`check-interview-db.mjs` は `0040db4` で repo に追加済み。残る人間作業は、本番 migration、Netlify の環境変数（§10、特に §10-1）、OAuth 同意画面の公開状態、SMTP で応募者宛てに送れるかの確認、§11 の判断。
 
-### 13-5. 結合試験後の修正（2026-10-30、未 commit）
+### 13-5. 結合試験後の修正（2026-10-30、commit `0040db4`）
 
 | 問題 | 対応 | ファイル |
 |---|---|---|
 | Admin で承認した直後、Internal Management の進捗ドロップダウンが古い値（アンケート回答）のまま。DB は「面談予定」に変わっているため、そのまま「保存する」を押すと進捗が巻き戻る | `<select>` は `defaultValue`（非制御）で、再描画しても表示が変わらなかった。`key={app.pipeline_status}` を付け、進捗が変わったときだけ select を作り直す。社内評価・社内メモは作り直さないので入力中の内容は消えない。面談済み（`COMPLETED` → 面談済み）でも同じく効く | `src/app/admin/(protected)/guide-applications/[id]/page.tsx` |
 | 予約リンクの基準 URL を Production で取り違える恐れ | コードは変えず、§10-1 に Production の前提と Deploy 前の確認を明記 | この文書 |
-| 接続先 DB の確認手段が untracked | `scripts/check-interview-db.mjs` を repo に含める | `scripts/check-interview-db.mjs` |
+| 接続先 DB の確認手段が untracked だった | `scripts/check-interview-db.mjs` を repo に追加 | `scripts/check-interview-db.mjs` |
 
 確認：ブラウザで承認 → 再読み込みなしでドロップダウンが「面談予定」→「保存する」後も DB・画面とも「面談予定」。`tsc --noEmit`・`eslint`・`next build`・`bun test src/features/guide-interviews`（27 pass）がすべて成功。
 
@@ -380,3 +380,4 @@ Astra は DB・API・Calendar 連携・予約ルール・セキュリティ・�
 | 2026-10-30 | 進捗の自動同期、申請通知（失敗しても申請は成立）、英語のみ、無効・期限切れリンクの文言、「別の時間を依頼」を確定（§8-1、§9、§9-1、§9-2、§11） |
 | 2026-10-30 | §13 を再調査（HEAD `13eb26c`、01:37 時点）。API・応募者画面・Admin パネル・認証スクリプトを反映。単体テスト 27 pass |
 | 2026-10-30 | 開発用 DB と実 Google Calendar で結合試験を実施（§12-1）。承認直後の進捗ドロップダウンの不具合を修正し、`check-interview-db.mjs` を repo に含めることにした（§13-5）。`INTERVIEW_PUBLIC_BASE_URL` の Production の前提を §10-1 に明記。§11-11 を解決、§11-13 を追加 |
+| 2026-10-30 | 上記を `0040db4` で commit（この文書も `feature/guide-interviews` に移した）。header と §13-5 の commit 状態を更新 |
