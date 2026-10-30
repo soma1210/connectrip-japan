@@ -4,5 +4,5 @@ import { routing } from "./i18n/routing";
 export default createMiddleware(routing);
 
 export const config = {
-  matcher: ["/((?!api|admin|guide-community|interview|_next|_vercel|.*\\..*).*)"],
+  matcher: ["/((?!api|admin|guide-community|guide-interview|interview|_next|_vercel|.*\\..*).*)"],
 };

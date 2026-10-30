@@ -179,6 +179,15 @@ INVITED / PENDING_APPROVAL / CONFIRMED → CANCELLED
 
 実装方針（ドラフト）：`PENDING_APPROVAL → APPROVING` を条件付き UPDATE で取り、二重承認を防ぐ。Calendar 側が失敗したら作った event を削除して `PENDING_APPROVAL` に戻す。FreeBusy の判定では、自分が作成中の event を busy から除く必要がある（再試行時）。
 
+### 8-4. 公開ページ `/guide-interview`（確定 2026-10-30）
+
+誰でも見られる面談の説明ページ。予約はできない。
+
+- 内容（英語）：Hero（Connectrip Japan / Guide Interview / Join our guide community in Kansai）、面談概要（オンライン・約 30 分・Google Meet・ガイド経験不問・関西で活動できる方）、流れ（Apply → Application review → Interview invitation → Choose a date → Interview）、CTA（`Apply as a Guide` → `/guide-community`、`Already invited?` → ページ内の案内。予約はメールの専用リンクからだけ、リンクは 14 日有効、期限切れ・紛失時は `/en/contact` へ連絡）
+- **Google Calendar・API・DB に一切アクセスしない静的ページ。** 空き枠は表示しない。予約できるのは `/interview/[token]` を受け取った面談対象者だけ（設計は変えない）
+- ファイル：`src/app/guide-interview/layout.tsx`（独立した root layout、`interview-ui.css` を共用、canonical `${SITE_URL}/guide-interview`）、`page.tsx`。`src/proxy.ts` の matcher で next-intl から除外（`/guide-community` と同じ扱い）
+- 検索エンジンに公開する（`noindex` なし）。`src/app/sitemap.ts` の `UNLOCALIZED_ROUTES` に 1 URL だけ載せる（hreflang なし）。`/interview/[token]` と `/admin` は sitemap に載せず、robots で disallow のまま
+
 ## 9. メール（確定）
 
 - 既存の `src/lib/mailer.ts`（nodemailer / SMTP）を使う。
@@ -239,8 +248,10 @@ Admin の操作で、現在の申請を削除せず `PENDING_APPROVAL → CANCEL
 9. ~~応募者向けの言語~~ → 解決（2026-10-30）：英語のみ（§8-1、§9）
 10. Google Cloud の OAuth アプリの所有者。公開状態は §7 の方針どおり、本番前に変更する
 11. ~~開発用 DB の準備~~ → 解決（2026-10-30）：Neon branch `guide-interviews-dev`（endpoint `ep-lively-dust-aob9gecd`）に migration を適用し、結合試験に使用。Workspace の R0（Preview / Development が本番 DB を向いている問題）は別途未解決
-13. 本番の `INTERVIEW_PUBLIC_BASE_URL` の値（§10-1）
 12. ~~申請時の Admin への通知~~ → 解決（2026-10-30）：送る。失敗しても申請は成立（§9）
+13. 本番の `INTERVIEW_PUBLIC_BASE_URL` の値（§10-1）
+14. **本番前確認**：ローカルの `next dev`（Turbopack）で、メインサイトの locale ページ（`/en/contact`、`/en` など）が Google Font（Shippori Mincho）の解決エラー `Can't resolve '@vercel/turbopack-next/internal/font/google/font'` で 500 になる。一度発生すると同じ dev server の他の route（Admin・`/interview` を含む）も 500 になり、dev server の再起動で戻る。面談予約システムの変更とは無関係で、`bun run build` は成功する。本番 Deploy 前に、`/guide-interview` の「contact Connectrip Japan」リンク先 `/en/contact` が本番で表示できることを確認する（2026-10-30 記録、未修正）
+15. `SITE_URL`（`src/lib/site.ts`）は `https://connectripjapan.com`。`/guide-interview` の canonical と sitemap もこのドメインを使う。公式 HP（Framer）は Site Not Found の未解決事項があり、本番でこのページを配信するドメインとの関係は Unknown / 要確認
 
 ## 12. テスト項目
 
@@ -405,3 +416,4 @@ Astra は DB・API・Calendar 連携・予約ルール・セキュリティ・�
 | 2026-10-30 | §13 を再調査（HEAD `13eb26c`、01:37 時点）。API・応募者画面・Admin パネル・認証スクリプトを反映。単体テスト 27 pass |
 | 2026-10-30 | 開発用 DB と実 Google Calendar で結合試験を実施（§12-1）。承認直後の進捗ドロップダウンの不具合を修正し、`check-interview-db.mjs` を repo に含めることにした（§13-5）。`INTERVIEW_PUBLIC_BASE_URL` の Production の前提を §10-1 に明記。§11-11 を解決、§11-13 を追加 |
 | 2026-10-30 | 上記を `0040db4` で commit（この文書も `feature/guide-interviews` に移した）。header と §13-5 の commit 状態を更新 |
+| 2026-10-30 | Astra の UI 仕上げ（§13-6）を `70b8558` で commit。公開ページ `/guide-interview` を追加し sitemap に掲載（§8-4）。ローカル Turbopack の `/en/contact` 500 と `SITE_URL` のドメインを §11-14・15 に記録 |
