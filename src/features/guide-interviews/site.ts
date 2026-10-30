@@ -17,7 +17,7 @@ export const GUIDE_APPLICATION_FORM_URL = "https://connectrip-guide-community.ne
 /** Where the admin lands after login on the interview-only site (/admin itself is not served). */
 export const INTERVIEW_ADMIN_HOME = "/admin/guide-applications";
 
-const EXACT = new Set(["/guide-interview", "/admin/login", "/favicon.ico", "/robots.txt"]);
+const EXACT = new Set(["/guide-interview", "/privacy", "/admin/login", "/favicon.ico", "/robots.txt"]);
 
 const PREFIXES = [
   "/interview/",

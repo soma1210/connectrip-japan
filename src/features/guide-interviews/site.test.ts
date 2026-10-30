@@ -5,6 +5,7 @@ describe("interviewSiteRoute", () => {
   test.each([
     "/guide-interview",
     "/guide-interview/",
+    "/privacy",
     "/interview/abcDEF123_-",
     "/api/interviews/availability",
     "/api/interviews/request",
@@ -45,6 +46,8 @@ describe("interviewSiteRoute", () => {
     "/api/interviewsx",
     "/interview",
     "/guide-interviewx",
+    "/privacy/extra",
+    "/en/privacy",
     "/sitemap.xml",
     "/llms.txt",
     "/images/hero.jpg",

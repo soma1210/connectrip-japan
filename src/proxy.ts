@@ -11,7 +11,7 @@ const intlMiddleware = createMiddleware(routing);
 
 // Paths outside the next-intl locale routing: the same prefixes and "has a dot"
 // rule the previous matcher excluded.
-const OUTSIDE_LOCALES = /^\/(?:api|admin|guide-community|guide-interview|interview|_next|_vercel)|\./;
+const OUTSIDE_LOCALES = /^\/(?:api|admin|guide-community|guide-interview|interview|privacy|_next|_vercel)|\./;
 
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

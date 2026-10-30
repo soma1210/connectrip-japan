@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { GUIDE_APPLICATION_FORM_URL } from "@/features/guide-interviews/site";
 
 // Public explainer for the guide interview. Styling follows the applicant
@@ -121,7 +122,12 @@ export default function GuideInterviewPage() {
         </div>
       </section>
 
-      <footer className="text-center text-xs text-navy/70">Connectrip Japan · Guide recruitment</footer>
+      <footer className="flex flex-col items-center gap-2 text-center text-xs text-navy/70">
+        <Link href="/privacy" className="underline underline-offset-2 hover:text-navy">
+          Privacy Policy
+        </Link>
+        <span>Connectrip Japan · Guide recruitment</span>
+      </footer>
     </main>
   );
 }

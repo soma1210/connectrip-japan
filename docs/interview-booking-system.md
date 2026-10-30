@@ -188,6 +188,16 @@ INVITED / PENDING_APPROVAL / CONFIRMED → CANCELLED
 - ファイル：`src/app/guide-interview/layout.tsx`（独立した root layout、`interview-ui.css` を共用）、`page.tsx`。`src/proxy.ts` で next-intl の対象外（`/guide-community` と同じ扱い）
 - **当面は SEO 公開しない**（変更 2026-10-30）：面談システムを HP 本体より先に専用の Netlify site で公開するため、`noindex, nofollow` とし、canonical を付けず、sitemap にも載せない。HP 公開時に `connectripjapan.com/guide-interview` へ移す段階で、index・canonical・sitemap を戻す
 - `/interview/[token]` と `/admin` は sitemap に載せず、robots で disallow のまま
+- フッターに `/privacy` へのリンク（Google OAuth 同意画面のホームページから Privacy Policy へたどれるようにする）
+
+### 8-5. Privacy Policy `/privacy`（確定 2026-10-30）
+
+Google OAuth の同意画面を In production にするために公開する、面談予約システムに限った Privacy Policy（英語、`noindex, nofollow`）。
+
+- 内容：収集する情報（氏名、メールアドレス、ガイド応募情報、面談予約情報）、利用目的（応募の審査・面談の日程調整・応募者との連絡）、Google Calendar / Meet（free/busy だけで予約可能時間を判定し、予定の内容は読まず応募者にも見せない。承認した面談の event と Meet を作成。応募者は attendee にしない。Google API Services User Data Policy の Limited Use に従う）、広告目的で販売・利用しない、委託先（Google・メール送信事業者・hosting / DB 事業者）、Cookie（面談ページに広告・分析 Cookie なし。Admin のログイン Cookie のみ）、開示・訂正・削除の依頼、問い合わせ先 `contact@connectripjapan.com`、施行日 2026-10-30
+- ファイル：`src/app/privacy/layout.tsx`（独立した root layout）、`page.tsx`。`src/proxy.ts` で next-intl の対象外、面談専用 site でも配信（§10-2）
+- 保存期間は記載していない（Unknown / 要確認。決まったら追記する）
+- OAuth 同意画面に登録する URL：ホームページ `https://connectrip-guide-interviews.netlify.app/guide-interview`、Privacy Policy `https://connectrip-guide-interviews.netlify.app/privacy`（deploy 後に有効）
 
 ## 9. メール（確定）
 
@@ -231,7 +241,7 @@ Admin の操作で、現在の申請を削除せず `PENDING_APPROVAL → CANCEL
 
 HP 本体を公開する前に、面談予約システムだけを専用の Netlify site で先行運用する。同じアプリを使い、`src/proxy.ts` がフラグのあるときだけ配信する範囲を絞る。
 
-- 配信する：`/guide-interview`、`/interview/*`、`/api/interviews/*`、`/admin/login`、`/admin/guide-applications/**`、`/_next/*`（ビルド成果物）、`/favicon.ico`、`/robots.txt`。`/admin` は `/admin/guide-applications` へ redirect（ログイン後の行き先）
+- 配信する：`/guide-interview`、`/privacy`、`/interview/*`、`/api/interviews/*`、`/admin/login`、`/admin/guide-applications/**`、`/_next/*`（ビルド成果物）、`/favicon.ico`、`/robots.txt`。`/admin` は `/admin/guide-applications` へ redirect（ログイン後の行き先）
 - それ以外はすべて 404：HP 本体（全 locale）、`/guide-community`、`/partner`、Admin の gallery / vlog / reviews / partner-applications、他の API、`/sitemap.xml`、`public/` のファイル
 - すべての応答に `X-Robots-Tag: noindex, nofollow`。robots.txt から sitemap の行を外す
 - Admin のナビは「ガイド応募」だけを表示する。応募一覧の「応募フォームを開く」は既存 production site の `/guide-community`（`GUIDE_APPLICATION_FORM_URL`）を開く（フラグなしでは従来どおりサイト内の `/guide-community`）
@@ -432,3 +442,4 @@ Astra は DB・API・Calendar 連携・予約ルール・セキュリティ・�
 | 2026-10-30 | 上記を `0040db4` で commit（この文書も `feature/guide-interviews` に移した）。header と §13-5 の commit 状態を更新 |
 | 2026-10-30 | Astra の UI 仕上げ（§13-6）を `70b8558` で commit。公開ページ `/guide-interview` を追加し sitemap に掲載（§8-4）。ローカル Turbopack の `/en/contact` 500 と `SITE_URL` のドメインを §11-14・15 に記録 |
 | 2026-10-30 | 面談システムを専用 Netlify site で先行公開する準備：`INTERVIEW_ONLY_SITE=1` で配信範囲を絞る（§10-2）。`/guide-interview` を noindex にし、canonical と sitemap から外した（§8-4） |
+| 2026-10-30 | 面談専用 site の外部リンクを修正（応募フォーム・mailto、§8-4・§10-2）。Google OAuth 用の Privacy Policy `/privacy` を追加（§8-5） |
