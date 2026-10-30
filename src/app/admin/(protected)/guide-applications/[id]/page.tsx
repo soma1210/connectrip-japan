@@ -197,7 +197,10 @@ export default async function AdminGuideApplicationDetailPage({
               ) : null}
               <label className="flex flex-col gap-1.5 text-xs font-medium text-navy/60">
                 ステータス
+                {/* Keyed so the select follows changes made elsewhere (interview approval / completion)
+                    without a reload; defaultValue alone is only read on mount. */}
                 <select
+                  key={app.pipeline_status}
                   name="pipeline_status"
                   defaultValue={app.pipeline_status}
                   className="h-10 rounded-md border border-navy/20 bg-white px-3 text-sm text-navy focus:border-navy/50 focus:outline-none"
