@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { clearAdminSession, isAdminAuthenticated } from "@/lib/admin-auth";
+import { dbGuardReason, isNonProduction } from "@/lib/db";
 
 async function logout() {
   "use server";
@@ -16,6 +17,16 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="min-h-screen bg-cream text-navy">
+      {isNonProduction ? (
+        <p className="bg-gold px-6 py-2 text-center text-sm font-medium text-navy">
+          テスト環境（Preview / Development）です。本番のデータではありません。
+        </p>
+      ) : null}
+      {dbGuardReason ? (
+        <p className="bg-red-700 px-6 py-2 text-center text-sm text-white">
+          データベース接続を停止しました：{dbGuardReason}
+        </p>
+      ) : null}
       <header className="border-b border-navy/10 bg-white">
         <div className="mx-auto flex max-w-4xl items-start justify-between gap-4 px-6 py-4">
           <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm">

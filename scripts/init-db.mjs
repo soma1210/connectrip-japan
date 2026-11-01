@@ -1,17 +1,27 @@
-// Setup: creates the gallery/vlog/reviews and guide-application tables in the connected
-// Vercel Postgres database. Run with `bun run db:init` after linking
-// Postgres to this project (so POSTGRES_URL is available, e.g. via
-// `vercel env pull .env.local`).
+// Setup: creates the gallery/vlog/reviews and guide-application tables in the
+// Neon development branch. Run with `bun run db:init`, which reads
+// POSTGRES_URL from .env.development.local.
+//
+// This script only runs as the connectrip_nonprod role, which exists only on
+// the development branch. Production schema changes are applied by a person
+// in the Neon SQL Editor (Workspace docs/os/runbooks/db-migration.md).
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { sql } from "@vercel/postgres";
+import { connectionRole, NONPROD_ROLE } from "../src/lib/db-guard.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 if (!process.env.POSTGRES_URL) {
+  console.error("POSTGRES_URL is not set. Put the development branch URL in .env.development.local first.");
+  process.exit(1);
+}
+
+if (connectionRole(process.env.POSTGRES_URL) !== NONPROD_ROLE) {
   console.error(
-    "POSTGRES_URL is not set. Connect Vercel Postgres to this project and run `vercel env pull .env.local` first.",
+    `Refusing to run: POSTGRES_URL must connect as ${NONPROD_ROLE} (Neon development branch). ` +
+      "Production schema changes are applied by a person in the Neon SQL Editor.",
   );
   process.exit(1);
 }
