@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { requireAdmin } from "@/admin/access";
 import {
   getPipelineStatuses,
   updateGuideApplicationAdminFields,
@@ -14,7 +14,7 @@ import {
 
 export async function saveAdminFields(id: string, formData: FormData) {
   // Server Actions are public endpoints — re-check the session, not just the layout.
-  if (!(await isAdminAuthenticated())) redirect("/admin/login");
+  await requireAdmin();
 
   const pipelineStatus = String(formData.get("pipeline_status") ?? "");
   const ratingRaw = String(formData.get("internal_rating") ?? "").trim();

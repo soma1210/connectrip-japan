@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { PartnerRegistrationsList } from "@/admin/components/PartnerRegistrationsList";
 import { todayInJapan } from "@/features/partner-registration/admin";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { requireAdmin } from "@/admin/access";
 import { listPartnerRegistrations, partnerRegistrationStorageMode } from "@/lib/data/partner-registrations";
 
 export const metadata: Metadata = {
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PartnerRegistrationsPage() {
-  if (!(await isAdminAuthenticated())) redirect("/admin/login");
+  await requireAdmin();
   const registrations = await listPartnerRegistrations();
   return (
     <PartnerRegistrationsList

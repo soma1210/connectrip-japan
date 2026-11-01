@@ -1,8 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { requireAdmin } from "@/admin/access";
 import { updatePartnerRegistrationAdminFields } from "@/lib/data/partner-registrations";
 import { ADMIN_LIMITS, isPartnerPriority, isPartnerStatus } from "@/features/partner-registration/admin";
 
@@ -16,7 +15,7 @@ export async function savePartnerRegistrationAdminFields(
   formData: FormData,
 ): Promise<SaveAdminFieldsState> {
   // Server Actions are public endpoints: re-check the session, not just the layout.
-  if (!(await isAdminAuthenticated())) redirect("/admin/login");
+  await requireAdmin();
 
   const status = String(formData.get("status") ?? "");
   const priority = String(formData.get("priority") ?? "");

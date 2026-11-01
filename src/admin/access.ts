@@ -1,18 +1,28 @@
 import { redirect } from "next/navigation";
-import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { deleteSession, readSession, type AdminSession } from "./session";
 
 /**
- * Who is looking at an admin screen. Today the shared ADMIN_PASSWORD is the
- * only way in, so there is no person to name yet.
+ * Who is looking at an admin screen: one of the Google accounts in
+ * ADMIN_EMAIL_1 / ADMIN_EMAIL_2, or (in `next dev` only) the development password.
  */
-export type AdminViewer = { method: "shared-password" };
+export type AdminViewer = AdminSession;
 
 /**
- * The one gate for Guide Admin screens. Pages call this instead of reading the
- * session themselves, so moving to Google Login limited to ADMIN_EMAIL_1 /
- * ADMIN_EMAIL_2 only changes this function (and the login page), not the screens.
+ * The one gate for every admin screen and Server Action. Pages, layouts and
+ * actions call this instead of reading the session themselves; how someone
+ * signs in lives in ./session and ./google-login, never in the screens.
  */
 export async function requireAdmin(): Promise<AdminViewer> {
-  if (!(await isAdminAuthenticated())) redirect("/admin/login");
-  return { method: "shared-password" };
+  const viewer = await readSession();
+  if (!viewer) redirect("/admin/login");
+  return viewer;
+}
+
+/** For places that must not redirect, such as generateMetadata. */
+export async function getAdminViewer(): Promise<AdminViewer | null> {
+  return readSession();
+}
+
+export async function signOut() {
+  await deleteSession();
 }
