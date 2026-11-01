@@ -7,3 +7,37 @@
 # it in onBuild; the build command runs in between, so pre-creating it is safe.
 [build]
   command = "bun run build && mkdir -p .netlify/functions-internal/___netlify-server-handler/.next/server"
+
+# Redirects that were added to the live site at deploy time on 2026-10-28 and
+# never committed. Kept here so a rebuild from Git serves the same site.
+[[redirects]]
+  from = "/admin"
+  to = "https://connectrip-japan-v1.netlify.app/admin"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "https://connectrip-japan-v1.netlify.app/admin"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/partner/apply"
+  to = "https://connectrip-partner-survey.netlify.app/partner/survey"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/:locale/partner/apply"
+  to = "https://connectrip-partner-survey.netlify.app/partner/survey"
+  status = 302
+  force = true
+
+# Guide applications moved to Google Forms (2026-11-01). The old form under
+# src/app/guide-community stays in the code until its removal is planned.
+[[redirects]]
+  from = "/guide-community"
+  to = "https://docs.google.com/forms/d/e/1FAIpQLScUcnWv2X9W64-UyRaPi_e6-rXVRD8AnzCh5C6CSjfbXZ_lIA/viewform"
+  status = 302
+  force = true
