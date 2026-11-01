@@ -17,6 +17,7 @@ const GROUPS: { label: string; items: NavItem[] }[] = [
     label: "応募管理",
     items: [
       { label: "ガイド応募", href: "/admin/guide-applications" },
+      { label: "ガイド応募（Google Form）", href: "/admin/guide-sheet" },
       { label: "事業者アンケート", href: "/admin/partner-registrations" },
     ],
   },
@@ -66,7 +67,7 @@ function NavList({ pathname }: { pathname: string }) {
 function Brand() {
   return (
     <Link href="/admin" className="block">
-      <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">Connectrip Japan</span>
+      <span className="block whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.16em] text-gold">Connectrip Japan</span>
       <span className="block text-sm font-semibold text-navy">管理画面</span>
     </Link>
   );
@@ -88,7 +89,7 @@ export function AdminConsoleShell({ children, logout }: { children: ReactNode; l
   return (
     <div className="min-h-screen bg-slate-100 text-navy lg:flex">
       {/* PC: left sidebar */}
-      <aside className="sticky top-0 hidden h-screen w-56 shrink-0 flex-col border-r border-slate-200 bg-white lg:flex">
+      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-slate-200 bg-white lg:flex">
         <div className="flex items-start justify-between gap-2 border-b border-slate-200 px-4 py-4">
           <Brand />
           <LogoutButton action={logout} />
