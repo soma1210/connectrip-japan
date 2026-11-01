@@ -1,10 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/admin/access";
 import { put } from "@vercel/blob";
 import { createGalleryItem, deleteGalleryItem, getGalleryItems } from "@/lib/data/gallery";
 
 export async function addGalleryItem(formData: FormData) {
+  await requireAdmin();
   const altJa = String(formData.get("altJa") ?? "").trim();
   const altEn = String(formData.get("altEn") ?? "").trim();
   const file = formData.get("image") as File | null;
@@ -36,6 +38,7 @@ export async function addGalleryItem(formData: FormData) {
 }
 
 export async function removeGalleryItem(id: number) {
+  await requireAdmin();
   await deleteGalleryItem(id);
   revalidatePath("/admin/gallery");
   revalidatePath("/");

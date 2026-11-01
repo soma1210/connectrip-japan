@@ -1,9 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/admin/access";
 import { createReview, deleteReview, getReviews } from "@/lib/data/reviews";
 
 export async function addReview(formData: FormData) {
+  await requireAdmin();
   const name = String(formData.get("name") ?? "").trim();
   const country = String(formData.get("country") ?? "").trim();
   const countryCode = String(formData.get("countryCode") ?? "")
@@ -42,6 +44,7 @@ export async function addReview(formData: FormData) {
 }
 
 export async function removeReview(id: number) {
+  await requireAdmin();
   await deleteReview(id);
   revalidatePath("/admin/reviews");
   revalidatePath("/");

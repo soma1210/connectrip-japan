@@ -1,10 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/admin/access";
 import { put } from "@vercel/blob";
 import { createVlogPost, deleteVlogPost, getVlogPosts } from "@/lib/data/vlog";
 
 export async function addVlogPost(formData: FormData) {
+  await requireAdmin();
   const titleJa = String(formData.get("titleJa") ?? "").trim();
   const titleEn = String(formData.get("titleEn") ?? "").trim();
   const descriptionJa = String(formData.get("descriptionJa") ?? "").trim();
@@ -46,6 +48,7 @@ export async function addVlogPost(formData: FormData) {
 }
 
 export async function removeVlogPost(id: number) {
+  await requireAdmin();
   await deleteVlogPost(id);
   revalidatePath("/admin/vlog");
   revalidatePath("/");
