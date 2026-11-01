@@ -75,9 +75,11 @@ const server = http.createServer(async (req, res) => {
   console.log("");
 });
 
-let redirectUri = "";
-server.listen(0, "127.0.0.1", () => {
-  redirectUri = `http://127.0.0.1:${server.address().port}/oauth2callback`;
+// Fixed, so it can be listed exactly in a "Web application" client's
+// "Authorized redirect URIs" (a "Desktop app" client accepts any loopback port).
+const PORT = 53682;
+const redirectUri = `http://localhost:${PORT}/oauth2callback`;
+server.listen(PORT, "localhost", () => {
   const auth = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   auth.search = new URLSearchParams({
     client_id: clientId,
