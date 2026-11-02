@@ -22,15 +22,19 @@
   status = 302
   force = true
 
+# Partner applications moved to Google Forms (2026-11-02). These pointed to
+# the standalone survey (connectrip-partner-survey.netlify.app), which stays
+# up until its removal is planned, as does the old form under
+# src/app/[locale]/partner/apply.
 [[redirects]]
   from = "/partner/apply"
-  to = "https://connectrip-partner-survey.netlify.app/partner/survey"
+  to = "https://docs.google.com/forms/d/e/1FAIpQLSfl91wJlinZ4i178QnBE_zS4Rd3O4JPXerJT4LT8_MQgz2_0g/viewform"
   status = 302
   force = true
 
 [[redirects]]
   from = "/:locale/partner/apply"
-  to = "https://connectrip-partner-survey.netlify.app/partner/survey"
+  to = "https://docs.google.com/forms/d/e/1FAIpQLSfl91wJlinZ4i178QnBE_zS4Rd3O4JPXerJT4LT8_MQgz2_0g/viewform"
   status = 302
   force = true
 

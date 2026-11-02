@@ -31,9 +31,14 @@ const FLOW = [
   { title: "条件のご相談・提携の検討", text: "連携の可能性について、条件を含めてご相談します。" },
 ];
 
+// Partner applications are taken by Google Forms (2026-11-02). Linked directly so
+// the button works without the /partner/apply redirect in netlify.toml.
+const PARTNER_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfl91wJlinZ4i178QnBE_zS4Rd3O4JPXerJT4LT8_MQgz2_0g/viewform";
+
 function ApplyButton({ ctaId }: { ctaId: string }) {
   return (
-    <CtaButton href="/partner/apply" ctaId={ctaId} ctaPosition="section" className="gap-2">
+    <CtaButton href={PARTNER_FORM_URL} ctaId={ctaId} ctaPosition="section" className="gap-2">
       パートナーアンケートに回答する
       <ArrowRight className="h-4 w-4" />
     </CtaButton>
