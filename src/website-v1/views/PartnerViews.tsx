@@ -32,9 +32,14 @@ const FLOW = [
 const APPLY_CLASS =
   "inline-flex items-center justify-center gap-2 border border-gold bg-red px-8 py-4 text-center text-sm tracking-[0.08em] text-cream transition-colors hover:bg-red-hover";
 
+// 2026-11-02: partner applications are taken by Google Forms. The old survey at
+// recruitHref("partnerApply") stays in place until its removal is planned.
+const PARTNER_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfl91wJlinZ4i178QnBE_zS4Rd3O4JPXerJT4LT8_MQgz2_0g/viewform";
+
 function ApplyButton({ ctaId }: { ctaId: string }) {
   return (
-    <Link href={recruitHref("partnerApply")} className={APPLY_CLASS} data-cta-id={ctaId} data-cta-position="section">
+    <Link href={PARTNER_FORM_URL} className={APPLY_CLASS} data-cta-id={ctaId} data-cta-position="section">
       パートナーアンケートに回答する
       <ArrowRight className="h-4 w-4" />
     </Link>
