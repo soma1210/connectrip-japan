@@ -5,7 +5,6 @@ import type { PrivateGuideActivity } from "./inquiry";
 import type { ImageAsset } from "./media";
 import type { Money, PaymentCurrency } from "./money";
 import type { PageViewModel } from "./pages";
-import type { PersonPreview } from "./person";
 import type { Tbd } from "./status";
 
 /**
@@ -47,8 +46,6 @@ export type PrivateGuideContent = {
   flow: HowItWorksFlow<"private_guide">;
   /** Price is given per request after consultation (amounts TBD). */
   pricingNote: Tbd<string>;
-  /** Real guides only (WD-003). */
-  guides?: PersonPreview[];
   faq?: Tbd<FaqItem[]>;
   /** Questions before booking (secondary since W1-D16). */
   inquiryCta: CtaSpec<"inquiry">;

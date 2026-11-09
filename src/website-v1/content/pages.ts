@@ -1,7 +1,6 @@
 import type { AboutViewModel, LayoutViewModel, LegalPageViewModel, NavItem } from "@/contracts";
 import { recruitHref, routeHref, type StaticRouteKey } from "../routes";
-import { baselineText, cta, pageName, pageSeo, proposed, tbd } from "./shared";
-import { getGuideSlots } from "./people";
+import { cta, pageName, pageSeo, proposed, tbd } from "./shared";
 import { socialLinks } from "@/data/social-links";
 
 const PAGE_NAMES: Record<Exclude<StaticRouteKey, "home">, string> = {
@@ -58,7 +57,9 @@ export function getLayoutViewModel(): LayoutViewModel {
     },
     nav: {
       primary: [navItem("privateGuide"), navItem("travelGuide"), navItem("howItWorks"), navItem("about")],
-      headerCta: cta("v1_header_experiences", "experiences", routeHref("experiences"), "header", "primary", pageName("Experiences")),
+      // Same labels and destinations as the Home CTAs (Human instruction 2026-11-09).
+      headerCta: cta("v1_header_experiences", "experiences", routeHref("experiences"), "header", "primary", proposed("Explore Experiences", "Header CTA (Human instruction 2026-11-09)")),
+      headerSecondaryCta: cta("v1_header_private", "privateGuide", routeHref("privateGuide"), "header", "secondary", proposed("Plan a Private Day", "Header CTA (Human instruction 2026-11-09)")),
       footer: {
         links: [
           navItem("experiences"),
@@ -98,7 +99,6 @@ export function getAboutViewModel(): AboutViewModel {
     seo: pageSeo("About", routeHref("about")),
     content: {
       intro: { headline: pageName("About"), supporting: tbd("About intro copy TBD") },
-      guides: { heading: baselineText("Meet Our Guides"), people: getGuideSlots() },
       company: { heading: tbd("Company section heading TBD"), facts: tbd("Company / legal claims TBD") },
       experiencesCta: cta("v1_about_experiences", "experiences", routeHref("experiences"), "section", "primary", pageName("Experiences")),
       privateGuideCta: cta("v1_about_private", "privateGuide", routeHref("privateGuide"), "section", "secondary", pageName("Private Guide")),

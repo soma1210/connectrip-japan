@@ -49,6 +49,16 @@ function BrandMark({ brand }: { brand: Brand }) {
   );
 }
 
+/** Header CTAs: compact version of the shared paired CTAs (CtaLink `pair="header"`). */
+function HeaderCtas({ nav }: { nav: LayoutViewModel["nav"] }) {
+  return (
+    <>
+      <CtaLink cta={nav.headerCta} pair="header" />
+      {nav.headerSecondaryCta ? <CtaLink cta={nav.headerSecondaryCta} pair="header" /> : null}
+    </>
+  );
+}
+
 /** Same structure and styles as the current site's Header. */
 export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
   const { nav } = layout;
@@ -57,7 +67,8 @@ export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit
       <Container className="flex h-20 items-center justify-between max-w-[1340px]!">
         <BrandMark brand={layout.brand} />
 
-        <nav className="hidden items-center gap-10 xl:flex">
+        {/* Inline nav from 1340px: below that, logo + nav + both CTAs leave under 24px between groups. */}
+        <nav className="hidden items-center gap-10 min-[1340px]:flex">
           {nav.primary.map((item) => (
             <Link key={item.id} href={item.href} className="text-xs tracking-[0.1em] text-cream/80 transition-colors hover:text-gold">
               <TbdText value={item.label} slot="Nav label" />
@@ -66,13 +77,16 @@ export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit
           <RecruitDropdown recruit={recruit} />
         </nav>
 
-        <div className="hidden xl:block">
-          <CtaLink cta={nav.headerCta} size="sm" />
+        {/* Logo → Explore Experiences → Plan a Private Day → menu (Human instruction 2026-11-09).
+            The CTAs sit in the bar once it has room for them; below that they open at the top of the menu. */}
+        <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-3 min-[720px]:flex">
+            <HeaderCtas nav={nav} />
+          </div>
+          <MobileMenu items={nav.primary} recruit={recruit} ctaClassName="min-[720px]:hidden">
+            <HeaderCtas nav={nav} />
+          </MobileMenu>
         </div>
-
-        <MobileMenu items={nav.primary} recruit={recruit}>
-          <CtaLink cta={nav.headerCta} size="sm" />
-        </MobileMenu>
       </Container>
     </header>
   );

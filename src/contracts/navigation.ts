@@ -27,6 +27,8 @@ export type SiteNav = {
   primary: NavItem[];
   /** Always-visible primary CTA, outside the menu: Experiences (T-03). */
   headerCta: CtaSpec<"experiences">;
+  /** Second header CTA, next to `headerCta`: Private Guide (Human instruction 2026-11-09). */
+  headerSecondaryCta?: CtaSpec<"privateGuide">;
   footer: {
     links: NavItem[];
     legal: NavItem[];

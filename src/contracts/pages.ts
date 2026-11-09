@@ -3,13 +3,11 @@ import type { Experience, ExperienceSummary } from "./experience";
 import type { HowItWorksFlows } from "./howItWorks";
 import type { InquiryFormModel } from "./inquiry";
 import type { ImageAsset } from "./media";
-import type { Person, PersonPreview } from "./person";
 import type { PrivateGuideActivityItem, PrivateGuideAreaItem } from "./privateGuide";
 import type { RouteKey } from "./routes";
 import type { SeoMeta } from "./seo";
 import type { SocialProofContent } from "./socialProof";
 import type { Tbd } from "./status";
-import type { SelectMapContent } from "./select";
 import type { GuideArticleGroup, TravelGuideArticleSummary } from "./travelGuide";
 
 /** What a page-level View component receives from its route. */
@@ -34,12 +32,9 @@ export type OrientationCoreItem = {
  */
 export type HomeSectionKey =
   | "hero"
-  /** Connectrip Select — Explore Osaka map (Human instruction 2026-10-24). */
-  | "connectripSelect"
   | "featuredExperiences"
   | "privateGuide"
   | "whyConnectrip"
-  | "guides"
   | "howItWorks"
   | "travelGuide"
   | "socialProof"
@@ -77,11 +72,6 @@ export type WhyItem = {
 export type HomeContent = {
   /** Render sections in this order. While TBD, use the baseline order. */
   sectionOrder: Tbd<HomeSectionKey[]>;
-  /**
-   * Connectrip Select — Osaka illustrated map, its own section between the
-   * Hero and Featured Experiences (Human instruction 2026-10-24).
-   */
-  connectripSelect?: SelectMapContent;
   /** Connectrip / Osaka / Local Experience / Guide must be understood here. */
   hero: {
     headline: Tbd<string>;
@@ -119,15 +109,6 @@ export type HomeContent = {
     heading: Tbd<string>;
     supporting?: Tbd<string>;
     items: Tbd<WhyItem[]>;
-  };
-  /**
-   * H-02 / WD-003: real guides, face + name + profile. No fake people.
-   * On hold since T-05 (W1-D05): omitted until a real guide network exists.
-   */
-  guides?: {
-    heading: Tbd<string>;
-    people: PersonPreview[];
-    aboutLink?: CtaSpec<"about">;
   };
   howItWorks: {
     heading: Tbd<string>;
@@ -190,16 +171,11 @@ export type CompanyFact = {
   value: Tbd<string>;
 };
 
-/** About: real people's detailed profiles (WD-003) and company information. */
+/** About: company information. Meet Our Guides removed (Human instruction 2026-11-09). */
 export type AboutContent = {
   intro: {
     headline: Tbd<string>;
     supporting: Tbd<string>;
-  };
-  guides: {
-    heading: Tbd<string>;
-    /** Real people only. Never invented. */
-    people: Person[];
   };
   company: {
     heading: Tbd<string>;

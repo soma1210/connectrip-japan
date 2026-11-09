@@ -2,7 +2,6 @@ import type { PrivateGuideActivity } from "../inquiry";
 import type { PrivateGuideViewModel } from "../privateGuide";
 import { proposed, tbd } from "../status";
 import { howItWorksFlowsFixture } from "./howItWorks";
-import { peopleFixture } from "./people";
 import { FIXTURE_SOURCE, fixtureCta, fixtureHrefs, fixtureImage, fixtureText } from "./shared";
 
 const activityKeys: PrivateGuideActivity[] = [
@@ -53,7 +52,6 @@ export const privateGuideFixture: PrivateGuideViewModel = {
     ),
     flow: howItWorksFlowsFixture.privateGuide,
     pricingNote: tbd("Private Guide pricing not decided"),
-    guides: peopleFixture,
     faq: tbd(),
     inquiryCta: fixtureCta("inquiry", fixtureHrefs.inquiry, "section", "primary", "Plan your Osaka day"),
     experiencesCta: fixtureCta("experiences", fixtureHrefs.experiences, "section", "secondary", "See experiences"),

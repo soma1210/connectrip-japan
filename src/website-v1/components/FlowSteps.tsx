@@ -23,7 +23,7 @@ export function FlowSteps<K extends HowItWorksFlowKey>({ flow, showDescriptions 
       </ol>
       {flow.note ? <TbdText value={flow.note} slot="Flow note" as="p" className="mt-4 text-xs text-cream/60" /> : null}
       <div className="mt-6">
-        <CtaLink cta={flow.cta} size="sm" />
+        <CtaLink cta={flow.cta} pair />
       </div>
     </FadeIn>
   );

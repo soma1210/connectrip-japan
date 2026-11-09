@@ -34,11 +34,14 @@ export function SectionTitle({
   supporting,
   slot,
   as = "h2",
+  headingSizeClassName,
 }: {
   heading: Tbd<string>;
   supporting?: Tbd<string>;
   slot: string;
   as?: "h1" | "h2";
+  /** Passed to SectionHeading (default size when omitted). */
+  headingSizeClassName?: string;
 }) {
   return (
     <div className="mb-8 md:mb-12">
@@ -47,7 +50,7 @@ export function SectionTitle({
           <TbdText value={heading} slot={`${slot} heading`} as={as} className="ml-6 md:ml-10" />
         </FadeIn>
       ) : (
-        <SectionHeading heading={heading.value} headingLevel={as} className="mb-0! md:mb-0!" />
+        <SectionHeading heading={heading.value} headingLevel={as} headingSizeClassName={headingSizeClassName} className="mb-0! md:mb-0!" />
       )}
       {supporting ? (
         <FadeIn className="mt-4">

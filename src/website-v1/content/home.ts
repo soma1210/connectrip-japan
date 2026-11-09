@@ -4,7 +4,6 @@ import { getExperienceSummaries } from "./experiences";
 import { getHowItWorksFlows } from "./howItWorks";
 import { ACTIVITY_LABELS, AREA_LABELS } from "./privateGuide";
 import { getHomeArticleSummaries, getHomeTravelGuideGroups } from "./travelGuide";
-import { getConnectripSelectOsakaViewModel } from "./select/osaka";
 import { HERO_IMAGES, HERO_PLACEHOLDER_SOURCE } from "../assets/heroImages";
 import { valueCardImages } from "@/data/images";
 import { socialLinks } from "@/data/social-links";
@@ -16,13 +15,13 @@ const T05 = "T-05 Home WORKING_BASELINE (W1-D05). Not final copy";
 const t05 = (text: string) => proposed(text, T05);
 
 /**
- * T-05 order. Meet Our Guides and Social Proof are on hold (not deleted):
- * add "guides" / "socialProof" back here, with their content, once a real
- * guide network / real reviews exist.
+ * T-05 order. Social Proof is on hold (not deleted): add "socialProof" back
+ * here, with its content, once real reviews exist. Meet Our Guides and the
+ * Connectrip Select map section were removed from Home (Human instruction
+ * 2026-11-09).
  */
 export const HOME_SECTION_BASELINE: HomeSectionKey[] = [
   "hero",
-  "connectripSelect",
   "featuredExperiences",
   "privateGuide",
   "whyConnectrip",
@@ -48,9 +47,9 @@ const FINAL_CTA_IMAGE = {
 };
 
 /**
- * OUR VALUE, reused as-is from the current site (messages/ja.json `value`,
- * images from `valueCardImages`). WORKING_BASELINE (W1-D07): ported to review
- * on screen, not approved copy. Not translated or edited on purpose.
+ * OUR VALUE: the current site's section (W1-D07, images from
+ * `valueCardImages`) with English copy for Website v1 (Human instruction
+ * 2026-11-09). The current site keeps its Japanese copy in messages/ja.json.
  * Supersedes the T-05 "Why Connectrip" pillars (Local Knowledge / Flexible
  * Experiences / Beyond the Tourist Spots), kept in Obsidian as history.
  */
@@ -61,8 +60,37 @@ const FINAL_CTA_IMAGE = {
  */
 const SNS_SOURCE = "Current site SNS section (messages/ja.json sns, data/social-links). WORKING_BASELINE (W1-D08)";
 
-const OUR_VALUE_SOURCE = "Current site OUR VALUE (messages/ja.json value). WORKING_BASELINE (W1-D07), not approved";
-const ourValue = currentSiteJa.value;
+const OUR_VALUE_SOURCE = "OUR VALUE English copy (Human instruction 2026-11-09). WORKING_BASELINE (W1-D07)";
+const ourValue = {
+  heading: "OUR VALUE",
+  subheading: "Discover six reasons to explore Japan with Connectrip Japan.",
+  cards: [
+    {
+      title: "Authentic Experiences with Local Japanese Guides",
+      description: "Discover Japan beyond the typical tourist spots, with recommendations inspired by local knowledge and everyday life.",
+    },
+    {
+      title: "Your Local Experts in Kansai",
+      description: "Based in Kansai, we specialize in Osaka, Kyoto, Nara, Kobe, and beyond, bringing you local insights and up-to-date recommendations.",
+    },
+    {
+      title: "Beyond the Tourist Trail",
+      description: "Explore hidden gems, local food, traditional neighborhoods, and authentic experiences you might otherwise miss.",
+    },
+    {
+      title: "Travel Made Just for You",
+      description: "No one-size-fits-all itineraries. We create personalized experiences based on your interests, travel style, and preferences.",
+    },
+    {
+      title: "We’re Here Before Your Trip Begins",
+      description: "Have questions about your Japan adventure? Get friendly travel advice and personalized recommendations before you arrive.",
+    },
+    {
+      title: "More Than a Guide, Your Local Friend",
+      description: "We’re not just here to show you around. We want you to feel welcome, connected, and at home in Japan.",
+    },
+  ],
+};
 const VALUE_IMAGE_SIZES: [number, number][] = [
   [960, 720], [960, 720], [960, 720], [960, 720], [960, 720], [1213, 910],
 ];
@@ -88,8 +116,6 @@ export function getHomeViewModel(): HomeViewModel {
     seo: pageSeo("Home", routeHref("home")),
     content: {
       sectionOrder: proposed(HOME_SECTION_BASELINE, T05),
-      // Own section after the Hero (Human instruction 2026-10-24).
-      connectripSelect: getConnectripSelectOsakaViewModel().content,
       hero: {
         headline: t05("Experience Kansai Like a Local."),
         supporting: t05("Discover Osaka through local experiences, or create your own day with a private guide."),

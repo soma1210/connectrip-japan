@@ -8,7 +8,6 @@ import type {
 import { routeHref } from "../routes";
 import { getHowItWorksFlows } from "./howItWorks";
 import { getPrivateGuideBookingModel } from "./privateGuideBooking";
-import { getGuideSlots } from "./people";
 import { approvedText, cta, pageName, pageSeo, proposed, tbd } from "./shared";
 
 const AREA_SOURCE = "Website v1 Decision Log W1-D04";
@@ -58,7 +57,6 @@ export function getPrivateGuideViewModel(): PrivateGuideViewModel {
       exampleDays: tbd("Example days TBD (illustrative only)"),
       flow: getHowItWorksFlows().privateGuide,
       pricingNote: tbd("Private Guide pricing TBD (prototype prices in the booking section are demo data)"),
-      guides: getGuideSlots(),
       faq: tbd("FAQ TBD"),
       // Secondary since W1-D16: questions before booking.
       inquiryCta: cta("v1_private_inquiry", "inquiry", routeHref("inquiry"), "section", "secondary", pageName("Inquiry")),

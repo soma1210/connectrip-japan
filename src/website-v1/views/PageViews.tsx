@@ -9,7 +9,6 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { LegalPageHeader } from "@/components/ui/LegalPageHeader";
 import { PageIntro, Section, SectionTitle, TbdBlock } from "../components/Blocks";
-import { PersonCard } from "../components/Cards";
 import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { PreviewInquiryForm } from "../components/PreviewInquiryForm";
@@ -79,17 +78,6 @@ export function PrivateGuideView({ vm }: { vm: PrivateGuideViewModel }) {
           </div>
         </div>
       </Section>
-
-      {c.guides ? (
-        <Section>
-          <SectionTitle heading={{ status: "PROPOSED", value: "Meet Our Guides" }} slot="Guides" />
-          <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
-            {c.guides.map((p) => (
-              <PersonCard key={p.id} person={p} />
-            ))}
-          </div>
-        </Section>
-      ) : null}
     </>
   );
 }
@@ -120,14 +108,6 @@ export function AboutView({ vm }: { vm: AboutViewModel }) {
   return (
     <>
       <PageIntro headline={c.intro.headline} supporting={c.intro.supporting} slot="About" />
-      <Section>
-        <SectionTitle heading={c.guides.heading} slot="Guides" />
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
-          {c.guides.people.map((p) => (
-            <PersonCard key={p.id} person={p} bio={p.bio} />
-          ))}
-        </div>
-      </Section>
       <Section tone="navy-dark">
         <SectionTitle heading={c.company.heading} slot="Company" />
         {c.company.facts.status === "TBD" ? (

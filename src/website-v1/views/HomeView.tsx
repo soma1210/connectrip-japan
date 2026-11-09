@@ -8,19 +8,17 @@ import { ValueCard } from "@/components/cards/ValueCard";
 import { SnsCard } from "@/components/cards/SnsCard";
 import { HeroBackgroundSlider } from "@/components/sections/HeroBackgroundSlider";
 import { Section, SectionTitle, TbdBlock } from "../components/Blocks";
-import { ArticleCard, ExperienceCard, PersonCard } from "../components/Cards";
+import { ArticleCard, ExperienceCard } from "../components/Cards";
 import { ArticleGroup } from "../components/guide/ArticleGroup";
 import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { TbdImage, TbdMark, TbdText, textOr } from "../components/Tbd";
 import { heroFocus } from "../assets/heroImages";
 import { SocialProofBlock } from "./SocialProofBlock";
-import { SelectSection } from "../components/select/SelectSection";
 
 /** Used only while `sectionOrder` is TBD (T-05 Home Working Baseline). */
 const BASELINE_ORDER: HomeSectionKey[] = [
   "hero",
-  "connectripSelect",
   "featuredExperiences",
   "privateGuide",
   "whyConnectrip",
@@ -71,8 +69,8 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
           </FadeIn>
         ) : null}
         <FadeIn delay={0.9} className="mt-4 flex flex-col items-center gap-4 sm:flex-row">
-          <CtaLink cta={hero.primaryCta} />
-          {hero.secondaryCta ? <CtaLink cta={hero.secondaryCta} /> : null}
+          <CtaLink cta={hero.primaryCta} pair />
+          {hero.secondaryCta ? <CtaLink cta={hero.secondaryCta} pair /> : null}
         </FadeIn>
       </div>
     </section>
@@ -82,7 +80,13 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
 function FeaturedExperiences({ section }: { section: HomeContent["featuredExperiences"] }) {
   return (
     <Section id="experiences">
-      <SectionTitle heading={section.heading} supporting={section.supporting} slot="Featured Experiences" />
+      {/* "Experiences" is one long word at 48px: scale it down below ~410px so it fits 320px screens. */}
+      <SectionTitle
+        heading={section.heading}
+        supporting={section.supporting}
+        slot="Featured Experiences"
+        headingSizeClassName="text-[clamp(2rem,calc(14vw-0.6rem),3rem)] md:text-6xl"
+      />
       {section.items.length === 0 ? (
         <TbdBlock value={{ status: "TBD", note: "No approved Ready-made Experiences yet" }} slot="Experiences" />
       ) : (
@@ -141,7 +145,7 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
             </div>
           ) : null}
           <div className="mt-8 flex flex-wrap gap-4">
-            <CtaLink cta={section.cta} />
+            <CtaLink cta={section.cta} pair />
             {section.learnMore ? <CtaLink cta={section.learnMore} /> : null}
           </div>
         </div>
@@ -160,7 +164,7 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
  */
 function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
   return (
-    <section id="value" lang="ja" className="bg-navy-dark py-12 md:py-20">
+    <section id="value" className="bg-navy-dark py-12 md:py-20">
       <Container>
         {section.heading.status === "TBD" ? (
           <SectionTitle heading={section.heading} supporting={section.supporting} slot="OUR VALUE" />
@@ -173,7 +177,9 @@ function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
         {section.items.status === "TBD" ? (
           <TbdBlock value={section.items} slot="OUR VALUE items" />
         ) : (
-          <div className="grid grid-cols-1 gap-4 min-[390px]:grid-cols-2 min-[810px]:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 min-[640px]:grid-cols-2 min-[900px]:grid-cols-3">
+            {/* English copy is longer than the original Japanese: 2 / 3 columns start
+                at wider breakpoints so text stays inside the 3:2 cards. */}
             {section.items.value.map((item, i) => (
               <ValueCard
                 key={i}
@@ -188,25 +194,6 @@ function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
         )}
       </Container>
     </section>
-  );
-}
-
-/** On hold since T-05 (W1-D05). Rendered only when content provides it. */
-function Guides({ section }: { section: NonNullable<HomeContent["guides"]> }) {
-  return (
-    <Section id="guides" tone="navy-dark">
-      <SectionTitle heading={section.heading} slot="Meet Our Guides" />
-      <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
-        {section.people.map((person, i) => (
-          <PersonCard key={person.id} person={person} delay={i * 0.1} />
-        ))}
-      </div>
-      {section.aboutLink ? (
-        <div className="mt-10">
-          <CtaLink cta={section.aboutLink} />
-        </div>
-      ) : null}
-    </Section>
   );
 }
 
@@ -300,8 +287,8 @@ function FinalCta({ section }: { section: HomeContent["finalCta"] }) {
           <TbdText value={section.supporting} slot="Final CTA supporting copy" as="p" className="text-sm leading-loose text-cream/85 md:text-base" />
         ) : null}
         <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row">
-          <CtaLink cta={section.browseExperiences} />
-          <CtaLink cta={section.planPrivateDay} />
+          <CtaLink cta={section.browseExperiences} pair />
+          <CtaLink cta={section.planPrivateDay} pair />
         </div>
       </div>
     </section>
@@ -314,11 +301,9 @@ export function HomeView({ vm }: { vm: HomeViewModel }) {
 
   const sections: Record<HomeSectionKey, ReactNode | null> = {
     hero: <Hero hero={c.hero} />,
-    connectripSelect: c.connectripSelect ? <SelectSection content={c.connectripSelect} /> : null,
     featuredExperiences: <FeaturedExperiences section={c.featuredExperiences} />,
     privateGuide: <PrivateGuide section={c.privateGuide} />,
     whyConnectrip: <WhyConnectrip section={c.whyConnectrip} />,
-    guides: c.guides ? <Guides section={c.guides} /> : null,
     howItWorks: <HowItWorks section={c.howItWorks} />,
     travelGuide: <TravelGuide section={c.travelGuide} />,
     // On hold since T-05 (W1-D05). Rendered only when content provides it.
