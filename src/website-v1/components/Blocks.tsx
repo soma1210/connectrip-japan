@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/cn";
+import { V1_PREVIEW } from "../config";
 import { TbdMark, TbdText } from "./Tbd";
 
 /** Section shell with the current site's spacing and container. */
@@ -74,6 +75,7 @@ export function PageIntro({ headline, supporting, slot }: { headline: Tbd<string
 
 /** A whole list / block that is still TBD. */
 export function TbdBlock({ value, slot, className }: { value: { status: "TBD"; note?: string }; slot: string; className?: string }) {
+  if (!V1_PREVIEW) return null;
   return (
     <div className={cn("flex min-h-28 items-center justify-center border border-dashed border-gold/30 bg-navy-dark/40 p-6 text-center", className)}>
       <TbdMark slot={slot} note={value.note} />

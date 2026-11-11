@@ -14,7 +14,18 @@ import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { TbdImage, TbdMark, TbdText, textOr } from "../components/Tbd";
 import { heroFocus } from "../assets/heroImages";
+import { V1_PREVIEW } from "../config";
+import { HomeOpeningExperience } from "../components/opening/HomeOpeningExperience";
+import openingStyles from "../components/opening/HomeOpeningExperience.module.css";
+import { OPENING_TOTAL_MS } from "../components/opening/openingBoot";
 import { SocialProofBlock } from "./SocialProofBlock";
+
+/**
+ * Not shown in public mode (launch scope 2026-11-11): DEMO experiences with TBD
+ * prices and "Book Now", the old Inquiry-first steps ("Confirm Your Day"), and
+ * DEMO Travel Guide articles.
+ */
+const PREVIEW_ONLY_SECTIONS: ReadonlySet<HomeSectionKey> = new Set(["featuredExperiences", "howItWorks", "travelGuide"]);
 
 /** Used only while `sectionOrder` is TBD (T-05 Home Working Baseline). */
 const BASELINE_ORDER: HomeSectionKey[] = [
@@ -29,8 +40,11 @@ const BASELINE_ORDER: HomeSectionKey[] = [
 ];
 
 function Hero({ hero }: { hero: HomeContent["hero"] }) {
+  const first = hero.images.status === "TBD" ? undefined : hero.images.value[0];
   return (
-    <section className="relative flex min-h-[620px] items-center justify-center overflow-hidden md:h-[88vh]">
+    <section data-v1-hero className="relative flex min-h-[620px] items-center justify-center overflow-hidden md:h-[88vh]">
+      {/* Home Opening Experience (W1-D21): overlay on top; the Hero below is always in the HTML. */}
+      {first ? <HomeOpeningExperience image={{ src: first.src, focus: heroFocus(first.src) }} /> : null}
       {hero.images.status === "TBD" ? (
         <TbdImage value={hero.images} slot="Hero photos" />
       ) : (
@@ -40,12 +54,13 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
           objectPositions={hero.images.value.map((i) => heroFocus(i.src))}
           shuffle={false}
           preloadNext
+          startDelayMs={OPENING_TOTAL_MS}
         />
       )}
       <div className="absolute inset-0 bg-navy-dark/55" />
       <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/90 via-navy-dark/5 to-transparent" />
 
-      <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center">
+      <div className={`relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center ${openingStyles.heroCopy}`}>
         {hero.core.length > 0 ? (
           <FadeIn delay={0.2}>
             <ul className="flex flex-wrap justify-center gap-2">
@@ -149,9 +164,12 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
             {section.learnMore ? <CtaLink cta={section.learnMore} /> : null}
           </div>
         </div>
-        <FadeIn className="relative aspect-[4/3] overflow-hidden border border-gold/30">
-          <TbdImage value={section.image} slot="Private Guide photo" sizes="(min-width: 768px) 50vw, 100vw" />
-        </FadeIn>
+        {/* Public mode: no empty frame while the photo is undecided. */}
+        {V1_PREVIEW || section.image.status !== "TBD" ? (
+          <FadeIn className="relative aspect-[4/3] overflow-hidden border border-gold/30">
+            <TbdImage value={section.image} slot="Private Guide photo" sizes="(min-width: 768px) 50vw, 100vw" />
+          </FadeIn>
+        ) : null}
       </div>
     </Section>
   );
@@ -319,7 +337,7 @@ export function HomeView({ vm }: { vm: HomeViewModel }) {
   return (
     <>
       {order.map((key) =>
-        sections[key] ? (
+        sections[key] && (V1_PREVIEW || !PREVIEW_ONLY_SECTIONS.has(key)) ? (
           <div key={key} data-home-section={key}>
             {sections[key]}
           </div>

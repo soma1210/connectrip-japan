@@ -12,6 +12,7 @@ export type * from "./person";
 export type * from "./seo";
 export type * from "./experience";
 export type * from "./booking";
+export type * from "./bookingRequest";
 export type * from "./inquiry";
 export type * from "./howItWorks";
 export type * from "./privateGuide";

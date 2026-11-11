@@ -27,7 +27,7 @@ function navItem(route: Exclude<StaticRouteKey, "home">): NavItem {
  * RECRUIT group (Human instruction 2026-10-27): a header dropdown, a mobile
  * accordion and Footer INFORMATION links. Website-local, not part of
  * `LayoutViewModel`, because recruiting pages have no shared `RouteKey`.
- * `external`: Guide Community has its own root layout, so it needs a full page load.
+ * `external`: Google Form URLs, rendered as a plain `<a>` opening a new tab.
  */
 export type RecruitLink = { id: string; href: string; label: string; external: boolean };
 export type RecruitNav = { label: string; items: RecruitLink[] };
@@ -36,8 +36,8 @@ export function getRecruitNav(): RecruitNav {
   return {
     label: "RECRUIT",
     items: [
-      { id: "v1_nav_recruit_guide", href: recruitHref("guideCommunity"), label: "Guide Recruitment", external: true },
-      { id: "v1_nav_recruit_partner", href: recruitHref("partner"), label: "Partner Recruitment", external: false },
+      { id: "v1_nav_recruit_guide", href: recruitHref("guideCommunity"), label: "Guide Recruitment", external: recruitHref("guideCommunity").startsWith("http") },
+      { id: "v1_nav_recruit_partner", href: recruitHref("partner"), label: "Partner Recruitment", external: recruitHref("partner").startsWith("http") },
     ],
   };
 }

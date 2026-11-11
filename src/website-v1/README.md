@@ -28,8 +28,31 @@ at `/` (`[locale]` routes). All preview pages are `noindex`.
   the Business Decision) and is not approved copy.
 - No hard-coded paths in components: hrefs come from the Route Registry
   through the view models.
-- Booking is closed (Book Now disabled): products, prices and the booking
-  backend are TBD. The Inquiry form submits to a mock handler only.
+- No instant booking or online payment on the site. Private Guide takes a
+  booking request (`content/privateGuideRequest.ts`,
+  `booking/privateGuideRequest.ts`): Connectrip checks it, sends a Stripe
+  invoice (full prepayment in JPY, due within 24 hours) and confirms by hand
+  after payment. Until the request API exists the form uses
+  `mockSubmitPrivateGuideRequest`, which sends nothing and says so.
+  Booking Rules V1.1 (APPROVED), all Japan time: 4 / 6 / 8 hours (API
+  values 240 / 360 / 480 minutes); start 08:00–17:00 every 30 min; the day
+  ends by 20:00 (later finish → Inquiry page); at least 1 adult, at most 6
+  people; requests close 48 h before the start (exactly 48 h accepted); up
+  to 90 calendar days after the request date; the second choice follows the
+  same rules; no prices shown until approved.
+  API (Booking Request Contract 0.3, NOT WIRED): `booking/bookingRequestApi.ts`
+  builds the flat body for `POST /api/v1/booking-requests` (`submissionId`
+  UUID v4 = `Idempotency-Key`) and reads the answer. Success only for HTTP
+  200 + `ok` + `accepted` + `CR-YYYYMMDD-XXXXXX` + `status: "REQUESTED"`.
+  503 / network / timeout = result unknown: "Send again" re-sends the same
+  body and submissionId; only a changed form gets a new submissionId.
+  Contract types sit in `booking/bookingRequestContract.ts`, a stand-in to
+  replace with a re-export of `src/contracts/bookingRequest.ts` (API side)
+  once it exists. The form uses the API handler only when the request model
+  is `mode: "live"`; it is `mock`, so nothing is sent and the success screen
+  (with `bookingRef`, "not confirmed yet") cannot appear.
+- Ready-made Experiences booking is closed (Book Now disabled). The Inquiry
+  form submits to a mock handler only.
 - Photos reused from the current site are marked rights / consent
   `NOT_VERIFIED`; they must be cleared before v1 goes public.
 

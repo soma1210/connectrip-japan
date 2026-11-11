@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ctaDataAttributes, type CtaSpec } from "@/contracts";
 import { cn } from "@/lib/cn";
+import { V1_PREVIEW } from "../config";
+import { isPublicHref } from "../routes";
 import { TbdText } from "./Tbd";
 
 type Variant = "primary" | "secondary" | "text";
@@ -63,6 +65,8 @@ export function CtaLink({
   pair?: boolean | "header";
   className?: string;
 }) {
+  // Public mode: no link to a page outside the launch scope, no unlabelled or disabled button.
+  if (!V1_PREVIEW && (!isPublicHref(cta.href) || cta.disabled || cta.label.status === "TBD")) return null;
   const v = variant ?? (cta.emphasis === "primary" ? "primary" : "secondary");
   const classes =
     pair && v !== "text"

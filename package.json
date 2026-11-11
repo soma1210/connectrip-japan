@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:v1": "WEBSITE_V1_PREVIEW_ROOT=1 next dev -p 3002",
+    "dev:v1": "NEXT_PUBLIC_WEBSITE_V1_PREVIEW=1 WEBSITE_V1_PREVIEW_ROOT=1 next dev -p 3002",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "db:init": "node scripts/init-db.mjs",
-    "check:v1-guides": "bun scripts/check-v1-guides.ts"
+    "check:v1-guides": "NEXT_PUBLIC_WEBSITE_V1_PREVIEW=1 bun scripts/check-v1-guides.ts",
+    "check:booking": "bun src/lib/booking-request/rules.test.ts && bun src/lib/booking-request/api.test.ts"
   },
   "dependencies": {
     "@next/third-parties": "^16.3.3",

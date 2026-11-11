@@ -77,7 +77,8 @@ export function CancellationPolicyView({ vm }: { vm: CancellationPolicyViewModel
               <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-navy text-sm text-cream">
                 {section.number}
               </span>
-              <div className="flex-1">
+              {/* min-w-0: let the fee table scroll inside its box instead of widening the page on phones. */}
+              <div className="min-w-0 flex-1">
                 <h2 className="text-base font-medium text-navy md:text-lg">{section.title}</h2>
                 <p className="mt-3 whitespace-pre-line text-sm leading-loose text-navy/75">{section.body}</p>
 

@@ -3,7 +3,8 @@ import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp, FaYoutube } from "react
 import Link from "next/link";
 import type { Brand, LayoutViewModel } from "@/contracts";
 import { Container } from "@/components/ui/Container";
-import { routeHref } from "../routes";
+import { V1_PREVIEW } from "../config";
+import { externalLinkProps, isPublicHref, routeHref } from "../routes";
 import { CtaLink } from "./CtaLink";
 import type { RecruitNav } from "../content/pages";
 import { MobileMenu } from "./MobileMenu";
@@ -61,7 +62,7 @@ function HeaderCtas({ nav }: { nav: LayoutViewModel["nav"] }) {
 
 /** Same structure and styles as the current site's Header. */
 export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
-  const { nav } = layout;
+  const nav = { ...layout.nav, primary: layout.nav.primary.filter((item) => isPublicHref(item.href)) };
   return (
     <header className="sticky top-0 z-50 border-b border-dashed border-gold/30 bg-navy/95 backdrop-blur">
       <Container className="flex h-20 items-center justify-between max-w-[1340px]!">
@@ -95,6 +96,8 @@ export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit
 /** Same structure and styles as the current site's Footer. */
 export function V1Footer({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
   const { footer } = layout.nav;
+  const links = footer.links.filter((item) => isPublicHref(item.href));
+  const legal = footer.legal.filter((item) => isPublicHref(item.href));
   return (
     <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
       <Container className="grid gap-10 py-14 md:grid-cols-3 md:gap-8">
@@ -134,7 +137,7 @@ export function V1Footer({ layout, recruit }: { layout: LayoutViewModel; recruit
         <div>
           <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">NAVIGATION</p>
           <nav className="mt-4 flex flex-col gap-3">
-            {footer.links.map((item) => (
+            {links.map((item) => (
               <Link key={item.id} href={item.href} className="text-sm text-cream/70 transition-colors hover:text-gold">
                 <TbdText value={item.label} slot="Nav label" />
               </Link>
@@ -145,15 +148,15 @@ export function V1Footer({ layout, recruit }: { layout: LayoutViewModel; recruit
         <div>
           <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">INFORMATION</p>
           <nav className="mt-4 flex flex-col gap-3">
-            {footer.legal.map((item) => (
+            {legal.map((item) => (
               <Link key={item.id} href={item.href} className="text-sm text-cream/70 transition-colors hover:text-gold">
                 <TbdText value={item.label} slot="Nav label" />
               </Link>
             ))}
-            {/* Same targets as the header RECRUIT menu; Guide Community needs a full page load. */}
+            {/* Same targets as the header RECRUIT menu; Google Forms open in a new tab. */}
             {recruit.items.map((item) =>
               item.external ? (
-                <a key={item.id} href={item.href} className="text-sm text-cream/70 transition-colors hover:text-gold">
+                <a key={item.id} href={item.href} {...externalLinkProps(item.href)} className="text-sm text-cream/70 transition-colors hover:text-gold">
                   {item.label}
                 </a>
               ) : (
@@ -167,7 +170,7 @@ export function V1Footer({ layout, recruit }: { layout: LayoutViewModel; recruit
       </Container>
 
       <Container className="flex flex-col gap-2 border-t border-cream/10 py-6 text-xs text-cream/40 md:flex-row md:items-center md:justify-between">
-        <span>Website v1 preview</span>
+        <span>{V1_PREVIEW ? "Website v1 preview" : `© ${new Date().getFullYear()} Connectrip Japan Inc.`}</span>
         <span className="font-heading-en tracking-[0.1em]">CONNECTRIP JAPAN</span>
       </Container>
     </footer>

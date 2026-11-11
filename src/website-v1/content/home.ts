@@ -8,6 +8,8 @@ import { HERO_IMAGES, HERO_PLACEHOLDER_SOURCE } from "../assets/heroImages";
 import { valueCardImages } from "@/data/images";
 import { socialLinks } from "@/data/social-links";
 import currentSiteJa from "../../../messages/ja.json";
+import currentSiteEn from "../../../messages/en.json";
+import { V1_PREVIEW } from "../config";
 import { cta, pageName, pageSeo, proposed, tbd } from "./shared";
 
 /** T-05 Home Working Baseline (W1-D05). Wording is not final copy. */
@@ -59,6 +61,8 @@ const FINAL_CTA_IMAGE = {
  * verbatim even where they differ from the link URLs (reported as TBD).
  */
 const SNS_SOURCE = "Current site SNS section (messages/ja.json sns, data/social-links). WORKING_BASELINE (W1-D08)";
+/** The English site uses the current site's English version of the same section (2026-11-11). */
+const SNS_COPY = V1_PREVIEW ? currentSiteJa.sns : currentSiteEn.sns;
 
 const OUR_VALUE_SOURCE = "OUR VALUE English copy (Human instruction 2026-11-09). WORKING_BASELINE (W1-D07)";
 const ourValue = {
@@ -157,10 +161,10 @@ export function getHomeViewModel(): HomeViewModel {
         viewAll: cta("v1_home_travel_guide", "travelGuide", routeHref("travelGuide"), "section", "secondary", t05("Explore Osaka Travel Guide")),
       },
       sns: {
-        heading: proposed(currentSiteJa.sns.heading, SNS_SOURCE),
-        supporting: proposed(currentSiteJa.sns.subheading, SNS_SOURCE),
-        followLabel: proposed(currentSiteJa.sns.follow, SNS_SOURCE),
-        accounts: currentSiteJa.sns.items.map((item) => {
+        heading: proposed(SNS_COPY.heading, SNS_SOURCE),
+        supporting: proposed(SNS_COPY.subheading, SNS_SOURCE),
+        followLabel: proposed(SNS_COPY.follow, SNS_SOURCE),
+        accounts: SNS_COPY.items.map((item) => {
           const platform = item.platform as SnsAccountPlatform;
           return {
             platform,

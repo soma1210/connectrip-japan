@@ -3,14 +3,17 @@ import type { ElementType } from "react";
 import type { ImageAsset, Tbd } from "@/contracts";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { cn } from "@/lib/cn";
+import { V1_PREVIEW } from "../config";
 
 type Tone = "dark" | "light";
 
 /**
  * Visible placeholder for an undecided value. Shows the slot name, and the
- * reviewer note as a tooltip. Never shows invented copy.
+ * reviewer note as a tooltip. Never shows invented copy. Public mode renders
+ * nothing: an undecided value is simply left out (config.ts).
  */
 export function TbdMark({ slot, note, tone = "dark", className }: { slot: string; note?: string; tone?: Tone; className?: string }) {
+  if (!V1_PREVIEW) return null;
   return (
     <span
       title={note}
@@ -40,6 +43,7 @@ export function TbdText({
   tone?: Tone;
 }) {
   if (value.status === "TBD") {
+    if (!V1_PREVIEW) return null;
     return (
       <Tag className={className}>
         <TbdMark slot={slot} note={value.note} tone={tone} />
@@ -72,6 +76,7 @@ export function TbdImage({
   className?: string;
 }) {
   if (value.status === "TBD") {
+    if (!V1_PREVIEW) return null;
     return (
       <div className={cn("absolute inset-0 flex items-center justify-center border border-dashed border-gold/30 bg-navy-light", className)}>
         <span className="flex flex-col items-center gap-2 px-4 text-center">

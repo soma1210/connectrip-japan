@@ -1,16 +1,49 @@
 import type { GuideArea, ParameterizedRouteKey, RouteKey } from "@/contracts";
+import { V1_PREVIEW } from "./config";
 
 /**
- * Route Registry for the Website v1 preview. The only place that knows URLs.
+ * Route Registry for Website v1. The only place that knows URLs.
  *
- * Every path here is PROPOSED (final URLs, slugs and redirects are TBD). The
- * preview lives under `/v1` so it can run next to the current site without
- * touching it. Moving v1 to the site root later means changing
- * `V1_BASE_PATH` and the `src/app/v1` folder, not components.
+ * Preview mode (config.ts): pages live under `/v1` next to the current site.
+ * Public mode: the same pages are served at the site root (src/proxy.ts
+ * rewrites `/x` to the `src/app/v1/x` folder), so links carry no base.
  *
  * Keep `STATIC_PATHS` in sync with the folders under `src/app/v1`.
  */
-export const V1_BASE_PATH = "/v1";
+export const V1_BASE_PATH = V1_PREVIEW ? "/v1" : "";
+
+/**
+ * Pages served in public mode (2026-11-11 launch scope). Everything else under
+ * `src/app/v1` (Experiences, Travel Guide DEMO, Connectrip Select, How It Works,
+ * About until it has approved copy, Business Inquiry, Partner) answers 404, and
+ * links to it are not rendered.
+ */
+export const PUBLIC_PATHS: readonly string[] = ["/", "/private-guide", "/inquiry", "/privacy", "/terms", "/cancel-policy", "/company"];
+
+/**
+ * Partner application (W1-D23: the official form is the Partner Google Form).
+ * Same URL as the `/partner/apply` redirects in next.config.ts.
+ */
+export const PARTNER_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfl91wJlinZ4i178QnBE_zS4Rd3O4JPXerJT4LT8_MQgz2_0g/viewform";
+
+/**
+ * Guide application (2026-11-11: the official form is the Guide Google Form).
+ * Same URL as the `/guide-community` redirect in next.config.ts. The in-site
+ * form (src/app/guide-community), its API and data are kept, not served.
+ */
+export const GUIDE_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLScUcnWv2X9W64-UyRaPi_e6-rXVRD8AnzCh5C6CSjfbXZ_lIA/viewform";
+
+/**
+ * Whether a link target exists for visitors. External URLs and the Guide
+ * Community redirect always do; in preview mode every page does.
+ */
+export function isPublicHref(href: string): boolean {
+  if (V1_PREVIEW || /^https?:\/\//.test(href) || href.startsWith("mailto:")) return true;
+  const path = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
+  return path === GUIDE_COMMUNITY_PATH || PUBLIC_PATHS.includes(path);
+}
 
 export type StaticRouteKey = Exclude<RouteKey, ParameterizedRouteKey>;
 
@@ -56,8 +89,17 @@ const GUIDE_COMMUNITY_PATH = "/guide-community";
 const PARTNER_PATH = "/partner";
 
 export function recruitHref(key: RecruitRouteKey): string {
-  if (key === "guideCommunity") return GUIDE_COMMUNITY_PATH;
-  return withBase(key === "partner" ? PARTNER_PATH : `${PARTNER_PATH}/apply`);
+  // Applications are taken by Google Forms (2026-11-11), never by the in-site surveys.
+  if (key === "guideCommunity") return GUIDE_FORM_URL;
+  if (key === "partnerApply") return PARTNER_FORM_URL;
+  // Public mode has no Partner page (Japanese, outside the launch scope): go straight to the form.
+  if (!V1_PREVIEW) return PARTNER_FORM_URL;
+  return withBase(PARTNER_PATH);
+}
+
+/** Link attributes for a recruit target: Google Forms open in a new tab. */
+export function externalLinkProps(href: string): { target?: "_blank"; rel?: string } {
+  return /^https?:\/\//.test(href) ? { target: "_blank", rel: "noopener noreferrer" } : {};
 }
 
 /** Booking Flow page. Not built in the preview (booking backend is out of scope). */

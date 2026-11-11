@@ -17,6 +17,7 @@ export function HeroBackgroundSlider({
   objectPositions,
   shuffle = true,
   preloadNext = false,
+  startDelayMs = 0,
 }: {
   images: string[];
   alts: string[];
@@ -26,6 +27,8 @@ export function HeroBackgroundSlider({
   shuffle?: boolean;
   /** Load the next slide in the background so transitions never show a blank frame. */
   preloadNext?: boolean;
+  /** Keep the first slide this much longer before the rotation starts (e.g. after an opening). */
+  startDelayMs?: number;
 }) {
   const [order] = useState(() => {
     const indices = images.map((_, i) => i);
@@ -41,11 +44,17 @@ export function HeroBackgroundSlider({
 
   useEffect(() => {
     if (order.length <= 1) return;
-    const id = setInterval(() => {
-      setPosition((current) => (current + 1) % order.length);
-    }, SLIDE_DURATION_MS);
-    return () => clearInterval(id);
-  }, [order.length]);
+    let id: ReturnType<typeof setInterval> | undefined;
+    const start = setTimeout(() => {
+      id = setInterval(() => {
+        setPosition((current) => (current + 1) % order.length);
+      }, SLIDE_DURATION_MS);
+    }, startDelayMs);
+    return () => {
+      clearTimeout(start);
+      if (id) clearInterval(id);
+    };
+  }, [order.length, startDelayMs]);
 
   const index = order[position] ?? 0;
   const nextIndex = order[(position + 1) % order.length] ?? 0;

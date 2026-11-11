@@ -5,11 +5,12 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import type { RecruitLink, RecruitNav } from "../content/pages";
+import { externalLinkProps } from "../routes";
 
 function RecruitItem({ item, className, onClick }: { item: RecruitLink; className: string; onClick: () => void }) {
-  // Guide Community has its own root layout, so it gets a plain link (full page load).
+  // Google Forms: a plain link opening a new tab.
   return item.external ? (
-    <a href={item.href} onClick={onClick} className={className}>
+    <a href={item.href} {...externalLinkProps(item.href)} onClick={onClick} className={className}>
       {item.label}
     </a>
   ) : (

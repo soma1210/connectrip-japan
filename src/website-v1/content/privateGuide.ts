@@ -7,7 +7,6 @@ import type {
 } from "@/contracts";
 import { routeHref } from "../routes";
 import { getHowItWorksFlows } from "./howItWorks";
-import { getPrivateGuideBookingModel } from "./privateGuideBooking";
 import { approvedText, cta, pageName, pageSeo, proposed, tbd } from "./shared";
 
 const AREA_SOURCE = "Website v1 Decision Log W1-D04";
@@ -56,11 +55,16 @@ export function getPrivateGuideViewModel(): PrivateGuideViewModel {
       areas: (Object.keys(AREA_LABELS) as AreaKey[]).map((key) => ({ key, label: AREA_LABELS[key] })),
       exampleDays: tbd("Example days TBD (illustrative only)"),
       flow: getHowItWorksFlows().privateGuide,
-      pricingNote: tbd("Private Guide pricing TBD (prototype prices in the booking section are demo data)"),
+      // Request flow (Human instruction 2026-11-09): the price is given per request, paid by Stripe invoice in JPY.
+      pricingNote: proposed(
+        "We confirm the price for your day when we reply to your request. Payment is in Japanese yen (JPY) by Stripe invoice.",
+        "Private Guide booking request flow (Human instruction 2026-11-09). Copy PROPOSED",
+      ),
       faq: tbd("FAQ TBD"),
-      // Secondary since W1-D16: questions before booking.
+      // Secondary: questions before sending a booking request.
       inquiryCta: cta("v1_private_inquiry", "inquiry", routeHref("inquiry"), "section", "secondary", pageName("Inquiry")),
-      booking: getPrivateGuideBookingModel(),
+      // `booking` (W1-D16 slot booking: demo plans, prices, availability, pay online) is
+      // intentionally unset: replaced by the booking request form (content/privateGuideRequest.ts).
       experiencesCta: cta("v1_private_experiences", "experiences", routeHref("experiences"), "section", "secondary", pageName("Experiences")),
     },
   };

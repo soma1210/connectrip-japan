@@ -12,31 +12,47 @@ import { PageIntro, Section, SectionTitle, TbdBlock } from "../components/Blocks
 import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { PreviewInquiryForm } from "../components/PreviewInquiryForm";
-import { PrivateGuideBooking } from "../components/booking/PrivateGuideBooking";
+import { PrivateGuideRequestForm } from "../components/booking/PrivateGuideRequestForm";
+import type { PrivateGuideRequestModel } from "../content/privateGuideRequest";
+import { PRIVATE_GUIDE_AREAS_NOTE, PRIVATE_GUIDE_FAQ } from "../content/privateGuideFaq";
+import { V1_PREVIEW } from "../config";
+import { getLayoutViewModel } from "../content/pages";
+import { routeHref } from "../routes";
+import Link from "next/link";
 import { TbdImage, TbdMark, TbdText, textOr } from "../components/Tbd";
 
-export function PrivateGuideView({ vm }: { vm: PrivateGuideViewModel }) {
+/**
+ * Private Guide page. `request` is the booking request form (Human
+ * instruction 2026-11-09), website-local until the shared request contract
+ * exists; when given, it is the page's main action.
+ */
+export function PrivateGuideView({ vm, request }: { vm: PrivateGuideViewModel; request?: PrivateGuideRequestModel }) {
   const c = vm.content;
+  // Public mode leaves out undecided blocks instead of showing empty frames.
+  const showPhoto = V1_PREVIEW || c.intro.image.status !== "TBD";
+  const showExampleDays = V1_PREVIEW || (c.exampleDays !== undefined && c.exampleDays.status !== "TBD");
   return (
     <>
       <div className="relative">
         <PageIntro headline={c.intro.headline} supporting={c.intro.supporting} slot="Private Guide" />
       </div>
 
-      {/* Slot booking (W1-D16): the standard way to book a Private Guide. */}
-      {c.booking ? (
-        <Section id="book">
-          <PrivateGuideBooking model={c.booking} />
+      {request ? (
+        <Section id="request" className="scroll-mt-20">
+          <PrivateGuideRequestForm model={request} />
         </Section>
       ) : null}
       <Section>
-        <div className="grid items-start gap-10 md:grid-cols-2">
-          <FadeIn className="relative aspect-[4/3] overflow-hidden border border-gold/30">
-            <TbdImage value={c.intro.image} slot="Private Guide photo" sizes="(min-width: 768px) 50vw, 100vw" />
-          </FadeIn>
+        <div className={showPhoto ? "grid items-start gap-10 md:grid-cols-2" : "grid items-start gap-10"}>
+          {showPhoto ? (
+            <FadeIn className="relative aspect-[4/3] overflow-hidden border border-gold/30">
+              <TbdImage value={c.intro.image} slot="Private Guide photo" sizes="(min-width: 768px) 50vw, 100vw" />
+            </FadeIn>
+          ) : null}
           <div className="flex flex-col gap-8">
             <div>
               <h2 className="mb-4 font-heading-en text-xs tracking-[0.2em] text-cream/50 italic">WHERE</h2>
+              <p className="mb-4 max-w-2xl text-sm leading-relaxed text-cream/80">{PRIVATE_GUIDE_AREAS_NOTE}</p>
               <ul className="flex flex-wrap gap-2">
                 {c.areas.map((area) => (
                   <li key={area.key} className="border border-gold/40 px-4 py-2 text-sm text-gold">
@@ -60,24 +76,39 @@ export function PrivateGuideView({ vm }: { vm: PrivateGuideViewModel }) {
               <TbdText value={c.pricingNote} slot="Pricing note" as="p" className="text-sm text-cream/80" />
             </div>
             <div className="flex flex-wrap gap-4">
-              {/* With slot booking, Inquiry is the quieter option (W1-D16). */}
-              <CtaLink cta={c.inquiryCta} variant={c.booking ? "text" : undefined} />
+              {/* With the request form on the page, Inquiry is the quieter option. */}
+              <CtaLink cta={c.inquiryCta} variant={request ? "text" : undefined} />
               {c.experiencesCta ? <CtaLink cta={c.experiencesCta} /> : null}
             </div>
           </div>
         </div>
       </Section>
 
+      {/* Basic FAQ from the approved booking rules (content/privateGuideFaq.ts). */}
+      <Section tone="navy-dark" id="faq">
+        <h2 className="mb-8 font-heading-en text-2xl text-cream md:text-3xl">Frequently asked questions</h2>
+        <dl className="grid max-w-3xl gap-6">
+          {PRIVATE_GUIDE_FAQ.map((item) => (
+            <div key={item.question} className="border-t border-cream/15 pt-4">
+              <dt className="text-base text-gold">{item.question}</dt>
+              <dd className="mt-2 text-sm leading-relaxed text-cream/80">{item.answer}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {showExampleDays ? (
       <Section tone="navy-dark">
-        <div className={c.booking ? "grid gap-10" : "grid gap-10 md:grid-cols-2"}>
-          {/* The inquiry-first flow is replaced by the booking steps above (W1-D16). */}
-          {c.booking ? null : <FlowSteps flow={c.flow} showDescriptions />}
+        <div className={request ? "grid gap-10" : "grid gap-10 md:grid-cols-2"}>
+          {/* The request form above already shows the booking steps. */}
+          {request ? null : <FlowSteps flow={c.flow} showDescriptions />}
           <div>
             <h2 className="mb-4 font-heading-en text-xs tracking-[0.2em] text-cream/50 italic">EXAMPLE DAYS</h2>
             {c.exampleDays && c.exampleDays.status === "TBD" ? <TbdBlock value={c.exampleDays} slot="Example days" /> : null}
           </div>
         </div>
       </Section>
+      ) : null}
     </>
   );
 }
@@ -131,6 +162,45 @@ export function AboutView({ vm }: { vm: AboutViewModel }) {
   );
 }
 
+/**
+ * Public Contact block: the same SNS / WhatsApp links as the footer (W1-D08 /
+ * W1-D09, current site accounts) and the booking request form. No email
+ * address until one is approved for publication.
+ */
+function ContactChannels() {
+  const social = getLayoutViewModel().nav.footer.social;
+  const links = social.status === "TBD" ? [] : social.value;
+  return (
+    <div className="flex flex-col gap-8">
+      <p className="text-sm leading-relaxed text-cream/80">
+        To request a private guide, please use our booking request form. For other questions, message us on:
+      </p>
+      <ul className="flex flex-wrap gap-3">
+        {links.map((link) => (
+          <li key={link.platform}>
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="inline-flex items-center border border-gold/40 px-5 py-3 text-sm text-gold transition-colors hover:bg-gold hover:text-navy"
+            >
+              {link.label.status === "TBD" ? link.platform : link.label.value}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div>
+        <Link
+          href={routeHref("privateGuide")}
+          className="inline-flex items-center justify-center border border-gold bg-red px-8 py-4 text-center text-sm tracking-[0.08em] text-cream transition-colors hover:bg-red-hover"
+        >
+          Request a Private Guide
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export function InquiryView({ vm }: { vm: InquiryViewModel }) {
   const c = vm.content;
   return (
@@ -138,7 +208,8 @@ export function InquiryView({ vm }: { vm: InquiryViewModel }) {
       <PageIntro headline={c.intro.headline} supporting={c.intro.supporting} slot="Inquiry" />
       <Section>
         <div className="mx-auto max-w-3xl">
-          <PreviewInquiryForm model={c.form} />
+          {/* The inquiry form has no backend (mock): public mode offers the contact channels the site already lists instead. */}
+          {V1_PREVIEW ? <PreviewInquiryForm model={c.form} /> : <ContactChannels />}
         </div>
       </Section>
     </>
@@ -152,11 +223,13 @@ export function LegalView({ vm }: { vm: LegalPageViewModel }) {
     <div className="bg-cream py-[60px] text-navy md:py-[100px]">
       <Container className="max-w-3xl">
         <LegalPageHeader heading={textOr(c.title, "TBD")} subheading={vm.route === "privacy" ? "PRIVACY POLICY" : "TERMS"} />
-        <p className="mb-8 text-xs text-navy/60">
-          Last updated: {c.updatedAt.status === "TBD" ? <TbdMark slot="Updated date" tone="light" /> : c.updatedAt.value}
-        </p>
+        {V1_PREVIEW || c.updatedAt.status !== "TBD" ? (
+          <p className="mb-8 text-xs text-navy/60">
+            Last updated: {c.updatedAt.status === "TBD" ? <TbdMark slot="Updated date" tone="light" /> : c.updatedAt.value}
+          </p>
+        ) : null}
         {c.sections.status === "TBD" ? (
-          <div className="flex min-h-40 items-center justify-center border border-dashed border-navy/30 p-8 text-center">
+          !V1_PREVIEW ? null : <div className="flex min-h-40 items-center justify-center border border-dashed border-navy/30 p-8 text-center">
             <TbdMark slot="Legal text" note={c.sections.note} tone="light" />
           </div>
         ) : (
