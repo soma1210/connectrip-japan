@@ -125,7 +125,8 @@ export function getHomeViewModel(): HomeViewModel {
         supporting: t05("Discover Osaka through local experiences, or create your own day with a private guide."),
         core: [],
         images: proposed(HERO_IMAGES.map((h) => h.image), HERO_PLACEHOLDER_SOURCE),
-        primaryCta: cta("v1_home_hero_experiences", "experiences", routeHref("experiences"), "hero", "primary", t05("Explore Experiences")),
+        // Red CTA: same rule as the header CTA (content/pages.ts, Human instruction 2026-11-11).
+        primaryCta: cta("v1_home_hero_experiences", "experiences", routeHref("experiences"), "hero", "primary", proposed("Explore Our Tours", "Hero CTA (Human instruction 2026-11-11)")),
         secondaryCta: cta("v1_home_hero_private", "privateGuide", routeHref("privateGuide"), "hero", "secondary", t05("Plan a Private Day")),
       },
       featuredExperiences: {

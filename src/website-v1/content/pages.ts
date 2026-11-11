@@ -57,8 +57,12 @@ export function getLayoutViewModel(): LayoutViewModel {
     },
     nav: {
       primary: [navItem("privateGuide"), navItem("travelGuide"), navItem("howItWorks"), navItem("about")],
-      // Same labels and destinations as the Home CTAs (Human instruction 2026-11-09).
-      headerCta: cta("v1_header_experiences", "experiences", routeHref("experiences"), "header", "primary", proposed("Explore Experiences", "Header CTA (Human instruction 2026-11-09)")),
+      // Same labels and destinations as the Home Hero CTAs (Human instruction 2026-11-09).
+      // Red CTA "Explore Our Tours" (Human instruction 2026-11-11): its final target is the
+      // Tenmangu / Tenjinbashi-suji / Tenma Market tour page, not built yet. Until then it
+      // points at the preview-only Experiences page, so public mode does not render it
+      // (CtaLink). When the tour page ships: change the href and add it to PUBLIC_PATHS.
+      headerCta: cta("v1_header_experiences", "experiences", routeHref("experiences"), "header", "primary", proposed("Explore Our Tours", "Header CTA (Human instruction 2026-11-11)")),
       headerSecondaryCta: cta("v1_header_private", "privateGuide", routeHref("privateGuide"), "header", "secondary", proposed("Plan a Private Day", "Header CTA (Human instruction 2026-11-09)")),
       footer: {
         links: [

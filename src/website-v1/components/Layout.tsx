@@ -78,7 +78,7 @@ export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit
           <RecruitDropdown recruit={recruit} />
         </nav>
 
-        {/* Logo → Explore Experiences → Plan a Private Day → menu (Human instruction 2026-11-09).
+        {/* Logo → Explore Our Tours → Plan a Private Day → menu (Human instruction 2026-11-09 / 2026-11-11).
             The CTAs sit in the bar once it has room for them; below that they open at the top of the menu. */}
         <div className="flex items-center gap-3">
           <div className="hidden items-center gap-3 min-[720px]:flex">
