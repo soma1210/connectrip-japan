@@ -42,6 +42,8 @@ export function CinematicHeroSlider({ slides, heroId }: { slides: HeroSlide[]; h
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(true);
   const [inView, setInView] = useState(true);
+  /** Held while the Home mosaic has pulled the camera back (HeroMosaicMotion sends hero:hold / hero:release). */
+  const [holding, setHolding] = useState(false);
   const [preload, setPreload] = useState(false);
   const [narrow, setNarrow] = useState(false);
   const seq = useRef(0);
@@ -147,19 +149,25 @@ export function CinematicHeroSlider({ slides, heroId }: { slides: HeroSlide[]; h
       if (e.key === "ArrowRight") next();
       else if (e.key === "ArrowLeft") prev();
     };
+    const hold = () => setHolding(true);
+    const release = () => setHolding(false);
     hero.addEventListener("hero:next", next);
     hero.addEventListener("hero:prev", prev);
+    hero.addEventListener("hero:hold", hold);
+    hero.addEventListener("hero:release", release);
     window.addEventListener("keydown", onKey);
     return () => {
       hero.removeEventListener("hero:next", next);
       hero.removeEventListener("hero:prev", prev);
+      hero.removeEventListener("hero:hold", hold);
+      hero.removeEventListener("hero:release", release);
       window.removeEventListener("keydown", onKey);
     };
   }, [heroId, inView, next, prev]);
 
   // Rotation. One timer per scene; a pause keeps the time already held, so the camera (frozen by CSS) and the timer resume together.
   useEffect(() => {
-    if (!started || !playing || !inView || count < 2) return;
+    if (!started || !playing || !inView || holding || count < 2) return;
     let id = 0;
     let since = 0;
     if (held.current.id !== topId) held.current = { id: topId, ms: 0 };
@@ -182,9 +190,9 @@ export function CinematicHeroSlider({ slides, heroId }: { slides: HeroSlide[]; h
       disarm();
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [started, playing, inView, count, next, topId]);
+  }, [started, playing, inView, holding, count, next, topId]);
 
-  const running = started && playing && inView;
+  const running = started && playing && inView && !holding;
   const neighbours = preload ? [(index + 1) % count, (index - 1 + count) % count].filter((i) => !layers.some((l) => l.index === i)) : [];
   const focusOf = (slide: HeroSlide) => (narrow ? (slide.focusMobile ?? slide.focus) : slide.focus);
 

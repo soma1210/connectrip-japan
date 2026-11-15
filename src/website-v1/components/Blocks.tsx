@@ -65,7 +65,8 @@ export function SectionTitle({
 /** Top block of an inner page. */
 export function PageIntro({ headline, supporting, slot }: { headline: Tbd<string>; supporting: Tbd<string>; slot: string }) {
   return (
-    <div className="border-b border-dashed border-gold/20 bg-navy pt-6 pb-4 md:pt-10 md:pb-8">
+    // Slow aurora of navy and gold light behind the page title (components/wd/wd.css).
+    <div className="wd-aurora relative isolate overflow-hidden border-b border-dashed border-gold/20 bg-navy pt-10 pb-8 md:pt-24 md:pb-16">
       <Container>
         <SectionTitle heading={headline} supporting={supporting} slot={slot} as="h1" />
       </Container>

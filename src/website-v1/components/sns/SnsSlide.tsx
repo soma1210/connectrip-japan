@@ -1,3 +1,4 @@
+import { SnsMotion } from "../wd/SnsMotion";
 import { ArrowRight } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa";
 import type { SnsAccountPlatform } from "@/contracts";
@@ -25,20 +26,35 @@ export function SnsSlide({ accounts }: { accounts: { platform: SnsAccountPlatfor
     <section id="sns" aria-labelledby="sns-title" {...revealGroup} className="bg-navy-dark py-16 md:flex md:min-h-[78svh] md:items-center md:py-24">
       <div className="mx-auto w-full max-w-(--container-app) px-5 md:px-10">
         <p {...reveal("fade", 0, "font-heading-en text-xs tracking-[0.28em] text-gold uppercase md:text-sm")}>{c.eyebrow}</p>
-        <h2 id="sns-title" {...reveal("title", 0.1, "mt-3 font-heading-en text-[clamp(2.3rem,9vw,3.2rem)] leading-[1.05] text-cream md:text-[clamp(3rem,4.6vw,4.6rem)]")}>
-          {c.heading}
+        <h2
+          id="sns-title"
+          data-wd-letters
+          aria-label={c.heading}
+          className="mt-3 font-heading-en text-[clamp(2.3rem,9vw,3.2rem)] leading-[1.05] text-cream [perspective:600px] md:text-[clamp(3.4rem,6vw,6rem)]"
+        >
+          {c.heading.split(" ").map((word, w, all) => (
+            <span key={w} aria-hidden className="inline-block whitespace-nowrap">
+              {[...word].map((ch, i) => (
+                <span key={i} data-wd-l className="inline-block">
+                  {ch}
+                </span>
+              ))}
+              {w < all.length - 1 ? "\u00a0" : null}
+            </span>
+          ))}
         </h2>
         <div {...reveal("up", 0.25, "mt-5 flex items-center gap-5 md:mt-6 md:gap-8")}>
           <span className="h-px w-14 shrink-0 bg-gold md:w-20" aria-hidden />
           <p className="font-heading-en text-sm text-cream/80 italic md:text-lg">{c.tagline}</p>
         </div>
 
-        <ul className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:mt-14 lg:grid-cols-4 lg:gap-6">
-          {accounts.map((a, i) => {
+        <ul data-sns-deck className="mt-10 grid grid-cols-2 gap-3 [perspective:1200px] sm:gap-4 md:mt-14 lg:grid-cols-4 lg:gap-6">
+          {accounts.map((a) => {
             const Icon = ICONS[a.platform];
             const text = c.accounts[a.platform];
             return (
-              <li key={a.platform} {...reveal("up", 0.35 + i * 0.1, "flex")}>
+              // Cards fly in from scattered positions and settle into the grid (components/wd/SnsMotion); 3D tilt under the pointer.
+              <li key={a.platform} data-sns-card data-wd-tilt className="flex will-change-transform">
                 <a
                   href={a.href}
                   target="_blank"
@@ -63,6 +79,7 @@ export function SnsSlide({ accounts }: { accounts: { platform: SnsAccountPlatfor
           })}
         </ul>
       </div>
+      <SnsMotion />
     </section>
   );
 }

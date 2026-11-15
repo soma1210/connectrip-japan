@@ -1,0 +1,168 @@
+/*
+ * Home Hero — "zoom out into the mosaic" (Human instruction 2026-11-15, from a
+ * screen recording of white-desert.com/about/founders, `about-scrub`).
+ *
+ * Structure (same idea as the reference, own code):
+ *   .component  400svh tall; the scroll distance of the scene
+ *   └ .sticky   one screen, held while the component scrolls past
+ *     └ .layout three rows (2 / 3 / 2) centred on the screen
+ *       └ .featured  the Cinematic Hero slider; starts wider than the screen
+ *   .content   headline + CTAs, held on screen, fades as the camera pulls back
+ *
+ * HeroMosaicMotion scrubs: text → 0 and featured width → 50% (first 75%),
+ * then the whole mosaic settles to the bottom of the screen (last 20%).
+ * Every cell is 16:11; cells beside the featured one are squeezed by it and
+ * stretched to its height, so they read as portraits.
+ */
+.component {
+  --gap: 1rem;
+  --radius: 6px;
+  --stage: max(100svh, 540px);
+  position: relative;
+  z-index: 2;
+  height: 400svh;
+  /* Starts under the sticky header (5rem); the header is clear at the top of Home. */
+  margin-top: -5rem;
+  background: var(--color-navy-dark);
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: var(--stage);
+  overflow: clip;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.layout {
+  position: absolute;
+  bottom: 50%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  transform: translateY(50%);
+  will-change: transform;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--gap);
+}
+
+.item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  overflow: clip;
+  border-radius: var(--radius);
+  background: var(--color-navy);
+  isolation: isolate;
+}
+
+/* Wider than the screen at first, so its 16:11 frame always covers the whole stage. */
+.featured {
+  flex: none;
+  width: max(100%, calc(var(--stage) * 16 / 11));
+  will-change: width;
+}
+
+/* Neighbour photos: their camera starts closer and pulls back with the zoom (set in JS). */
+.neighbour {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.contentSticky {
+  position: sticky;
+  top: 0;
+  height: var(--stage);
+  display: flex;
+  align-items: flex-end;
+}
+
+.content :is(a, button) {
+  pointer-events: auto;
+}
+
+/* ---- Headline: each word rises out of its own mask (white-desert.com hero titles) ---- */
+.word {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  vertical-align: top;
+}
+.word > span {
+  display: inline-block;
+  animation: wordRise 1.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(1.25s + var(--w) * 0.09s);
+}
+:global(html[data-v1-opening]) .word > span {
+  animation-delay: calc(0.2s + var(--w) * 0.09s);
+}
+:global(html[data-v1-opening="pending"]) .word > span,
+:global(html[data-v1-opening="play"]) .word > span,
+:global(html[data-v1-opening="reduced"]) .word > span,
+:global(html[data-v1-opening="reduced-out"]) .word > span {
+  animation: none;
+  transform: translateY(110%);
+}
+@keyframes wordRise {
+  from { transform: translateY(110%) rotate(4deg); }
+  to { transform: translateY(0) rotate(0); }
+}
+
+/* Thin gold rule drawn under the headline once the words are up. */
+.rule {
+  display: block;
+  height: 1px;
+  width: min(14rem, 40vw);
+  margin-top: 1.4rem;
+  background: linear-gradient(90deg, var(--color-gold), transparent);
+  transform-origin: left;
+  animation: ruleDraw 1.6s cubic-bezier(0.65, 0, 0.35, 1) 1.9s both;
+}
+:global(html[data-v1-opening]) .rule { animation-delay: 0.8s; }
+:global(html[data-v1-opening="pending"]) .rule,
+:global(html[data-v1-opening="play"]) .rule,
+:global(html[data-v1-opening="reduced"]) .rule,
+:global(html[data-v1-opening="reduced-out"]) .rule {
+  animation: none;
+  transform: scaleX(0);
+}
+@keyframes ruleDraw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@media (max-width: 767px) {
+  .rule { margin-inline: auto; transform-origin: center; background: linear-gradient(90deg, transparent, var(--color-gold), transparent); }
+}
+
+/* ---- Phones and reduced motion: one full-screen photo, no zoom (like the reference on mobile) ---- */
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .component { height: auto; }
+  .sticky { position: relative; }
+  .layout { inset: 0; bottom: auto; transform: none; }
+  .row { height: 100%; }
+  .mHide { display: none; }
+  .featured { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
+  .contentSticky { position: relative; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .word > span, .rule { animation: none !important; transform: none !important; }
+}

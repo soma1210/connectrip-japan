@@ -9,6 +9,8 @@ import { SITE_URL } from "@/lib/site";
 import { openingBootScript } from "@/website-v1/components/opening/openingBoot";
 import { routeHref } from "@/website-v1/routes";
 import "../globals.css";
+import "@/website-v1/components/wd/wd.css";
+import { WdMotion } from "@/website-v1/components/wd/WdMotion";
 
 // Same font setup as the current site.
 const shipporiMinchoB1 = Shippori_Mincho_B1({
@@ -54,6 +56,8 @@ export default function WebsiteV1Layout({ children }: { children: ReactNode }) {
         <V1Header layout={layout} recruit={recruit} />
         <main className="flex-1">{children}</main>
         <V1Footer layout={layout} recruit={recruit} />
+        {/* White Desert–style motion layer (components/wd). */}
+        <WdMotion />
       </body>
     </html>
   );
