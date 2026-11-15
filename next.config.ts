@@ -27,7 +27,7 @@ const PUBLIC_MODE_REDIRECTS = [
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.10.113"],
   images: {
-    qualities: [75, 90],
+    qualities: [75, 85, 90],
     remotePatterns: [
       {
         protocol: "https",

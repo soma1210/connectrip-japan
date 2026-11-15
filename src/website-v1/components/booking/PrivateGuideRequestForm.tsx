@@ -860,7 +860,7 @@ export function PrivateGuideRequestForm({
             </ul>
 
             {model.privacyNotice ? (
-              <p className="border-l-2 border-gold/50 pl-3 text-xs leading-relaxed text-cream/70">
+              <p className="text-xs leading-relaxed text-cream/70">
                 <span className="mr-1 font-heading-en tracking-[0.15em] text-cream/50">YOUR DETAILS</span>
                 {model.privacyNotice}{" "}
                 <Link href={model.consent.privacyHref} className="underline decoration-gold/60 underline-offset-4 hover:text-gold">

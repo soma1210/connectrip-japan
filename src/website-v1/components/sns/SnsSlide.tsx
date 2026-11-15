@@ -23,7 +23,7 @@ const ICON_TILES = {
 export function SnsSlide({ accounts }: { accounts: { platform: SnsAccountPlatform; label: string; href?: string }[] }) {
   const c = SNS_SLIDE_COPY;
   return (
-    <section id="sns" aria-labelledby="sns-title" {...revealGroup} className="bg-navy-dark py-16 md:flex md:min-h-[78svh] md:items-center md:py-24">
+    <section id="sns" aria-labelledby="sns-title" {...revealGroup} className="overflow-x-clip bg-navy-dark py-16 md:flex md:min-h-[78svh] md:items-center md:py-24">
       <div className="mx-auto w-full max-w-(--container-app) px-5 md:px-10">
         <p {...reveal("fade", 0, "font-heading-en text-xs tracking-[0.28em] text-gold uppercase md:text-sm")}>{c.eyebrow}</p>
         <h2

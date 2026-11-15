@@ -6,50 +6,15 @@
  * from src/app/v1/layout.tsx.
  */
 
+/* ---- No sideways scrolling from motion that starts off screen (overflow-x: clip keeps sticky scenes working) ---- */
+main { overflow-x: clip; }
+
 /* ---- Lenis (smooth scroll) ---- */
 html.lenis,
 html.lenis body { height: auto; }
 .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
 .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
-
-/* ---- Grid overlay: fine vertical lines over everything, drawn down on load ---- */
-.wd-grid-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  mix-blend-mode: difference;
-  opacity: 0.075;
-}
-.wd-grid-overlay__inner {
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
-  max-width: var(--container-app);
-  margin: 0 auto;
-  padding: 0 1.25rem;
-}
-@media (min-width: 768px) {
-  .wd-grid-overlay__inner { padding: 0 2.5rem; }
-}
-.wd-grid-overlay__inner span {
-  width: 1px;
-  height: 100%;
-  background: #fff;
-  transform-origin: top;
-  animation: wd-line-down 1.8s cubic-bezier(0.65, 0, 0.35, 1) both;
-}
-.wd-grid-overlay__inner span:nth-child(2) { animation-delay: 0.08s; }
-.wd-grid-overlay__inner span:nth-child(3) { animation-delay: 0.16s; }
-.wd-grid-overlay__inner span:nth-child(4) { animation-delay: 0.24s; }
-.wd-grid-overlay__inner span:nth-child(5) { animation-delay: 0.32s; }
-.wd-grid-overlay__inner span:nth-child(6) { animation-delay: 0.4s; }
-.wd-grid-overlay__inner span:nth-child(7) { animation-delay: 0.48s; }
-@keyframes wd-line-down {
-  from { transform: scaleY(0); }
-  to { transform: scaleY(1); }
-}
 
 /* ---- Cursor follower ---- */
 .wd-cursor {
@@ -154,6 +119,7 @@ a[data-cta-id]::before {
 /* ---- Mist scene change ---- */
 .wd-mist {
   position: relative;
+  overflow-x: clip;
   z-index: 4;
   pointer-events: none;
   perspective: 900px;
@@ -182,26 +148,6 @@ a[data-cta-id]::before {
   vertical-align: top;
 }
 .wd-word > span { display: inline-block; }
-
-/* ---- Hand-drawn gold line under section headings, traced once on screen ---- */
-[data-wd-scribble] { position: relative; }
-[data-wd-scribble]::after {
-  content: "";
-  position: absolute;
-  left: var(--scribble-left, 0px);
-  bottom: -0.62em;
-  width: min(7.5em, 92%);
-  height: 0.55em;
-  min-height: 14px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 40' fill='none' stroke='%23c9a45c' stroke-linecap='round'%3E%3Cpath d='M3 27C58 18 131 12 205 15c48 2 90 7 112-2' stroke-width='1.4'/%3E%3Cpath d='M22 33c66-9 142-12 214-8 26 2 48 4 66 1' stroke-width='0.9' opacity='.7'/%3E%3Cpath d='M300 6c-12 10-30 16-58 18' stroke-width='0.8' opacity='.55'/%3E%3C/svg%3E")
-    no-repeat left center / 100% 100%;
-  pointer-events: none;
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.5s;
-}
-[data-wd-scribble][data-wd-drawn]::after { clip-path: inset(0 0 0 0); }
-.text-center[data-wd-scribble]::after,
-.text-center > [data-wd-scribble]::after { left: 50%; translate: -50% 0; }
 
 /* ---- Page transition curtain ---- */
 .wd-curtain {
@@ -256,11 +202,9 @@ a[data-cta-id]::before {
 
 /* ---- Reduced motion: the layer stays still ---- */
 @media (prefers-reduced-motion: reduce) {
-  .wd-grid-overlay__inner span,
   .wd-curtain,
   .wd-curtain__line { animation: none; }
   .wd-curtain { display: none; }
-  [data-wd-scribble]::after { transition: none; }
   .wd-header { transition: none; }
 }
 
@@ -302,43 +246,6 @@ a[data-cta-id]::before {
 
 /* ---- Magnetic CTAs: spring back ---- */
 a[data-cta-id] { transition-property: color, background-color, border-color, translate; transition-duration: 0.15s, 0.15s, 0.15s, 0.5s; transition-timing-function: ease, ease, ease, cubic-bezier(0.22, 1, 0.36, 1); }
-
-/* ---- Place-name marquee ---- */
-.wd-marquee {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  padding: clamp(2.5rem, 6vw, 5rem) 0;
-  background: var(--color-navy-dark);
-  border-block: 1px solid rgb(201 164 92 / 0.18);
-}
-.wd-marquee__track { overflow: visible; }
-.wd-marquee__track + .wd-marquee__track { margin-top: clamp(0.25rem, 1vw, 1rem); }
-.wd-marquee__row {
-  display: flex;
-  width: max-content;
-  will-change: transform;
-}
-.wd-marquee__word {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35em;
-  padding-right: 0.35em;
-  font-family: var(--font-heading-en);
-  font-size: clamp(3.2rem, 11vw, 10.5rem);
-  line-height: 1;
-  letter-spacing: 0.04em;
-  color: transparent;
-  -webkit-text-stroke: 1px rgb(201 164 92 / 0.65);
-  transition: color 0.5s ease, -webkit-text-stroke-color 0.5s ease;
-}
-.wd-marquee__track:nth-child(2) .wd-marquee__word { -webkit-text-stroke-color: rgb(245 243 238 / 0.35); }
-.wd-marquee__track:hover .wd-marquee__word { color: var(--color-gold); -webkit-text-stroke-color: var(--color-gold); }
-.wd-marquee__dot {
-  font-size: 0.28em;
-  color: var(--color-red);
-  -webkit-text-stroke: 0;
-}
 
 /* ---- Page intro aurora: slow drifting light behind inner-page titles ---- */
 .wd-aurora::before,

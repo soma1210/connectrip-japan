@@ -63,7 +63,7 @@ function RuleHeading({ children, id }: { children: ReactNode; id: string }) {
 function IncludeBox({ id, title, icon: Icon, mark, items, note }: { id: string; title: string; icon: LucideIcon; mark: string; items: string[]; note?: string }) {
   return (
     <div className="grid gap-6 rounded-xl border border-gold/30 bg-navy-dark/40 px-6 py-7 md:grid-cols-[17rem_1fr] md:items-center md:gap-10 md:px-10">
-      <div className="flex items-center gap-3 md:border-r md:border-gold/25 md:pr-8">
+      <div className="flex items-center gap-3 md:pr-8">
         <Icon className="h-8 w-8 shrink-0 text-gold" strokeWidth={1.5} aria-hidden />
         <h2 id={id} className="font-heading-en text-2xl tracking-wide text-cream">
           {title}
@@ -153,8 +153,6 @@ export function TourDetailView({ tour }: { tour: FeaturedTour }) {
               <span className="h-px flex-1 bg-gold/50" aria-hidden />
             </div>
             <ol className="relative mt-8 flex flex-col gap-7">
-              {/* Timeline line behind the dots */}
-              <span className="absolute top-3 bottom-3 left-[5px] w-px bg-gold/60" aria-hidden />
               {tour.schedule.map((s) => (
                 // Mobile: time label above the title; from sm: label column on the left.
                 <li key={s.time} className="relative grid grid-cols-[11px_1fr] items-start gap-x-4 gap-y-2 sm:grid-cols-[11px_auto_1fr] sm:gap-x-5">

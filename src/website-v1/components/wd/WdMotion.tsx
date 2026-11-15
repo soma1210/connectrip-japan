@@ -1,5 +1,4 @@
 import { CustomCursor } from "./CustomCursor";
-import { GridOverlay } from "./GridOverlay";
 import { HeaderMotion } from "./HeaderMotion";
 import { Interactions } from "./Interactions";
 import { PageMotion } from "./PageMotion";
@@ -17,7 +16,6 @@ export function WdMotion() {
       <SmoothScroll />
       <HeaderMotion />
       <PageMotion />
-      <GridOverlay />
       <CustomCursor />
       <Interactions />
     </>

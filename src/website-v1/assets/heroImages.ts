@@ -117,3 +117,24 @@ export function heroFocus(src: string): string | undefined {
 export function heroMeta(src: string): Pick<HeroImage, "focus" | "focusMobile" | "location"> | undefined {
   return HERO_IMAGES.find((h) => h.image.src === src);
 }
+
+/**
+ * Home Hero mosaic (Human instruction 2026-11-15): 3 × 3 photos around the
+ * slider, Osaka Castle in the centre. Two cells reuse photos from the earlier
+ * site's gallery (public/images/gallery, Himeji Castle and Fushimi Inari).
+ * Order: top row, middle-left, middle-right, bottom row. `hero` = index in
+ * HERO_IMAGES; `src` = any other file. Change the list to change the mosaic.
+ */
+export type MosaicPhoto = { src: string; alt: string; focus?: string };
+const heroPhoto = (i: number): MosaicPhoto => ({ src: HERO_IMAGES[i].image.src, alt: HERO_IMAGES[i].image.alt, focus: HERO_IMAGES[i].focus });
+export const HERO_MOSAIC_CENTER: MosaicPhoto = heroPhoto(0);
+export const HERO_MOSAIC: MosaicPhoto[] = [
+  heroPhoto(3),
+  { src: "/images/gallery/gallery-himeji-castle.jpg", alt: "Himeji Castle, Hyogo", focus: "50% 50%" },
+  heroPhoto(10),
+  heroPhoto(5),
+  heroPhoto(11),
+  heroPhoto(8),
+  { src: "/images/gallery/gallery-fushimi-inari.jpg", alt: "Torii gates of Fushimi Inari Taisha, Kyoto", focus: "50% 55%" },
+  heroPhoto(6),
+];

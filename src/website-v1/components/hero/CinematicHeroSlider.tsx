@@ -242,7 +242,7 @@ export function CinematicHeroSlider({ slides, heroId }: { slides: HeroSlide[]; h
 
       {/* Bottom right: the location of the photo on screen, and a quiet pause / play button. */}
       {count > 1 ? (
-        <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 mx-auto flex w-full max-w-(--container-app) items-center justify-end gap-3 px-5 md:bottom-7 md:px-12">
+        <div data-hero-label className="pointer-events-none absolute inset-x-0 bottom-4 z-10 mx-auto flex w-full max-w-(--container-app) items-center justify-end gap-3 px-5 md:bottom-7 md:px-12">
           <p className="font-heading-en text-[11px] tracking-[0.38em] text-cream/75 md:text-xs" aria-live={playing ? "off" : "polite"}>
             <span key={top.id} className={styles.label}>
               {slides[index].location}

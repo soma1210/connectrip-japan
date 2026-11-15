@@ -117,7 +117,7 @@ export function RecruitAccordion({ recruit, onNavigate }: { recruit: RecruitNav;
         <ChevronDown className={cn("h-4 w-4 transition-transform", open && "rotate-180")} />
       </button>
       {open ? (
-        <div className="mt-3 ml-1 flex flex-col gap-2 border-l border-gold/40 pl-4">
+        <div className="mt-3 ml-1 flex flex-col gap-2 pl-4">
           {recruit.items.map((item) => (
             <RecruitItem key={item.id} item={item} className={itemClass} onClick={onNavigate} />
           ))}

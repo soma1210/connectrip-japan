@@ -181,13 +181,13 @@ uniform float u_cloudShift;
 uniform float u_camDist;
 const float PI = 3.14159265359;
 const float RADIUS = 0.925;
-const float ATMO = 0.064;
+const float ATMO = 0.074;
 float luma(vec3 c) { return dot(c, vec3(0.299, 0.587, 0.114)); }
 // Atmosphere past the limb at height h (0 = the Earth's edge, 1 = its outer end): colour and opacity.
 vec4 halo(vec2 dir, float h, vec3 sun, float sinH, float cosH) {
   float sunL = dot(vec3(dir * cosH, sinH), sun);
   float lit = smoothstep(-0.22, 0.55, sunL);
-  float glow = (0.58 * exp(-h * h * 26.0) + 0.30 * exp(-h * 4.6)) * (0.035 + 0.965 * lit) * (1.0 - smoothstep(0.7, 1.0, h));
+  float glow = (0.95 * exp(-h * h * 22.0) + 0.52 * exp(-h * 3.6)) * (0.035 + 0.965 * lit) * (1.0 - smoothstep(0.7, 1.0, h));
   // Sunlight grazing the air near the terminator turns warm.
   vec3 tint = mix(vec3(0.93, 0.56, 0.36), vec3(0.33, 0.62, 0.98), smoothstep(-0.02, 0.34, sunL));
   return vec4(tint, glow);
@@ -262,7 +262,7 @@ void main() {
   spec += pow(nh, 46.0) * 0.02 * (1.0 - isOcean) * dayFactor;
 
   float cityMask = pow(max(0.0, 1.0 - dayFactor * 0.80), 1.12) * (1.0 - cAlpha * 0.6);
-  vec3 col = dayCol * diffuse * dayFactor + nightCol * vec3(1.12, 0.94, 0.70) * cityMask + vec3(0.90, 0.94, 0.99) * spec;
+  vec3 col = dayCol * diffuse * dayFactor + nightCol * vec3(1.45, 1.08, 0.66) * cityMask + vec3(0.90, 0.94, 0.99) * spec;
   // A thin blue veil of air over the day side.
   col = mix(col, vec3(0.32, 0.55, 0.90), 0.045 * dayFactor);
   float twilight = exp(-pow((sunDot - 0.01) / 0.16, 2.0));
@@ -278,8 +278,8 @@ void main() {
   // Air seen edge-on: blue toward the limb, a fine bright rim on the sunlit edge.
   float fresnel = pow(1.0 - viewCos, 3.4);
   float sunAtmo = clamp((sunDot + 0.28) / 1.15, 0.04, 1.0);
-  col += vec3(0.267, 0.588, 0.941) * (fresnel * sunAtmo * 0.66);
-  col += vec3(0.70, 0.86, 1.0) * (pow(1.0 - viewCos, 10.0) * sunAtmo * 0.30);
+  col += vec3(0.267, 0.588, 0.941) * (fresnel * sunAtmo * 0.95);
+  col += vec3(0.70, 0.86, 1.0) * (pow(1.0 - viewCos, 10.0) * sunAtmo * 0.55);
 
   // Gentle film contrast.
   col = clamp(col, 0.0, 1.0);
@@ -308,15 +308,15 @@ function camera(p: number, time: number, still: boolean, mobile: boolean) {
   const approach = approachOf(p);
   // The light reaches East Asia by the time Osaka lights up, then keeps turning slowly.
   const sunTurn = Math.min(1, 0.25 + approach * 0.9);
-  const driftLon = still ? 0 : Math.sin(time * 0.14) * 0.85;
+  const driftLon = still ? 0 : Math.sin(time * 0.11) * 1.6;
   const driftLat = still ? 0 : Math.cos(time * 0.11) * 0.25;
   return {
     // Ends with Japan left of centre (seen off-centre, great circles read as arcs, not spokes). Phones crop the sides, so Japan ends nearer the middle.
     lon: lerp(118, mobile ? 144 : 150, approach) + driftLon,
     lat: lerp(15, 35, approach) + driftLat,
     dist: camDist(p),
-    // The sun swings toward the camera on the way in, so Japan and East Asia end in daylight, the terminator still in view.
-    sun: [lerp(0.7, 0.34, sunTurn), lerp(0.42, 0.36, sunTurn), lerp(0.14, 0.76, sunTurn)] as const,
+    // Arrival: a thin sunlit crescent on the west limb. The sun swings toward the camera from the front-left, so Japan and East Asia end in daylight and the terminator runs down the eastern edge (a lit, rounded Earth).
+    sun: [lerp(-0.92, -0.42, sunTurn), lerp(0.36, 0.38, sunTurn), lerp(-0.2, 0.82, sunTurn)] as const,
     cloudShift: still ? 0 : time * 0.00045 + p * 0.008,
   };
 }
@@ -358,8 +358,8 @@ function dot(ctx: CanvasRenderingContext2D, x: number, y: number, radius: number
   ctx.fill();
 }
 
-const WHITE = "rgb(248, 250, 255)";
-const HALO = "rgb(186, 216, 255)";
+const WHITE = "rgb(255, 247, 230)";
+const HALO = "rgb(232, 190, 116)";
 
 /**
  * White connections from Osaka. `size` = arcs canvas size in px, `radius` =
@@ -381,6 +381,8 @@ function drawArcs(
   quiet: QuietZone | undefined,
 ) {
   ctx.clearRect(0, 0, size, size);
+  // Lines add up like light where they cross.
+  ctx.globalCompositeOperation = "lighter";
   if (!finished && p < HUB_START) return;
   const cx = size * 0.5;
   const cy = size * 0.5;
@@ -485,9 +487,11 @@ function drawArcs(
 
     // Soft blue-white glow under, fine white core over.
     ctx.strokeStyle = HALO;
-    ctx.lineWidth = 3.4 * unit;
-    strokeArc(ctx, last, 0.15);
-    ctx.strokeStyle = r % 3 === 1 ? "rgb(226, 238, 250)" : WHITE;
+    ctx.lineWidth = 6 * unit;
+    strokeArc(ctx, last, 0.12);
+    ctx.lineWidth = 2.6 * unit;
+    strokeArc(ctx, last, 0.22);
+    ctx.strokeStyle = r % 3 === 1 ? "rgb(250, 232, 196)" : WHITE;
     ctx.lineWidth = Math.max(0.8, 1.05 * unit);
     strokeArc(ctx, last, 0.92);
 
@@ -535,6 +539,7 @@ function drawArcs(
     dot(ctx, hubX, hubY, Math.max(1.6, 2.4 * unit), 0.96 * hub, "rgb(255, 255, 255)");
   }
   ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = "source-over";
 }
 
 export function createGlobeRenderer({ canvas, arcCanvas, textures, mobile, onReady, onFail }: Options): GlobeRenderer | null {

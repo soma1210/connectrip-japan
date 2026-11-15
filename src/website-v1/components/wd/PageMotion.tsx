@@ -9,8 +9,7 @@ import { gsap, ScrollTrigger } from "./gsap";
  * the markup that is already there (no content is added, removed or reworded):
  *
  * - Page titles (h1): letters drop in with a blur, from the centre out.
- * - Section headings (h2): words rise out of their own masks, staggered; a gold
- *   hand-drawn line is traced under section headings (`data-wd-scribble`).
+ * - Section headings (h2): words rise out of their own masks, staggered.
  * - Kinetic titles (`data-wd-letters`): letters flip up in 3D with the scroll.
  * - Figures (prices etc.) count up; key / value rows are drawn in from the left;
  *   rounded cards lean towards the pointer.
@@ -20,7 +19,7 @@ import { gsap, ScrollTrigger } from "./gsap";
  * - Footer: the CONNECTRIP JAPAN wordmark rises letter by letter.
  *
  * Home runs its own scene choreography (components/motion, Hero mosaic), so
- * there only the scribbles and the footer are driven from here. Anything inside
+ * there only the kinetic titles, figures and the footer are driven from here. Anything inside
  * `[data-wd-skip]`, the header, forms, maps and the Explore / Globe scenes is
  * left alone. Reduced motion: nothing moves.
  */
@@ -88,32 +87,6 @@ export function PageMotion() {
     const undo: (() => void)[] = [];
     const io: IntersectionObserver[] = [];
     const frames: number[] = [];
-
-    // ---- Scribbles: drawn when the heading comes into view (CSS draws it; wd.css). ----
-    const scribbles = [...main.querySelectorAll<HTMLElement>("[data-wd-scribble]")];
-    if (!isHome) {
-      for (const h of main.querySelectorAll<HTMLElement>("h1, h2")) {
-        if (h.closest(SKIP) || h.hasAttribute("data-wd-scribble") || h.textContent!.trim().length > 60) continue;
-        h.setAttribute("data-wd-scribble", "auto");
-        undo.push(() => h.removeAttribute("data-wd-scribble"));
-        scribbles.push(h);
-      }
-    }
-    if (reduced) scribbles.forEach((s) => s.setAttribute("data-wd-drawn", ""));
-    else {
-      const seen = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (!e.isIntersecting) continue;
-            (e.target as HTMLElement).setAttribute("data-wd-drawn", "");
-            seen.unobserve(e.target);
-          }
-        },
-        { rootMargin: "0px 0px -18% 0px" },
-      );
-      scribbles.forEach((s) => seen.observe(s));
-      io.push(seen);
-    }
 
     const ctx = gsap.context(() => {
       if (reduced) return;

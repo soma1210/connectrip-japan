@@ -113,3 +113,48 @@
     transform: none;
   }
 }
+
+/* ---- Round 3 (2026-11-15): Select strips, auto-scrolling updates ---- */
+
+/* Timer line along the bottom of the open Select strip (auto-advance). */
+.timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--color-gold), var(--color-red));
+  transform-origin: left;
+  animation: stripTimer var(--t, 4800ms) linear both;
+}
+@keyframes stripTimer {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Endless right-to-left rail: the track holds two copies and slides by one. */
+.loop {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.loopTrack {
+  display: flex;
+  width: max-content;
+  animation: loopScroll var(--loop-duration, 48s) linear infinite;
+  will-change: transform;
+}
+.loop:hover .loopTrack,
+.loop:focus-within .loopTrack {
+  animation-play-state: paused;
+}
+@keyframes loopScroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loop { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .loopTrack { animation: none; }
+  .loopTrack > ul[aria-hidden] { display: none; }
+  .timer { display: none; }
+}

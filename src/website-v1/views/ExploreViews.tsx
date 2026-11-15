@@ -707,7 +707,7 @@ function MobileContents({ items }: { items: OutlineItem[] }) {
 function SideContents({ items }: { items: OutlineItem[] }) {
   return (
     <aside className="hidden lg:block">
-      <nav aria-label="In this guide" className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto border-l border-gold/25 pl-5">
+      <nav aria-label="In this guide" className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto pl-5">
         <p className="mb-3 font-heading-en text-xs tracking-[0.2em] text-gold uppercase">In this guide</p>
         <OutlineList items={items} />
       </nav>
@@ -927,7 +927,7 @@ function SpotSection({ text, index }: { text: SelectSpotText; index: number }) {
       </div>
       {text.checkedAt ? <p className="mt-2 text-xs text-cream/45">Last checked against official information: {formatIsoDate(text.checkedAt)}</p> : null}
       {V1_PREVIEW ? (
-        <p className="mt-3 border-l-2 border-dashed border-gold/40 pl-3 text-xs text-gold/75">
+        <p className="mt-3 text-xs text-gold/75">
           {text.checkedAt ? "Checked" : "Not checked yet"} · {text.checkNote}
         </p>
       ) : null}

@@ -3,8 +3,9 @@ import { exploreHref, exploreSelectHref, exploreUpdatesHref } from "../../routes
 import { displayPhoto, spotById } from "../spots";
 import { AREA_INFO } from "./areas";
 import { formatIsoDate } from "../../components/format";
+import { SELECT_SAMPLES, UPDATE_SAMPLES } from "./homeSamples";
 import type { JournalPage } from "../journal";
-import { EXPLORE_COPY, STATUS_LABEL, UPDATE_CATEGORIES, areaName, articleHref, articleSpotIds, getLatestArticles, getSelectArticles, getUpdateLists, type EditorialStatus } from "./index";
+import { EXPLORE_COPY, STATUS_LABEL, areaName, articleHref, articleSpotIds, getLatestArticles, getSelectArticles, getUpdateLists, type EditorialStatus } from "./index";
 
 /** Articles shown on Home (the rest are one click away on the Explore hub). */
 const HOME_ITEMS = 4;
@@ -63,8 +64,11 @@ export type ExploreSlideCard = {
   title: string;
   category: string;
   area: string;
+  summary?: string;
   image?: { src: string; alt: string; unverified: boolean };
   flags: string[];
+  /** Placeholder article (homeSamples.ts), preview only. */
+  sample?: boolean;
 };
 
 export type ExploreNewsCard = {
@@ -75,12 +79,11 @@ export type ExploreNewsCard = {
   category: string;
   area: string;
   date?: string;
+  image?: { src: string; alt: string };
   flags: string[];
   sample?: boolean;
 };
 
-/** Preview-only layout samples while there is no update: placeholders, not news. */
-const SAMPLE_COUNT = 5;
 
 export function getExploreHomeSlides() {
   const flags = (status: EditorialStatus) => (V1_PREVIEW && status !== "published" ? [STATUS_LABEL[status].toUpperCase()] : []);
@@ -93,34 +96,44 @@ export function getExploreHomeSlides() {
       title: a.title.replace(/^Connectrip Japan Select:\s*/, ""),
       category: a.topic,
       area: areaName(a.area),
+      summary: a.summary,
       image: photo ? { src: photo.src, alt: photo.alt, unverified: photo.unverified } : undefined,
       flags: flags(a.status),
     };
   });
+  // Preview: placeholder guides after the real ones (content/explore/homeSamples.ts).
+  if (V1_PREVIEW) {
+    for (const x of SELECT_SAMPLES) {
+      select.push({
+        id: x.id,
+        href: exploreSelectHref(),
+        title: x.title,
+        category: x.topic,
+        area: x.area,
+        summary: x.summary,
+        image: { ...x.image, unverified: false },
+        flags: ["SAMPLE"],
+        sample: true,
+      });
+    }
+  }
   const map = AREA_INFO.osaka.mapHref;
   const current = getUpdateLists().current;
-  const news: ExploreNewsCard[] =
-    current.length > 0
-      ? current.map((a) => ({
-          id: a.slug,
-          href: articleHref(a),
-          title: a.title,
-          category: a.category,
-          area: areaName(a.area),
-          date: a.publishedAt ? formatIsoDate(a.publishedAt) : undefined,
-          flags: flags(a.status),
-        }))
-      : V1_PREVIEW
-        ? Array.from({ length: SAMPLE_COUNT }, (_, i) => ({
-            id: `sample-${i + 1}`,
-            title: "Travel update headline (layout sample)",
-            category: UPDATE_CATEGORIES[i % UPDATE_CATEGORIES.length],
-            area: "Kansai",
-            date: "Publish date",
-            flags: ["LAYOUT SAMPLE"],
-            sample: true,
-          }))
-        : [];
+  const news: ExploreNewsCard[] = current.map((a) => ({
+    id: a.slug,
+    href: articleHref(a),
+    title: a.title,
+    category: a.category,
+    area: areaName(a.area),
+    date: a.publishedAt ? formatIsoDate(a.publishedAt) : undefined,
+    flags: flags(a.status),
+  }));
+  // Preview: placeholder updates after the real ones (content/explore/homeSamples.ts).
+  if (V1_PREVIEW) {
+    for (const x of UPDATE_SAMPLES) {
+      news.push({ id: x.id, title: x.title, category: x.category, area: x.area, date: formatIsoDate(x.date), image: x.image, flags: ["SAMPLE"], sample: true });
+    }
+  }
   return {
     select: {
       eyebrow: EXPLORE_COPY.title,

@@ -45,9 +45,10 @@ export const HOME_SECTION_BASELINE: HomeSectionKey[] = [
   "hero",
   "featuredExperiences",
   "privateGuide",
-  "whyConnectrip",
   "howItWorks",
   "travelGuide",
+  // OUR VALUE right before SNS (Human instruction 2026-11-15).
+  "whyConnectrip",
   "sns",
   "finalCta",
 ];

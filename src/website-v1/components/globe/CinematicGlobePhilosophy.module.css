@@ -57,23 +57,36 @@
   height: 100svh;
 }
 
-/* Sparse, still starfield (v1.2). */
+/* Deep starfield (2026-11-15): two layers of stars drift at different speeds and twinkle; a faint nebula of navy and gold behind them. */
 .stars {
   position: absolute;
-  inset: 0;
+  inset: -10%;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.4;
-  background-image:
-    radial-gradient(1px 1px at 11% 16%, rgba(247, 245, 240, 0.62), transparent),
-    radial-gradient(1px 1px at 26% 74%, rgba(214, 195, 160, 0.44), transparent),
-    radial-gradient(1.2px 1.2px at 41% 12%, rgba(247, 245, 240, 0.5), transparent),
-    radial-gradient(1px 1px at 67% 22%, rgba(185, 216, 255, 0.56), transparent),
-    radial-gradient(1.3px 1.3px at 84% 34%, rgba(247, 245, 240, 0.58), transparent),
-    radial-gradient(1px 1px at 91% 71%, rgba(214, 195, 160, 0.46), transparent),
-    radial-gradient(1px 1px at 16% 48%, rgba(247, 245, 240, 0.36), transparent),
-    radial-gradient(1px 1px at 76% 84%, rgba(247, 245, 240, 0.42), transparent),
-    radial-gradient(1px 1px at 56% 14%, rgba(205, 226, 255, 0.42), transparent);
+  background:
+    url("/images/v1/globe/stars-near.webp") 0 0 / 1200px auto repeat,
+    radial-gradient(ellipse 60% 40% at 18% 22%, rgba(201, 164, 92, 0.1), transparent 70%),
+    radial-gradient(ellipse 50% 45% at 84% 30%, rgba(90, 140, 230, 0.12), transparent 70%);
+  opacity: 0.6;
+  animation: starsDriftNear 140s linear infinite, starsTwinkle 6s ease-in-out infinite alternate;
+}
+.stars::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/images/v1/globe/stars-far.webp") 0 0 / 1600px auto repeat;
+  opacity: 0.55;
+  animation: starsDriftFar 260s linear infinite;
+}
+@keyframes starsDriftNear {
+  to { background-position: -1200px 300px, 0 0, 0 0; }
+}
+@keyframes starsDriftFar {
+  to { background-position: -1600px 400px; }
+}
+@keyframes starsTwinkle {
+  from { opacity: 0.45; }
+  to { opacity: 0.7; }
 }
 
 /*
@@ -92,6 +105,36 @@
   transform: translateY(19%);
 }
 
+.globeBox::before,
+.globeBox::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+}
+/* Backlight: blue air glow around the whole Earth, brighter on the sunlit side. */
+.globeBox::before {
+  inset: -14%;
+  z-index: 0;
+  background: radial-gradient(circle at 44% 44%, rgba(110, 165, 255, 0.34) 30%, rgba(70, 120, 230, 0.14) 46%, transparent 64%);
+  filter: blur(8px);
+  animation: globeBreathe 9s ease-in-out infinite alternate;
+}
+/* Sun flare on the lit limb. */
+.globeBox::after {
+  width: 46%;
+  height: 46%;
+  left: -6%;
+  top: 2%;
+  z-index: 4;
+  background: radial-gradient(circle, rgba(255, 236, 200, 0.26), rgba(232, 190, 116, 0.08) 38%, transparent 66%);
+  mix-blend-mode: screen;
+  animation: globeBreathe 7s ease-in-out infinite alternate-reverse;
+}
+@keyframes globeBreathe {
+  from { opacity: 0.75; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1.03); }
+}
 .globeBox {
   position: relative;
   width: min(88vw, 112vh, 1180px);
@@ -347,4 +390,8 @@
   .storyLink svg {
     transition: none;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stars, .stars::before, .globeBox::before, .globeBox::after { animation: none; }
 }

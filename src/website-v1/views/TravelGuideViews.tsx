@@ -80,7 +80,7 @@ function Block({ block }: { block: ArticleBlock }) {
         </figure>
       );
     case "callout":
-      return <p className="border-l-2 border-gold bg-navy-dark/60 px-5 py-4 text-sm text-cream/85">{block.text}</p>;
+      return <p className="bg-navy-dark/60 px-5 py-4 text-sm text-cream/85">{block.text}</p>;
     case "experience":
       return <ExperienceCard item={block.experience} />;
     case "privateGuide":

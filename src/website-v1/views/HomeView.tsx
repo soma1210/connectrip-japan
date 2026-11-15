@@ -12,7 +12,7 @@ import { Section, SectionTitle, TbdBlock } from "../components/Blocks";
 import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { TbdImage, TbdText, textOr } from "../components/Tbd";
-import { heroFocus, heroMeta } from "../assets/heroImages";
+import { HERO_MOSAIC, HERO_MOSAIC_CENTER, heroFocus, heroMeta, type MosaicPhoto } from "../assets/heroImages";
 import { V1_PREVIEW } from "../config";
 import { HomeOpeningExperience } from "../components/opening/HomeOpeningExperience";
 import openingStyles from "../components/opening/HomeOpeningExperience.module.css";
@@ -25,8 +25,10 @@ import { HeroMosaicMotion } from "../components/wd/HeroMosaicMotion";
 import { MistRise } from "../components/wd/MistRise";
 import { FixedBannerMotion } from "../components/wd/FixedBannerMotion";
 import { ShowreelMotion } from "../components/wd/ShowreelMotion";
+import { HowItWorksScene } from "../components/wd/HowItWorksScene";
 import { PrivateGuideMotion } from "../components/wd/PrivateGuideMotion";
-import { LocationMarquee } from "../components/wd/LocationMarquee";
+import { PrefectureScene } from "../components/wd/PrefectureScene";
+import { KANSAI_PREFECTURES } from "../content/prefectures";
 import { KineticCta } from "../components/wd/KineticCta";
 import { ImageTrail } from "../components/wd/ImageTrail";
 import { TRAIL_EXTRA_IMAGES } from "../assets/trailImages";
@@ -50,9 +52,9 @@ const BASELINE_ORDER: HomeSectionKey[] = [
   "hero",
   "featuredExperiences",
   "privateGuide",
-  "whyConnectrip",
   "howItWorks",
   "travelGuide",
+  "whyConnectrip",
   "sns",
   "finalCta",
 ];
@@ -65,25 +67,16 @@ const BASELINE_ORDER: HomeSectionKey[] = [
  * model but is not shown here. The approved Opening overlay plays on top on
  * the first visit; the camera, text and rotation start when it ends.
  */
-/**
- * Mosaic cells around the featured Hero photo (Human instruction 2026-11-15:
- * the White Desert "zoom out into the mosaic" Hero, existing photos only).
- * Indices into the Hero photo list: top row, the two portraits beside the
- * featured photo, bottom row. Chosen so neighbours alternate night / day and
- * regions, and the slider's first scenes are not repeated next to it.
- */
-const MOSAIC_PICKS = [3, 10, 5, 11, 8, 6] as const;
 const HEADLINE_CLASS =
   "max-w-[9.4em] font-heading-jp text-[clamp(2.25rem,9.6vw,3rem)] leading-[1.08] text-cream drop-shadow-[0_2px_28px_rgba(5,11,24,0.6)] max-md:mx-auto md:text-[clamp(2.9rem,4.4vw,4.9rem)]";
 
-function MosaicCell({ photo, className = "" }: { photo?: { src: string; alt: string }; className?: string }) {
+/** One photo of the 3 × 3 mosaic around the slider (assets/heroImages.ts HERO_MOSAIC). */
+function MosaicCell({ photo }: { photo: MosaicPhoto }) {
   return (
-    <div className={`${mosaic.item} ${className}`} aria-hidden>
-      {photo ? (
-        <div data-mosaic-neighbour className={mosaic.neighbour}>
-          <Image src={photo.src} alt="" fill sizes="(min-width: 768px) 50vw, 1px" className="object-cover" style={{ objectPosition: heroFocus(photo.src) }} />
-        </div>
-      ) : null}
+    <div className={mosaic.cell} aria-hidden>
+      <div data-mosaic-neighbour className={mosaic.neighbour}>
+        <Image src={photo.src} alt="" fill loading="eager" fetchPriority="low" sizes="80vw" className="object-cover" style={{ objectPosition: photo.focus }} />
+      </div>
     </div>
   );
 }
@@ -95,7 +88,6 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
     const meta = heroMeta(p.src);
     return { src: p.src, alt: p.alt, focus: meta?.focus, focusMobile: meta?.focusMobile, location: meta?.location ?? "" };
   });
-  const around = MOSAIC_PICKS.map((i) => (photos.length > 1 ? photos[1 + ((i - 1) % (photos.length - 1))] : undefined));
   const line = (i: number) => ({ className: cinematic.line, style: { "--i": i } as CSSProperties });
   const words = hero.headline.status === "TBD" ? [] : hero.headline.value.split(" ");
   return (
@@ -103,34 +95,32 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
       {/* Home Opening Experience (W1-D21): overlay on top; the Hero below is always in the HTML. */}
       {first ? <HomeOpeningExperience image={{ src: first.src, focus: heroFocus(first.src) }} /> : null}
 
-      {/* The stage: one screen held while the camera pulls back from the featured photo into the mosaic. */}
-      <div className={mosaic.sticky}>
-        <div data-mosaic-layout className={mosaic.layout}>
-          <div className={`${mosaic.row} ${mosaic.mHide}`}>
-            <MosaicCell photo={around[0]} />
-            <MosaicCell photo={around[1]} />
-          </div>
-          <div className={mosaic.row}>
-            <MosaicCell photo={around[2]} className={mosaic.mHide} />
-            <div data-mosaic-featured className={`${mosaic.item} ${mosaic.featured}`}>
-              {slides.length > 0 ? (
-                <CinematicHeroSlider slides={slides} heroId="home-hero" />
-              ) : (
-                <TbdImage value={{ status: "TBD", note: "Hero photos TBD" }} slot="Hero photos" />
-              )}
-              {/* Only as much shade as the text needs; it lifts with the text as the camera pulls back. */}
-              <div data-mosaic-shade className="pointer-events-none absolute inset-0">
-                <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/60 via-navy-dark/15 via-45% to-transparent max-md:from-navy-dark/35 max-md:via-navy-dark/25 max-md:to-navy-dark/15" />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/90 via-navy-dark/35 via-40% to-navy-dark/15 max-md:from-navy-dark/90 max-md:via-navy-dark/45 max-md:via-45%" />
-              </div>
-              <div className={`pointer-events-none absolute inset-0 ${cinematic.veil}`} />
+      {/* The stage: one screen held while the camera pulls back from the slider into the 3 × 3 mosaic. */}
+      <div data-mosaic-stage className={mosaic.sticky}>
+        <div data-mosaic-grid className={mosaic.grid}>
+          {HERO_MOSAIC.slice(0, 4).map((p) => (
+            <MosaicCell key={p.src} photo={p} />
+          ))}
+          {/* Centre: the Cinematic Hero slider; Osaka Castle settles in as the camera pulls back. */}
+          <div className={mosaic.cell}>
+            {slides.length > 0 ? (
+              <CinematicHeroSlider slides={slides} heroId="home-hero" />
+            ) : (
+              <TbdImage value={{ status: "TBD", note: "Hero photos TBD" }} slot="Hero photos" />
+            )}
+            <div data-mosaic-castle className={mosaic.castle} aria-hidden>
+              <Image src={HERO_MOSAIC_CENTER.src} alt="" fill sizes="100vw" className="object-cover" style={{ objectPosition: HERO_MOSAIC_CENTER.focus }} />
             </div>
-            <MosaicCell photo={around[3]} className={mosaic.mHide} />
+            {/* Only as much shade as the text needs; it lifts with the text as the camera pulls back. */}
+            <div data-mosaic-shade className="pointer-events-none absolute inset-0 z-[3]">
+              <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/60 via-navy-dark/15 via-45% to-transparent max-md:from-navy-dark/35 max-md:via-navy-dark/25 max-md:to-navy-dark/15" />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/90 via-navy-dark/35 via-40% to-navy-dark/15 max-md:from-navy-dark/90 max-md:via-navy-dark/45 max-md:via-45%" />
+            </div>
+            <div className={`pointer-events-none absolute inset-0 z-[3] ${cinematic.veil}`} />
           </div>
-          <div className={`${mosaic.row} ${mosaic.mHide}`}>
-            <MosaicCell photo={around[4]} />
-            <MosaicCell photo={around[5]} />
-          </div>
+          {HERO_MOSAIC.slice(4, 8).map((p) => (
+            <MosaicCell key={p.src} photo={p} />
+          ))}
         </div>
       </div>
 
@@ -208,7 +198,7 @@ function SceneTitle({
   if (heading.status === "TBD") return <SectionTitle heading={heading} supporting={supporting} slot={slot} headingSizeClassName={headingSizeClassName} />;
   return (
     <div className="mb-8 md:mb-12">
-      <div data-wd-scribble className="mt-6 [--scribble-left:1.5rem] md:mt-14 md:[--scribble-left:2.5rem]">
+      <div className="mt-6 md:mt-14">
         <h2 data-wd-letters aria-label={heading.value} className={`ml-6 font-heading-en font-bold tracking-[0.08em] text-gold [perspective:600px] md:ml-10 ${headingSizeClassName}`}>
           <Letters text={heading.value} />
         </h2>
@@ -279,7 +269,7 @@ function FeaturedExperiences({ section }: { section: HomeContent["featuredExperi
               </div>
             ))}
           </dl>
-          <div {...{ [item]: "" }} className="flex flex-col gap-3 pt-2 sm:flex-row">
+          <div {...{ [item]: "" }} className="flex flex-col gap-3 pt-2 sm:flex-row md:flex-col xl:flex-row">
             <CtaLink cta={tour.detailCta} pair />
             <CtaLink cta={tour.bookingCta} pair />
           </div>
@@ -441,6 +431,8 @@ function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
 }
 
 function HowItWorks({ section }: { section: HomeContent["howItWorks"] }) {
+  // Pinned step-by-step scene (components/wd/HowItWorksScene); the plain two-box layout stays as the TBD fallback.
+  if (section.heading.status !== "TBD") return <HowItWorksScene id="how-it-works" heading={section.heading.value} flows={section.flows} />;
   return (
     <Section id="how-it-works">
       <SceneTitle heading={section.heading} slot="How It Works" />
@@ -522,7 +514,6 @@ function FinalCta({ section, trail }: { section: HomeContent["finalCta"]; trail:
 export function HomeView({ vm }: { vm: HomeViewModel }) {
   const c = vm.content;
   const order = c.sectionOrder.status === "TBD" ? BASELINE_ORDER : c.sectionOrder.value;
-  const locations = [...new Set((c.hero.images.status === "TBD" ? [] : c.hero.images.value).map((p) => heroMeta(p.src)?.location).filter((l): l is NonNullable<typeof l> => !!l))];
 
   const sections: Record<HomeSectionKey, ReactNode | null> = {
     hero: <Hero hero={c.hero} />,
@@ -551,8 +542,8 @@ export function HomeView({ vm }: { vm: HomeViewModel }) {
             {sections[key]}
             {/* Scene change: navy mist stands up over the end of the mosaic as the next scene arrives. */}
             {key === "hero" ? <MistRise /> : null}
-            {/* A band of the Hero's place names between the tour and the private day. */}
-            {key === "featuredExperiences" ? <LocationMarquee words={locations} /> : null}
+            {/* The prefectures of Kansai, between the tour and the private day (content/prefectures.ts). */}
+            {key === "featuredExperiences" ? <PrefectureScene id="kansai-prefectures" prefectures={KANSAI_PREFECTURES} /> : null}
           </div>
         ) : null,
       )}

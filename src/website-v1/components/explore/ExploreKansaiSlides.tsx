@@ -9,7 +9,9 @@ import {
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
+import { exploreUpdatesHref } from "../../routes";
+import { gsap, MQ_MOTION } from "../wd/gsap";
 import { cn } from "@/lib/cn";
 import type {
   ExploreNewsCard,
@@ -143,46 +145,26 @@ export function ExploreKansaiSlides({
             description={select.description}
             titleId={`${id}-select`}
           />
-          <ul
-            className={cn(
-              s.rail,
-              "-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-6 md:mx-0 md:mt-9 md:grid md:grid-cols-3 md:items-start md:gap-7 md:overflow-visible md:px-0 md:pb-0",
-            )}
-          >
+          {/* Large screens (≥1024 px): strip accordion (the hovered / current guide opens wide, the rest stay narrow strips). */}
+          <div data-anim="fade" style={{ "--d": "300ms" } as CSSProperties} className="mt-10 hidden lg:block">
+            <SelectStrips cards={select.cards} />
+          </div>
+          {/* Phones and tablets: swipe cards. */}
+          <ul className={cn(s.rail, "-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-6 md:-mx-10 md:scroll-px-10 md:px-10 lg:hidden")}>
             {select.cards.map((c, i) => (
-              <li
-                key={c.id}
-                data-anim="rise"
-                style={{ "--i": i, "--d": "320ms" } as CSSProperties}
-                className={cn(
-                  "w-[78%] shrink-0 snap-start sm:w-[46%] md:w-auto",
-                  i === 1 && s.offset1,
-                  i === 2 && s.offset2,
-                )}
-              >
+              <li key={c.id} data-anim="rise" style={{ "--i": Math.min(i, 3), "--d": "320ms" } as CSSProperties} className="w-[78%] shrink-0 snap-start sm:w-[46%] md:w-[38%]">
                 <SelectCard card={c} />
               </li>
             ))}
-            {select.map ? (
-              <li
-                data-anim="rise"
-                style={
-                  {
-                    "--i": select.cards.length,
-                    "--d": "320ms",
-                  } as CSSProperties
-                }
-                className={cn(
-                  "w-[78%] shrink-0 snap-start sm:w-[46%] md:w-auto",
-                  select.cards.length === 1 && s.offset1,
-                  select.cards.length === 2 && s.offset2,
-                )}
-              >
-                <MapFloatCard {...select.map} />
-              </li>
-            ) : null}
           </ul>
-          <MoreLink {...select.more} />
+          <div className="mt-8 flex flex-col gap-6 md:mt-10 md:flex-row md:items-center md:justify-between">
+            <MoreLink {...select.more} />
+            {select.map ? (
+              <div data-anim="rise" className="md:w-[22rem]">
+                <MapFloatCard {...select.map} />
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -253,6 +235,131 @@ function Flags({ flags }: { flags: string[] }) {
       {f}
     </span>
   ));
+}
+
+/**
+ * Connectrip Japan Select as a strip accordion (Human instruction 2026-11-15,
+ * from the screen recording of the studio site's ALL WORKS): every guide is a
+ * tall strip with a soft, darkened photo and its number, topic and area set
+ * vertically; the current one opens wide, the photo sharpens and the title,
+ * summary and link rise in. Hover or keyboard focus opens a strip; when the
+ * pointer is elsewhere the strips open one after another on their own (with a
+ * thin timer line). The strips grow up from the floor as the section arrives.
+ * Any number of guides: the open strip keeps ~45% of the row; past what fits,
+ * the row scrolls sideways.
+ */
+function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
+  const [active, setActive] = useState(0);
+  const root = useRef<HTMLDivElement>(null);
+  const hover = useRef(false);
+  const n = cards.length;
+  const grow = Math.max(5, 0.82 * (n - 1));
+  const AUTO_MS = 4800;
+
+  // Auto-advance while on screen and not being pointed at.
+  useEffect(() => {
+    const el = root.current;
+    if (!el || n < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let visible = false;
+    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), { threshold: 0.4 });
+    io.observe(el);
+    const id = window.setInterval(() => {
+      if (visible && !hover.current && !el.contains(document.activeElement)) setActive((a) => (a + 1) % n);
+    }, AUTO_MS);
+    return () => {
+      io.disconnect();
+      window.clearInterval(id);
+    };
+  }, [n]);
+
+  // Entrance: the strips grow up from the floor, one after another.
+  useEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    const mm = gsap.matchMedia();
+    mm.add(MQ_MOTION, () => {
+      gsap.fromTo(
+        el.querySelectorAll("[data-strip]"),
+        { clipPath: "inset(100% 0% 0% 0%)", y: 60 },
+        { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 1.3, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: el, start: "top 85%" } },
+      );
+    });
+    return () => mm.revert();
+  }, []);
+
+  return (
+    <div
+      ref={root}
+      onMouseEnter={() => (hover.current = true)}
+      onMouseLeave={() => (hover.current = false)}
+      className={cn(s.rail, "flex h-[min(68svh,640px)] gap-1.5 overflow-x-auto")}
+    >
+      {cards.map((c, i) => {
+        const on = i === active;
+        return (
+          <Link
+            key={c.id}
+            href={c.href}
+            data-strip
+            onMouseEnter={() => setActive(i)}
+            onFocus={() => setActive(i)}
+            aria-label={`${c.title} (${c.category} · ${c.area})`}
+            className="group relative min-w-[54px] overflow-hidden rounded-[4px] bg-navy transition-[flex-grow] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+            style={{ flexGrow: on ? grow : 1, flexBasis: 0 }}
+          >
+            {c.image ? (
+              <Image
+                src={c.image.src}
+                alt=""
+                fill
+                sizes="(min-width: 768px) 50vw, 1px"
+                className={cn(
+                  "object-cover transition-[filter,transform] duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+                  on ? "scale-100" : "scale-125 blur-[5px] brightness-[0.5] saturate-[0.7]",
+                )}
+              />
+            ) : (
+              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(201,164,92,0.18),rgba(13,31,54,0.2))]" />
+            )}
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,11,24,0.55)_0%,transparent_28%,transparent_52%,rgba(5,11,24,0.9)_100%)]" />
+
+            {/* Closed strip: number, topic and area, set vertically. */}
+            <span
+              className={cn(
+                "absolute top-5 left-1/2 -translate-x-1/2 font-heading-en text-[11px] tracking-[0.24em] whitespace-nowrap text-cream/85 uppercase transition-opacity duration-500 [writing-mode:vertical-rl]",
+                on ? "opacity-0" : "opacity-100",
+              )}
+              aria-hidden
+            >
+              {String(i + 1).padStart(2, "0")} · {c.category} · {c.area}
+            </span>
+
+            {/* Open strip: the guide. */}
+            <div
+              className={cn(
+                "absolute inset-x-0 bottom-0 p-7 transition-[opacity,transform] duration-700 lg:p-9",
+                on ? "translate-y-0 opacity-100 delay-200" : "pointer-events-none translate-y-6 opacity-0",
+              )}
+            >
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-heading-en text-[11px] tracking-[0.18em] text-gold uppercase">
+                <span>
+                  {String(i + 1).padStart(2, "0")} · {c.category} · {c.area}
+                </span>
+                <Flags flags={c.flags} />
+              </p>
+              <h3 className="mt-3 max-w-[30rem] font-heading-en text-[clamp(1.6rem,2.4vw,2.4rem)] leading-[1.15] text-cream">{c.title}</h3>
+              {c.summary ? <p className="mt-3 line-clamp-2 max-w-[30rem] text-sm leading-relaxed text-cream/80">{c.summary}</p> : null}
+              <span className="mt-5 inline-flex items-center gap-2 font-heading-en text-xs tracking-[0.14em] text-gold uppercase">
+                Read the guide <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden />
+              </span>
+            </div>
+            {/* Timer line of the auto-advance. */}
+            {on ? <span key={`t${active}`} aria-hidden className={s.timer} style={{ "--t": `${AUTO_MS}ms` } as CSSProperties} /> : null}
+          </Link>
+        );
+      })}
+    </div>
+  );
 }
 
 function SelectCard({ card }: { card: ExploreSlideCard }) {
@@ -347,6 +454,13 @@ function MapFloatCard({
   );
 }
 
+/**
+ * Kansai Travel Updates: the cards run from right to left on an endless loop
+ * (the list is drawn twice and the track slides by exactly one copy). Speed
+ * follows the number of cards, so more articles never run faster; the loop
+ * pauses while the pointer or keyboard focus is on it. Reduced motion: a
+ * plain horizontal rail that can be swiped.
+ */
 function NewsRail({
   data,
   titleId,
@@ -354,61 +468,7 @@ function NewsRail({
   data: Data["updates"];
   titleId: string;
 }) {
-  const rail = useRef<HTMLUListElement>(null);
-  const [edges, setEdges] = useState({ start: true, end: false });
-
-  useEffect(() => {
-    const el = rail.current;
-    if (!el) return;
-    const check = () =>
-      setEdges({
-        start: el.scrollLeft <= 4,
-        end: el.scrollLeft + el.clientWidth >= el.scrollWidth - 4,
-      });
-    check();
-    el.addEventListener("scroll", check, { passive: true });
-    addEventListener("resize", check);
-    return () => {
-      el.removeEventListener("scroll", check);
-      removeEventListener("resize", check);
-    };
-  }, []);
-
-  const go = (dir: 1 | -1) => {
-    const el = rail.current;
-    const card = el?.querySelector("li");
-    if (!el || !card) return;
-    const step =
-      card.getBoundingClientRect().width +
-      parseFloat(getComputedStyle(el).columnGap || "0");
-    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollBy({ left: dir * step, behavior: reduce ? "auto" : "smooth" });
-  };
-
-  const arrows =
-    data.cards.length > 1 ? (
-      <div
-        data-anim="fade"
-        style={{ "--d": "300ms" } as CSSProperties}
-        className="flex gap-3 max-md:hidden"
-      >
-        <RailButton
-          label="Previous updates"
-          disabled={edges.start}
-          onClick={() => go(-1)}
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden />
-        </RailButton>
-        <RailButton
-          label="Next updates"
-          disabled={edges.end}
-          onClick={() => go(1)}
-        >
-          <ArrowRight className="h-4 w-4" aria-hidden />
-        </RailButton>
-      </div>
-    ) : null;
-
+  const cards = data.cards;
   return (
     <>
       <SlideHeading
@@ -416,18 +476,8 @@ function NewsRail({
         title={data.title}
         description={data.description}
         titleId={titleId}
-        aside={arrows}
       />
-      {data.samples ? (
-        <p
-          data-anim="fade"
-          className="mt-6 inline-block border border-dashed border-gold/40 px-3 py-1.5 text-[11px] tracking-wide text-gold/85"
-        >
-          Preview · no travel updates are published yet. The cards below are
-          layout samples, not news.
-        </p>
-      ) : null}
-      {data.cards.length === 0 ? (
+      {cards.length === 0 ? (
         <p
           data-anim="rise"
           className={cn(
@@ -438,104 +488,59 @@ function NewsRail({
           {data.empty}
         </p>
       ) : (
-        <ul
-          ref={rail}
-          aria-label={data.title}
-          className={cn(
-            s.rail,
-            "-mx-5 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-4 md:mx-0 md:mt-10 md:gap-5 md:scroll-px-0 md:px-0",
-          )}
-        >
-          {data.cards.map((c, i) => (
-            <li
-              key={c.id}
-              data-anim="right"
-              style={{ "--i": i, "--d": "360ms" } as CSSProperties}
-              className="flex w-[82%] shrink-0 snap-start sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2.5rem)/3)]"
-            >
-              <NewsCard card={c} />
-            </li>
-          ))}
-        </ul>
+        <div data-anim="fade" style={{ "--d": "300ms" } as CSSProperties} className={cn(s.loop, "-mx-5 mt-10 md:-mx-10 md:mt-12")}>
+          <div className={s.loopTrack} style={{ "--loop-duration": `${Math.max(24, cards.length * 7)}s` } as CSSProperties}>
+            {[0, 1].map((copy) => (
+              <ul
+                key={copy}
+                aria-label={copy === 0 ? data.title : undefined}
+                aria-hidden={copy === 1 || undefined}
+                className="flex shrink-0 gap-4 pr-4 md:gap-6 md:pr-6"
+              >
+                {cards.map((c) => (
+                  <li key={`${copy}-${c.id}`} className="flex w-[78vw] shrink-0 sm:w-[340px] md:w-[360px]">
+                    <NewsCard card={c} hidden={copy === 1} />
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </div>
       )}
     </>
   );
 }
 
-function NewsCard({ card }: { card: ExploreNewsCard }) {
+function NewsCard({ card, hidden = false }: { card: ExploreNewsCard; hidden?: boolean }) {
   const body = (
     <>
-      <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-heading-en text-[11px] tracking-[0.16em] text-gold uppercase">
-        <span>
-          {card.category} · {card.area}
-        </span>
-        <Flags flags={card.flags} />
-      </p>
-      <h3
-        className={cn(
-          "mt-3 font-heading-en text-xl leading-snug md:text-[1.35rem]",
-          card.sample
-            ? "text-cream/60 italic"
-            : "text-cream transition-colors group-hover:text-gold",
-        )}
-      >
-        {card.title}
-      </h3>
-      <div className="mt-auto flex items-center justify-between pt-6">
-        <span className="text-xs tracking-[0.06em] text-cream/65">
-          {card.date ?? ""}
-        </span>
-        {card.href ? (
-          <ArrowRight
-            className="h-5 w-5 text-gold transition-transform group-hover:translate-x-1"
-            strokeWidth={1.5}
-            aria-hidden
-          />
-        ) : null}
+      {card.image ? (
+        <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl">
+          <Image src={card.image.src} alt={hidden ? "" : card.image.alt} fill sizes="(min-width: 768px) 360px, 78vw" className="object-cover transition-transform duration-[1.2s] group-hover:scale-[1.06]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/70 via-transparent to-transparent" />
+        </div>
+      ) : null}
+      <div className="flex flex-1 flex-col p-5 md:p-6">
+        <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-heading-en text-[11px] tracking-[0.16em] text-gold uppercase">
+          <span>
+            {card.category} · {card.area}
+          </span>
+          <Flags flags={card.flags} />
+        </p>
+        <h3 className="mt-3 font-heading-en text-lg leading-snug text-cream transition-colors group-hover:text-gold md:text-[1.25rem]">{card.title}</h3>
+        <div className="mt-auto flex items-center justify-between pt-5">
+          <span className="text-xs tracking-[0.06em] text-cream/65">{card.date ?? ""}</span>
+          <ArrowRight className="h-5 w-5 text-gold transition-transform group-hover:translate-x-1" strokeWidth={1.5} aria-hidden />
+        </div>
       </div>
     </>
   );
-  const cls = cn(
-    s.glass,
-    "flex min-h-[210px] w-full flex-col rounded-xl border p-6 md:min-h-[230px] md:p-7",
-  );
-  return card.href ? (
-    <Link
-      href={card.href}
-      className={cn(
-        cls,
-        s.float,
-        "group border-cream/15 hover:border-gold/60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold",
-      )}
-    >
+  const cls = cn(s.glass, "group flex w-full flex-col rounded-xl border border-cream/15 hover:border-gold/60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold");
+  // Placeholder updates have no page yet: they open the updates hub.
+  return (
+    <Link href={card.href ?? exploreUpdatesHref()} tabIndex={hidden ? -1 : undefined} className={cls}>
       {body}
     </Link>
-  ) : (
-    <div className={cn(cls, "border-dashed border-cream/25")}>{body}</div>
-  );
-}
-
-function RailButton({
-  label,
-  disabled,
-  onClick,
-  children,
-}: {
-  label: string;
-  disabled: boolean;
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      disabled={disabled}
-      onClick={onClick}
-      className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-gold/60 text-gold transition-colors hover:bg-gold hover:text-navy-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:cursor-not-allowed disabled:border-cream/20 disabled:text-cream/30 disabled:hover:bg-transparent"
-    >
-      {children}
-    </button>
   );
 }
 
