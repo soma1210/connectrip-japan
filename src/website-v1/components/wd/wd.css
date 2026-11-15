@@ -235,8 +235,11 @@ a[data-cta-id]::before {
 .wd-wordmark {
   display: flex;
   justify-content: space-between;
-  overflow: clip;
+  overflow: clip; /* hides the letters before they rise (PageMotion) */
   padding-top: 0.08em;
+  /* Room below the baseline: the mincho J's tail descends ~0.15em and was cut
+     off by the clip with line-height 0.95 (2026-11-15). */
+  padding-bottom: 0.2em;
   font-family: var(--font-heading-en);
   font-size: 8.85cqi; /* fills the footer container width (its wrapper is an inline-size container) */
   line-height: 0.95;

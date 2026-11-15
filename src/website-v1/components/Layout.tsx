@@ -192,7 +192,7 @@ export function V1Footer({ layout }: { layout: LayoutViewModel; recruit: Recruit
         <span>{V1_PREVIEW ? "Website v1 preview" : `© ${new Date().getFullYear()} Connectrip Japan Inc.`}</span>
       </Container>
       {/* Brand wordmark across the full width; the letters rise as the footer arrives (components/wd/PageMotion). */}
-      <Container className="pb-6 [container-type:inline-size] md:pb-10">
+      <Container className="pb-8 [container-type:inline-size] md:pb-14">
         <p data-wd-wordmark className="wd-wordmark" aria-label="CONNECTRIP JAPAN">
           {"CONNECTRIP JAPAN".split("").map((ch, i) => (
             <span key={i} aria-hidden data-l={ch === " " ? "space" : ""}>
