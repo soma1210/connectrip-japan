@@ -3,12 +3,14 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { LegalPageHeader } from "@/components/ui/LegalPageHeader";
 import { TbdMark } from "../components/Tbd";
+import { V1_PREVIEW } from "../config";
 
 /**
  * Company Profile and Cancellation Policy, ported from the current site
  * (W1-D09, WORKING_BASELINE). Markup and classes are the current site's
  * `[locale]/company` and `[locale]/cancel-policy` pages; data comes from the
- * view model instead of next-intl.
+ * view model instead of next-intl. The Cancellation Policy text is v1's own
+ * (content/cancellationPolicy.ts); only the page markup comes from the current site.
  */
 
 function TbdPage({ slot, note }: { slot: string; note?: string }) {
@@ -67,9 +69,17 @@ export function CancellationPolicyView({ vm }: { vm: CancellationPolicyViewModel
   return (
     <div lang="en" className="bg-cream py-[60px] text-navy md:py-[100px]">
       <Container className="max-w-3xl">
+        {/* Preview only: the policy text is a draft until a human records its legal approval. */}
+        {V1_PREVIEW && vm.content.status === "PROPOSED" ? (
+          <p className="mb-8 border border-dashed border-navy/40 bg-cream-dark/60 px-4 py-2.5 text-xs leading-relaxed text-navy/70">
+            Preview only · DRAFT pending legal review. Not approved for publication.
+            {vm.content.source ? <span className="mt-1 block text-navy/50">{vm.content.source}</span> : null}
+          </p>
+        ) : null}
+
         <LegalPageHeader heading={c.heading} subheading={c.subheading} />
 
-        <p className="whitespace-pre-line text-sm leading-loose text-navy/80">{c.intro}</p>
+        {c.intro ? <p className="whitespace-pre-line text-sm leading-loose text-navy/80">{c.intro}</p> : null}
 
         <div className="mt-14 flex flex-col gap-12 md:mt-20 md:gap-16">
           {c.sections.map((section) => (
@@ -84,11 +94,11 @@ export function CancellationPolicyView({ vm }: { vm: CancellationPolicyViewModel
 
                 {section.table ? (
                   <div className="mt-5 overflow-x-auto">
-                    <table className="w-full min-w-[420px] border-collapse text-sm">
+                    <table className="w-full border-collapse text-[13px] md:min-w-[420px] md:text-sm">
                       <thead>
                         <tr>
-                          {section.table.headers.map((header) => (
-                            <th key={header} className="border border-navy/15 bg-navy/5 px-4 py-2.5 text-left font-medium text-navy">
+                          {section.table.headers.map((header, col) => (
+                            <th key={header} className={`border border-navy/15 bg-navy/5 px-2 py-2.5 sm:px-2.5 font-medium text-navy md:px-4 ${col === 0 ? "text-left" : "text-right"}`}>
                               {header}
                             </th>
                           ))}
@@ -97,14 +107,19 @@ export function CancellationPolicyView({ vm }: { vm: CancellationPolicyViewModel
                       <tbody>
                         {section.table.rows.map((row, index) => (
                           <tr key={row[0]} className={index === 0 ? "outline outline-2 -outline-offset-2 outline-navy" : ""}>
-                            <td className="border border-navy/15 px-4 py-2.5 text-navy/80">{row[0]}</td>
-                            <td className="border border-navy/15 px-4 py-2.5 text-navy/80">{row[1]}</td>
+                            {row.map((cell, col) => (
+                              <td key={col} className={`border border-navy/15 px-2 py-2.5 sm:px-2.5 text-navy/80 md:px-4 ${col === 0 ? "text-left" : "text-right tabular-nums"}`}>
+                                {cell}
+                              </td>
+                            ))}
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
                 ) : null}
+
+                {section.afterTable ? <p className="mt-5 whitespace-pre-line text-sm leading-loose text-navy/75">{section.afterTable}</p> : null}
 
                 {section.note ? <p className="mt-4 text-xs text-navy/40">{section.note}</p> : null}
               </div>

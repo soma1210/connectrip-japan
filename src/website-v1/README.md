@@ -1,14 +1,19 @@
-# Website v1 Preview
+# Website v1
 
-Frontend skeleton of Website v1, built on Interface Contract v1
-(`src/contracts`). It runs next to the current site and does not change it.
+> Connectrip Japan Website V1 is the single source of truth. The legacy website is deprecated and must not be used as a reference for future development.
+
+Website v1, built on Interface Contract v1 (`src/contracts`). It is the only
+website in this codebase: the legacy multilingual site (`[locale]` routes,
+`messages/*.json`) was removed on 2026-11-15.
 
 ```bash
 bun run dev:v1   # http://localhost:3002 → redirects to /v1
 ```
 
-`/v1` and everything under it is the preview. The current site keeps working
-at `/` (`[locale]` routes). All preview pages are `noindex`.
+Preview mode (`NEXT_PUBLIC_WEBSITE_V1_PREVIEW=1`): pages live under `/v1`,
+`/` redirects to `/v1`, and every preview page is `noindex`. Public mode: the
+launch pages (`PUBLIC_PATHS` in `routes.ts`) are served at the root, and
+`/v1/*` redirects there (src/proxy.ts, next.config.ts).
 
 ## Layout
 
@@ -17,7 +22,9 @@ at `/` (`[locale]` routes). All preview pages are `noindex`.
 | `routes.ts` | Route Registry. The only place that knows URLs (all PROPOSED). Keep in sync with `src/app/v1/*` folders |
 | `content/` | Builds contract view models. TBD / PROPOSED values only; APPROVED only with a recorded decision |
 | `views/` | Page views. Take a view model, render it. Import types from `@/contracts` only |
-| `components/` | Shared UI. Reuses the current site's components and class strings |
+| `components/` | Shared UI (plus a few shared pieces in `src/components/ui` and `src/components/cards`) |
+| `content/data/` | Company, Business Inquiries and SNS data (moved from the legacy `messages/*.json`) |
+| `content/officers.ts` | Officer names and titles: the only place that spells them |
 | `src/app/v1/` | Next.js routes: load a view model, render a view |
 
 ## Rules

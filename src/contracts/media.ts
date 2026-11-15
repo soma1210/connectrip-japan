@@ -15,6 +15,14 @@ export type ImageAsset = {
   consent: AssetCheck | "NOT_APPLICABLE";
   /** Where the asset comes from and how its use is cleared (W1-D10 K-5). */
   assetRights?: AssetRights;
+  /** CSS object-position for cropped frames (e.g. "50% 40%"), so a portrait photo keeps its subject in a landscape card. Default: centre. */
+  position?: string;
+  /**
+   * "natural": in article bodies, show the whole photo at its own aspect ratio
+   * instead of cropping it into the landscape frame (portrait subjects a crop
+   * would cut). Cards and thumbnails keep their own frame.
+   */
+  frame?: "natural";
 };
 
 /**

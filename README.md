@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Connectrip Japan Website
 
-## Getting Started
+> Connectrip Japan Website V1 is the single source of truth. The legacy website is deprecated and must not be used as a reference for future development.
 
-First, run the development server:
+Next.js app for the Connectrip Japan website (Website V1) and its back office.
+
+| Area | Path | Status |
+|---|---|---|
+| Website V1 pages | `src/app/v1`, `src/website-v1` | The website. Develop here |
+| Booking requests | `src/app/api/v1/booking-requests`, `src/lib/booking-request`, `apps-script/booking-requests` | Google Apps Script → Google Sheets |
+| Interface contracts | `src/contracts` | Shared types for V1 |
+| Back office | `src/app/admin`, `src/admin`, `src/app/guide-community`, `src/app/api/{guide-applications,partner-*}`, `sql/` | Kept, not part of the website. Applications now use Google Forms |
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun run dev:v1          # preview at http://localhost:3002 (→ /v1)
+bun run check:booking   # booking request checks
+bun run build           # public mode unless NEXT_PUBLIC_WEBSITE_V1_PREVIEW=1
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Preview (`NEXT_PUBLIC_WEBSITE_V1_PREVIEW=1`): pages under `/v1`, all `noindex`.
+- Public: the launch pages in `PUBLIC_PATHS` (`src/website-v1/routes.ts`) at the root; everything else 404. Legacy URL redirects: `next.config.ts`.
+- Launch steps and the legacy retirement record: `.claude/audits/legacy-retirement.md`.

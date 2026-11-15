@@ -51,18 +51,32 @@ const STATIC_PATHS: Record<StaticRouteKey, string> = {
   home: "",
   experiences: "/experiences",
   privateGuide: "/private-guide",
-  /** Osaka hub (W1-D10 K-2). Other areas: `travelGuideHref(area)`. */
-  travelGuide: "/travel-guide/osaka",
-  howItWorks: "/how-it-works",
+  /**
+   * The travel media hub: Explore Kansai (2026-11-14). The old Travel Guide
+   * hub stays at `travelGuideHref(area)` (DEMO content, no longer linked).
+   */
+  travelGuide: "/explore",
+  /**
+   * The How It Works section on Home (2026-11-15: the separate /how-it-works
+   * page was removed). Preview only, like the Home section itself.
+   */
+  howItWorks: "#how-it-works",
   about: "/about",
   inquiry: "/inquiry",
-  privacy: "/privacy",
+  /**
+   * Privacy Policy V1 (2026-11-14) lives at `/privacy-policy`, preview only
+   * while it is a draft (content/privacyPolicy.ts). Public mode keeps the
+   * existing `/privacy` (PUBLIC_PATHS) until the new policy is approved; moving
+   * the public URL is a separate decision (PUBLIC_PATHS, sitemap, redirect).
+   */
+  privacy: V1_PREVIEW ? "/privacy-policy" : "/privacy",
   terms: "/terms",
   company: "/company",
   cancelPolicy: "/cancel-policy",
   businessInquiry: "/business-inquiry",
   /** Connectrip Select, Osaka map (v0.1). Other areas later: `/connectrip-select/{area}`. */
-  connectripSelect: "/connectrip-select/osaka",
+  /** Connectrip Japan Select map, Osaka (2026-11-14; was `/connectrip-select/osaka`). */
+  connectripSelect: "/explore/map/osaka",
 };
 
 function withBase(path: string) {
@@ -123,6 +137,56 @@ export function travelGuideHref(area: GuideArea = "osaka"): string {
 
 export function articleHref(slug: string, area: GuideArea = "osaka"): string {
   return withBase(`${TRAVEL_GUIDE_ROOT}/${area}/${slug}`);
+}
+
+/**
+ * Kansai Travel Journal (2026-11-13, preview only: not in PUBLIC_PATHS yet).
+ * Page 1 is `/kansai-travel-journal`, later pages `/kansai-travel-journal/page/{n}`,
+ * articles `/kansai-travel-journal/{slug}` ("page" is never a slug).
+ */
+export const JOURNAL_ROOT = "/kansai-travel-journal";
+
+export function journalPageHref(page: number): string {
+  return withBase(page <= 1 ? JOURNAL_ROOT : `${JOURNAL_ROOT}/page/${page}`);
+}
+
+export function journalArticleHref(slug: string): string {
+  return withBase(`${JOURNAL_ROOT}/${slug}`);
+}
+
+/**
+ * Explore Kansai (2026-11-14, preview only): travel media. Not in PUBLIC_PATHS,
+ * so every page answers 404 in public mode until it is approved for launch.
+ */
+const EXPLORE_ROOT = "/explore";
+
+export function exploreHref(): string {
+  return withBase(EXPLORE_ROOT);
+}
+
+/** Connectrip Japan Select: the list, or one article. */
+export function exploreSelectHref(slug?: string): string {
+  return withBase(slug ? `${EXPLORE_ROOT}/select/${slug}` : `${EXPLORE_ROOT}/select`);
+}
+
+/** Kansai Travel Updates: the list, or one update. */
+export function exploreUpdatesHref(slug?: string): string {
+  return withBase(slug ? `${EXPLORE_ROOT}/updates/${slug}` : `${EXPLORE_ROOT}/updates`);
+}
+
+/** Area page: every Select guide and update for one area. */
+export function exploreAreaHref(area: string): string {
+  return withBase(`${EXPLORE_ROOT}/area/${area}`);
+}
+
+/** How Explore Kansai is written, checked and updated (linked from every article's author box). */
+export function exploreEditorialPolicyHref(): string {
+  return withBase(`${EXPLORE_ROOT}/editorial-policy`);
+}
+
+/** Editorial list (preview only, never public): status, checks and photo rights of every article. */
+export function exploreEditorialDashboardHref(): string {
+  return withBase(`${EXPLORE_ROOT}/editorial`);
 }
 
 /** Kept free for future topic hubs (`/travel-guide/osaka/events`). Articles may not use them. */

@@ -1,0 +1,310 @@
+/*
+ * OUR VALUE · Cinematic Section (ported 1:1 from prototypes/our-value-cinematic, approved 2026-11-15).
+ * Motion: transform / opacity only. The pinned deck runs on wide screens without reduced motion;
+ * phones and reduced motion get a plain list. Entrance states apply only once JS has armed the
+ * section (`data-armed`), so without JS everything is simply there.
+ */
+.section {
+  position: relative;
+  background:
+    radial-gradient(70% 60% at 72% 50%, rgba(28, 55, 92, 0.55), transparent 70%),
+    var(--color-navy-dark);
+}
+
+/* Base (phones, reduced motion, no JS): heading on top, cards in a column. */
+.stage {
+  padding: 4.5rem 16px 5rem;
+}
+.intro {
+  max-width: 34rem;
+}
+.rule {
+  display: block;
+  width: 3rem;
+  height: 1px;
+  background: rgba(201, 164, 92, 0.6);
+  margin-bottom: 1.5rem;
+}
+.title {
+  margin: 0;
+  font-family: var(--font-heading-en);
+  font-weight: 500;
+  font-size: clamp(2.75rem, 13vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: 0.04em;
+  color: var(--color-gold);
+}
+.line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em; /* room for the glyphs so the mask never clips them at rest */
+}
+.line > span {
+  display: block;
+}
+.lead {
+  margin: 1.25rem 0 0;
+  max-width: 26rem;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: rgba(245, 243, 238, 0.82);
+}
+.counter,
+.progress {
+  display: none;
+}
+.cards {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.item {
+  position: relative;
+}
+
+/* ---------- Card ---------- */
+.card {
+  position: relative;
+  aspect-ratio: 4 / 3; /* the photos are 4:3, so nothing is cropped or stretched */
+  overflow: hidden;
+  border: 1px solid rgba(201, 164, 92, 0.3);
+  border-radius: 6px;
+  background: var(--color-navy);
+  container-type: inline-size;
+  isolation: isolate;
+}
+.photo {
+  object-fit: cover;
+}
+/* Natural navy fade from the bottom; the top of the photo stays bright. */
+.grad {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(13, 31, 54, 0.96) 0%, rgba(13, 31, 54, 0.62) 30%, rgba(13, 31, 54, 0) 62%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 40%);
+}
+.text {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0 clamp(1rem, 5.5cqw, 2.25rem) clamp(1rem, 5cqw, 2rem);
+}
+.num {
+  margin: 0;
+  font-family: var(--font-heading-en);
+  font-size: clamp(0.75rem, 2.6cqw, 0.9375rem);
+  letter-spacing: 0.26em;
+  color: rgba(201, 164, 92, 0.8);
+}
+.cardTitle {
+  margin: 0.3em 0 0;
+  font-family: var(--font-heading-en);
+  font-weight: 500;
+  font-size: clamp(1.125rem, 5.6cqw, 2.125rem);
+  line-height: 1.22;
+  letter-spacing: 0.01em;
+  color: var(--color-gold);
+}
+.desc {
+  margin: 0.55em 0 0;
+  font-size: clamp(0.8125rem, 3cqw, 1.0625rem);
+  line-height: 1.6;
+  color: rgba(245, 243, 238, 0.92);
+}
+/* Depth: cards waiting in the stack are dimmed (opacity set from JS). */
+.shade {
+  position: absolute;
+  inset: 0;
+  background: var(--color-navy-dark);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Entrance (armed by JS) ---------- */
+.section[data-armed] .rule {
+  transform-origin: left center;
+  transition: transform 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.1s;
+}
+.section[data-armed] .line > span {
+  transition: transform 1.15s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.section[data-armed] .line:nth-child(2) > span {
+  transition-delay: 0.1s;
+}
+.section[data-armed] .lead,
+.section[data-armed] .counter,
+.section[data-armed] .progress {
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.35s,
+    transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.35s;
+}
+.section[data-armed] .counter,
+.section[data-armed] .progress {
+  transition-delay: 0.5s;
+}
+.section[data-armed] .card {
+  transition:
+    opacity 1s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.section[data-armed]:not([data-in]) .rule {
+  transform: scaleX(0);
+}
+.section[data-armed]:not([data-in]) .line > span {
+  transform: translate3d(0, 105%, 0);
+}
+.section[data-armed]:not([data-in]) .lead,
+.section[data-armed]:not([data-in]) .counter,
+.section[data-armed]:not([data-in]) .progress {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+}
+/* List mode: each card rises as it scrolls in. */
+.section[data-armed] .item:not([data-in]) .card {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+}
+
+/* ---------- Pinned deck: wide screens with motion allowed ---------- */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .section {
+    /* One "unit" of scroll per card change; --units = start hold + 5 changes + end hold. */
+    --unit: 70svh;
+  }
+  .track {
+    height: calc(100svh + var(--units, 6.2) * var(--unit));
+  }
+  .stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding: 0 clamp(24px, 4vw, 72px);
+    display: grid;
+    grid-template-columns: 45fr 55fr;
+    align-items: center;
+    gap: clamp(16px, 3vw, 56px);
+    overflow: hidden;
+  }
+  .intro {
+    max-width: none;
+    padding-left: clamp(0px, 3vw, 56px);
+  }
+  .title {
+    font-size: clamp(3.5rem, 8.4vw, 8.5rem);
+  }
+  .lead {
+    font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+    max-width: 24rem;
+  }
+  .counter {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-top: clamp(2rem, 5svh, 3.5rem);
+    font-family: var(--font-heading-en);
+    font-size: 0.9375rem;
+    letter-spacing: 0.22em;
+  }
+  .reelWindow {
+    display: block;
+    height: 1.4em;
+    overflow: hidden;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.4;
+    color: var(--color-gold);
+  }
+  .reel {
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+  }
+  .total {
+    color: rgba(245, 243, 238, 0.55);
+  }
+  .progress {
+    display: block;
+    position: relative;
+    width: min(14rem, 70%);
+    height: 1px;
+    margin-top: 1rem;
+    background: rgba(245, 243, 238, 0.16);
+  }
+  .bar {
+    position: absolute;
+    inset: 0;
+    background: var(--color-gold);
+    transform-origin: left center;
+    transform: scaleX(0.1667);
+    will-change: transform;
+  }
+
+  .deck {
+    height: 100%;
+    display: grid;
+    align-items: center;
+  }
+  .cards {
+    margin: 0;
+    display: grid;
+    place-items: center;
+  }
+  .item {
+    grid-area: 1 / 1;
+    width: min(100%, calc(66svh * 4 / 3), 780px);
+    will-change: transform;
+    transform-origin: 50% 50%;
+  }
+  .item .card {
+    box-shadow: 0 34px 80px -34px rgba(2, 8, 18, 0.9);
+  }
+  /* Deck entrance: the first card rises into place, the stack follows a little later. */
+  .section[data-armed]:not([data-in]) .item .card {
+    opacity: 0;
+    transform: translate3d(0, 48px, 0);
+  }
+  .section[data-armed] .item:nth-child(1) .card {
+    transition-delay: 0.15s;
+  }
+  .section[data-armed] .item:nth-child(n + 2) .card {
+    transition-delay: 0.35s;
+  }
+  /* Once the entrance has played, the card itself never transitions (the deck is scroll-driven). */
+  .section[data-settled] .card {
+    transition: none;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .stage {
+    grid-template-columns: 42fr 58fr;
+  }
+}
+
+/* Reduced motion: everything is just there, a short fade at most. */
+@media (prefers-reduced-motion: reduce) {
+  .section[data-armed] .rule,
+  .section[data-armed] .line > span,
+  .section[data-armed] .lead,
+  .section[data-armed] .card {
+    transition: opacity 0.3s ease;
+    transform: none !important;
+  }
+}
+/* Reduced motion on wide screens: the same cards as a calm 2-column grid (no pin, no deck). */
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .stage {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem clamp(24px, 4vw, 48px);
+  }
+  .title {
+    font-size: clamp(3.5rem, 7vw, 6rem);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}

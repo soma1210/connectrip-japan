@@ -474,7 +474,12 @@ function SpotPopup({
           <MapPin className="h-3 w-3" aria-hidden />
           {areaLabel}
         </p>
-        {/* Future actions (not built): View Guide / Add to My Private Day / View Experience. */}
+        {/* Connectrip Japan Select article section about this place (Explore Kansai). Future: Add to My Private Day / View Experience. */}
+        {spot.guide ? (
+          <a href={spot.guide.href} className="mt-2 text-xs leading-snug text-navy underline decoration-gold underline-offset-4 hover:text-red">
+            {spot.guide.label}
+          </a>
+        ) : null}
       </div>
       <button
         type="button"

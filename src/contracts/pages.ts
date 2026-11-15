@@ -113,7 +113,8 @@ export type HomeContent = {
   howItWorks: {
     heading: Tbd<string>;
     flows: HowItWorksFlows;
-    link: CtaSpec<"howItWorks">;
+    /** Optional since 2026-11-15 (Website V1 dropped the How It Works page and this link). */
+    link?: CtaSpec<"howItWorks">;
   };
   travelGuide: {
     heading: Tbd<string>;
@@ -165,22 +166,42 @@ export type InquiryPageContent = {
 
 export type InquiryViewModel = PageViewModel<"inquiry", InquiryPageContent>;
 
-/** One row of company information. Company / legal claims are TBD. */
+/** One row of company information. Company / legal claims are TBD. A list value renders as a list. */
 export type CompanyFact = {
   label: Tbd<string>;
-  value: Tbd<string>;
+  value: Tbd<string | string[]>;
+  /** Small line under the value (e.g. the Japanese company name). */
+  note?: string;
 };
 
-/** About: company information. Meet Our Guides removed (Human instruction 2026-11-09). */
+/**
+ * About Us (structure: Human instruction 2026-11-14): a hero and five fixed
+ * sections. Section names are fixed; each section's statement and body stay
+ * TBD until a human approves the copy, so copy can be added per section
+ * without touching the page. Meet Our Guides removed (Human instruction 2026-11-09).
+ */
+export type AboutSectionKey = "companyOverview" | "philosophy" | "mission" | "vision" | "values";
+
+export type AboutSection = {
+  key: AboutSectionKey;
+  /** Section name, rendered as the h2 (e.g. "Our Mission"). */
+  title: string;
+  /** The one-line statement shown large under the title. */
+  statement: Tbd<string>;
+  body: Tbd<string[]>;
+  /** Company Overview: key facts from the Company Profile. */
+  facts?: Tbd<CompanyFact[]>;
+  /** A link to a page with more detail (e.g. the Company Profile). */
+  more?: { label: string; href: string };
+};
+
 export type AboutContent = {
   intro: {
+    eyebrow: Tbd<string>;
     headline: Tbd<string>;
-    supporting: Tbd<string>;
+    tagline: Tbd<string>;
   };
-  company: {
-    heading: Tbd<string>;
-    facts: Tbd<CompanyFact[]>;
-  };
+  sections: AboutSection[];
   experiencesCta: CtaSpec<"experiences">;
   privateGuideCta: CtaSpec<"privateGuide">;
 };
@@ -230,7 +251,10 @@ export type CancellationPolicySection = {
   title: string;
   body: string;
   note?: string;
-  table?: { headers: [string, string]; rows: [string, string][] };
+  /** First column: the condition; the other columns: values (e.g. fee and refund). */
+  table?: { headers: string[]; rows: string[][] };
+  /** Body text that continues after the table. */
+  afterTable?: string;
 };
 
 export type CancellationPolicyData = {

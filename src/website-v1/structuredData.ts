@@ -64,7 +64,7 @@ function companyRow(label: string): string | undefined {
   return typeof value === "string" ? value : undefined;
 }
 
-/** "September 7, 2026" → "2026-09-07" (undefined when it can't be read). */
+/** "November 16, 2026" → "2026-11-16" (undefined when it can't be read). */
 function isoDate(text: string | undefined): string | undefined {
   if (!text) return undefined;
   const ms = Date.parse(`${text} 00:00 UTC`);

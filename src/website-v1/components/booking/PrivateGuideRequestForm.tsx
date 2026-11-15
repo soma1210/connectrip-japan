@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { Clock, Info, Minus, Plus } from "lucide-react";
-import { useId, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode, type Ref } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode, type Ref } from "react";
+import { PLAN_STYLES, durationMinutes, hasPlan, readPlan } from "../../booking/privateDayPlan";
 import { ctaDataAttributes, type CtaSpec, type Tbd } from "@/contracts";
 import { cn } from "@/lib/cn";
 import {
@@ -15,6 +16,7 @@ import {
   REQUEST_LIMITS,
   endTime,
   fitsDayEnd,
+  messageLimitFor,
   mockSubmitPrivateGuideRequest,
   outcomeFor,
   parseDuration,
@@ -360,6 +362,24 @@ export function PrivateGuideRequestForm({
   const [cleared, setCleared] = useState<{ startTime?: SlotProblem; alternateStartTime?: SlotProblem }>({});
   const isMock = model.mode === "mock";
   const duration = parseDuration(values.duration);
+  /** Choices brought by a deep link (`?where=…&interests=…&duration=…&style=…`). */
+  const [fromPlanner, setFromPlanner] = useState(false);
+
+  // Apply deep-link choices once, after hydration (the server renders the
+  // empty form). Only fields the traveller has not touched yet are filled.
+  useEffect(() => {
+    const plan = readPlan(window.location.search);
+    if (!hasPlan(plan)) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time prefill from the URL after hydration
+    setValues((v) => ({
+      ...v,
+      areas: v.areas.length ? v.areas : plan.areas,
+      interests: v.interests.length ? v.interests : plan.interests,
+      duration: v.duration || (plan.duration ? durationMinutes(plan.duration) : ""),
+      travelStyle: v.travelStyle || plan.style || "",
+    }));
+    setFromPlanner(true);
+  }, []);
 
   // Rule clock for the date / time pickers and the re-check on date / length
   // changes: the server render time during SSR and hydration (so both match),
@@ -520,6 +540,11 @@ export function PrivateGuideRequestForm({
               {serverRejected
                 ? textOr(model.outcomes.fieldsRejected, "Please check the highlighted fields.")
                 : `Please check ${errorCount === 1 ? "the highlighted field" : `the ${errorCount} highlighted fields`}.`}
+            </p>
+          ) : null}
+          {fromPlanner ? (
+            <p role="status" className="border border-gold/30 bg-navy/40 px-4 py-3 text-sm text-cream/85">
+              Your choices have been added below. You can change them, then add your date, guests and contact details.
             </p>
           ) : null}
 
@@ -748,16 +773,51 @@ export function PrivateGuideRequestForm({
               selected={values.interests}
               onToggle={(v) => toggle("interests", v)}
             />
+            {/* Single choice; click the chosen one again to clear it. Sent as the first line of the notes. */}
+            <div id={id("travelStyle")} tabIndex={-1} role="radiogroup" aria-labelledby={`${id("travelStyle")}-label`} className="flex min-w-0 flex-col gap-3">
+              <p id={`${id("travelStyle")}-label`} className={labelText}>
+                Who is travelling?
+                <span className="ml-2 text-cream/40">(optional)</span>
+              </p>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+                {PLAN_STYLES.map((o) => {
+                  const checked = values.travelStyle === o.value;
+                  return (
+                    <label
+                      key={o.value}
+                      className={cn(
+                        "flex min-h-11 cursor-pointer items-center justify-center border px-3 py-2 text-center text-sm transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-gold",
+                        checked ? "border-gold bg-navy-dark text-cream" : "border-cream/15 text-cream/80 hover:border-gold/60",
+                      )}
+                    >
+                      <input
+                        type="radio"
+                        name="travelStyle"
+                        value={o.value}
+                        checked={checked}
+                        onChange={() => set("travelStyle", o.value)}
+                        onClick={() => {
+                          if (checked) set("travelStyle", "");
+                        }}
+                        className="sr-only"
+                      />
+                      {checked ? <span aria-hidden className="mr-1.5 text-gold">✓</span> : null}
+                      {o.label}
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
             <FieldShell
               id={id("message")}
               label="Tell us about your ideal day"
-              hint={`Places you want to see, mobility needs, dietary needs… (${values.message.length}/${REQUEST_LIMITS.message})`}
+              hint={`Places you want to see, mobility needs, dietary needs… (${values.message.length}/${messageLimitFor(values.travelStyle)})`}
               error={errors.message}
             >
               <textarea
                 {...a11y("message")}
                 rows={5}
-                maxLength={REQUEST_LIMITS.message}
+                maxLength={messageLimitFor(values.travelStyle)}
                 value={values.message}
                 onChange={(e) => set("message", e.target.value)}
                 className={cn(inputClass, "resize-y")}
@@ -783,7 +843,32 @@ export function PrivateGuideRequestForm({
                   <TbdText value={term} slot="Key term" />
                 </li>
               ))}
+              {model.cancellationPolicy ? (
+                <li className="flex gap-2">
+                  <span className="text-gold" aria-hidden>
+                    —
+                  </span>
+                  <span>
+                    Before sending, please read our{" "}
+                    <Link href={model.cancellationPolicy.href} className="underline decoration-gold/60 underline-offset-4 hover:text-gold">
+                      {model.cancellationPolicy.label}
+                    </Link>
+                    .
+                  </span>
+                </li>
+              ) : null}
             </ul>
+
+            {model.privacyNotice ? (
+              <p className="border-l-2 border-gold/50 pl-3 text-xs leading-relaxed text-cream/70">
+                <span className="mr-1 font-heading-en tracking-[0.15em] text-cream/50">YOUR DETAILS</span>
+                {model.privacyNotice}{" "}
+                <Link href={model.consent.privacyHref} className="underline decoration-gold/60 underline-offset-4 hover:text-gold">
+                  Read our {model.consent.privacyLabel}
+                </Link>
+                .
+              </p>
+            ) : null}
 
             <div className="flex flex-col gap-2">
               <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-cream/85">
@@ -875,6 +960,11 @@ export function PrivateGuideRequestForm({
           <div className="mt-6 border-t border-cream/10 pt-5 text-xs leading-relaxed text-cream/65">
             <p className="mb-2 font-heading-en tracking-[0.2em] text-cream/50">CANCELLATION</p>
             <TbdText value={model.cancellationNote} slot="Cancellation policy" as="p" />
+            {model.cancellationPolicy ? (
+              <Link href={model.cancellationPolicy.href} className="mt-2 inline-block text-cream/80 underline decoration-gold/50 underline-offset-4 hover:text-gold">
+                Read the full {model.cancellationPolicy.label}
+              </Link>
+            ) : null}
           </div>
         </div>
         <p className="text-center text-sm text-cream/60">

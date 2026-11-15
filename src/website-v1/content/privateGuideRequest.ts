@@ -11,8 +11,10 @@ import {
   type PrivateGuideRequestMode,
   type RejectedReason,
 } from "../booking/privateGuideRequest";
+import { CANCELLATION_POLICY_SOURCE, CANCELLATION_POLICY_VISIBLE } from "./cancellationPolicy";
 import { ACTIVITY_LABELS, AREA_LABELS } from "./privateGuide";
 import { approvedText, cta, proposed, tbd } from "./shared";
+import { PRIVACY_FORM_NOTICE, PRIVACY_POLICY_VISIBLE } from "./privacyPolicy";
 
 /**
  * Private Guide booking request (Human instruction 2026-11-09). Replaces the
@@ -92,8 +94,12 @@ export type PrivateGuideRequestModel = {
   areas: RequestOption<AreaKey>[];
   interests: RequestOption<PrivateGuideActivity>[];
   consent: { label: Tbd<string>; privacyLabel: string; privacyHref: string };
+  /** How the details are used, shown above the consent box (preview only while the Privacy Policy V1 is a draft). */
+  privacyNotice: string | null;
   submitLabel: Tbd<string>;
   cancellationNote: Tbd<string>;
+  /** Link to the Cancellation & Refund Policy; null while the policy is not shown (public mode until legally approved). */
+  cancellationPolicy: { label: string; href: string } | null;
   /** Later finish than 20:00, or more than 6 people → individual inquiry. */
   specialRequest: { prompt: Tbd<string>; cta: CtaSpec<"inquiry"> };
   questions: { prompt: Tbd<string>; cta: CtaSpec<"inquiry"> };
@@ -197,8 +203,16 @@ export function getPrivateGuideRequestModel(now: Date = new Date(), mode: Privat
       privacyLabel: "Privacy Policy",
       privacyHref: routeHref("privacy"),
     },
+    privacyNotice: PRIVACY_POLICY_VISIBLE ? PRIVACY_FORM_NOTICE : null,
     submitLabel: p("Send Booking Request"),
-    cancellationNote: tbd("Cancellation policy for Private Guide bookings TBD"),
+    // Summary of the Cancellation & Refund Policy V1 draft (content/cancellationPolicy.ts): preview only until legally approved.
+    cancellationNote: CANCELLATION_POLICY_VISIBLE
+      ? proposed(
+          "Free cancellation 7 or more days before the tour. 3–6 days before: 30%. 1–2 days before: 50%. On the tour date or no-show: 100%. Japan time (JST).",
+          CANCELLATION_POLICY_SOURCE,
+        )
+      : tbd("Cancellation policy for Private Guide bookings: pending legal review"),
+    cancellationPolicy: CANCELLATION_POLICY_VISIBLE ? { label: "Cancellation & Refund Policy", href: routeHref("cancelPolicy") } : null,
     specialRequest: {
       prompt: r(`Need to finish after ${DAY_END}, or travelling with more than ${MAX_PARTY_SIZE} people? This form can't take those requests.`),
       cta: inquiryCta("v1_private_request_special", "Contact us about a special request"),

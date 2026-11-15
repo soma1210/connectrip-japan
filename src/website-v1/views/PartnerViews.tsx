@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { externalLinkProps, PARTNER_FORM_URL, recruitHref, routeHref } from "../routes";
+import { PRIVACY_POLICY_VISIBLE } from "../content/privacyPolicy";
 
 // Partner Recruitment (ported from the current site's /partner, 2026-10-27).
 // The partner pages are Japanese only: they address businesses in Japan.
@@ -43,6 +44,20 @@ function ApplyButton({ ctaId }: { ctaId: string }) {
   );
 }
 
+/** Before the Google Form opens: how the answers are used (preview only while the Privacy Policy V1 is a draft). */
+function ApplyPrivacyNote() {
+  if (!PRIVACY_POLICY_VISIBLE) return null;
+  return (
+    <p className="mx-auto mt-4 max-w-md text-[11px] leading-relaxed text-cream/55">
+      ご回答（Googleフォーム）は、パートナー募集のご検討とご連絡のためにのみ利用します。詳しくは
+      <Link href={routeHref("privacy")} className="mx-0.5 text-gold underline underline-offset-4 hover:text-cream">
+        プライバシーポリシー（英語）
+      </Link>
+      をご覧ください。
+    </p>
+  );
+}
+
 export function PartnerRecruitView() {
   return (
     <div lang="ja">
@@ -67,6 +82,7 @@ export function PartnerRecruitView() {
           </div>
           <div className="mt-10">
             <ApplyButton ctaId="v1_partner_hero_apply" />
+            <ApplyPrivacyNote />
           </div>
         </Container>
       </section>
@@ -144,6 +160,7 @@ export function PartnerRecruitView() {
           </h2>
           <div className="mt-8">
             <ApplyButton ctaId="v1_partner_bottom_apply" />
+            <ApplyPrivacyNote />
           </div>
           <p className="mt-8 text-xs text-cream/55">
             アンケート以外のご相談は{" "}

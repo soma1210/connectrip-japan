@@ -2,6 +2,7 @@ import type { AreaKey, InquiryFormModel, InquiryViewModel, PrivateGuideActivity 
 import { routeHref } from "../routes";
 import { ACTIVITY_LABELS, AREA_LABELS } from "./privateGuide";
 import { pageName, pageSeo, proposed, tbd } from "./shared";
+import { PRIVACY_FORM_NOTICE, PRIVACY_POLICY_SOURCE, PRIVACY_POLICY_VISIBLE } from "./privacyPolicy";
 
 const SOURCE = "Private Guide Inquiry WORKING_BASELINE (W1-D01 §4). Copy TBD";
 const label = (text: string) => proposed(text, SOURCE);
@@ -49,7 +50,13 @@ export function getPrivateGuideInquiryForm(): InquiryFormModel {
       { name: "idealDay", kind: "textarea", label: label("Tell us about your ideal day in Kansai"), required: tbd(REQUIRED_TBD) },
       { name: "notes", kind: "textarea", label: label("Anything we should know?"), required: tbd(REQUIRED_TBD) },
     ],
-    consent: { label: tbd("Consent wording TBD (consent policy)"), privacyHref: routeHref("privacy") },
+    // Purposes before sending (Privacy Policy V1 draft, 2026-11-14). The form itself is a preview mock.
+    consent: {
+      label: PRIVACY_POLICY_VISIBLE
+        ? proposed(`${PRIVACY_FORM_NOTICE} By sending this form, you agree to the handling of your details described in our`, PRIVACY_POLICY_SOURCE)
+        : tbd("Consent wording TBD (consent policy)"),
+      privacyHref: routeHref("privacy"),
+    },
     submitLabel: tbd("Submit button copy TBD"),
     expectationNote: tbd("'An inquiry is not a booking' note and what happens next: copy TBD"),
     successMessage: tbd("Success message TBD"),

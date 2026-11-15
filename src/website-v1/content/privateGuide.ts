@@ -33,7 +33,7 @@ export const ACTIVITY_LABELS: Record<PrivateGuideActivity, ProposedValue<string>
   famous_sights: proposed("Famous Sights", INTEREST_BASELINE),
   family_activities: proposed("Family Activities", INTEREST_BASELINE),
   hidden_gems: proposed("Hidden Gems", INTEREST_BASELINE),
-  local_neighborhoods: proposed("Local neighborhoods", INTEREST_BASELINE),
+  local_neighborhoods: proposed("Local Neighborhoods", INTEREST_BASELINE),
   other: proposed("Other", INTEREST_BASELINE),
 };
 

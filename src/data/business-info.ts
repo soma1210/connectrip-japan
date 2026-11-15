@@ -4,7 +4,8 @@
 export const businessInfo = {
   legalNameJa: "Connectrip Japan 株式会社",
   legalNameEn: "Connectrip Japan Inc.",
-  foundingDate: "2026-09-07",
+  // Same as the Founded row in website-v1/content/data/company.ts (2026-11-15); registry check pending.
+  foundingDate: "2026-11-16",
   email: "contact@connectripjapan.com",
   telephone: "+81-90-8269-1398",
   address: {

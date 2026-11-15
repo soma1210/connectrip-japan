@@ -1,4 +1,5 @@
 import { DAY_END, MAX_DAYS_AHEAD, MAX_PARTY_SIZE, REQUEST_LEAD_HOURS } from "../booking/privateGuideRequest";
+import { PRIVATE_GUIDE_PRICING_VISIBLE } from "./privateGuidePricing";
 
 /**
  * Private Guide page: service areas and a basic FAQ (STEP 13A, 2026-11-11).
@@ -46,8 +47,17 @@ export const PRIVATE_GUIDE_FAQ: FaqItem[] = [
     question: "Where can a private guide take us?",
     answer: "Osaka, Kyoto, Nara and Kobe. If you'd like to go somewhere else, choose “Other” in the form and tell us where.",
   },
-  {
-    question: "When will I know the price?",
-    answer: "We confirm the price for your day when we reply to your request. Payment is in Japanese yen (JPY) by Stripe invoice.",
-  },
+  // Price question: follows the Private Guide Pricing table. Where the table is shown (preview until
+  // approved), the answer points to it; otherwise (public mode) the earlier answer stays, so the FAQ never
+  // mentions a pricing section that isn't on the page.
+  PRIVATE_GUIDE_PRICING_VISIBLE
+    ? {
+        question: "When will I know the final price?",
+        answer:
+          "You can find our standard Private Guide prices in the pricing section above. The final price may vary depending on your group size, preferred location, language, travel date, and special requests.\n\nWe will confirm your total price and guide availability before requesting payment. Submitting a request does not confirm your booking.",
+      }
+    : {
+        question: "When will I know the price?",
+        answer: "We confirm the price for your day when we reply to your request. Payment is in Japanese yen (JPY) by Stripe invoice.",
+      },
 ];

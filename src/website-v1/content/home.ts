@@ -7,12 +7,31 @@ import { getHomeArticleSummaries, getHomeTravelGuideGroups } from "./travelGuide
 import { HERO_IMAGES, HERO_PLACEHOLDER_SOURCE } from "../assets/heroImages";
 import { valueCardImages } from "@/data/images";
 import { socialLinks } from "@/data/social-links";
-import currentSiteJa from "../../../messages/ja.json";
-import currentSiteEn from "../../../messages/en.json";
+import { SNS_COPY_EN, SNS_COPY_JA } from "./data/sns";
 import { V1_PREVIEW } from "../config";
 import { cta, pageName, pageSeo, proposed, tbd } from "./shared";
 
 /** T-05 Home Working Baseline (W1-D05). Wording is not final copy. */
+
+const PRIVATE_DAY_SOURCE = "Private Day planner copy (Human instruction 2026-11-13)";
+const JOURNAL_SOURCE = "Kansai Travel Journal copy (Human instruction 2026-11-13)";
+
+/** "Your Kansai. Your Way." photo: night street, provided by the human. Location and licence not verified. */
+const YOUR_KANSAI_IMAGE_SOURCE = "Human-provided photo (2026-11-13). Licence NOT_VERIFIED, preview only";
+const YOUR_KANSAI_IMAGE = {
+  src: "/images/v1/sections/your-kansai-night-street.webp",
+  alt: "A quiet city street at night, lit by street lamps and shop signs, with people walking",
+  width: 2048,
+  height: 1362,
+  rights: "NOT_VERIFIED" as const,
+  consent: "NOT_VERIFIED" as const,
+};
+
+/**
+ * Short line under "Explore beyond the guidebooks." in the Home Private Guide
+ * section. Website-local: `HomeContent.privateGuide` has no description slot.
+ */
+export const PRIVATE_DAY_DESCRIPTION = "Choose where to go, what to explore, and how to spend your day in Kansai.";
 const T05 = "T-05 Home WORKING_BASELINE (W1-D05). Not final copy";
 const t05 = (text: string) => proposed(text, T05);
 
@@ -51,48 +70,31 @@ const FINAL_CTA_IMAGE = {
 /**
  * OUR VALUE: the current site's section (W1-D07, images from
  * `valueCardImages`) with English copy for Website v1 (Human instruction
- * 2026-11-09). The current site keeps its Japanese copy in messages/ja.json.
+ * 2026-11-09).
  * Supersedes the T-05 "Why Connectrip" pillars (Local Knowledge / Flexible
  * Experiences / Beyond the Tourist Spots), kept in Obsidian as history.
  */
 /**
- * SNS, reused as-is from the current site (messages/ja.json `sns`, links from
+ * SNS, wording from content/data/sns.ts (links from
  * `socialLinks`). WORKING_BASELINE (W1-D08). Displayed handles are kept
  * verbatim even where they differ from the link URLs (reported as TBD).
  */
-const SNS_SOURCE = "Current site SNS section (messages/ja.json sns, data/social-links). WORKING_BASELINE (W1-D08)";
-/** The English site uses the current site's English version of the same section (2026-11-11). */
-const SNS_COPY = V1_PREVIEW ? currentSiteJa.sns : currentSiteEn.sns;
+const SNS_SOURCE = "SNS section (content/data/sns.ts, data/social-links). WORKING_BASELINE (W1-D08)";
+/** Public mode uses the English version of the same section (2026-11-11). */
+const SNS_COPY = V1_PREVIEW ? SNS_COPY_JA : SNS_COPY_EN;
 
-const OUR_VALUE_SOURCE = "OUR VALUE English copy (Human instruction 2026-11-09). WORKING_BASELINE (W1-D07)";
+const OUR_VALUE_SOURCE = "OUR VALUE English copy (Human instruction 2026-11-15, final card copy). WORKING_BASELINE (W1-D07)";
 const ourValue = {
   heading: "OUR VALUE",
   subheading: "Discover six reasons to explore Japan with Connectrip Japan.",
+  // Order matches valueCardImages (card i ↔ value-card-{i + 1}.jpg); do not reorder one without the other.
   cards: [
-    {
-      title: "Authentic Experiences with Local Japanese Guides",
-      description: "Discover Japan beyond the typical tourist spots, with recommendations inspired by local knowledge and everyday life.",
-    },
-    {
-      title: "Your Local Experts in Kansai",
-      description: "Based in Kansai, we specialize in Osaka, Kyoto, Nara, Kobe, and beyond, bringing you local insights and up-to-date recommendations.",
-    },
-    {
-      title: "Beyond the Tourist Trail",
-      description: "Explore hidden gems, local food, traditional neighborhoods, and authentic experiences you might otherwise miss.",
-    },
-    {
-      title: "Travel Made Just for You",
-      description: "No one-size-fits-all itineraries. We create personalized experiences based on your interests, travel style, and preferences.",
-    },
-    {
-      title: "We’re Here Before Your Trip Begins",
-      description: "Have questions about your Japan adventure? Get friendly travel advice and personalized recommendations before you arrive.",
-    },
-    {
-      title: "More Than a Guide, Your Local Friend",
-      description: "We’re not just here to show you around. We want you to feel welcome, connected, and at home in Japan.",
-    },
+    { title: "Authentic Local Experiences", description: "Discover Japan beyond the ordinary." },
+    { title: "Kansai Local Experts", description: "Explore with people who know Kansai." },
+    { title: "Beyond the Tourist Trail", description: "Find hidden gems and local favorites." },
+    { title: "Travel Your Way", description: "Personalized around your interests." },
+    { title: "Support Before You Arrive", description: "Get guidance before your journey." },
+    { title: "More Than a Guide", description: "Feel welcomed, not just guided." },
   ],
 };
 const VALUE_IMAGE_SIZES: [number, number][] = [
@@ -137,8 +139,9 @@ export function getHomeViewModel(): HomeViewModel {
       },
       privateGuide: {
         heading: t05("Your Kansai. Your Way."),
-        supporting: tbd("English copy TBD (direction: we plan a day around each traveler's wishes)"),
-        image: tbd("Private Guide photo TBD"),
+        supporting: proposed("Explore beyond the guidebooks.", PRIVATE_DAY_SOURCE),
+        // Human-provided photo (2026-11-13). Licence NOT_VERIFIED: preview only; public mode keeps no photo.
+        image: V1_PREVIEW ? proposed(YOUR_KANSAI_IMAGE, YOUR_KANSAI_IMAGE_SOURCE) : tbd("Private Guide photo: licence not verified"),
         areas: (Object.keys(AREA_LABELS) as AreaKey[]).map((key) => ({ key, label: AREA_LABELS[key] })),
         interests: (Object.keys(ACTIVITY_LABELS) as PrivateGuideActivity[]).map((key) => ({ key, label: ACTIVITY_LABELS[key] })),
         cta: cta("v1_home_private", "privateGuide", routeHref("privateGuide"), "section", "primary", t05("Plan a Private Day")),
@@ -151,13 +154,14 @@ export function getHomeViewModel(): HomeViewModel {
       howItWorks: {
         heading: pageName("How It Works"),
         flows: getHowItWorksFlows(),
-        link: cta("v1_home_how", "howItWorks", routeHref("howItWorks"), "section", "secondary", pageName("How It Works")),
       },
       travelGuide: {
-        heading: t05("Explore Osaka Like a Local."),
+        // Rendered by the Kansai Travel Journal section (content/journal.ts holds its copy and articles).
+        heading: proposed("Kansai Travel Journal", JOURNAL_SOURCE),
+        supporting: proposed("Local News, Events & Travel Updates", JOURNAL_SOURCE),
         // Ended / out-of-period articles never appear (W1-D10).
         articles: getHomeArticleSummaries(),
-        // Latest in Osaka (fresh) + Explore Osaka (evergreen), up to three each.
+        // Not rendered on Home since 2026-11-13 (the Journal uses content/journal.ts); kept for the contract.
         groups: getHomeTravelGuideGroups(),
         viewAll: cta("v1_home_travel_guide", "travelGuide", routeHref("travelGuide"), "section", "secondary", t05("Explore Osaka Travel Guide")),
       },

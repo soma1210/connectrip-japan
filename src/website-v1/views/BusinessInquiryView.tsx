@@ -7,6 +7,8 @@ import type { BusinessInquiryViewModel } from "@/contracts";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { TbdMark } from "../components/Tbd";
+import { PRIVACY_POLICY_VISIBLE } from "../content/privacyPolicy";
+import { routeHref } from "../routes";
 
 /**
  * Business Inquiries, ported from the current site's BusinessInquirySection
@@ -123,6 +125,16 @@ export function BusinessInquiryView({ vm }: { vm: BusinessInquiryViewModel }) {
                 {t.noteLink}
               </Link>
             </p>
+
+            {PRIVACY_POLICY_VISIBLE ? (
+              <p className="text-xs leading-relaxed text-navy/55">
+                ご入力いただいた情報は、お問い合わせへの回答とご提案・ご連絡のためにのみ利用します。詳しくは
+                <Link href={routeHref("privacy")} className="mx-0.5 text-red underline hover:text-navy">
+                  プライバシーポリシー（英語）
+                </Link>
+                をご覧ください。
+              </p>
+            ) : null}
 
             <button
               type="submit"

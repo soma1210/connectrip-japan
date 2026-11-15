@@ -1,6 +1,7 @@
 import type { AreaKey, IsoDate, PrivateGuideActivity } from "@/contracts";
 import { addDays, isIsoDate, jstToday } from "../content/guides/freshness";
 import { BOOKING_REF, type BookingRequestBody } from "./bookingRequestContract";
+import { travelStyleLine, type PlanStyle } from "./privateDayPlan";
 
 /**
  * Private Guide booking request (Human instruction 2026-11-09): the traveller
@@ -170,6 +171,11 @@ export type PrivateGuideRequestValues = {
   phone: string;
   areas: AreaKey[];
   interests: PrivateGuideActivity[];
+  /**
+   * One of PLAN_STYLES, or "" (no preference). Contract 0.3 has no field for
+   * it, so it is sent as the first line of `notes` (see `requestNotes`).
+   */
+  travelStyle: PlanStyle | "";
   message: string;
   consent: boolean;
   /** Honeypot. Real people leave it empty. */
@@ -264,6 +270,7 @@ export const REQUEST_FIELD_ORDER: PrivateGuideRequestField[] = [
   "phone",
   "areas",
   "interests",
+  "travelStyle",
   "message",
   "consent",
 ];
@@ -283,6 +290,7 @@ export const EMPTY_REQUEST: PrivateGuideRequestValues = {
   phone: "",
   areas: [],
   interests: [],
+  travelStyle: "",
   message: "",
   consent: false,
   website: "",
@@ -377,11 +385,24 @@ export function validatePrivateGuideRequest(v: PrivateGuideRequestValues, now: n
     e.phone = "Use digits, spaces, + ( ) or - only, including the country code.";
   }
 
-  if (v.message.length > REQUEST_LIMITS.message) e.message = `Use ${REQUEST_LIMITS.message} characters or fewer.`;
+  const messageLimit = messageLimitFor(v.travelStyle);
+  if (v.message.length > messageLimit) e.message = `Use ${messageLimit} characters or fewer.`;
 
   if (!v.consent) e.consent = "Please agree before sending your request.";
 
   return e;
+}
+
+/** Request notes: "Travel style: Couple" (when chosen), a blank line, then the traveller's message. */
+export function requestNotes(v: Pick<PrivateGuideRequestValues, "travelStyle" | "message">): string {
+  const message = v.message.trim();
+  if (!v.travelStyle) return message;
+  return message ? `${travelStyleLine(v.travelStyle)}\n\n${message}` : travelStyleLine(v.travelStyle);
+}
+
+/** Message length left once the travel-style line is added (server notes limit: 2000). */
+export function messageLimitFor(travelStyle: PrivateGuideRequestValues["travelStyle"]): number {
+  return travelStyle ? REQUEST_LIMITS.message - travelStyleLine(travelStyle).length - 2 : REQUEST_LIMITS.message;
 }
 
 /**

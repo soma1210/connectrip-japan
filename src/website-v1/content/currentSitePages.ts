@@ -1,23 +1,21 @@
 import type {
   BusinessInquiryViewModel,
-  CancellationPolicyData,
-  CancellationPolicyViewModel,
   CompanyProfileData,
   CompanyProfileViewModel,
 } from "@/contracts";
-import currentSiteEn from "../../../messages/en.json";
-import currentSiteJa from "../../../messages/ja.json";
+import { BUSINESS_INQUIRY_JA } from "./data/businessInquiry";
+import { COMPANY_PROFILE } from "./data/company";
 import { routeHref } from "../routes";
 import { proposed, tbd } from "./shared";
+import { officerLine } from "./officers";
 
 /**
- * Company Profile and Cancellation Policy, ported as-is from the current
- * site's English version (messages/en.json). Business Inquiries, ported from
- * the Japanese version (messages/ja.json). WORKING_BASELINE
- * (W1-D09): not approved for v1. The Cancellation Policy reflects the current
- * site's service model and has not been reconciled with v1 (TBD).
+ * Company Profile (English) and Business Inquiries (Japanese). The data lives
+ * in content/data/ (Website v1 is the single source of truth; moved from the
+ * retired legacy site on 2026-11-15). WORKING_BASELINE (W1-D09): not approved
+ * for v1. The Cancellation Policy has its own V1 file: content/cancellationPolicy.ts.
  */
-const SOURCE = "Current site page (messages/en.json or ja.json). WORKING_BASELINE (W1-D09), not approved for v1";
+const SOURCE = "Website v1 data (content/data/). WORKING_BASELINE (W1-D09), not approved for v1";
 
 function seo(title: string, path: string) {
   return {
@@ -29,49 +27,54 @@ function seo(title: string, path: string) {
 }
 
 /**
- * v1-only changes on top of the current site's data (the current site itself
- * is not changed). 2026-10-24, Human instruction: add Soma Beppu as a
- * Domestic Travel Services Manager.
+ * Display adjustments on top of the company data (content/data/company.ts):
+ * - 2026-10-24, Human instruction: add Soma Beppu as a Domestic Travel
+ *   Services Manager (the row is hidden for now: HIDDEN_COMPANY_ROWS below);
+ * - 2026-11-15, Human instruction: the representative's official title comes
+ *   from content/officers.ts ("Representative Director & CEO"), followed by a
+ *   "Deputy Representative" row (Soma Beppu, Director & Deputy Representative:
+ *   an internal title, no statutory power of representation).
  */
-function withV1CompanyChanges(row: CompanyProfileData["rows"][number]): CompanyProfileData["rows"][number] {
-  if (row.label === "Domestic Travel Services Manager" && typeof row.value === "string") {
-    return { ...row, value: [row.value, "Soma Beppu"] };
+function withV1CompanyChanges(row: CompanyProfileData["rows"][number]): CompanyProfileData["rows"] {
+  if (row.label === "Representative") {
+    return [
+      { ...row, value: officerLine("representative") },
+      { label: "Deputy Representative", value: officerLine("deputy") },
+    ];
   }
-  return row;
+  if (row.label === "Domestic Travel Services Manager" && typeof row.value === "string") {
+    return [{ ...row, value: [row.value, "Soma Beppu"] }];
+  }
+  return [row];
 }
 
+/**
+ * Rows hidden on Website v1 until the travel agency registration (Human
+ * instruction 2026-11-15): passing the exam is not the same as being appointed
+ * manager under a registration. The data (content/data/company.ts and the v1 change
+ * above) is kept; only the display drops the row. Applies to every page built
+ * from this view model: Company Profile (`/v1/company`, public `/company`) and
+ * About (Company Overview). Remove the label here once the appointment is official.
+ */
+export const HIDDEN_COMPANY_ROWS: readonly string[] = ["Domestic Travel Services Manager"];
+
 export function getCompanyProfileViewModel(): CompanyProfileViewModel {
-  const c = currentSiteEn.company;
+  const c = COMPANY_PROFILE;
   return {
     route: "company",
     seo: seo(c.seo.title, routeHref("company")),
     content: proposed<CompanyProfileData>(
-      { heading: c.heading, subheading: c.subheading, rows: c.rows.map(withV1CompanyChanges), footerSignature: c.footerSignature },
+      { heading: c.heading, subheading: c.subheading, rows: c.rows.flatMap(withV1CompanyChanges).filter((row) => !HIDDEN_COMPANY_ROWS.includes(row.label)), footerSignature: c.footerSignature },
       SOURCE,
     ),
   };
 }
 
-export function getCancellationPolicyViewModel(): CancellationPolicyViewModel {
-  const c = currentSiteEn.cancelPolicy;
-  return {
-    route: "cancelPolicy",
-    seo: seo(c.seo.title, routeHref("cancelPolicy")),
-    content: proposed<CancellationPolicyData>(
-      {
-        heading: c.heading,
-        subheading: c.subheading,
-        intro: c.intro,
-        sections: c.sections as CancellationPolicyData["sections"],
-        footerSignature: c.footerSignature,
-      },
-      SOURCE,
-    ),
-  };
-}
+// Cancellation Policy: Website v1 has its own V1 policy (content/cancellationPolicy.ts). The current
+// site's policy (USD deposit, arrangement fees) contradicts the v1 booking model and is not shown on v1.
 
 export function getBusinessInquiryViewModel(): BusinessInquiryViewModel {
-  const b = currentSiteJa.businessInquiry;
+  const b = BUSINESS_INQUIRY_JA;
   return {
     route: "businessInquiry",
     seo: seo(b.seo.title, routeHref("businessInquiry")),

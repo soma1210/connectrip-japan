@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { Brand, LayoutViewModel } from "@/contracts";
 import { Container } from "@/components/ui/Container";
 import { V1_PREVIEW } from "../config";
 import { externalLinkProps, isPublicHref, routeHref } from "../routes";
 import { CtaLink } from "./CtaLink";
-import type { RecruitNav } from "../content/pages";
+import { getFooterInformation, type RecruitNav } from "../content/pages";
 import { MobileMenu } from "./MobileMenu";
 import { RecruitDropdown } from "./RecruitMenu";
 import { TbdText } from "./Tbd";
@@ -93,14 +94,32 @@ export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit
   );
 }
 
-/** Same structure and styles as the current site's Footer. */
-export function V1Footer({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
+const FOOTER_LINK = "text-sm text-cream/70 transition-colors hover:text-gold";
+
+function FooterGroup({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div>
+      <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">{title}</p>
+      <nav aria-label={title.charAt(0) + title.slice(1).toLowerCase()} className="mt-4 flex flex-col gap-3">
+        {children}
+      </nav>
+    </div>
+  );
+}
+
+/**
+ * Same styles as the current site's Footer. Groups (Human instruction
+ * 2026-11-14): Navigation / Information / Legal, next to the brand and SNS.
+ * Links to pages that are not public are left out (isPublicHref).
+ */
+export function V1Footer({ layout }: { layout: LayoutViewModel; recruit: RecruitNav }) {
   const { footer } = layout.nav;
   const links = footer.links.filter((item) => isPublicHref(item.href));
+  const information = getFooterInformation().filter((item) => isPublicHref(item.href));
   const legal = footer.legal.filter((item) => isPublicHref(item.href));
   return (
     <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
-      <Container className="grid gap-10 py-14 md:grid-cols-3 md:gap-8">
+      <Container className="grid gap-12 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-8">
         <div>
           <BrandMark brand={layout.brand} />
           <div className="mt-6">
@@ -134,38 +153,38 @@ export function V1Footer({ layout, recruit }: { layout: LayoutViewModel; recruit
           </div>
         </div>
 
-        <div>
-          <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">NAVIGATION</p>
-          <nav className="mt-4 flex flex-col gap-3">
+        {/* Phones: two columns (Navigation | Information, Legal below); from 640px: three. */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
+          <FooterGroup title="NAVIGATION">
             {links.map((item) => (
-              <Link key={item.id} href={item.href} className="text-sm text-cream/70 transition-colors hover:text-gold">
+              <Link key={item.id} href={item.href} className={FOOTER_LINK}>
                 <TbdText value={item.label} slot="Nav label" />
               </Link>
             ))}
-          </nav>
-        </div>
+          </FooterGroup>
 
-        <div>
-          <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">INFORMATION</p>
-          <nav className="mt-4 flex flex-col gap-3">
-            {legal.map((item) => (
-              <Link key={item.id} href={item.href} className="text-sm text-cream/70 transition-colors hover:text-gold">
-                <TbdText value={item.label} slot="Nav label" />
-              </Link>
-            ))}
-            {/* Same targets as the header RECRUIT menu; Google Forms open in a new tab. */}
-            {recruit.items.map((item) =>
+          <FooterGroup title="INFORMATION">
+            {information.map((item) =>
               item.external ? (
-                <a key={item.id} href={item.href} {...externalLinkProps(item.href)} className="text-sm text-cream/70 transition-colors hover:text-gold">
+                // Google Forms open in a new tab (same targets as the header RECRUIT menu).
+                <a key={item.id} href={item.href} {...externalLinkProps(item.href)} className={FOOTER_LINK}>
                   {item.label}
                 </a>
               ) : (
-                <Link key={item.id} href={item.href} className="text-sm text-cream/70 transition-colors hover:text-gold">
+                <Link key={item.id} href={item.href} className={FOOTER_LINK}>
                   {item.label}
                 </Link>
               ),
             )}
-          </nav>
+          </FooterGroup>
+
+          <FooterGroup title="LEGAL">
+            {legal.map((item) => (
+              <Link key={item.id} href={item.href} className={FOOTER_LINK}>
+                <TbdText value={item.label} slot="Nav label" />
+              </Link>
+            ))}
+          </FooterGroup>
         </div>
       </Container>
 

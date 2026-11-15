@@ -7,6 +7,7 @@ import {
 } from "./bookingRequestContract";
 import {
   parseDuration,
+  requestNotes,
   validatePrivateGuideRequest,
   type PrivateGuideRequestErrors,
   type PrivateGuideRequestField,
@@ -74,7 +75,8 @@ export function toBookingRequestBody(v: PrivateGuideRequestValues, submissionId:
     country: optional(v.country),
     areas: [...v.areas],
     interests: [...v.interests],
-    notes: v.message.trim(),
+    // Travel style rides in notes (no Contract 0.3 field): "Travel style: Couple\n\n<message>".
+    notes: requestNotes(v),
     consent: true,
     website: v.website,
   };

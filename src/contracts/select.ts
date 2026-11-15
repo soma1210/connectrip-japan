@@ -21,7 +21,9 @@ export type SelectAreaKey =
   | "tennoji_shinsekai"
   | "osaka_bay"
   | "suita_expo"
-  | "minoh";
+  | "minoh"
+  /** Added 2026-11-14 (Sumiyoshi Taisha). */
+  | "sumiyoshi";
 
 export type SelectCategoryKey = "food" | "culture" | "nature" | "shopping" | "family";
 
@@ -48,6 +50,8 @@ export type SelectSpot = {
   longitude: number;
   geoSource: GeoSource;
   mainImage: Tbd<ImageAsset>;
+  /** Article section about this spot (Connectrip Japan Select), shown as a link in the map popup. */
+  guide?: { href: string; label: string };
 };
 
 export type SelectMapContent = {

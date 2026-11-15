@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation";
 import { JsonLd } from "@/website-v1/components/JsonLd";
+import { V1_PREVIEW } from "@/website-v1/config";
 import { pageBreadcrumbJsonLd } from "@/website-v1/structuredData";
 import { routeHref } from "@/website-v1/routes";
 import { getLegalViewModel } from "@/website-v1/content/pages";
@@ -9,7 +11,13 @@ export function generateMetadata() {
   return toMetadata(getLegalViewModel("privacy").seo);
 }
 
+/**
+ * Public mode: unchanged (the existing `/privacy` page). Preview: the Privacy
+ * Policy V1 draft lives at `/v1/privacy-policy` (routes.ts), so this old
+ * preview URL forwards there.
+ */
 export default function V1PrivacyPage() {
+  if (V1_PREVIEW) redirect(routeHref("privacy"));
   return (
     <>
       <JsonLd data={pageBreadcrumbJsonLd("Privacy Policy", routeHref("privacy"))} />

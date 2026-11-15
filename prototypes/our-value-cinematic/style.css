@@ -1,0 +1,374 @@
+/*
+ * OUR VALUE · Cinematic Scroll Prototype V1.0
+ * Brand tokens copied from src/app/globals.css (navy / gold / cream, Shippori Mincho B1).
+ * Motion: transform / opacity only. The pinned deck runs on wide screens without reduced motion;
+ * phones and reduced motion get a plain vertical list.
+ */
+:root {
+  --navy: #162e4c;
+  --navy-light: #1c375c;
+  --navy-dark: #0d1f36;
+  --gold: #c9a45c;
+  --cream: #f5f3ee;
+  --font: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--navy-dark);
+  color: var(--cream);
+  font-family: var(--font);
+  font-weight: 400;
+  overflow-x: clip;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---------- Placeholder sections (test scaffolding only) ---------- */
+.ph {
+  min-height: 100svh;
+  display: grid;
+  place-content: center;
+  gap: 0.75rem;
+  padding: 4rem 16px;
+  text-align: center;
+  background: var(--navy);
+}
+.ph--after {
+  background: linear-gradient(180deg, var(--navy-dark), var(--navy));
+}
+.ph__tag {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(201, 164, 92, 0.7);
+}
+.ph__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  color: rgba(245, 243, 238, 0.35);
+}
+.ph__hint {
+  margin: 1.5rem 0 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.2em;
+  color: rgba(245, 243, 238, 0.45);
+}
+
+/* ---------- OUR VALUE ---------- */
+.ov {
+  position: relative;
+  background:
+    radial-gradient(70% 60% at 72% 50%, rgba(28, 55, 92, 0.55), transparent 70%),
+    var(--navy-dark);
+}
+
+/* Base (phones, reduced motion, no JS): heading on top, cards in a column. */
+.ov__stage {
+  padding: 4.5rem 16px 5rem;
+}
+.ov__intro {
+  max-width: 34rem;
+}
+.ov__rule {
+  display: block;
+  width: 3rem;
+  height: 1px;
+  background: rgba(201, 164, 92, 0.6);
+  margin-bottom: 1.5rem;
+}
+.ov__title {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(2.75rem, 13vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+}
+.ov__line {
+  display: block;
+  overflow: hidden;
+  /* Room for the glyphs so the mask never clips them at rest. */
+  padding-bottom: 0.06em;
+}
+.ov__line > span {
+  display: block;
+}
+.ov__lead {
+  margin: 1.25rem 0 0;
+  max-width: 26rem;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: rgba(245, 243, 238, 0.82);
+}
+.ov__counter,
+.ov__progress {
+  display: none;
+}
+.ov__cards {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- Card ---------- */
+.card {
+  position: relative;
+  aspect-ratio: 4 / 3; /* the photos are 4:3, so nothing is cropped or stretched */
+  overflow: hidden;
+  border: 1px solid rgba(201, 164, 92, 0.3);
+  border-radius: 6px;
+  background: var(--navy);
+  container-type: inline-size;
+  isolation: isolate;
+}
+.card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Natural navy fade from the bottom; the top of the photo stays bright. */
+.card__grad {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(13, 31, 54, 0.96) 0%, rgba(13, 31, 54, 0.62) 30%, rgba(13, 31, 54, 0) 62%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 40%);
+}
+.card__text {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 0 clamp(1rem, 5.5cqw, 2.25rem) clamp(1rem, 5cqw, 2rem);
+}
+.card__num {
+  margin: 0;
+  font-size: clamp(0.75rem, 2.6cqw, 0.9375rem);
+  letter-spacing: 0.26em;
+  color: rgba(201, 164, 92, 0.8);
+}
+.card__title {
+  margin: 0.3em 0 0;
+  font-weight: 500;
+  font-size: clamp(1.125rem, 5.6cqw, 2.125rem);
+  line-height: 1.22;
+  letter-spacing: 0.01em;
+  color: var(--gold);
+}
+.card__desc {
+  margin: 0.55em 0 0;
+  font-size: clamp(0.8125rem, 3cqw, 1.0625rem);
+  line-height: 1.6;
+  color: rgba(245, 243, 238, 0.92);
+}
+/* Depth: cards waiting in the stack are dimmed (opacity set from JS). */
+.card__shade {
+  position: absolute;
+  inset: 0;
+  background: var(--navy-dark);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Entrance (armed by JS so no-JS shows everything) ---------- */
+.ov[data-armed] .ov__rule {
+  transform-origin: left center;
+  transition: transform 1s var(--ease-out) 0.1s;
+}
+.ov[data-armed] .ov__line > span {
+  transition: transform 1.15s var(--ease-out);
+}
+.ov[data-armed] .ov__line:nth-child(2) > span {
+  transition-delay: 0.1s;
+}
+.ov[data-armed] .ov__lead,
+.ov[data-armed] .ov__counter,
+.ov[data-armed] .ov__progress {
+  transition:
+    opacity 0.9s var(--ease-out) 0.35s,
+    transform 0.9s var(--ease-out) 0.35s;
+}
+.ov[data-armed] .ov__counter,
+.ov[data-armed] .ov__progress {
+  transition-delay: 0.5s;
+}
+.ov[data-armed] .card {
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1.2s var(--ease-out);
+}
+.ov[data-armed]:not(.is-in) .ov__rule {
+  transform: scaleX(0);
+}
+.ov[data-armed]:not(.is-in) .ov__line > span {
+  transform: translate3d(0, 105%, 0);
+}
+.ov[data-armed]:not(.is-in) .ov__lead,
+.ov[data-armed]:not(.is-in) .ov__counter,
+.ov[data-armed]:not(.is-in) .ov__progress {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+}
+/* List mode: each card rises as it scrolls in. */
+.ov[data-armed] .ov__card:not(.is-in) .card {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+}
+
+/* ---------- Pinned deck: wide screens with motion allowed ---------- */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .ov {
+    /* One "unit" of scroll per card change; --units is set from JS (start hold + 5 changes + end hold). */
+    --unit: 70svh;
+  }
+  .ov__track {
+    height: calc(100svh + var(--units, 6.2) * var(--unit));
+  }
+  .ov__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding: 0 clamp(24px, 4vw, 72px);
+    display: grid;
+    grid-template-columns: 45fr 55fr;
+    align-items: center;
+    gap: clamp(16px, 3vw, 56px);
+    overflow: hidden;
+  }
+  @media (max-width: 1023px) {
+    .ov__stage {
+      grid-template-columns: 42fr 58fr;
+    }
+  }
+  .ov__intro {
+    max-width: none;
+    padding-left: clamp(0px, 3vw, 56px);
+  }
+  .ov__title {
+    font-size: clamp(3.5rem, 8.4vw, 8.5rem);
+  }
+  .ov__lead {
+    font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+    max-width: 24rem;
+  }
+  .ov__counter {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-top: clamp(2rem, 5svh, 3.5rem);
+    font-size: 0.9375rem;
+    letter-spacing: 0.22em;
+  }
+  .ov__reel-window {
+    display: block;
+    height: 1.4em;
+    overflow: hidden;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.4;
+    color: var(--gold);
+  }
+  .ov__reel {
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
+  }
+  .ov__total {
+    color: rgba(245, 243, 238, 0.55);
+  }
+  .ov__progress {
+    display: block;
+    position: relative;
+    width: min(14rem, 70%);
+    height: 1px;
+    margin-top: 1rem;
+    background: rgba(245, 243, 238, 0.16);
+  }
+  .ov__progress > span {
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform-origin: left center;
+    transform: scaleX(0.1667);
+    will-change: transform;
+  }
+
+  .ov__deck {
+    height: 100%;
+    display: grid;
+    align-items: center;
+  }
+  .ov__cards {
+    margin: 0;
+    display: grid;
+    place-items: center;
+  }
+  .ov__card {
+    grid-area: 1 / 1;
+    width: min(100%, calc(66svh * 4 / 3), 780px);
+    will-change: transform;
+    transform-origin: 50% 50%;
+  }
+  .ov__card .card {
+    box-shadow: 0 34px 80px -34px rgba(2, 8, 18, 0.9);
+  }
+  /* Deck entrance: the first card rises into place, the stack follows a little later. */
+  .ov[data-armed]:not(.is-in) .ov__card .card {
+    opacity: 0;
+    transform: translate3d(0, 48px, 0);
+  }
+  .ov[data-armed] .ov__card:nth-child(1) .card {
+    transition-delay: 0.15s;
+  }
+  .ov[data-armed] .ov__card:nth-child(n + 2) .card {
+    transition-delay: 0.35s;
+  }
+  /* Once the entrance has played, the card itself never transitions (the deck is scroll-driven). */
+  .ov.is-settled .card {
+    transition: none;
+  }
+}
+
+/* Reduced motion: everything is just there, a short fade at most. */
+@media (prefers-reduced-motion: reduce) {
+  .ov[data-armed] .ov__rule,
+  .ov[data-armed] .ov__line > span,
+  .ov[data-armed] .ov__lead,
+  .ov[data-armed] .card {
+    transition: opacity 0.3s ease;
+    transform: none !important;
+  }
+}
+
+/* Reduced motion on wide screens: the same cards as a calm 2-column grid (no pin, no deck). */
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .ov__stage {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem clamp(24px, 4vw, 48px);
+  }
+  .ov__title {
+    font-size: clamp(3.5rem, 7vw, 6rem);
+  }
+  .ov__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
