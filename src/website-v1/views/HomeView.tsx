@@ -29,6 +29,7 @@ import { PrivateGuideMotion } from "../components/wd/PrivateGuideMotion";
 import { LocationMarquee } from "../components/wd/LocationMarquee";
 import { KineticCta } from "../components/wd/KineticCta";
 import { ImageTrail } from "../components/wd/ImageTrail";
+import { TRAIL_EXTRA_IMAGES } from "../assets/trailImages";
 import { CinematicHeroSlider } from "../components/hero/CinematicHeroSlider";
 import { getFeaturedTour } from "../content/featuredTour";
 import { PRIVATE_DAY_DESCRIPTION } from "../content/home";
@@ -537,7 +538,7 @@ export function HomeView({ vm }: { vm: HomeViewModel }) {
       </Section>
     ) : null,
     sns: c.sns ? <Sns section={c.sns} /> : null,
-    finalCta: <FinalCta section={c.finalCta} trail={c.hero.images.status === "TBD" ? [] : c.hero.images.value.map((p) => p.src)} />,
+    finalCta: <FinalCta section={c.finalCta} trail={[...(c.hero.images.status === "TBD" ? [] : c.hero.images.value.map((p) => p.src)), ...TRAIL_EXTRA_IMAGES]} />,
   };
 
   return (

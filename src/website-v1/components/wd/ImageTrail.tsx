@@ -57,7 +57,8 @@ export function ImageTrail({ targetId, images }: { targetId: string; images: str
 
   return (
     <div ref={layer} aria-hidden className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
-      {Array.from({ length: Math.min(10, images.length * 2) }).map((_, i) => (
+      {/* At least one slot per photo, so every photo in the list takes its turn. */}
+      {Array.from({ length: Math.max(Math.min(10, images.length * 2), images.length) }).map((_, i) => (
         // eslint-disable-next-line @next/next/no-img-element -- small decorative pool, already-optimised site photos
         <img
           key={i}
