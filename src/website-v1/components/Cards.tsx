@@ -4,10 +4,22 @@ import { FadeIn } from "@/components/ui/FadeIn";
 import { CtaLink } from "./CtaLink";
 import { PreviewFlags } from "./guide/GuideParts";
 import { formatDuration, formatMoney } from "./format";
+import { usdReference } from "../content/exchangeRate";
 import { TbdImage, TbdMark, TbdText } from "./Tbd";
 
 function TbdValue<T>({ value, slot, render }: { value: Tbd<T>; slot: string; render: (v: T) => string }) {
   return value.status === "TBD" ? <TbdMark slot={slot} note={value.note} /> : <>{render(value.value)}</>;
+}
+
+/** Decided card price ("From ¥24,800 / group") with the approximate USD reference (hidden when the rate is out of date). */
+function CardPrice({ label, jpy }: { label: string; jpy: number | null }) {
+  const usd = jpy === null ? null : usdReference(jpy);
+  return (
+    <>
+      <span className="text-cream/90">{label}</span>
+      {usd !== null ? <span className="mt-0.5 block text-[11px] text-cream/50">≈ ${usd} USD</span> : null}
+    </>
+  );
 }
 
 /** Ready-made Experience card. Visual language of the current site's PlanCard. */
@@ -31,7 +43,13 @@ export function ExperienceCard({ item, delay = 0 }: { item: ExperienceSummary; d
           <div>
             <dt className="text-cream/45">Price</dt>
             <dd className="mt-1">
-              <TbdValue value={item.price.amount} slot="Price" render={formatMoney} />
+              {item.priceLabel && item.price.amount.status !== "TBD" ? (
+                <CardPrice label={item.priceLabel} jpy={item.price.amount.value.currency === "JPY" ? item.price.amount.value.amount : null} />
+              ) : item.price.amount.status === "TBD" && item.pendingPriceLabel ? (
+                item.pendingPriceLabel
+              ) : (
+                <TbdValue value={item.price.amount} slot="Price" render={formatMoney} />
+              )}
             </dd>
           </div>
         </dl>
@@ -39,6 +57,38 @@ export function ExperienceCard({ item, delay = 0 }: { item: ExperienceSummary; d
           <CtaLink cta={item.cta} variant="text" />
           {item.bookCta ? <CtaLink cta={item.bookCta} size="sm" /> : null}
         </div>
+      </div>
+    </FadeIn>
+  );
+}
+
+/**
+ * "Coming soon" slot in an Experience list (2026-11-16): same frame as the
+ * product card, no link, button, photo, duration or price. The photo area
+ * holds a quiet gold frame so the card reads as designed, not empty.
+ */
+export function ComingSoonCard({ delay = 0 }: { delay?: number }) {
+  return (
+    <FadeIn delay={delay} className="flex cursor-default flex-col border border-gold/30 bg-navy-dark/40 select-none">
+      <div className="relative flex flex-1 flex-col items-center justify-center gap-6 overflow-hidden px-8 py-16 text-center md:py-0">
+        {/* Inner hairline frame with corner marks. */}
+        <div aria-hidden className="pointer-events-none absolute inset-4 border border-gold/15 md:inset-5" />
+        {[
+          "top-4 left-4 border-t border-l md:top-5 md:left-5",
+          "top-4 right-4 border-t border-r md:top-5 md:right-5",
+          "bottom-4 left-4 border-b border-l md:bottom-5 md:left-5",
+          "bottom-4 right-4 border-b border-r md:bottom-5 md:right-5",
+        ].map((corner) => (
+          <span key={corner} aria-hidden className={`pointer-events-none absolute h-5 w-5 border-gold/60 md:h-6 md:w-6 ${corner}`} />
+        ))}
+        <span aria-hidden className="h-px w-12 bg-gold/60" />
+        <p className="font-heading-en text-[2rem] leading-tight tracking-[0.18em] text-gold md:text-[2.1rem] lg:text-[2.4rem]">
+          COMING
+          <br />
+          SOON
+        </p>
+        <span aria-hidden className="h-px w-12 bg-gold/60" />
+        <p className="max-w-[16rem] font-heading-en text-sm tracking-wide text-cream/70 italic">New experiences are on the way.</p>
       </div>
     </FadeIn>
   );

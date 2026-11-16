@@ -62,6 +62,14 @@ function selectProblems(a: SelectArticle): string[] {
     if (rights === "missing") p.push(`${spot.name}: no photo`);
     else if (rights === "unverified") p.push(`${spot.name}: photo rights not confirmed`);
   }
+  if (a.content.type === "guide") {
+    if (!a.content.hero.rightsConfirmed) p.push("Hero photo: rights not confirmed");
+    for (const place of a.content.places) {
+      if (!place.checkedAt) p.push(`${place.name}: facts not checked against official information`);
+      if (!place.image) p.push(`${place.name}: no photo`);
+      else if (!place.image.rightsConfirmed) p.push(`${place.name}: photo rights not confirmed`);
+    }
+  }
   if (a.content.type === "itinerary") {
     a.content.stops.forEach((s, i, all) => {
       if (i < all.length - 1 && !s.nextLeg) p.push(`${s.slot}: route to the next stop not verified`);
@@ -72,7 +80,9 @@ function selectProblems(a: SelectArticle): string[] {
 
 /** Spots an article features, in page order. */
 export function articleSpotIds(a: SelectArticle): string[] {
-  return a.content.type === "spots" ? a.content.spots.map((s) => s.spotId) : a.content.stops.map((s) => s.spotId);
+  if (a.content.type === "spots") return a.content.spots.map((s) => s.spotId);
+  if (a.content.type === "itinerary") return a.content.stops.map((s) => s.spotId);
+  return []; // "guide": its places are not in the spot master
 }
 
 /** Select articles: review deadline (preview warning only; never unpublishes). */

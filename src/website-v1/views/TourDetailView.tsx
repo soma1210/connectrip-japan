@@ -18,7 +18,7 @@ import { formatMoney } from "../components/format";
  */
 
 /** Torii gate in the lucide line style (lucide has no torii icon). */
-function ToriiIcon({ className }: { className?: string }) {
+export function ToriiIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
       <path d="M2 5c3 1 17 1 20 0" />
@@ -47,7 +47,7 @@ const FACT_ICONS: Record<string, LucideIcon> = {
 };
 
 /** Gold rule with a centred heading, as in the mock-up. */
-function RuleHeading({ children, id }: { children: ReactNode; id: string }) {
+export function RuleHeading({ children, id }: { children: ReactNode; id: string }) {
   return (
     <div className="flex items-center gap-4 md:gap-6">
       <span className="h-px flex-1 bg-gold/50" aria-hidden />
@@ -60,7 +60,7 @@ function RuleHeading({ children, id }: { children: ReactNode; id: string }) {
 }
 
 /** Included / Not Included box: heading on the left (top on mobile), list on the right. */
-function IncludeBox({ id, title, icon: Icon, mark, items, note }: { id: string; title: string; icon: LucideIcon; mark: string; items: string[]; note?: string }) {
+export function IncludeBox({ id, title, icon: Icon, mark, items, note }: { id: string; title: string; icon: LucideIcon; mark: string; items: string[]; note?: string }) {
   return (
     <div className="grid gap-6 rounded-xl border border-gold/30 bg-navy-dark/40 px-6 py-7 md:grid-cols-[17rem_1fr] md:items-center md:gap-10 md:px-10">
       <div className="flex items-center gap-3 md:pr-8">

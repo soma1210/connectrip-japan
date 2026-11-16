@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { ExperienceDetailViewModel, ExperiencesListViewModel, Tbd } from "@/contracts";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Fact, PageIntro, Section, SectionTitle, TbdBlock } from "../components/Blocks";
-import { ExperienceCard } from "../components/Cards";
+import { ComingSoonCard, ExperienceCard } from "../components/Cards";
 import { CtaLink } from "../components/CtaLink";
 import { formatDuration, formatMoney } from "../components/format";
 import { TbdImage, TbdMark, TbdText } from "../components/Tbd";
@@ -17,9 +17,9 @@ export function ExperiencesView({ vm }: { vm: ExperiencesListViewModel }) {
           <TbdBlock value={{ status: "TBD", note: "No approved Ready-made Experiences yet" }} slot="Experiences" />
         ) : (
           <div className="grid gap-6 md:grid-cols-3">
-            {c.items.map((item, i) => (
-              <ExperienceCard key={item.id} item={item} delay={i * 0.1} />
-            ))}
+            {c.items.map((item, i) =>
+              item.listing === "coming_soon" ? <ComingSoonCard key={item.id} delay={i * 0.1} /> : <ExperienceCard key={item.id} item={item} delay={i * 0.1} />,
+            )}
           </div>
         )}
         {c.privateGuideCta ? (

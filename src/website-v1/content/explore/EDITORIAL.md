@@ -17,6 +17,7 @@
 |---|---|
 | スポット（名前・座標・写真・公式サイト・アクセス） | `src/website-v1/content/spots/osaka.ts`（エリアごとに1ファイル。京都なら `kyoto.ts` を作り、`spots/index.ts` の `ALL_SPOTS` に加える） |
 | Select 記事 | `src/website-v1/content/explore/select.ts` |
+| Select 記事（下書き） | `src/website-v1/content/explore/selectDrafts.ts`（2026-11-15 の6本。`status: "draft"` のまま。スポットマスタにない京都・神戸の記事は `content.type: "guide"`：ヒーロー写真・本文セクション・おすすめの場所・旅のヒント。地図なし） |
 | Updates 記事 | `src/website-v1/content/explore/updates.ts`（ファイル内にひな形あり） |
 | エリアの説明文 | `src/website-v1/content/explore/areas.ts` |
 | 公開判定のルール | `src/website-v1/content/explore/rules.ts` |

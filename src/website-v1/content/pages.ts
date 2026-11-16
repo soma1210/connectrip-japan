@@ -1,5 +1,6 @@
 import { V1_PREVIEW } from "../config";
-import type { AboutSection, AboutViewModel, LayoutViewModel, LegalPageViewModel, NavItem } from "@/contracts";
+import type { AboutSection, AboutValue, AboutViewModel, LayoutViewModel, LegalPageViewModel, NavItem } from "@/contracts";
+import { approved } from "@/contracts/status";
 import { isPublicHref, recruitHref, routeHref, type StaticRouteKey } from "../routes";
 import { approvedText, cta, pageName, pageSeo, proposed, tbd } from "./shared";
 import { getCompanyProfileViewModel } from "./currentSitePages";
@@ -130,6 +131,17 @@ export function getLayoutViewModel(): LayoutViewModel {
 }
 
 const ABOUT_SOURCE = "Human instruction 2026-11-14 (About Us structure and wording)";
+const MVV_SOURCE = "Official Mission, Vision & Values copy (Human instruction 2026-11-16)";
+
+/** Our Values (official copy, 2026-11-16): number, name, headline, description. */
+const ABOUT_VALUES: AboutValue[] = [
+  { number: "01", name: "CONNECT", headline: "Creating Meaningful Connections", text: "We bring people together, creating meaningful connections that go beyond travel." },
+  { number: "02", name: "TRUST", headline: "Building Lasting Trust", text: "We act with honesty, integrity, and responsibility to build lasting relationships." },
+  { number: "03", name: "SPEED", headline: "Acting with Speed and Purpose", text: "We think fast, act decisively, and adapt to change while maintaining quality and safety." },
+  { number: "04", name: "HOSPITALITY", headline: "Going Beyond Expectations", text: "We put people first, delivering thoughtful service and experiences that exceed expectations." },
+  { number: "05", name: "RESPECT", headline: "Respecting Every Individual and Culture", text: "We embrace diversity, respect different cultures and perspectives, and treat everyone with dignity." },
+  { number: "06", name: "CHALLENGE", headline: "Embracing New Possibilities", text: "We embrace new possibilities, learn from challenges, and continuously strive to create a better future." },
+];
 /**
  * Company Overview facts: every row of the Company Profile page, in the same
  * order and wording (Footer consolidation, 2026-11-14), so About carries all
@@ -149,9 +161,10 @@ function companyOverviewFacts(): AboutSection["facts"] {
 
 /**
  * About Us (2026-11-14): page structure only. Hero wording, the section names
- * and the philosophy line come from the instruction; the overview, mission,
- * vision and values copy is decided in the next phase (TBD placeholders, shown
- * in the preview only). Not in PUBLIC_PATHS: public mode answers 404.
+ * and the philosophy line come from the instruction. Mission, Vision, Values
+ * and the closing statement: official copy (2026-11-16). The overview and
+ * philosophy copy is still TBD (placeholders, shown in the preview only).
+ * Not in PUBLIC_PATHS: public mode answers 404.
  */
 export function getAboutViewModel(): AboutViewModel {
   const section = (key: AboutSection["key"], title: string, extra: Partial<AboutSection> = {}): AboutSection => ({
@@ -178,10 +191,38 @@ export function getAboutViewModel(): AboutViewModel {
         section("philosophy", "Our Philosophy", {
           statement: approvedText("Connecting People. Creating Experiences.", ABOUT_SOURCE),
         }),
-        section("mission", "Our Mission"),
-        section("vision", "Our Vision"),
-        section("values", "Our Values"),
+        section("mission", "Our Mission", {
+          statement: approvedText("Connecting People Through Travel.", MVV_SOURCE),
+          body: approved(
+            [
+              "We believe the true value of travel lies not only in the places we visit, but in the people we meet and the connections we create.",
+              "Through meaningful experiences, we bring travelers and local communities together, building bridges across cultures, languages, and borders.",
+            ],
+            MVV_SOURCE,
+          ),
+        }),
+        section("vision", "Our Vision", {
+          statement: approvedText("Passing the Wonder of Travel Through Generations.", MVV_SOURCE),
+          body: approved(
+            [
+              "We envision a future where the wonder of travel lives on through generations.",
+              "By preserving Japan's rich culture and traditions, creating unforgettable experiences, and connecting people through travel, we strive to inspire memories and stories that will be shared for generations to come.",
+            ],
+            MVV_SOURCE,
+          ),
+        }),
+        section("values", "Our Values", {
+          statement: approvedText("The Six Values That Guide Us", MVV_SOURCE),
+          // The values themselves are the copy: no paragraph above the grid.
+          body: approved([], MVV_SOURCE),
+          values: ABOUT_VALUES,
+        }),
       ],
+      closing: {
+        eyebrow: "CONNECTRIP JAPAN",
+        statement: "Connecting People Through Travel.",
+        lines: ["Every connection creates a story.", "Every story inspires the next generation."],
+      },
       experiencesCta: cta("v1_about_experiences", "experiences", routeHref("experiences"), "section", "primary", pageName("Experiences")),
       privateGuideCta: cta("v1_about_private", "privateGuide", routeHref("privateGuide"), "section", "secondary", pageName("Private Guide")),
     },

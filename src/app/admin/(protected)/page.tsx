@@ -4,6 +4,9 @@ import { INITIAL_PIPELINE_STATUS } from "@/features/guide-community/config/pipel
 import { isDbConfigured } from "@/lib/db";
 import { listGuideApplications } from "@/lib/data/guide-applications";
 import { listPartnerRegistrations } from "@/lib/data/partner-registrations";
+import { requireAdmin } from "@/lib/admin-auth";
+import { dashboardCounts, type DashboardCounts } from "@/lib/inquiries/admin";
+import { dbFromEnv } from "@/lib/pg";
 
 export const metadata: Metadata = {
   title: "管理画面 · Connectrip Japan",
@@ -33,6 +36,17 @@ async function partnerCounts(): Promise<Counts> {
   }
 }
 
+async function inquiryCounts(): Promise<DashboardCounts | null | "no_db"> {
+  const db = dbFromEnv();
+  if (!db) return "no_db";
+  try {
+    return await dashboardCounts(db);
+  } catch {
+    console.error("[admin] inquiry counts failed");
+    return null;
+  }
+}
+
 const CONTENT = [
   { label: "ギャラリー", text: "写真の追加・削除", href: "/admin/gallery" },
   { label: "ブログ", text: "記事の追加・削除", href: "/admin/vlog" },
@@ -40,7 +54,8 @@ const CONTENT = [
 ];
 
 export default async function AdminDashboardPage() {
-  const [guides, partners] = await Promise.all([guideCounts(), partnerCounts()]);
+  await requireAdmin();
+  const [inquiries, guides, partners] = await Promise.all([inquiryCounts(), guideCounts(), partnerCounts()]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -57,6 +72,31 @@ export default async function AdminDashboardPage() {
           ローカル開発では <code className="rounded bg-white/60 px-1">.data/</code> のファイルを表示しています。
         </p>
       ) : null}
+
+      <section className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-semibold text-slate-500">問い合わせ・予約リクエスト</h2>
+          <Link href="/admin/inquiries" className="text-sm font-medium text-navy underline decoration-navy/30 underline-offset-4 hover:decoration-navy">
+            一覧を見る →
+          </Link>
+        </div>
+        {inquiries === "no_db" ? (
+          <p className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">問い合わせ用データベースが未接続です。</p>
+        ) : inquiries === null ? (
+          <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">問い合わせの件数を読み込めませんでした。</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            <Stat label="問い合わせ総数" value={inquiries.total} href="/admin/inquiries" />
+            <Stat label="新規" value={inquiries.fresh} href="/admin/inquiries?status=received" highlight={inquiries.fresh > 0} />
+            <Stat label="予約リクエスト" value={inquiries.bookingRequests} href="/admin/inquiries?kind=booking_request" />
+            <Stat label="対応中" value={inquiries.inProgress} href="/admin/inquiries?status=in_review" />
+            <Stat label="通知メール失敗" value={inquiries.emailFailed} href="/admin/inquiries?email=failed" alert={inquiries.emailFailed > 0} />
+          </div>
+        )}
+        {inquiries && inquiries !== "no_db" && inquiries.emailWaiting > 0 ? (
+          <p className="text-xs text-slate-600">送信待ちの通知メール：{inquiries.emailWaiting} 件（メール設定後、または自動再送で送信されます）</p>
+        ) : null}
+      </section>
 
       <section className="flex flex-col gap-4">
         <h2 className="text-sm font-semibold text-slate-500">応募・パートナー管理</h2>
@@ -141,6 +181,15 @@ function SummaryCard({
       <span className="mt-auto text-sm font-medium text-navy underline decoration-navy/30 underline-offset-4 group-hover:decoration-navy">
         {cta} →
       </span>
+    </Link>
+  );
+}
+
+function Stat({ label, value, href, highlight, alert }: { label: string; value: number; href: string; highlight?: boolean; alert?: boolean }) {
+  return (
+    <Link href={href} className={`flex flex-col gap-1 rounded-md border bg-white p-4 transition-colors hover:border-navy/40 ${alert ? "border-red-300" : "border-slate-200"}`}>
+      <span className="text-xs text-slate-500">{label}</span>
+      <span className={`text-2xl font-semibold tabular-nums ${alert ? "text-red-700" : highlight ? "text-sky-700" : "text-navy"}`}>{value}</span>
     </Link>
   );
 }

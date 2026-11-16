@@ -1,7 +1,9 @@
 import { getReviews } from "@/lib/data/reviews";
 import { addReview, removeReview } from "./actions";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export default async function AdminReviewsPage() {
+  await requireAdmin();
   const reviews = await getReviews();
 
   return (

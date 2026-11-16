@@ -1,94 +1,117 @@
 "use client";
 
 import { useEffect } from "react";
-import { gsap, MQ_DESKTOP_MOTION, MQ_MOTION, ScrollTrigger } from "./gsap";
+import { gsap, ScrollTrigger } from "./gsap";
+import { getLenis } from "./SmoothScroll";
 
 /**
- * Motion of HowItWorksScene. Wide screens: one ScrollTrigger over the pinned
- * section turns the scroll position into the active step (0 … total-1, flows
- * one after another). Each change of step is played as a short, timed
- * transition (not scrubbed), so steps switch crisply:
- *   number stack rolls, active / done flags on the steps, progress bar of the
- *   flow, flow panels wipe across when the flow changes, tab underline and
- *   the background light move.
- * Phones: steps and CTAs rise one after another as they scroll in.
+ * Motion of HowItWorksScene. Wide screens: one ScrollTrigger over the held
+ * section splits the scroll into one part per service (first half Ready-made
+ * Experience, second half Private Guide); the part the scroll is in decides
+ * the service on screen. A change of service plays as a short, timed
+ * transition (not scrubbed): the giant number rolls, the panels cross-fade
+ * with a light slide, the steps rise one after another, the progress rule
+ * draws, the tab underline and the background light move.
+ * Tabs (every screen): choosing a service glides the page to the middle of
+ * its part of the scroll (phones: to its panel), so the scroll stays the only
+ * source of the state and click / scroll never disagree.
+ * Phones: steps rise as they scroll in. Reduced motion: no animation.
  */
-export function HowItWorksMotion({ targetId, total, perFlow }: { targetId: string; total: number; perFlow: number[] }) {
+export function HowItWorksMotion({ targetId, flowCount }: { targetId: string; flowCount: number }) {
   useEffect(() => {
     const root = document.getElementById(targetId);
     if (!root) return;
     const flows = [...root.querySelectorAll<HTMLElement>("[data-hiw-flow]")];
     const numbers = root.querySelector<HTMLElement>("[data-hiw-numbers]");
     const count = root.querySelector<HTMLElement>("[data-hiw-count]");
-    const tabs = [...root.querySelectorAll<HTMLElement>("[data-hiw-tab]")];
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>("[data-hiw-tab]")];
     const underline = root.querySelector<HTMLElement>("[data-hiw-underline]");
     const glow = root.querySelector<HTMLElement>("[data-hiw-glow]");
-    const mm = gsap.matchMedia();
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const d = (s: number) => (reduced ? 0 : s);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const mark = (f: number) =>
+      tabs.forEach((t, j) => {
+        t.toggleAttribute("data-on", j === f);
+        t.setAttribute("aria-pressed", String(j === f));
+      });
 
-    mm.add(MQ_DESKTOP_MOTION, () => {
+    // Where a tab takes the page; set per screen size below.
+    let target: (f: number) => number = () => window.scrollY;
+    const glideTo = (y: number) => {
+      const lenis = getLenis();
+      if (lenis) lenis.scrollTo(y, { duration: reduced ? 0 : 1.1, easing: (t: number) => 1 - Math.pow(1 - t, 4), force: true });
+      else window.scrollTo({ top: y, behavior: reduced ? "auto" : "smooth" });
+    };
+    const onTab = (e: MouseEvent) => {
+      const t = (e.currentTarget as HTMLElement).dataset.hiwTab;
+      if (t !== undefined) glideTo(target(Number(t)));
+    };
+    tabs.forEach((t) => t.addEventListener("click", onTab));
+
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 768px)", () => {
       let current = -1;
-      let currentFlow = -1;
-      const locate = (k: number) => {
-        let f = 0;
-        let i = k;
-        while (f < perFlow.length - 1 && i >= perFlow[f]) i -= perFlow[f++];
-        return { f, i };
-      };
       gsap.set(flows, { autoAlpha: 0 });
 
-      const show = (k: number) => {
-        if (k === current) return;
-        const { f, i } = locate(k);
-        const forward = k > current;
-        current = k;
-        gsap.to(numbers, { yPercent: (-100 * k) / total, duration: 0.9, ease: "expo.out", overwrite: true });
-        if (count) count.textContent = `${String(i + 1).padStart(2, "0")} / ${String(perFlow[f]).padStart(2, "0")}`;
-
-        if (f !== currentFlow) {
-          const prev = flows[currentFlow];
-          if (prev) gsap.to(prev, { autoAlpha: 0, x: forward ? -80 : 80, clipPath: forward ? "inset(-30% 100% -30% 0%)" : "inset(-30% 0% -30% 100%)", duration: 0.7, ease: "power3.inOut", overwrite: true });
-          gsap.fromTo(
-            flows[f],
-            { autoAlpha: 0, x: forward ? 80 : -80, clipPath: forward ? "inset(-30% 0% -30% 100%)" : "inset(-30% 100% -30% 0%)" },
-            { autoAlpha: 1, x: 0, clipPath: "inset(-30% -5% -30% -5%)", duration: 0.9, ease: "power3.inOut", delay: prev ? 0.2 : 0, overwrite: true },
-          );
-          tabs.forEach((t, j) => t.toggleAttribute("data-on", j === f));
-          const tab = tabs[f];
-          if (underline && tab) gsap.to(underline, { x: tab.offsetLeft, width: tab.offsetWidth, duration: 0.8, ease: "expo.out" });
-          currentFlow = f;
-        }
-        flows.forEach((flow, fi) => {
-          flow.querySelectorAll<HTMLElement>("[data-hiw-step]").forEach((step, si) => {
-            step.toggleAttribute("data-on", fi === f && si === i);
-            step.toggleAttribute("data-done", fi === f && si < i);
-          });
-          const bar = flow.querySelector<HTMLElement>("[data-hiw-bar]");
-          if (bar && fi === f) gsap.to(bar, { scaleX: (i + 1) / perFlow[f], duration: 0.8, ease: "expo.out" });
-        });
-        if (glow) gsap.to(glow, { xPercent: (i - 1.5) * 18, yPercent: (f ? 30 : 0) + i * 6, duration: 1.6, ease: "sine.inOut" });
+      const show = (f: number) => {
+        if (f === current) return;
+        const forward = f > current;
+        const prev = flows[current];
+        current = f;
+        gsap.to(numbers, { yPercent: (-100 * f) / flowCount, duration: d(0.9), ease: "expo.out", overwrite: true });
+        if (count) count.textContent = `${pad(f + 1)} / ${pad(flowCount)}`;
+        if (prev) gsap.to(prev, { autoAlpha: 0, x: forward ? -56 : 56, duration: d(0.5), ease: "power2.inOut", overwrite: true });
+        gsap.fromTo(flows[f], { autoAlpha: 0, x: forward ? 56 : -56 }, { autoAlpha: 1, x: 0, duration: d(0.8), delay: prev ? d(0.15) : 0, ease: "power3.out", overwrite: true });
+        const steps = flows[f].querySelectorAll<HTMLElement>("[data-hiw-step]");
+        gsap.fromTo(steps, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: d(0.6), stagger: d(0.06), delay: d(0.2), ease: "power2.out", overwrite: true });
+        const bar = flows[f].querySelector<HTMLElement>("[data-hiw-bar]");
+        if (bar) gsap.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: d(1.1), delay: d(0.3), ease: "expo.out", overwrite: true });
+        mark(f);
+        const tab = tabs[f];
+        if (underline && tab) gsap.to(underline, { x: tab.offsetLeft, width: tab.offsetWidth, duration: d(0.8), ease: "expo.out", overwrite: true });
+        if (glow) gsap.to(glow, { xPercent: f ? 18 : -18, yPercent: f ? 24 : 0, duration: d(1.6), ease: "sine.inOut", overwrite: true });
       };
 
       const st = ScrollTrigger.create({
         trigger: root,
         start: "top top",
         end: "bottom bottom",
-        onUpdate: (self) => show(Math.min(total - 1, Math.floor(self.progress * total * 0.999))),
+        onUpdate: (self) => show(Math.min(flowCount - 1, Math.floor(self.progress * flowCount))),
       });
-      show(0);
+      // The middle of each service's part of the scroll.
+      target = (f) => st.start + ((f + 0.5) / flowCount) * (st.end - st.start);
+      show(Math.min(flowCount - 1, Math.floor(st.progress * flowCount)));
       return () => {
         st.kill();
-        flows.forEach((flow) => flow.querySelectorAll("[data-hiw-step]").forEach((s) => (s.removeAttribute("data-on"), s.removeAttribute("data-done"))));
-        tabs.forEach((t) => t.removeAttribute("data-on"));
+        gsap.set([...flows, ...flows.flatMap((fl) => [...fl.querySelectorAll("[data-hiw-step]")])], { clearProps: "all" });
+        target = () => window.scrollY;
       };
     });
 
-    mm.add(`(max-width: 767px) and ${MQ_MOTION}`, () => {
-      root.querySelectorAll<HTMLElement>("[data-hiw-step]").forEach((step) => {
-        gsap.from(step, { x: -40, autoAlpha: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: step, start: "top 92%" } });
-      });
+    mm.add("(max-width: 767px)", () => {
+      // Phones: both services are stacked; a tab jumps to its panel, and the tab of the panel in view is lit.
+      const header = 96;
+      target = (f) => flows[f].getBoundingClientRect().top + window.scrollY - header;
+      mark(0);
+      const st = flows[1]
+        ? ScrollTrigger.create({ trigger: flows[1], start: "top 55%", onToggle: (self) => mark(self.isActive ? 1 : 0), end: "max" })
+        : null;
+      if (!reduced) {
+        root.querySelectorAll<HTMLElement>("[data-hiw-step]").forEach((step) => {
+          gsap.from(step, { x: -40, autoAlpha: 0, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: step, start: "top 92%" } });
+        });
+      }
+      return () => {
+        st?.kill();
+        target = () => window.scrollY;
+      };
     });
-    return () => mm.revert();
-  }, [targetId, total, perFlow]);
+    return () => {
+      tabs.forEach((t) => t.removeEventListener("click", onTab));
+      mm.revert();
+    };
+  }, [targetId, flowCount]);
 
   return null;
 }

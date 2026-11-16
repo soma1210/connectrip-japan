@@ -5,14 +5,18 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 // Connectrip Japan 管理画面: one entry point and one navigation for every admin
-// screen. Each screen keeps its own data (guide_applications, partner_registrations,
-// gallery, blog, reviews); only the frame is shared.
+// screen. Each screen keeps its own data (inquiries, guide_applications,
+// partner_registrations, gallery, blog, reviews); only the frame is shared.
 
 type NavItem = { label: string; href: string };
 
 const HOME: NavItem = { label: "管理トップ", href: "/admin" };
 
 const GROUPS: { label: string; items: NavItem[] }[] = [
+  {
+    label: "お客様対応",
+    items: [{ label: "問い合わせ・予約", href: "/admin/inquiries" }],
+  },
   {
     label: "応募管理",
     items: [

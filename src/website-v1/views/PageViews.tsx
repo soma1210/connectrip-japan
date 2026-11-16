@@ -1,16 +1,22 @@
 import type {
+  AboutClosing,
   AboutSection,
+  AboutValue,
   AboutViewModel,
   InquiryViewModel,
   LegalPageViewModel,
   PrivateGuideViewModel,
 } from "@/contracts";
+import { Fragment } from "react";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { LegalPageHeader } from "@/components/ui/LegalPageHeader";
 import { PageIntro, Section, TbdBlock } from "../components/Blocks";
 import { CtaLink } from "../components/CtaLink";
+import { Founders } from "../components/about/Founders";
+import { FOUNDERS_PHOTO } from "../content/officers";
 import { FlowSteps } from "../components/FlowSteps";
+import { LiveInquiryForm } from "../components/LiveInquiryForm";
 import { PreviewInquiryForm } from "../components/PreviewInquiryForm";
 import { PrivateGuideRequestForm } from "../components/booking/PrivateGuideRequestForm";
 import { PrivateGuidePricing } from "../components/PrivateGuidePricing";
@@ -143,10 +149,15 @@ export function AboutView({ vm }: { vm: AboutViewModel }) {
       <nav aria-label="On this page" className="border-b border-dashed border-gold/20 bg-navy">
         <Container>
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 py-5 text-[11px] tracking-[0.18em] text-cream/70 uppercase md:gap-x-10 md:text-xs">
-            {c.sections.map((s) => (
-              <li key={s.key}>
-                <a href={`#${ABOUT_ANCHORS[s.key]}`} className="inline-flex min-h-11 items-center transition-colors hover:text-gold focus-visible:text-gold">
-                  {s.title}
+            {/* Founders sits after Company Overview (2026-11-16). */}
+            {[
+              ...c.sections.slice(0, 1).map((s) => ({ href: `#${ABOUT_ANCHORS[s.key]}`, label: s.title })),
+              { href: "#founders", label: "Founders" },
+              ...c.sections.slice(1).map((s) => ({ href: `#${ABOUT_ANCHORS[s.key]}`, label: s.title })),
+            ].map((item) => (
+              <li key={item.href}>
+                <a href={item.href} className="inline-flex min-h-11 items-center transition-colors hover:text-gold focus-visible:text-gold">
+                  {item.label}
                 </a>
               </li>
             ))}
@@ -154,8 +165,12 @@ export function AboutView({ vm }: { vm: AboutViewModel }) {
         </Container>
       </nav>
       {c.sections.map((s, i) => (
-        <AboutSectionBlock key={s.key} section={s} index={i} />
+        <Fragment key={s.key}>
+          <AboutSectionBlock section={s} index={i} />
+          {i === 0 ? <FoundersSection /> : null}
+        </Fragment>
       ))}
+      {c.closing ? <AboutClosingSection closing={c.closing} /> : null}
       <Section tone="navy-dark">
         <div className="flex flex-wrap justify-center gap-4">
           <CtaLink cta={c.experiencesCta} />
@@ -165,6 +180,30 @@ export function AboutView({ vm }: { vm: AboutViewModel }) {
     </>
   );
 }
+
+/** About Us: the founders' photo with their names, after Company Overview (2026-11-16). Data in content/officers.ts. */
+function FoundersSection() {
+  return (
+    // Dark navy between two hairlines: the next section (Our Philosophy) is dark navy too, and the other sections keep their tones.
+    <section id="founders" aria-labelledby="founders-title" className="scroll-mt-24 border-y border-gold/15 bg-navy-dark py-20 md:py-28">
+      <Container>
+        <div className="flex flex-col items-center text-center">
+          <p className="text-[11px] tracking-[0.34em] text-gold uppercase md:text-xs">Leadership</p>
+          <h2 id="founders-title" className="mt-4 font-heading-en text-3xl text-cream md:text-5xl">
+            The Founders
+          </h2>
+          <span aria-hidden className="mt-7 h-px w-16 bg-gradient-to-r from-transparent via-gold to-transparent" />
+        </div>
+        <div className="mt-14 md:mt-20">
+          <Founders photo={FOUNDERS_PHOTO} />
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+/** Sections whose statement is shown as a gold title. */
+const ACCENT_TITLE = new Set<AboutSection["key"]>(["mission", "vision", "values"]);
 
 function AboutSectionBlock({ section: s, index }: { section: AboutSection; index: number }) {
   const anchor = ABOUT_ANCHORS[s.key];
@@ -181,11 +220,18 @@ function AboutSectionBlock({ section: s, index }: { section: AboutSection; index
           </h2>
           <span aria-hidden className="mt-5 block h-px w-12 bg-gold/60" />
         </div>
-        <div className="flex max-w-3xl flex-col gap-8">
-          <TbdText value={s.statement} slot={`${s.title} statement`} as="p" className="font-heading-en text-2xl leading-snug text-cream md:text-4xl" />
+        {/* md+: starts at the height of the section title on the left (below its "01" number), so both headings line up. */}
+        <div className="flex max-w-3xl flex-col gap-8 md:pt-[1.5625rem]">
+          <TbdText
+            value={s.statement}
+            slot={`${s.title} statement`}
+            as="p"
+            // Mission / Vision / Values: the statement is the section's title, in gold semibold (owner's choice, 2026-11-16).
+            className={`font-heading-en text-2xl leading-snug md:text-4xl ${ACCENT_TITLE.has(s.key) ? "font-semibold text-gold" : "text-cream"}`}
+          />
           {s.body.status === "TBD" ? (
             <TbdBlock value={s.body} slot={`${s.title} copy`} />
-          ) : (
+          ) : s.body.value.length === 0 ? null : (
             <div className="flex flex-col gap-4 text-sm leading-loose text-cream/80 md:text-base">
               {s.body.value.map((para, j) => (
                 <p key={j}>{para}</p>
@@ -222,6 +268,56 @@ function AboutSectionBlock({ section: s, index }: { section: AboutSection; index
               <span aria-hidden>→</span>
             </Link>
           ) : null}
+        </div>
+      </Container>
+      {s.values?.length ? <AboutValuesGrid values={s.values} /> : null}
+    </section>
+  );
+}
+
+/**
+ * Our Values (2026-11-16): a hairline grid, full container width under the
+ * section heading. 3 × 2 on desktop, 2 × 3 on tablets, one column on phones.
+ * Number, name (h3), headline, description; no icons or shadows.
+ */
+function AboutValuesGrid({ values }: { values: AboutValue[] }) {
+  return (
+    <Container className="mt-10 md:mt-14">
+      <ol className="grid border-t border-l border-gold/20 md:grid-cols-2 lg:grid-cols-3">
+        {values.map((v) => (
+          // Title (number + name) on one baseline, then the headline and the description, all left-aligned on one edge.
+          <li key={v.number} className="flex flex-col border-r border-b border-gold/20 px-6 py-8 md:px-8 md:py-10">
+            <h3 className="flex items-baseline gap-4">
+              <span className="font-heading-en text-base tracking-[0.12em] text-gold md:text-lg">
+                {v.number}
+                <span className="sr-only">. </span>
+              </span>
+              <span className="font-heading-en text-2xl font-semibold tracking-[0.14em] text-gold uppercase md:text-[1.75rem]">{v.name}</span>
+            </h3>
+            <span aria-hidden className="mt-5 block h-px w-10 bg-gold/50" />
+            <p className="mt-5 font-heading-en text-lg leading-snug text-cream md:text-xl">{v.headline}</p>
+            <p className="mt-2 text-sm leading-relaxed text-cream/70">{v.text}</p>
+          </li>
+        ))}
+      </ol>
+    </Container>
+  );
+}
+
+/** About Us closing statement (2026-11-16): the brand sign-off before the page's call to action. */
+function AboutClosingSection({ closing }: { closing: AboutClosing }) {
+  return (
+    <section aria-labelledby="about-closing-title" className="border-t border-gold/15 bg-navy-dark py-24 md:py-36">
+      <Container className="flex flex-col items-center text-center">
+        <p className="text-[11px] tracking-[0.34em] text-gold uppercase md:text-xs">{closing.eyebrow}</p>
+        <span aria-hidden className="mt-7 h-px w-16 bg-gradient-to-r from-transparent via-gold to-transparent" />
+        <h2 id="about-closing-title" className="mt-7 max-w-3xl font-heading-en text-3xl leading-tight text-balance text-cream md:text-5xl">
+          {closing.statement}
+        </h2>
+        <div className="mt-8 flex flex-col gap-1 font-heading-en text-lg text-cream/70 italic md:mt-10 md:text-xl">
+          {closing.lines.map((line) => (
+            <p key={line}>{line}</p>
+          ))}
         </div>
       </Container>
     </section>
@@ -267,15 +363,16 @@ function ContactChannels() {
   );
 }
 
-export function InquiryView({ vm }: { vm: InquiryViewModel }) {
+/** `formMode` "live" when the server has the inquiry backend (src/app/v1/inquiry/page.tsx); otherwise the preview mock. */
+export function InquiryView({ vm, formMode = "mock" }: { vm: InquiryViewModel; formMode?: "live" | "mock" }) {
   const c = vm.content;
   return (
     <>
       <PageIntro headline={c.intro.headline} supporting={c.intro.supporting} slot="Inquiry" />
       <Section>
         <div className="mx-auto max-w-3xl">
-          {/* The inquiry form has no backend (mock): public mode offers the contact channels the site already lists instead. */}
-          {V1_PREVIEW ? <PreviewInquiryForm model={c.form} /> : <ContactChannels />}
+          {/* Preview: the form, live when the inquiry backend is configured (else the mock). Public mode keeps the contact channels until the form copy is approved. */}
+          {V1_PREVIEW ? formMode === "live" ? <LiveInquiryForm model={c.form} /> : <PreviewInquiryForm model={c.form} /> : <ContactChannels />}
         </div>
       </Section>
     </>

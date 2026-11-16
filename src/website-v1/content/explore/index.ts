@@ -120,9 +120,12 @@ export function getLatestArticles(): ExploreArticle[] {
 
 const RELATED_MAX = 3;
 
-/** The article's own picks first, then other guides from the same area (current updates only). */
+/**
+ * The article's own picks first, then other guides from the same area (current updates only).
+ * Drafts are filled in only on other drafts, so finished articles never point to unfinished ones.
+ */
 export function relatedArticles(a: ExploreArticle): ExploreArticle[] {
-  const current = [...getSelectArticles(), ...getUpdateLists().current];
+  const current = [...getSelectArticles(), ...getUpdateLists().current].filter((r) => a.status === "draft" || r.status !== "draft");
   const all = [...current, ...getUpdateArticles()];
   const picked = a.related.map((slug) => all.find((r) => r.slug === slug)).filter((r): r is ExploreArticle => Boolean(r));
   const sameArea = current.filter((r) => r.area === a.area || r.area === "kansai");

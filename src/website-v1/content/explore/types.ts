@@ -49,6 +49,8 @@ export type SearchPlan = {
 /** Article text about one spot. Names, coordinates, area and photo come from the spot master. */
 export type SelectSpotText = {
   spotId: string;
+  /** Short "Best for" line for the article's comparison table (from the article's own text; no hours or times). */
+  bestFor?: string;
   overview: string;
   whyWeRecommend: string;
   /** Experience-based suggestions. */
@@ -64,12 +66,51 @@ export type SelectSpotText = {
 export type ItineraryStop = {
   slot: string;
   spotId: string;
+  /** Short "Best for" line for the route table. */
+  bestFor?: string;
   plan: string;
   /** Suggested time at the stop, only when verified. Never estimated. */
   stay: string | null;
   /** Route to the next stop from official station / line information; null on the last stop. */
   nextLeg: { text: string; sources: Source[]; checkedAt: IsoDate } | null;
 };
+
+/** A photo used by a "guide" article (existing site file; rights tracked like spot photos). */
+export type GuideImage = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** CSS object-position, when the subject is off-centre. */
+  position?: string;
+  /** false until a person confirms the rights: then the photo shows in the preview only, marked. */
+  rightsConfirmed: boolean;
+};
+
+/** A place recommended in a "guide" article (places outside the spot master, e.g. Kyoto and Kobe). */
+export type GuidePlace = {
+  id: string;
+  name: string;
+  nameJa?: string;
+  /** City / ward, e.g. "Higashiyama Ward, Kyoto". */
+  locality?: string;
+  /** Short "Best for" line for the comparison table. */
+  bestFor?: string;
+  text: string;
+  tips: string[];
+  official?: Source;
+  image?: GuideImage;
+  /** When the place's facts were checked against its official site; null = not yet. */
+  checkedAt: IsoDate | null;
+  /** Reviewers only: what was checked, what is still open. */
+  checkNote: string;
+};
+
+/** A group of practical points ("Getting there", "Best time to visit", "Things to know"). Verified or general advice only: no unverified hours, fees or times. */
+export type TipGroup = { heading: string; items: string[] };
+
+/** A titled block of running text in a "guide" article. */
+export type GuideSection = { id: string; heading: string; paragraphs: string[] };
 
 export type SelectArticle = {
   kind: "select";
@@ -82,6 +123,8 @@ export type SelectArticle = {
   /** Select category shown on cards and used by the list filter, e.g. "Best places", "Day itinerary". */
   topic: string;
   area: ExploreArea;
+  /** Label shown instead of the area name on labels and cards (e.g. "Hyogo" for a Kobe day trip). */
+  areaLabel?: string;
   search: SearchPlan;
   status: EditorialStatus;
   approval?: Approval;
@@ -98,7 +141,12 @@ export type SelectArticle = {
   intro: string[];
   content:
     | { type: "spots"; spots: SelectSpotText[] }
-    | { type: "itinerary"; stops: ItineraryStop[]; whyThisOrder: string; thingsToKnow: string[] };
+    | { type: "itinerary"; stops: ItineraryStop[]; whyThisOrder: string; thingsToKnow: string[] }
+    /** Free-form guide (places not in the spot master): sections, recommended places, practical tips. No map. `hero` is the card photo (lists and Home), not shown in the article. */
+    | { type: "guide"; hero: GuideImage; sections: GuideSection[]; places: GuidePlace[]; tips: string[] };
+  /** Practical tips section (shown after the main content, only when set). Guide `tips` and itinerary `thingsToKnow` are shown there too. */
+  practical?: TipGroup[];
+  /** Lead line of the closing CTA. */
   closing?: string;
   faq: FaqItem[];
   cta: CtaTarget;

@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { getVlogPosts } from "@/lib/data/vlog";
 import { addVlogPost, removeVlogPost } from "./actions";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export default async function AdminVlogPage() {
+  await requireAdmin();
   const posts = await getVlogPosts();
 
   return (

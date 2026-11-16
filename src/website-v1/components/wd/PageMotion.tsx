@@ -134,7 +134,9 @@ export function PageMotion() {
         const target = Number(m[2].replace(/,/g, ""));
         const comma = m[2].includes(",");
         const node = el.firstChild;
-        if (!node || node.nodeType !== Node.TEXT_NODE || target > 10_000_000) continue;
+        // One text node only: React splits "≈ ${usd} USD" into several nodes, and writing the whole text into
+        // the first one duplicated the rest on screen ("≈ $155 USD155 USD", 2026-11-17). Such elements stay static.
+        if (!node || node.nodeType !== Node.TEXT_NODE || el.childNodes.length !== 1 || target > 10_000_000) continue;
         el.style.setProperty("font-variant-numeric", "tabular-nums");
         // Counted with its own rAF once on screen; the original text is always restored at the end.
         const count = new IntersectionObserver(

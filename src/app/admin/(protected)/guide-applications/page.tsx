@@ -27,6 +27,7 @@ import {
 } from "@/lib/data/guide-applications";
 import { ClickableRow } from "./ClickableRow";
 import { StatusBadge } from "./StatusBadge";
+import { requireAdmin } from "@/lib/admin-auth";
 
 const controlClass =
   "h-10 w-full rounded-md border border-navy/15 bg-white px-3 text-sm text-navy focus:border-navy/50 focus:outline-none focus:ring-2 focus:ring-navy/10";
@@ -83,6 +84,7 @@ function LanguageList({ app, compact = false }: { app: GuideApplication; compact
 export default async function AdminGuideApplicationsPage({
   searchParams,
 }: PageProps<"/admin/guide-applications">) {
+  await requireAdmin();
   const statuses = await getPipelineStatuses();
   const filters = parseFilters(await searchParams, statuses);
   const applications = await listGuideApplications(filters);

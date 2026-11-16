@@ -9,7 +9,7 @@ import {
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { exploreUpdatesHref } from "../../routes";
 import { gsap, MQ_MOTION } from "../wd/gsap";
 import { cn } from "@/lib/cn";
@@ -157,13 +157,9 @@ export function ExploreKansaiSlides({
               </li>
             ))}
           </ul>
-          <div className="mt-8 flex flex-col gap-6 md:mt-10 md:flex-row md:items-center md:justify-between">
+          {/* The Osaka Map card was taken off this slide (Human instruction 2026-11-15); the map page and its data stay. */}
+          <div className="mt-8 md:mt-10">
             <MoreLink {...select.more} />
-            {select.map ? (
-              <div data-anim="rise" className="md:w-[22rem]">
-                <MapFloatCard {...select.map} />
-              </div>
-            ) : null}
           </div>
         </div>
       </div>
@@ -404,46 +400,6 @@ function SelectCard({ card }: { card: ExploreSlideCard }) {
         </h3>
         <span className="mt-4 inline-flex items-center gap-2 font-heading-en text-xs tracking-[0.14em] text-gold/90 uppercase">
           Read the guide{" "}
-          <ArrowRight
-            className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
-            aria-hidden
-          />
-        </span>
-      </div>
-    </Link>
-  );
-}
-
-function MapFloatCard({
-  href,
-  title,
-  description,
-}: {
-  href: string;
-  title: string;
-  description: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className={cn(
-        s.float,
-        s.glass,
-        "group flex min-h-[260px] flex-col justify-between rounded-xl border border-gold/30 p-6 hover:border-gold/70 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold md:min-h-[290px] md:p-7",
-      )}
-    >
-      <span className="inline-flex w-fit items-center gap-1.5 bg-gold px-2.5 py-1 font-heading-en text-[10px] tracking-[0.18em] text-navy uppercase">
-        <MapPin className="h-3 w-3" aria-hidden /> Map
-      </span>
-      <div>
-        <h3 className="font-heading-en text-2xl leading-snug text-cream group-hover:text-gold">
-          {title}
-        </h3>
-        <p className="mt-2 text-sm leading-relaxed text-cream/75">
-          {description}
-        </p>
-        <span className="mt-4 inline-flex items-center gap-2 font-heading-en text-xs tracking-[0.14em] text-gold/90 uppercase">
-          Open the map{" "}
           <ArrowRight
             className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
             aria-hidden

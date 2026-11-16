@@ -18,6 +18,7 @@ import type { GuideApplication } from "@/features/guide-community/types";
 import { getGuideApplication, getPipelineStatuses } from "@/lib/data/guide-applications";
 import { StatusBadge } from "../StatusBadge";
 import { saveAdminFields } from "./actions";
+import { requireAdmin } from "@/lib/admin-auth";
 
 /** Display text for one question's answer, driven by the same config as the form. */
 function answerText(question: Question, app: GuideApplication): string {
@@ -117,6 +118,7 @@ export default async function AdminGuideApplicationDetailPage({
   params,
   searchParams,
 }: PageProps<"/admin/guide-applications/[id]">) {
+  await requireAdmin();
   const { id } = await params;
   const { saved } = await searchParams;
   const [app, statuses] = await Promise.all([getGuideApplication(id), getPipelineStatuses()]);

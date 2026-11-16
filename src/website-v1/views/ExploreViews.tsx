@@ -29,6 +29,8 @@ import {
   type EditorialRow,
   type ExploreArea,
   type ExploreArticle,
+  type GuideImage,
+  type GuidePlace,
   type SelectArticle,
   type SelectSpotText,
   type Source,
@@ -104,7 +106,7 @@ function ArticleLabels({ article }: { article: ExploreArticle }) {
       <span className="font-heading-en text-[11px] tracking-[0.16em] text-gold/90 uppercase">{categoryOf(article)}</span>
       <span className="inline-flex items-center gap-1 text-[11px] tracking-[0.12em] text-cream/60 uppercase">
         <MapPin className="h-3 w-3" aria-hidden />
-        {areaName(article.area)}
+        {article.kind === "select" && article.areaLabel ? article.areaLabel : areaName(article.area)}
       </span>
       {past ? <span className="bg-cream/15 px-2.5 py-1 font-heading-en text-[10px] tracking-[0.18em] text-cream/80 uppercase">Past information</span> : null}
     </span>
@@ -194,18 +196,27 @@ function SourceLink({ name, url }: Source) {
   );
 }
 
-function BulletList({ items }: { items: string[] }) {
+/**
+ * A "guide" article photo, under the same rules as SpotPhoto: rights-confirmed
+ * photos anywhere, unverified ones in the preview only (marked), a quiet
+ * placeholder in the preview when there is none.
+ */
+function GuidePhoto({ image, label, priority, sizes = "(min-width: 768px) 768px, 100vw", className }: { image?: GuideImage; label: string; priority?: boolean; sizes?: string; className?: string }) {
+  if (image && (image.rightsConfirmed || V1_PREVIEW)) {
+    return (
+      <figure className={cn("relative overflow-hidden rounded-lg border border-gold/20 bg-navy", className)}>
+        <Image src={image.src} alt={image.alt} fill sizes={sizes} priority={priority} className="object-cover" style={image.position ? { objectPosition: image.position } : undefined} />
+        {!image.rightsConfirmed ? <figcaption className="absolute top-2 left-2 bg-navy-dark/85 px-2 py-0.5 text-[10px] tracking-wide text-gold/90">Preview · rights not verified</figcaption> : null}
+      </figure>
+    );
+  }
+  if (!V1_PREVIEW) return null;
   return (
-    <ul className="mt-2 flex flex-col gap-1.5 text-base leading-relaxed text-cream/80">
-      {items.map((t) => (
-        <li key={t} className="flex gap-2.5">
-          <span className="text-gold" aria-hidden>
-            —
-          </span>
-          {t}
-        </li>
-      ))}
-    </ul>
+    <div className={cn("flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gold/35 bg-[linear-gradient(135deg,rgba(201,164,92,0.10),rgba(13,31,54,0.0))] px-6 text-center", className)}>
+      <Camera className="h-5 w-5 text-gold/70" aria-hidden />
+      <p className="font-heading-en text-sm text-cream/75">{label}</p>
+      <p className="text-[11px] tracking-wide text-gold/75">Preview · photo to come (own or rights-cleared)</p>
+    </div>
   );
 }
 
@@ -249,12 +260,14 @@ function cardDate(a: ExploreArticle): string | null {
 function cardSpot(a: ExploreArticle): Spot | undefined {
   if (a.kind !== "select") return undefined;
   const ids = articleSpotIds(a);
+  if (ids.length === 0) return undefined;
   return ids.map(spotById).find((s) => displayPhoto(s)) ?? spotById(ids[0]);
 }
 
 /** One count line under the title: "10 places" / "4 stops". */
 function cardCount(a: ExploreArticle): string | null {
   if (a.kind !== "select") return null;
+  if (a.content.type === "guide") return `${a.content.places.length} places`;
   const n = articleSpotIds(a).length;
   return a.content.type === "spots" ? `${n} places` : `${n} stops`;
 }
@@ -271,6 +284,9 @@ export function ArticleCard({ article, headingLevel = "h3" }: { article: Explore
         className="group flex w-full flex-col overflow-hidden rounded-xl border border-gold/30 bg-navy-dark/50 transition-colors hover:border-gold/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
       >
         {spot ? <SpotPhoto spot={spot} sizes="(min-width: 768px) 480px, 100vw" className="aspect-[16/9] rounded-none border-0 border-b border-gold/20" /> : null}
+        {article.kind === "select" && article.content.type === "guide" ? (
+          <GuidePhoto image={article.content.hero} label={article.title} sizes="(min-width: 768px) 480px, 100vw" className="aspect-[16/9] rounded-none border-0 border-b border-gold/20" />
+        ) : null}
         <span className="flex flex-1 flex-col gap-3 p-6 md:p-7">
           <ArticleLabels article={article} />
           <H className="font-heading-en text-xl leading-snug text-cream group-hover:text-gold md:text-2xl">{article.title}</H>
@@ -654,21 +670,12 @@ type OutlineItem = { id: string; label: string };
 
 /** Contents list, built from the same data as the sections (ids match the section anchors). */
 export function articleOutline(a: ExploreArticle): OutlineItem[] {
+  if (a.kind === "select") return selectOutline(a);
   const items: OutlineItem[] = [{ id: "quick-answer", label: "Quick answer" }];
-  if (a.kind === "select") {
-    if (a.content.type === "spots") a.content.spots.forEach((s, i) => items.push({ id: s.spotId, label: `${i + 1}. ${spotById(s.spotId).name}` }));
-    else {
-      items.push({ id: "why-this-order", label: "Why this order" });
-      for (const s of a.content.stops) items.push({ id: `stop-${s.spotId}`, label: `${s.slot}: ${spotById(s.spotId).name}` });
-      items.push({ id: "things-to-know", label: "Things to know" });
-    }
-    items.push({ id: "article-map", label: "Map" });
-  } else {
-    const c = a.content;
-    if (c.whatsChanged.length > 0) items.push({ id: "whats-changed", label: "What's changed" });
-    if (c.whoIsAffected.length > 0) items.push({ id: "who-is-affected", label: "Who is affected" });
-    if (c.whatTravelersShouldDo.length > 0) items.push({ id: "what-to-do", label: "What travelers should do" });
-  }
+  const c = a.content;
+  if (c.whatsChanged.length > 0) items.push({ id: "whats-changed", label: "What's changed" });
+  if (c.whoIsAffected.length > 0) items.push({ id: "who-is-affected", label: "Who is affected" });
+  if (c.whatTravelersShouldDo.length > 0) items.push({ id: "what-to-do", label: "What travelers should do" });
   if ((a.faq ?? []).length > 0) items.push({ id: "faq", label: "FAQ" });
   items.push({ id: "sources", label: "Sources" }, { id: "about-this-guide", label: "About this guide" });
   return items;
@@ -733,24 +740,6 @@ function QuickAnswer({ article }: { article: ExploreArticle }) {
           ))}
         </dl>
       ) : null}
-    </section>
-  );
-}
-
-function ArticleMap({ article }: { article: SelectArticle }) {
-  const ids = articleSpotIds(article);
-  return (
-    <section id="article-map" aria-labelledby="article-map-h" className="mt-14 scroll-mt-28">
-      <h2 id="article-map-h" className={H2}>
-        {article.content.type === "spots" ? "The places on a map" : "The route on a map"}
-      </h2>
-      <p className="mt-2 text-sm leading-relaxed text-cream/65">Tap a pin to see the place. For every place we recommend in Osaka, open the full map.</p>
-      <div className="mt-5">
-        <LazySelectMap content={getArticleMapContent(ids)} variant="embed" />
-      </div>
-      <Link href={mapHref()} className="mt-4 inline-flex items-center gap-1.5 text-sm text-gold hover:text-cream">
-        <MapPin className="h-4 w-4" aria-hidden /> Open the full {EXPLORE_COPY.map.label}
-      </Link>
     </section>
   );
 }
@@ -872,153 +861,461 @@ function ArticleLayout({ article, crumbs, children }: { article: ExploreArticle;
 }
 
 // --- Select article ----------------------------------------------------------------
+//
+// Layout (Human instruction 2026-11-15): a type-led travel guide without photo
+// slots. Header (category, title, short intro) → At a glance (key facts and
+// the short answer) → map with numbered pins (articles whose places are in the
+// spot master) → quick comparison table → numbered places → practical tips →
+// FAQ → closing CTA → sources, about, related. Photos stay in the data: the
+// list cards and the Home slide still use them; the article does not.
 
-function SpotSection({ text, index }: { text: SelectSpotText; index: number }) {
+const SELECT_PLAN_CTA = cta("v1_explore_select_private", "privateGuide", routeHref("privateGuide"), "section", "primary", proposed("Plan a Private Day", "Header CTA wording (Human instruction 2026-11-09)"));
+const SELECT_PLAN_CTA_ALT = cta("v1_explore_select_private_alt", "privateGuide", routeHref("privateGuide"), "section", "secondary", proposed("Plan a Private Day", "Header CTA wording (Human instruction 2026-11-09)"));
+const SELECT_TOURS_CTA = cta("v1_explore_select_tours", "experiences", routeHref("experiences"), "section", "secondary", proposed("Explore Our Tours", "Header CTA wording (Human instruction 2026-11-11)"));
+
+const pad2 = (n: number) => String(n).padStart(2, "0");
+const EYEBROW = "font-heading-en text-[11px] tracking-[0.2em] text-gold uppercase";
+/** Section heading of the reading column: a short gold rule, then the serif title. */
+const SECTION_H2 = "font-heading-en text-[1.7rem] leading-tight text-cream md:text-[2.1rem] before:mb-4 before:block before:h-px before:w-10 before:bg-gold before:content-['']";
+
+/** One place of the article, in page order: what the table, the map and the numbered sections share. */
+type Entry = { id: string; name: string; nameJa?: string; area?: string; bestFor?: string; slot?: string };
+
+function selectEntries(a: SelectArticle): Entry[] {
+  const c = a.content;
+  if (c.type === "spots")
+    return c.spots.map((t) => {
+      const s = spotById(t.spotId);
+      return { id: s.id, name: s.name, nameJa: s.nameJa, area: s.details?.locality, bestFor: t.bestFor };
+    });
+  if (c.type === "itinerary")
+    return c.stops.map((t) => {
+      const s = spotById(t.spotId);
+      return { id: `stop-${s.id}`, name: s.name, nameJa: s.nameJa, area: s.details?.locality, bestFor: t.bestFor, slot: t.slot };
+    });
+  return c.places.map((p) => ({ id: p.id, name: p.name, nameJa: p.nameJa, area: p.locality, bestFor: p.bestFor }));
+}
+
+/** Practical tips: the article's own groups, plus the guide tips / itinerary notes the formats already carry. */
+function practicalGroups(a: SelectArticle): { heading: string; items: string[] }[] {
+  const groups = [...(a.practical ?? [])];
+  if (a.content.type === "guide" && a.content.tips.length > 0) groups.push({ heading: "Travel tips", items: a.content.tips });
+  if (a.content.type === "itinerary" && a.content.thingsToKnow.length > 0) groups.push({ heading: "Things to know", items: a.content.thingsToKnow });
+  return groups.filter((g) => g.items.length > 0);
+}
+
+const mainHeading = (a: SelectArticle) => (a.content.type === "itinerary" ? "The day, stop by stop" : a.content.type === "guide" ? "Recommended places" : `The ${selectEntries(a).length} places`);
+
+function selectOutline(a: SelectArticle): OutlineItem[] {
+  const items: OutlineItem[] = [{ id: "at-a-glance", label: "At a glance" }];
+  if (articleSpotIds(a).length > 0) items.push({ id: "article-map", label: "Map" });
+  const entries = selectEntries(a);
+  if (entries.length > 1) items.push({ id: "quick-comparison", label: a.content.type === "itinerary" ? "The day at a glance" : "Quick comparison" });
+  if (a.content.type === "guide") for (const s of a.content.sections) items.push({ id: s.id, label: s.heading });
+  entries.forEach((e, i) => items.push({ id: e.id, label: `${i + 1}. ${e.slot ? `${e.slot}: ` : ""}${e.name}` }));
+  if (practicalGroups(a).length > 0) items.push({ id: "practical-tips", label: "Practical tips" });
+  if (a.faq.length > 0) items.push({ id: "faq", label: "FAQ" });
+  items.push({ id: "sources", label: "Sources" });
+  return items;
+}
+
+function BackToSelect() {
+  return (
+    <Link href={exploreSelectHref()} className="inline-flex items-center gap-2 font-heading-en text-xs tracking-[0.16em] text-cream/65 uppercase transition-colors hover:text-gold">
+      <ArrowRight className="h-3.5 w-3.5 rotate-180" aria-hidden /> Back to {EXPLORE_COPY.select.label}
+    </Link>
+  );
+}
+
+function AtAGlance({ article }: { article: SelectArticle }) {
+  return (
+    <section id="at-a-glance" aria-labelledby="at-a-glance-h" className="scroll-mt-28 border-y border-gold/30 py-8 md:py-10">
+      <h2 id="at-a-glance-h" className={EYEBROW}>
+        At a glance
+      </h2>
+      {article.keyFacts.length > 0 ? (
+        <dl className="mt-6 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
+          {article.keyFacts.map((f) => (
+            <div key={f.label} className="border-l border-gold/30 pl-4">
+              <dt className="text-[11px] tracking-[0.16em] text-cream/50 uppercase">{f.label}</dt>
+              <dd className="mt-1 font-heading-en text-[17px] leading-snug text-cream md:text-lg">{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+      <div id="quick-answer" className="mt-8 scroll-mt-28">
+        <p className="text-[11px] tracking-[0.16em] text-gold/80 uppercase">In short</p>
+        <p className="mt-2 text-base leading-relaxed text-cream/90 md:text-lg">{article.quickAnswer}</p>
+      </div>
+    </section>
+  );
+}
+
+/** In-article map: only this article's places, pins numbered like the sections; a pin's popup jumps to its section. */
+function ArticleMap({ article }: { article: SelectArticle }) {
+  const ids = articleSpotIds(article);
+  const anchor = (id: string) => (article.content.type === "itinerary" ? `stop-${id}` : id);
+  const base = getArticleMapContent(ids);
+  const content: SelectMapContent = { ...base, spots: base.spots.map((s) => ({ ...s, guide: { href: `#${anchor(s.id)}`, label: "Read about it in this guide ↓" } })) };
+  return (
+    <section id="article-map" aria-labelledby="article-map-h" className="mt-16 scroll-mt-28">
+      <h2 id="article-map-h" className={SECTION_H2}>
+        {article.content.type === "itinerary" ? "The route on a map" : "The places on a map"}
+      </h2>
+      <p className="mt-3 text-sm leading-relaxed text-cream/65">
+        The numbers match the places below. Select a pin to see its name and jump to it. On a phone, tap “Move map” to drag the map.
+      </p>
+      <div className="mt-6">
+        <LazySelectMap content={content} variant="embed" numbered />
+      </div>
+      <Link href={mapHref()} className="mt-4 inline-flex items-center gap-1.5 text-sm text-gold hover:text-cream">
+        <MapPin className="h-4 w-4" aria-hidden /> Open the full {EXPLORE_COPY.map.label}
+      </Link>
+    </section>
+  );
+}
+
+/** Quick comparison: a table on wide screens, a numbered list on phones (no sideways scrolling). Only the columns the article has. */
+function QuickComparison({ article }: { article: SelectArticle }) {
+  const entries = selectEntries(article);
+  if (entries.length < 2) return null;
+  const route = article.content.type === "itinerary";
+  const hasArea = entries.some((e) => e.area);
+  const hasBest = entries.some((e) => e.bestFor);
+  return (
+    <section id="quick-comparison" aria-labelledby="quick-comparison-h" className="mt-16 scroll-mt-28">
+      <h2 id="quick-comparison-h" className={SECTION_H2}>
+        {route ? "The day at a glance" : "Quick comparison"}
+      </h2>
+      <table className="mt-6 hidden w-full border-collapse text-left md:table">
+        <thead>
+          <tr className="border-b border-gold/40 text-[11px] tracking-[0.16em] text-cream/50 uppercase">
+            <th scope="col" className="w-14 py-3 pr-3 font-normal">
+              {route ? "#" : "No."}
+            </th>
+            <th scope="col" className="py-3 pr-6 font-normal">
+              {route ? "Stop" : "Place"}
+            </th>
+            {hasArea ? (
+              <th scope="col" className="py-3 pr-6 font-normal">
+                Area
+              </th>
+            ) : null}
+            {hasBest ? (
+              <th scope="col" className="py-3 font-normal">
+                Best for
+              </th>
+            ) : null}
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map((e, i) => (
+            <tr key={e.id} className="border-b border-cream/10 align-top">
+              <td className="py-4 pr-3 font-heading-en text-lg text-gold">{pad2(i + 1)}</td>
+              <th scope="row" className="py-4 pr-6 font-normal">
+                {e.slot ? <span className="block text-[11px] tracking-[0.16em] text-gold/80 uppercase">{e.slot}</span> : null}
+                <a href={`#${e.id}`} className="font-heading-en text-[17px] leading-snug text-cream hover:text-gold">
+                  {e.name}
+                </a>
+              </th>
+              {hasArea ? <td className="py-4 pr-6 text-sm leading-relaxed text-cream/65">{e.area ?? ""}</td> : null}
+              {hasBest ? <td className="py-4 text-[15px] leading-relaxed text-cream/85">{e.bestFor ?? ""}</td> : null}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ol className="mt-5 border-t border-gold/40 md:hidden">
+        {entries.map((e, i) => (
+          <li key={e.id} className="flex gap-4 border-b border-cream/10 py-4">
+            <span aria-hidden className="w-7 shrink-0 font-heading-en text-lg leading-snug text-gold">
+              {pad2(i + 1)}
+            </span>
+            <div className="min-w-0">
+              {e.slot ? <p className="text-[11px] tracking-[0.16em] text-gold/80 uppercase">{e.slot}</p> : null}
+              <a href={`#${e.id}`} className="font-heading-en text-[17px] leading-snug text-cream hover:text-gold">
+                {e.name}
+              </a>
+              {e.area ? <p className="mt-0.5 text-xs text-cream/55">{e.area}</p> : null}
+              {e.bestFor ? <p className="mt-1.5 text-sm leading-relaxed text-cream/80">{e.bestFor}</p> : null}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function Points({ items }: { items: string[] }) {
+  if (items.length === 0) return null;
+  return (
+    <ul className="mt-5 flex flex-col gap-2.5 text-[15px] leading-relaxed text-cream/80 md:text-base">
+      {items.map((t) => (
+        <li key={t} className="flex gap-3">
+          <span aria-hidden className="mt-[0.8em] h-px w-3 shrink-0 bg-gold/80" />
+          <span>{t}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** A numbered place: big gold number beside it on wide screens, above it on phones. */
+function PlaceBlock({ n, entry, eyebrow, children }: { n: number; entry: Entry; eyebrow?: string; children: ReactNode }) {
+  return (
+    <section id={entry.id} aria-labelledby={`${entry.id}-h`} className="scroll-mt-28 border-t border-cream/10 py-10 md:grid md:grid-cols-[4.5rem_minmax(0,1fr)] md:gap-x-4 md:py-12">
+      <p aria-hidden className="font-heading-en text-3xl leading-none text-gold md:pt-1 md:text-[2.6rem]">
+        {pad2(n)}
+      </p>
+      <div className="mt-4 min-w-0 md:mt-0">
+        {eyebrow ? <p className="text-[11px] tracking-[0.18em] text-gold/80 uppercase">{eyebrow}</p> : null}
+        <h3 id={`${entry.id}-h`} className="mt-1.5 font-heading-en text-2xl leading-snug text-cream md:text-[1.75rem]">
+          <span className="sr-only">{n}. </span>
+          {entry.name}
+          {entry.nameJa ? (
+            <span className="ml-2 align-middle text-base text-cream/45" lang="ja">
+              {entry.nameJa}
+            </span>
+          ) : null}
+        </h3>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+/** Small reference line under a place: stations, official site, map. */
+function PlaceMeta({ children }: { children: ReactNode }) {
+  return <div className="mt-6 flex flex-col gap-1.5 text-sm text-cream/70 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-6">{children}</div>;
+}
+
+function CheckNote({ checkedAt, note }: { checkedAt: string | null; note: string }) {
+  return (
+    <>
+      {checkedAt ? <p className="mt-3 text-xs text-cream/45">Last checked against official information: {formatIsoDate(checkedAt)}</p> : null}
+      {V1_PREVIEW ? (
+        <p className="mt-2 text-xs text-gold/75">
+          {checkedAt ? "Checked" : "Not checked yet"} · {note}
+        </p>
+      ) : null}
+    </>
+  );
+}
+
+function SpotEntry({ text, n, entry }: { text: SelectSpotText; n: number; entry: Entry }) {
   const spot = spotById(text.spotId);
   const d = spot.details;
   const dayPlan = itineraryWithSpot(spot.id);
   const onTour = FEATURED_TOUR_SPOTS.includes(spot.id);
   return (
-    <section id={spot.id} aria-labelledby={`${spot.id}-h`} className="scroll-mt-28 border-t border-gold/20 pt-10">
-      {d ? <p className="font-heading-en text-xs tracking-[0.15em] text-gold uppercase">{d.locality}</p> : null}
-      <h2 id={`${spot.id}-h`} className={cn("mt-2", H2)}>
-        {index + 1}. {spot.name}{" "}
-        <span className="ml-1 text-lg text-cream/50" lang="ja">
-          {spot.nameJa}
-        </span>
-      </h2>
-      <SpotPhoto spot={spot} priority={index === 0} className="mt-5 aspect-[16/10]" allowNatural />
-      <p className={cn("mt-5", BODY)}>{text.overview}</p>
-      <h3 className="mt-6 text-base text-gold">Why we recommend it</h3>
-      <p className={cn("mt-2", BODY, "text-cream/80")}>{text.whyWeRecommend}</p>
-      <h3 className="mt-6 text-base text-gold">Local tips</h3>
-      <BulletList items={text.localTips} />
-      <h3 className="mt-6 text-base text-gold">Things to know</h3>
-      <BulletList items={text.thingsToKnow} />
-      {d?.access ? (
-        <p className="mt-4 text-sm leading-relaxed text-cream/70">
-          <span className="text-cream/55">Nearest stations: </span>
-          {d.access.text}
-        </p>
-      ) : null}
+    <PlaceBlock n={n} entry={entry} eyebrow={d?.locality}>
+      <p className={cn("mt-4", BODY)}>{text.overview}</p>
+      <p className={cn("mt-3", BODY, "text-cream/75")}>{text.whyWeRecommend}</p>
+      <Points items={[...text.localTips, ...text.thingsToKnow]} />
       {onTour ? (
-        <p className="mt-5 rounded-lg border border-gold/30 px-4 py-3 text-sm text-cream/80">
+        <p className="mt-5 text-sm leading-relaxed text-cream/75">
           {EXPLORE_COPY.tourCta.spotNote}{" "}
           <Link href={experienceHref(FEATURED_TOUR_SLUG)} className="text-gold hover:text-cream">
             About the tour →
           </Link>
         </p>
       ) : null}
-      <div className="mt-5 flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
-        {d ? (
+      <PlaceMeta>
+        {d?.access ? (
           <span>
-            <span className="text-cream/55">Official information: </span>
-            <SourceLink {...d.official} />
+            <span className="text-cream/50">Nearest stations: </span>
+            {d.access.text}
           </span>
         ) : null}
+        {d ? <SourceLink {...d.official} /> : null}
         <Link href={mapHref(spot)} className={cn("inline-flex items-center gap-1.5", LINK)}>
-          <MapPin className="h-3.5 w-3.5" aria-hidden /> See on the map
+          <MapPin className="h-3.5 w-3.5" aria-hidden /> Full map
         </Link>
         {dayPlan ? (
           <Link href={dayPlan.href} className={LINK}>
             {dayPlan.label}
           </Link>
         ) : null}
-      </div>
-      {text.checkedAt ? <p className="mt-2 text-xs text-cream/45">Last checked against official information: {formatIsoDate(text.checkedAt)}</p> : null}
-      {V1_PREVIEW ? (
-        <p className="mt-3 text-xs text-gold/75">
-          {text.checkedAt ? "Checked" : "Not checked yet"} · {text.checkNote}
-        </p>
+      </PlaceMeta>
+      <CheckNote checkedAt={text.checkedAt} note={text.checkNote} />
+    </PlaceBlock>
+  );
+}
+
+type ItineraryContent = Extract<SelectArticle["content"], { type: "itinerary" }>;
+
+function StopEntry({ stop, n, entry }: { stop: ItineraryContent["stops"][number]; n: number; entry: Entry }) {
+  const spot = spotById(stop.spotId);
+  const more = selectSpotSectionHref(spot.id);
+  return (
+    <PlaceBlock n={n} entry={entry} eyebrow={`${stop.slot}${spot.details ? ` · ${spot.details.locality}` : ""}`}>
+      <p className={cn("mt-4", BODY)}>{stop.plan}</p>
+      {stop.stay ? <p className="mt-3 text-sm text-cream/70">Suggested time here: {stop.stay}</p> : null}
+      {stop.nextLeg ? (
+        <div className="mt-6 border-l-2 border-gold/60 pl-5">
+          <p className="text-[11px] tracking-[0.16em] text-gold/80 uppercase">Getting to the next stop</p>
+          <p className="mt-1.5 text-[15px] leading-relaxed text-cream/85">{stop.nextLeg.text}</p>
+          <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+            {stop.nextLeg.sources.map((s) => (
+              <SourceLink key={s.url} {...s} />
+            ))}
+          </p>
+        </div>
       ) : null}
+      <PlaceMeta>
+        {more ? (
+          <Link href={more.href} className={LINK}>
+            More about {spot.name}
+          </Link>
+        ) : null}
+        <Link href={mapHref(spot)} className={cn("inline-flex items-center gap-1.5", LINK)}>
+          <MapPin className="h-3.5 w-3.5" aria-hidden /> Full map
+        </Link>
+      </PlaceMeta>
+    </PlaceBlock>
+  );
+}
+
+function GuideEntry({ place, n, entry }: { place: GuidePlace; n: number; entry: Entry }) {
+  return (
+    <PlaceBlock n={n} entry={entry} eyebrow={place.locality}>
+      <p className={cn("mt-4", BODY)}>{place.text}</p>
+      <Points items={place.tips} />
+      {place.official ? (
+        <PlaceMeta>
+          <SourceLink {...place.official} />
+        </PlaceMeta>
+      ) : null}
+      <CheckNote checkedAt={place.checkedAt} note={place.checkNote} />
+    </PlaceBlock>
+  );
+}
+
+function MainContent({ article }: { article: SelectArticle }) {
+  const c = article.content;
+  const entries = selectEntries(article);
+  return (
+    <>
+      {c.type === "guide"
+        ? c.sections.map((s) => (
+            <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="mt-16 scroll-mt-28">
+              <h2 id={`${s.id}-h`} className={SECTION_H2}>
+                {s.heading}
+              </h2>
+              <div className={cn("mt-5 flex flex-col gap-4", BODY, "text-cream/80")}>
+                {s.paragraphs.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </div>
+            </section>
+          ))
+        : null}
+      <section aria-labelledby="main-places-h" className="mt-16">
+        <h2 id="main-places-h" className={SECTION_H2}>
+          {mainHeading(article)}
+        </h2>
+        {c.type === "itinerary" ? <p className={cn("mt-5", BODY, "text-cream/80")}>{c.whyThisOrder}</p> : null}
+        <div className="mt-6">
+          {c.type === "spots"
+            ? c.spots.map((t, i) => <SpotEntry key={t.spotId} text={t} n={i + 1} entry={entries[i]} />)
+            : c.type === "itinerary"
+              ? c.stops.map((s, i) => <StopEntry key={s.slot} stop={s} n={i + 1} entry={entries[i]} />)
+              : c.places.map((p, i) => <GuideEntry key={p.id} place={p} n={i + 1} entry={entries[i]} />)}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function PracticalTips({ article }: { article: SelectArticle }) {
+  const groups = practicalGroups(article);
+  if (groups.length === 0) return null;
+  return (
+    <section id="practical-tips" aria-labelledby="practical-tips-h" className="mt-12 scroll-mt-28 border-t border-gold/30 pt-12">
+      <h2 id="practical-tips-h" className={SECTION_H2}>
+        Practical tips
+      </h2>
+      <div className={cn("mt-6 grid gap-x-10 gap-y-8", groups.length > 1 && "md:grid-cols-2")}>
+        {groups.map((g) => (
+          <div key={g.heading}>
+            <h3 className="text-[11px] tracking-[0.18em] text-gold uppercase">{g.heading}</h3>
+            <Points items={g.items} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/** Closing CTA: links to the existing tour page and Private Guide request (nothing is booked by clicking). */
+function SelectCta({ article }: { article: SelectArticle }) {
+  const tour = article.cta === "featuredTour";
+  const t = EXPLORE_COPY.tourCta;
+  return (
+    <section aria-labelledby="select-cta-h" className="mt-16 border-t border-gold/30 pt-12 pb-2 text-center md:pt-14">
+      <p className={EYEBROW}>{tour ? t.eyebrow : "Private Guide"}</p>
+      <h2 id="select-cta-h" className="mx-auto mt-4 max-w-xl font-heading-en text-2xl leading-snug text-cream md:text-[2rem]">
+        {tour ? "See it with a local guide" : "Plan your day with a local guide"}
+      </h2>
+      <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-cream/75 md:text-base">{article.closing ?? (tour ? t.supporting : EXPLORE_COPY.cta.supporting)}</p>
+      <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap">
+        {tour ? (
+          <>
+            <CtaLink cta={TOUR_CTA} />
+            <CtaLink cta={SELECT_PLAN_CTA_ALT} />
+          </>
+        ) : (
+          <>
+            <CtaLink cta={SELECT_PLAN_CTA} />
+            <CtaLink cta={SELECT_TOURS_CTA} />
+          </>
+        )}
+      </div>
     </section>
   );
 }
 
 export function SelectArticleView({ article, crumbs }: { article: SelectArticle; crumbs: Crumb[] }) {
-  const c = article.content;
+  const outline = selectOutline(article);
   return (
-    <ArticleLayout article={article} crumbs={crumbs}>
-      <div className={cn("mt-10 flex flex-col gap-5", BODY, "text-cream/80")}>
-        {article.intro.map((p) => (
-          <p key={p}>{p}</p>
-        ))}
-      </div>
-
-      {c.type === "spots" ? (
-        <div className="mt-12 flex flex-col gap-12">
-          {c.spots.map((s, i) => (
-            <div key={s.spotId}>
-              <SpotSection text={s} index={i} />
-              {/* One mid-article CTA, after the first half. */}
-              {i === Math.floor(c.spots.length / 2) - 1 ? <ArticleCta target={article.cta} /> : null}
-            </div>
-          ))}
+    <article className="bg-navy-dark pt-8 pb-16 text-cream md:pt-12 md:pb-24">
+      <Container className="max-w-6xl">
+        <div className="flex flex-col gap-3">
+          <BackToSelect />
+          <div className="hidden md:block">
+            <Breadcrumbs crumbs={crumbs} />
+          </div>
         </div>
-      ) : (
-        <>
-          <section id="why-this-order" aria-labelledby="why-this-order-h" className="mt-12 scroll-mt-28">
-            <h2 id="why-this-order-h" className={H2}>
-              Why this order
-            </h2>
-            <p className={cn("mt-3", BODY, "text-cream/80")}>{c.whyThisOrder}</p>
-          </section>
-          <ol className="mt-10 flex flex-col gap-10">
-            {c.stops.map((stop, i) => {
-              const spot = spotById(stop.spotId);
-              const more = selectSpotSectionHref(spot.id);
-              return (
-                <li key={stop.slot} id={`stop-${spot.id}`} className="scroll-mt-28 border-t border-gold/20 pt-8">
-                  <p className="font-heading-en text-xs tracking-[0.15em] text-gold uppercase">
-                    {stop.slot}
-                    {spot.details ? ` · ${spot.details.locality}` : ""}
-                  </p>
-                  <h2 className={cn("mt-2", H2)}>{spot.name}</h2>
-                  <SpotPhoto spot={spot} priority={i === 0} className="mt-5 aspect-[16/10]" allowNatural />
-                  <p className={cn("mt-5", BODY)}>{stop.plan}</p>
-                  {stop.stay ? <p className="mt-3 text-sm text-cream/70">Suggested time here: {stop.stay}</p> : null}
-                  {stop.nextLeg ? (
-                    <div className="mt-5 rounded-lg border border-cream/15 px-5 py-4">
-                      <h3 className="text-sm text-gold">Getting to the next stop</h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-cream/80">{stop.nextLeg.text}</p>
-                      <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
-                        {stop.nextLeg.sources.map((s) => (
-                          <SourceLink key={s.url} {...s} />
-                        ))}
-                      </p>
-                    </div>
-                  ) : null}
-                  <p className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                    {more ? (
-                      <Link href={more.href} className={LINK}>
-                        More about {spot.name}
-                      </Link>
-                    ) : null}
-                    <Link href={mapHref(spot)} className={cn("inline-flex items-center gap-1.5", LINK)}>
-                      <MapPin className="h-3.5 w-3.5" aria-hidden /> See on the map
-                    </Link>
-                  </p>
-                </li>
-              );
-            })}
-          </ol>
-          <section id="things-to-know" aria-labelledby="things-to-know-h" className="mt-12 scroll-mt-28 border-t border-gold/20 pt-8">
-            <h2 id="things-to-know-h" className={H2}>
-              Things to know
-            </h2>
-            <BulletList items={c.thingsToKnow} />
-          </section>
-        </>
-      )}
-
-      <ArticleMap article={article} />
-      {article.closing ? <p className={cn("mt-12", BODY)}>{article.closing}</p> : null}
-      <Faq article={article} />
-      <ArticleCta target={article.cta} />
-      <Sources article={article} />
-      <AboutThisGuide />
-      <Related article={article} />
-    </ArticleLayout>
+        <header className="mt-10 md:mt-14">
+          <ArticleLabels article={article} />
+          <h1 className="mt-5 max-w-4xl font-heading-en text-[2.15rem] leading-[1.12] text-cream sm:text-5xl md:text-[3.4rem]">{article.title}</h1>
+          <div className="mt-6 flex max-w-3xl flex-col gap-4 text-[17px] leading-relaxed text-cream/80 md:text-xl md:leading-relaxed">
+            {article.intro.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+          </div>
+          <div className="max-w-3xl">
+            <Dates article={article} />
+            <PreviewEditorialNote article={article} />
+          </div>
+        </header>
+        <div className="mt-12 lg:grid lg:grid-cols-[minmax(0,48rem)_14rem] lg:justify-between lg:gap-12">
+          <div className="min-w-0">
+            <AtAGlance article={article} />
+            <MobileContents items={outline} />
+            {articleSpotIds(article).length > 0 ? <ArticleMap article={article} /> : null}
+            <QuickComparison article={article} />
+            <MainContent article={article} />
+            <PracticalTips article={article} />
+            <Faq article={article} />
+            <SelectCta article={article} />
+            <Sources article={article} />
+            <AboutThisGuide />
+            <Related article={article} />
+          </div>
+          <SideContents items={outline} />
+        </div>
+      </Container>
+    </article>
   );
 }
 

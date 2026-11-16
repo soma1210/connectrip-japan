@@ -1,5 +1,9 @@
 @AGENTS.md
 
+# Website V2 is the official version (2026-11-16)
+
+Website V2 (the cinematic redesign) is the only website under development and the version to be published. Official branch: `claude/website-v2-cinematic`. Website V1 (`claude/website-v1-launch`) gets no new changes; its Git history is kept. V2 still lives in the `src/website-v1` / `src/app/v1` / `src/app/api/v1` paths below — the directory names were not renamed. Do not deploy to production until explicitly instructed. Project notes: Obsidian `04_TRAVEL/Website v2/`.
+
 # Single source of truth (2026-11-15)
 
 Connectrip Japan Website V1 is the single source of truth. The legacy website is deprecated and must not be used as a reference for future development.

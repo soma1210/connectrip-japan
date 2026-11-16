@@ -3,8 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { put } from "@vercel/blob";
 import { createVlogPost, deleteVlogPost, getVlogPosts } from "@/lib/data/vlog";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function addVlogPost(formData: FormData) {
+  // Server Actions are public endpoints: check the session here, not only in the layout.
+  await requireAdmin();
+
   const titleJa = String(formData.get("titleJa") ?? "").trim();
   const titleEn = String(formData.get("titleEn") ?? "").trim();
   const descriptionJa = String(formData.get("descriptionJa") ?? "").trim();
@@ -46,6 +50,9 @@ export async function addVlogPost(formData: FormData) {
 }
 
 export async function removeVlogPost(id: number) {
+  // Server Actions are public endpoints: check the session here, not only in the layout.
+  await requireAdmin();
+
   await deleteVlogPost(id);
   revalidatePath("/admin/vlog");
   revalidatePath("/");

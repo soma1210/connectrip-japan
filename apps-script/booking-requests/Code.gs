@@ -7,6 +7,11 @@
  * Paste this file into the booking Apps Script project as Code.gs.
  * Script property BOOKING_GAS_SECRET must be at least 32 characters.
  * This is not the guide application or interview script.
+ *
+ * 2026-11-16: also stores Inquiry form submissions (action inquiries.create,
+ * sheet "Inquiries", created with its header row on first use). The website
+ * emails the team after the row is stored; this script only sends the short
+ * notification without personal data (Config: admin_notification_emails).
  */
 
 var CONFIG = {
@@ -14,6 +19,7 @@ var CONFIG = {
   SHEET_STATUS_LOG: 'StatusLog',
   SHEET_NONCES: 'Nonces',
   SHEET_CONFIG: 'Config',
+  SHEET_INQUIRIES: 'Inquiries',
   SECRET_PROP_KEY: 'BOOKING_GAS_SECRET',
   LOCK_TIMEOUT_MS: 8000,
   NONCE_TTL_MINUTES: 10,
@@ -110,6 +116,29 @@ var UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{
 var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 var PHONE = /^\+?[0-9 ()-]{6,30}$/;
 var BOOKING_REF = /^CR-\d{8}-[A-Z0-9]{6}$/;
+var INQUIRY_REF = /^CQ-\d{8}-[A-Z0-9]{6}$/;
+
+var INQUIRY_HEADERS = [
+  'inquiry_ref',
+  'submission_id',
+  'body_hash',
+  'created_at',
+  'source',
+  'kind',
+  'name',
+  'email',
+  'preferred_date',
+  'adults',
+  'children',
+  'destinations',
+  'activities',
+  'places_to_visit',
+  'ideal_day',
+  'notes',
+  'status',
+  'admin_note',
+  'updated_at'
+];
 
 function doPost(e) {
   try {
@@ -138,6 +167,7 @@ function doPost(e) {
 
     if (action === 'bookingRequests.create') return handleBookingCreate(payload);
     if (action === 'bookingRequests.getBySubmissionId') return handleGetBySubmissionId(payload);
+    if (action === 'inquiries.create') return handleInquiryCreate(payload);
     return errorCode('UNAUTHORIZED');
   } catch (err) {
     return errorCode('INTERNAL');
@@ -555,11 +585,15 @@ function addCalendarDays(isoDate, days) {
 }
 
 function generateBookingRef() {
+  return generateRef('CR');
+}
+
+function generateRef(prefix) {
   var ymd = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyyMMdd');
   var chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
   var rand = '';
   for (var i = 0; i < 6; i++) rand += chars.charAt(Math.floor(Math.random() * chars.length));
-  return 'CR-' + ymd + '-' + rand;
+  return prefix + '-' + ymd + '-' + rand;
 }
 
 function sanitizeCellValue(val) {
@@ -617,6 +651,122 @@ function getHolidaysList(configSheet) {
     if (data[i][0] === 'holiday_dates') return String(data[i][1] || '').split('\n').map(function (item) { return item.trim(); }).filter(Boolean);
   }
   return [];
+}
+
+/**
+ * inquiries.create: payload { inquiry, bodyHash }. The website validated the
+ * fields; they are checked again here. A repeat of the same submission id with
+ * the same body returns the stored reference (replayed: true); a different
+ * body is DUPLICATE_CONFLICT. Status starts at NEW.
+ */
+function handleInquiryCreate(rawPayload) {
+  var parsed;
+  try {
+    parsed = JSON.parse(rawPayload);
+  } catch (e) {
+    return errorCode('VALIDATION');
+  }
+  if (!parsed || typeof parsed !== 'object' || !parsed.inquiry || typeof parsed.inquiry !== 'object' || Array.isArray(parsed.inquiry)) return errorCode('VALIDATION');
+  if (typeof parsed.bodyHash !== 'string' || !/^[0-9a-f]{64}$/.test(parsed.bodyHash)) return errorCode('VALIDATION');
+  var q = parsed.inquiry;
+  if (inquiryInvalid(q)) return errorCode('VALIDATION');
+  var submissionId = q.submissionId.toLowerCase();
+
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(CONFIG.LOCK_TIMEOUT_MS)) return errorCode('INTERNAL');
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(CONFIG.SHEET_INQUIRIES);
+    if (!sheet) {
+      sheet = ss.insertSheet(CONFIG.SHEET_INQUIRIES);
+      sheet.getRange(1, 1, 1, INQUIRY_HEADERS.length).setValues([INQUIRY_HEADERS]);
+      sheet.setFrozenRows(1);
+    }
+    var head = sheet.getRange(1, 1, 1, INQUIRY_HEADERS.length).getValues()[0];
+    for (var h = 0; h < INQUIRY_HEADERS.length; h++) {
+      if (String(head[h] || '').trim() !== INQUIRY_HEADERS[h]) return errorCode('SHEET_HEADER_MISMATCH');
+    }
+
+    var values = sheet.getDataRange().getValues();
+    for (var r = 1; r < values.length; r++) {
+      if (String(values[r][1] || '').trim().toLowerCase() !== submissionId) continue;
+      if (String(values[r][2] || '') !== parsed.bodyHash) return errorCode('DUPLICATE_CONFLICT');
+      var existing = String(values[r][0] || '');
+      if (!INQUIRY_REF.test(existing)) return errorCode('INTERNAL');
+      return jsonResponse({ ok: true, data: { inquiryRef: existing, replayed: true } });
+    }
+
+    var now = new Date().toISOString();
+    var ref = generateRef('CQ');
+    var record = {
+      inquiry_ref: ref,
+      submission_id: submissionId,
+      body_hash: parsed.bodyHash,
+      created_at: now,
+      source: CONFIG.SOURCE,
+      kind: 'private_guide',
+      name: q.name,
+      email: q.email,
+      preferred_date: q.preferredDate || '',
+      adults: q.adults == null ? '' : q.adults,
+      children: q.children == null ? '' : q.children,
+      destinations: q.destinations.join(', '),
+      activities: q.activities.join(', '),
+      places_to_visit: q.placesToVisit || '',
+      ideal_day: q.idealDay || '',
+      notes: q.notes || '',
+      status: 'NEW',
+      admin_note: '',
+      updated_at: now
+    };
+    sheet.appendRow(INQUIRY_HEADERS.map(function (key) { return sanitizeCellValue(record[key]); }));
+    logStatus(ss, ref, 'NONE', 'NEW', 'inquiries.create', 'system', 'Inquiry stored');
+    sendAdminInquiryNotification(ss.getSheetByName(CONFIG.SHEET_CONFIG), ref);
+    return jsonResponse({ ok: true, data: { inquiryRef: ref, replayed: false } });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function inquiryInvalid(q) {
+  if (typeof q.submissionId !== 'string' || !UUID_V4.test(q.submissionId)) return true;
+  if (q.kind !== 'private_guide') return true;
+  if (typeof q.name !== 'string' || blank(q.name) || q.name.length > 100) return true;
+  if (typeof q.email !== 'string' || q.email.length > 254 || !EMAIL.test(q.email)) return true;
+  if (q.preferredDate != null && !isRealDate(q.preferredDate)) return true;
+  var counts = [q.adults, q.children];
+  for (var i = 0; i < counts.length; i++) {
+    if (counts[i] != null && (!isInteger(counts[i]) || counts[i] < 0 || counts[i] > 50)) return true;
+  }
+  if (!isEnumList(q.destinations, AREAS) || !isEnumList(q.activities, INTERESTS)) return true;
+  var texts = [q.placesToVisit, q.idealDay, q.notes];
+  for (var t = 0; t < texts.length; t++) {
+    if (texts[t] != null && (typeof texts[t] !== 'string' || texts[t].length > 2000)) return true;
+  }
+  return false;
+}
+
+/** Short notice without personal data, like the booking one. The website sends the full email. */
+function sendAdminInquiryNotification(configSheet, inquiryRef) {
+  if (!configSheet) return;
+  var data = configSheet.getDataRange().getValues();
+  var emails = '';
+  for (var i = 0; i < data.length; i++) {
+    if (data[i][0] === 'admin_notification_emails') {
+      emails = String(data[i][1] || '').trim();
+      break;
+    }
+  }
+  if (!emails || /^(disabled|none|off)$/i.test(emails)) return;
+  try {
+    MailApp.sendEmail({
+      to: emails,
+      subject: '[Connectrip] 新規お問い合わせ受付 (' + inquiryRef + ')',
+      body: '新規お問い合わせを受け付けました。\n\n受付番号: ' + inquiryRef + '\n\n個人情報はメールに記載していません。管理スプレッドシート（Inquiries）で確認してください。\n'
+    });
+  } catch (e) {
+    console.error('admin inquiry notification failed');
+  }
 }
 
 function logStatus(ss, bookingRef, fromStatus, toStatus, action, actor, note) {

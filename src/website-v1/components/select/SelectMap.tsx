@@ -27,6 +27,9 @@ import { TILE, clampView, fitPoints, project, zoomedView, type Point, type View 
  * dragging.
  * Pins, labels and the zoom buttons work while locked.
  * Tourist spots only: no category filter (the dataset keeps its categories).
+ * `numbered` (Select articles): each pin carries its number in the article
+ * (the order of `content.spots`), so pins, labels and the article's numbered
+ * places match.
  */
 
 const PIN_HIT = 44;
@@ -62,7 +65,7 @@ const C = {
   border: "#c9a45c",
 };
 
-export function SelectMap({ content, variant = "page" }: { content: SelectMapContent; variant?: "page" | "embed" }) {
+export function SelectMap({ content, variant = "page", numbered = false }: { content: SelectMapContent; variant?: "page" | "embed"; numbered?: boolean }) {
   const { spots } = content;
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -132,7 +135,8 @@ export function SelectMap({ content, variant = "page" }: { content: SelectMapCon
   const gesture = useRef<{ moved: boolean; pinchDist?: number; pinchZoom?: number }>({ moved: false });
 
   function onPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
-    if ((e.target as HTMLElement).closest("[data-map-control]")) return;
+    // Controls and pins / labels keep their own click: capturing the pointer here would send the click to the map instead (Chrome), so the popup never opened.
+    if ((e.target as HTMLElement).closest("[data-map-control],[data-spot]")) return;
     if (locked && e.pointerType === "touch") return;
     e.currentTarget.setPointerCapture(e.pointerId);
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -209,9 +213,11 @@ export function SelectMap({ content, variant = "page" }: { content: SelectMapCon
   const font = mobile ? 11 : 12;
   const labelH = mobile ? 20 : 22;
   const pins = visible.map(({ spot, p }) => ({ spot, s: toScreen(p) }));
+  const numberOf = new Map(spots.map((s, i) => [s.id, i + 1]));
+  const labelText = (spot: SelectSpot) => (numbered ? `${numberOf.get(spot.id)}. ${spot.name}` : spot.name);
   const labels = ready
     ? layoutLabels(
-        pins.map(({ spot, s }) => ({ id: spot.id, x: s.x, y: s.y, width: labelWidth(spot.name, font), height: labelH })),
+        pins.map(({ spot, s }) => ({ id: spot.id, x: s.x, y: s.y, width: labelWidth(labelText(spot), font), height: labelH })),
         size,
       )
     : [];
@@ -320,17 +326,38 @@ export function SelectMap({ content, variant = "page" }: { content: SelectMapCon
                 e.stopPropagation();
                 selectSpot(spot.id);
               }}
-              aria-label={spot.name}
+              aria-label={labelText(spot)}
               aria-expanded={isOpen}
-              className={cn("absolute flex items-end justify-center", isOpen ? "z-30" : "z-10 hover:z-20")}
+              className={cn("group/pin absolute flex items-end justify-center", isOpen ? "z-30" : "z-10 hover:z-20")}
               style={{ left: s.x - PIN_HIT / 2, top: s.y - PIN_HIT, width: PIN_HIT, height: PIN_HIT }}
             >
-              <MapPin
-                className={cn("h-[26px] w-[26px] drop-shadow-[0_2px_2px_rgba(13,31,54,0.35)] transition-transform", isOpen ? "scale-125" : "hover:scale-110")}
-                fill={isOpen ? "#0d1f36" : "#a92d3a"}
-                stroke="#f7f2e7"
-                strokeWidth={1.6}
-              />
+              {numbered ? (
+                // Numbered pin: a disc with the article number and a short tip on the exact point (head ≈ PIN_HEAD_OFFSET above it).
+                <span
+                  aria-hidden
+                  className={cn(
+                    "flex origin-bottom flex-col items-center drop-shadow-[0_2px_2px_rgba(13,31,54,0.35)] transition-transform",
+                    isOpen ? "scale-125" : "group-hover/pin:scale-110",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex h-[25px] w-[25px] items-center justify-center rounded-full border-[1.5px] border-[#f7f2e7] font-heading-en text-[12px] leading-none font-bold text-[#f7f2e7]",
+                      isOpen ? "bg-navy" : "bg-red",
+                    )}
+                  >
+                    {numberOf.get(spot.id)}
+                  </span>
+                  <span className={cn("-mt-px h-0 w-0 border-x-[5px] border-t-[6px] border-x-transparent", isOpen ? "border-t-navy" : "border-t-red")} />
+                </span>
+              ) : (
+                <MapPin
+                  className={cn("h-[26px] w-[26px] drop-shadow-[0_2px_2px_rgba(13,31,54,0.35)] transition-transform", isOpen ? "scale-125" : "hover:scale-110")}
+                  fill={isOpen ? "#0d1f36" : "#a92d3a"}
+                  stroke="#f7f2e7"
+                  strokeWidth={1.6}
+                />
+              )}
             </button>
           );
         })}
@@ -356,7 +383,7 @@ export function SelectMap({ content, variant = "page" }: { content: SelectMapCon
               )}
               style={{ left: l.left, top: l.top, width: l.width, height: l.height, fontSize: font }}
             >
-              {spot.name}
+              {labelText(spot)}
             </button>
           );
         })}
@@ -365,6 +392,7 @@ export function SelectMap({ content, variant = "page" }: { content: SelectMapCon
         {open && openPin ? (
           <SpotPopup
             spot={open}
+            number={numbered ? numberOf.get(open.id) : undefined}
             areaLabel={textOr(content.areas[open.area], open.area)}
             anchor={{ x: openPin.s.x, y: openPin.s.y - PIN_HEAD_OFFSET }}
             mapSize={size}
@@ -432,6 +460,7 @@ export function SelectMap({ content, variant = "page" }: { content: SelectMapCon
 
 function SpotPopup({
   spot,
+  number,
   areaLabel,
   anchor,
   mapSize,
@@ -439,6 +468,7 @@ function SpotPopup({
   onClose,
 }: {
   spot: SelectSpot;
+  number?: number;
   areaLabel: string;
   anchor: Point;
   mapSize: { width: number; height: number };
@@ -468,7 +498,10 @@ function SpotPopup({
         <TbdImage value={spot.mainImage} slot="Photo" sizes="240px" />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-1 p-4 pr-10">
-        <p className="font-heading-en text-lg leading-tight text-navy">{spot.name}</p>
+        <p className="font-heading-en text-lg leading-tight text-navy">
+          {number ? <span className="mr-1.5 text-red">{number}.</span> : null}
+          {spot.name}
+        </p>
         {spot.nameJa ? <p className="text-xs text-navy/60">{spot.nameJa}</p> : null}
         <p className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-red/10 px-2.5 py-1 text-[11px] text-red">
           <MapPin className="h-3 w-3" aria-hidden />

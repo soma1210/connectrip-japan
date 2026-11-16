@@ -37,7 +37,7 @@ class MapErrorBoundary extends Component<{ children: ReactNode; fill?: boolean }
 }
 
 /** `variant="embed"`: the in-article map (only the article's places; no area buttons). */
-export function LazySelectMap({ content, variant = "page" }: { content: SelectMapContent; variant?: "page" | "embed" }) {
+export function LazySelectMap({ content, variant = "page", numbered }: { content: SelectMapContent; variant?: "page" | "embed"; numbered?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
 
@@ -63,7 +63,7 @@ export function LazySelectMap({ content, variant = "page" }: { content: SelectMa
   return (
     // Embed: SelectMap fills its parent, so the frame sets the size. Page: SelectMap sizes itself.
     <div ref={ref} className={embed ? "relative aspect-[4/5] w-full overflow-hidden border border-gold/40 sm:aspect-[16/10]" : "relative"}>
-      <MapErrorBoundary fill={embed}>{near ? <SelectMap content={content} variant={variant} /> : <MapFrame fill={embed}>{label}</MapFrame>}</MapErrorBoundary>
+      <MapErrorBoundary fill={embed}>{near ? <SelectMap content={content} variant={variant} numbered={numbered} /> : <MapFrame fill={embed}>{label}</MapFrame>}</MapErrorBoundary>
     </div>
   );
 }

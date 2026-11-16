@@ -2,8 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { createReview, deleteReview, getReviews } from "@/lib/data/reviews";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function addReview(formData: FormData) {
+  // Server Actions are public endpoints: check the session here, not only in the layout.
+  await requireAdmin();
+
   const name = String(formData.get("name") ?? "").trim();
   const country = String(formData.get("country") ?? "").trim();
   const countryCode = String(formData.get("countryCode") ?? "")
@@ -42,6 +46,9 @@ export async function addReview(formData: FormData) {
 }
 
 export async function removeReview(id: number) {
+  // Server Actions are public endpoints: check the session here, not only in the layout.
+  await requireAdmin();
+
   await deleteReview(id);
   revalidatePath("/admin/reviews");
   revalidatePath("/");

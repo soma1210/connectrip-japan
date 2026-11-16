@@ -2,7 +2,8 @@ import type { DurationRange, Money } from "@/contracts";
 
 export function formatDuration({ minMinutes, maxMinutes }: DurationRange): string {
   const h = (m: number) => `${Math.round((m / 60) * 10) / 10}`;
-  return minMinutes === maxMinutes ? `${h(minMinutes)} h` : `${h(minMinutes)}–${h(maxMinutes)} h`;
+  // "3 Hours", "1 Hour", "4–8 Hours" (Experience cards and pages, 2026-11-16).
+  return minMinutes === maxMinutes ? `${h(minMinutes)} ${minMinutes === 60 ? "Hour" : "Hours"}` : `${h(minMinutes)}–${h(maxMinutes)} Hours`;
 }
 
 /** JPY has no minor unit; `amount` is already in yen. */

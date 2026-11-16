@@ -5,7 +5,7 @@ import { AREA_INFO } from "./areas";
 import { formatIsoDate } from "../../components/format";
 import { SELECT_SAMPLES, UPDATE_SAMPLES } from "./homeSamples";
 import type { JournalPage } from "../journal";
-import { EXPLORE_COPY, STATUS_LABEL, areaName, articleHref, articleSpotIds, getLatestArticles, getSelectArticles, getUpdateLists, type EditorialStatus } from "./index";
+import { EXPLORE_COPY, STATUS_LABEL, areaName, articleHref, articleSpotIds, getLatestArticles, getSelectArticles, getUpdateLists, type EditorialStatus, type SelectArticle } from "./index";
 
 /** Articles shown on Home (the rest are one click away on the Explore hub). */
 const HOME_ITEMS = 4;
@@ -85,24 +85,34 @@ export type ExploreNewsCard = {
 };
 
 
+/** A "guide" article's hero photo, under the same rule as spot photos (unverified: preview only). */
+function guidePhoto(a: SelectArticle): { src: string; alt: string; unverified: boolean } | null {
+  if (a.content.type !== "guide") return null;
+  const h = a.content.hero;
+  if (!h.rightsConfirmed && !V1_PREVIEW) return null;
+  return { src: h.src, alt: h.alt, unverified: !h.rightsConfirmed };
+}
+
 export function getExploreHomeSlides() {
   const flags = (status: EditorialStatus) => (V1_PREVIEW && status !== "published" ? [STATUS_LABEL[status].toUpperCase()] : []);
   const select: ExploreSlideCard[] = getSelectArticles().map((a) => {
     const lead = articleSpotIds(a).map(spotById).find((s) => displayPhoto(s));
-    const photo = lead ? displayPhoto(lead) : null;
+    const photo = lead ? displayPhoto(lead) : guidePhoto(a);
     return {
       id: a.slug,
       href: articleHref(a),
       title: a.title.replace(/^Connectrip Japan Select:\s*/, ""),
       category: a.topic,
-      area: areaName(a.area),
+      area: a.areaLabel ?? areaName(a.area),
       summary: a.summary,
       image: photo ? { src: photo.src, alt: photo.alt, unverified: photo.unverified } : undefined,
       flags: flags(a.status),
     };
   });
-  // Preview: placeholder guides after the real ones (content/explore/homeSamples.ts).
-  if (V1_PREVIEW) {
+  // Placeholder guide cards (content/explore/homeSamples.ts) are off since 2026-11-15: the eight
+  // Select cards are real records (published / in review / draft). Set to true to show them again.
+  const SHOW_SELECT_SAMPLES = false;
+  if (V1_PREVIEW && SHOW_SELECT_SAMPLES) {
     for (const x of SELECT_SAMPLES) {
       select.push({
         id: x.id,

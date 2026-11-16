@@ -104,15 +104,18 @@ try {
   process.env.BOOKING_GAS_SECRET = secret;
   let writes = 0;
   globalThis.fetch = fakeFetch(() => { writes++; return success(); });
-  const accepted = await POST(request(raw));
-  assert.equal(accepted.status, 200);
-  assert.deepEqual(await accepted.json(), { ok: true, accepted: true, bookingRef, status: "REQUESTED", replayed: false });
-  assert.equal(writes, 1);
+  // Phase 1 (2026-11-16): Postgres is the system of record. With only the Apps Script configured
+  // (no POSTGRES_URL) the route stores nothing and never writes to the Sheet.
+  const savedPostgresUrl = process.env.POSTGRES_URL;
+  delete process.env.POSTGRES_URL;
+  assert.equal((await POST(request(raw))).status, 503);
+  if (savedPostgresUrl !== undefined) process.env.POSTGRES_URL = savedPostgresUrl;
+  assert.equal(writes, 0);
   for (let index = 0; index < 5; index++) {
     assert.equal((await POST(request({}, id, "booking-test-rate-limit"))).status, 400);
   }
   assert.equal((await POST(request({}, id, "booking-test-rate-limit"))).status, 429);
-  assert.equal(writes, 1);
+  assert.equal(writes, 0);
 } finally {
   globalThis.fetch = originalFetch;
   if (originalUrl === undefined) delete process.env.BOOKING_GAS_URL;

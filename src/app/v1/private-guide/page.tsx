@@ -1,7 +1,7 @@
 import { JsonLd } from "@/website-v1/components/JsonLd";
 import { pageBreadcrumbJsonLd } from "@/website-v1/structuredData";
 import { routeHref } from "@/website-v1/routes";
-import { bookingGasFromEnv } from "@/lib/booking-request/gas";
+import { bookingStoreFromEnv } from "@/lib/booking-request/handler";
 import { getPrivateGuideViewModel } from "@/website-v1/content/privateGuide";
 import { getPrivateGuideRequestModel } from "@/website-v1/content/privateGuideRequest";
 import { toMetadata } from "@/website-v1/metadata";
@@ -17,7 +17,7 @@ export function generateMetadata() {
 export default function V1PrivateGuidePage() {
   // Live only when the booking backend is configured on the server; otherwise the
   // form stays a preview that sends nothing (never a form that always fails).
-  const mode = bookingGasFromEnv() ? "live" : "mock";
+  const mode = bookingStoreFromEnv() ? "live" : "mock";
   return (
     <>
       <JsonLd data={pageBreadcrumbJsonLd("Private Guide", routeHref("privateGuide"))} />

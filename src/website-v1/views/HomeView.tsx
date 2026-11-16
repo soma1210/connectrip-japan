@@ -35,7 +35,7 @@ import { TRAIL_EXTRA_IMAGES } from "../assets/trailImages";
 import { CinematicHeroSlider } from "../components/hero/CinematicHeroSlider";
 import { getFeaturedTour } from "../content/featuredTour";
 import { PRIVATE_DAY_DESCRIPTION } from "../content/home";
-import { PLAN_AREAS, PLAN_DURATIONS, PLAN_INTERESTS, PLAN_STYLES } from "../booking/privateDayPlan";
+import { PLAN_AREAS, PLAN_DURATIONS, PLAN_INTERESTS } from "../booking/privateDayPlan";
 import { ACTIVITY_LABELS, AREA_LABELS } from "../content/privateGuide";
 import { PhilosophySection } from "../components/globe/PhilosophySection";
 import { OurValueCinematicSection } from "../components/our-value/OurValueCinematicSection";
@@ -70,7 +70,7 @@ const BASELINE_ORDER: HomeSectionKey[] = [
 const HEADLINE_CLASS =
   "max-w-[9.4em] font-heading-jp text-[clamp(2.25rem,9.6vw,3rem)] leading-[1.08] text-cream drop-shadow-[0_2px_28px_rgba(5,11,24,0.6)] max-md:mx-auto md:text-[clamp(2.9rem,4.4vw,4.9rem)]";
 
-/** One photo of the 3 × 3 mosaic around the slider (assets/heroImages.ts HERO_MOSAIC). */
+/** One photo of the seven-photo (2 · 3 · 2) mosaic around the slider (assets/heroImages.ts HERO_MOSAIC). */
 function MosaicCell({ photo }: { photo: MosaicPhoto }) {
   return (
     <div className={mosaic.cell} aria-hidden>
@@ -95,10 +95,10 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
       {/* Home Opening Experience (W1-D21): overlay on top; the Hero below is always in the HTML. */}
       {first ? <HomeOpeningExperience image={{ src: first.src, focus: heroFocus(first.src) }} /> : null}
 
-      {/* The stage: one screen held while the camera pulls back from the slider into the 3 × 3 mosaic. */}
+      {/* The stage: one screen held while the camera pulls back from the slider into the seven-photo mosaic. */}
       <div data-mosaic-stage className={mosaic.sticky}>
         <div data-mosaic-grid className={mosaic.grid}>
-          {HERO_MOSAIC.slice(0, 4).map((p) => (
+          {HERO_MOSAIC.slice(0, 3).map((p) => (
             <MosaicCell key={p.src} photo={p} />
           ))}
           {/* Centre: the Cinematic Hero slider; Osaka Castle settles in as the camera pulls back. */}
@@ -118,7 +118,7 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
             </div>
             <div className={`pointer-events-none absolute inset-0 z-[3] ${cinematic.veil}`} />
           </div>
-          {HERO_MOSAIC.slice(4, 8).map((p) => (
+          {HERO_MOSAIC.slice(3, 6).map((p) => (
             <MosaicCell key={p.src} photo={p} />
           ))}
         </div>
@@ -285,12 +285,14 @@ function FeaturedExperiences({ section }: { section: HomeContent["featuredExperi
   );
 }
 
-/** Text-only summary of what the request form lets travellers choose (Human instruction 2026-11-13). */
+/**
+ * Text-only summary of what the request form lets travellers choose (Human instruction 2026-11-13).
+ * Travel style is still chosen in the request form; it is not listed here (2026-11-15).
+ */
 const PRIVATE_DAY_OPTIONS: { label: string; items: string[] }[] = [
   { label: "DESTINATIONS", items: PLAN_AREAS.map((k) => textOr(AREA_LABELS[k], k)) },
   { label: "EXPERIENCES", items: PLAN_INTERESTS.map((k) => textOr(ACTIVITY_LABELS[k], k)) },
   { label: "DURATION", items: PLAN_DURATIONS.map((d) => d.label) },
-  { label: "TRAVEL STYLE", items: PLAN_STYLES.map((s) => s.label) },
 ];
 
 function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
@@ -307,7 +309,8 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
      * text sits on it (no separate photo block). Wide screens are unchanged.
      */
     <section id="private-guide" className="relative isolate overflow-hidden bg-navy-dark md:h-[240svh] md:overflow-visible">
-      <div className="relative flex md:sticky md:top-0 md:h-svh md:items-center md:overflow-clip">
+      {/* Wide screens: at least one screen tall, growing with the content on short windows (never cut). */}
+      <div className="relative flex md:sticky md:top-0 md:min-h-svh md:items-center md:overflow-clip">
         {showPhoto ? (
           // Wide screens: the night street assembles from seven vertical strips that rise out of order, then the camera eases back.
           <div data-pg-photo className="absolute inset-y-0 right-0 -z-10 hidden w-[58%] md:flex" data-cursor="photo">
@@ -332,17 +335,19 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
             <div className="absolute inset-0 bg-gradient-to-b from-navy-dark from-[4%] via-navy-dark/25 via-40% to-navy-dark/55" />
           </div>
         ) : null}
-        <Container className="py-14 md:py-0">
+        {/* Wide screens: top padding clears the fixed header; bottom padding keeps the CTA off the screen edge.
+            Short windows (height ≤ 780px): the gaps between the groups tighten a little (type sizes unchanged). */}
+        <Container className="py-14 md:pt-10 md:pb-14">
           {/* Phones: a soft shadow keeps the words clear of the lights in the photo. */}
           <div className={showPhoto ? "max-md:[text-shadow:0_1px_14px_rgba(8,20,36,0.85)] max-md:[&_a]:[text-shadow:none] md:max-w-[46%]" : undefined}>
             <SceneTitle heading={section.heading} supporting={section.supporting} slot="Private Guide" headingSizeClassName="text-[2.5rem] leading-tight md:text-6xl" />
-            <p data-pg-item className="-mt-4 mb-6 max-w-xl text-sm leading-relaxed text-cream/80 max-md:text-cream/90 md:-mt-6">
+            <p data-pg-item className="-mt-4 mb-6 max-w-xl text-sm leading-relaxed text-cream/80 max-md:text-cream/90 md:-mt-6 [@media(min-width:768px)_and_(max-height:780px)]:-mt-9 [@media(min-width:768px)_and_(max-height:780px)]:mb-5">
               {PRIVATE_DAY_DESCRIPTION}
             </p>
-            {/* Phones: Duration and Travel Style share a row (two columns); wide screens keep one column. */}
-            <dl className="grid max-w-xl grid-cols-2 gap-x-5 gap-y-3.5 md:flex md:flex-col md:gap-4">
-              {PRIVATE_DAY_OPTIONS.map((group, i) => (
-                <div key={group.label} data-pg-item className={i < 2 ? "col-span-2" : ""}>
+            {/* One group per row. */}
+            <dl className="grid max-w-xl grid-cols-2 gap-x-5 gap-y-3.5 md:flex md:flex-col md:gap-4 [@media(min-width:768px)_and_(max-height:780px)]:gap-3">
+              {PRIVATE_DAY_OPTIONS.map((group) => (
+                <div key={group.label} data-pg-item className="col-span-2">
                   {/* A gold rule is drawn across before each group appears (wide screens). */}
                   <span data-pg-line aria-hidden className="mb-2.5 hidden h-px w-full origin-left bg-gradient-to-r from-gold/70 to-gold/0 md:block" />
                   <dt className="font-heading-en text-[11px] tracking-[0.2em] text-gold/80 max-md:text-gold">{group.label}</dt>
@@ -358,7 +363,7 @@ function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
                 </div>
               ))}
             </dl>
-            <div data-pg-item className="mt-8 flex flex-wrap gap-4">
+            <div data-pg-item className="mt-8 flex flex-wrap gap-4 [@media(min-width:768px)_and_(max-height:780px)]:mt-6">
               {/* Phones: full width. Same link, label and behaviour. */}
               <CtaLink cta={cta} pair className="max-md:w-full" />
               {section.learnMore ? <CtaLink cta={section.learnMore} /> : null}

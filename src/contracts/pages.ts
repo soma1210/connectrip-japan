@@ -193,6 +193,25 @@ export type AboutSection = {
   facts?: Tbd<CompanyFact[]>;
   /** A link to a page with more detail (e.g. the Company Profile). */
   more?: { label: string; href: string };
+  /** Our Values: the numbered values, shown as a grid under the section heading. */
+  values?: AboutValue[];
+};
+
+/** One company value (About Us, Our Values). */
+export type AboutValue = {
+  /** Two digits, "01"–"06". */
+  number: string;
+  /** Uppercase value name, e.g. "CONNECT". */
+  name: string;
+  headline: string;
+  text: string;
+};
+
+/** About Us closing statement (brand sign-off at the end of the page). */
+export type AboutClosing = {
+  eyebrow: string;
+  statement: string;
+  lines: string[];
 };
 
 export type AboutContent = {
@@ -202,6 +221,7 @@ export type AboutContent = {
     tagline: Tbd<string>;
   };
   sections: AboutSection[];
+  closing?: AboutClosing;
   experiencesCta: CtaSpec<"experiences">;
   privateGuideCta: CtaSpec<"privateGuide">;
 };

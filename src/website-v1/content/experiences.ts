@@ -9,16 +9,21 @@ import type {
 } from "@/contracts";
 import { bookingHref, experienceHref, routeHref } from "../routes";
 import { cta, pageName, pageSeo, tbd } from "./shared";
+import { TENMANGU_SLUG, getTenmanguExperience } from "./experienceTenmangu";
 
 /**
  * Ready-made Experience slots. No product is decided yet, so every slot is
  * TBD. They exist only so the list → detail navigation can be reviewed.
  * They are not GP-OSA-01〜03.
+ *
+ * 2026-11-16: the first product (experienceTenmangu.ts, draft) takes the
+ * first card; slot A is kept but not listed, slots B and C show as
+ * "Coming soon" cards (no link, no button). Slot pages are no longer routed.
  */
-const SLOTS: { slug: string; id: ExperienceId }[] = [
-  { slug: "preview-a", id: "GP-OSA-PREVIEW-A" },
-  { slug: "preview-b", id: "GP-OSA-PREVIEW-B" },
-  { slug: "preview-c", id: "GP-OSA-PREVIEW-C" },
+const SLOTS: { slug: string; id: ExperienceId; listing: "hidden" | "coming_soon" }[] = [
+  { slug: "preview-a", id: "GP-OSA-PREVIEW-A", listing: "hidden" },
+  { slug: "preview-b", id: "GP-OSA-PREVIEW-B", listing: "coming_soon" },
+  { slug: "preview-c", id: "GP-OSA-PREVIEW-C", listing: "coming_soon" },
 ];
 
 const priceTbd: PriceStructure = {
@@ -46,6 +51,7 @@ function fields(slot: (typeof SLOTS)[number]): Fields {
     status: "PROPOSED",
     market: "osaka",
     href: experienceHref(slot.slug),
+    listing: slot.listing,
     title: tbd("Product not decided"),
     summary: tbd("Product summary TBD"),
     duration: tbd("Duration TBD"),
@@ -82,12 +88,27 @@ function summary(slot: (typeof SLOTS)[number]): ExperienceSummary {
   };
 }
 
+/** Products first (the Tenmangu draft), then the slots. Lists skip `listing: "hidden"`. */
 export function getExperienceSummaries(): ExperienceSummary[] {
-  return SLOTS.map(summary);
+  return [productSummary(getTenmanguExperience()), ...SLOTS.map(summary)];
 }
 
+/** Card data of a product record: its own detail link, no "Book Now" on the card. */
+function productSummary(e: Experience): ExperienceSummary {
+  const { id, productType, status, market, href, title, summary: text, duration, ageFit, walkingIntensity, participation, visitExperience, area, image, price, listing, pendingPriceLabel, priceLabel } = e;
+  return {
+    id, productType, status, market, href, title, summary: text, duration, ageFit, walkingIntensity, participation, visitExperience, area, image, price, listing, pendingPriceLabel, priceLabel,
+    cta: cta(`v1_detail_${id.toLowerCase()}`, "experienceDetail", href, "card", "secondary", pageName("Experience Detail")),
+  };
+}
+
+/** Product slugs with a detail page. The TBD slots have none (not listed as products). */
+const PRODUCTS: Record<string, () => Experience> = {
+  [TENMANGU_SLUG]: getTenmanguExperience,
+};
+
 export function getExperienceSlugs(): string[] {
-  return SLOTS.map((slot) => slot.slug);
+  return Object.keys(PRODUCTS);
 }
 
 function experience(slot: (typeof SLOTS)[number]): Experience {
@@ -122,15 +143,21 @@ export function getExperiencesListViewModel(): ExperiencesListViewModel {
     seo: pageSeo("Experiences", routeHref("experiences")),
     content: {
       intro: { headline: pageName("Experiences"), supporting: tbd("Experiences intro copy TBD") },
-      items: getExperienceSummaries(),
+      items: getExperienceSummaries().filter((e) => e.listing !== "hidden"),
       privateGuideCta: cta("v1_experiences_private", "privateGuide", routeHref("privateGuide"), "section", "secondary", pageName("Private Guide")),
     },
   };
 }
 
 export function getExperienceDetailViewModel(slug: string): ExperienceDetailViewModel | undefined {
-  const slot = SLOTS.find((s) => s.slug === slug);
-  if (!slot) return undefined;
-  const { seo, ...content } = experience(slot);
+  const product = PRODUCTS[slug];
+  if (!product) return undefined;
+  const { seo, ...content } = product();
   return { route: "experienceDetail", seo, content };
+}
+
+/** The TBD slot record (kept for review; no route). */
+export function getExperienceSlot(slug: string): Experience | undefined {
+  const slot = SLOTS.find((s) => s.slug === slug);
+  return slot ? experience(slot) : undefined;
 }

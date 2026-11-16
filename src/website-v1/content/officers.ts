@@ -28,3 +28,22 @@ export function officerLine(key: OfficerKey): string {
   const o = OFFICERS[key];
   return `${o.name}, ${o.titleEn}`;
 }
+
+/**
+ * The founders on the About page (Human instruction 2026-11-16): one photo of
+ * both founders, used as supplied (not cropped; metadata removed), with the
+ * names only. Left: Soma Beppu. Right: Riku Ohizumi.
+ *
+ * "Riku Ohizumi" is the spelling the owner confirmed for About (2026-11-16).
+ * `OFFICERS.representative.name` (legal documents, Privacy Policy) still reads
+ * "Riku Oizumi": unify both when the owner confirms the legal spelling.
+ * To replace the photo, overwrite the file at `src` (same name) or change it here.
+ */
+export const FOUNDERS_PHOTO = {
+  src: "/images/v1/about/founders/connectrip-founders.jpg",
+  alt: "Soma Beppu (left) and Riku Ohizumi (right), the founders of Connectrip Japan, in Shinsekai, Osaka, with Tsutenkaku Tower behind them",
+  width: 1536,
+  height: 2048,
+  /** Names in photo order, left to right. */
+  names: ["Soma Beppu", "Riku Ohizumi"],
+} as const;

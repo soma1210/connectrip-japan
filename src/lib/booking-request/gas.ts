@@ -55,6 +55,23 @@ export function signBookingEnvelope(secret: string, action: string, ts: number, 
   return sign(secret, action, ts, nonce, payload);
 }
 
+/**
+ * One signed call to the booking Apps Script. Shared with the inquiry API
+ * (src/lib/inquiry), which uses the same deployment, secret and envelope.
+ * Resolves the `data` object, null when the answer is unreadable; throws
+ * GasRefusal for `{ ok: false }`.
+ */
+export async function callBookingGas(url: string, secret: string, fetchImpl: typeof fetch, action: string, payload: unknown): Promise<Record<string, unknown> | null> {
+  return call(url, secret, fetchImpl, action, payload) as Promise<Record<string, unknown> | null>;
+}
+
+/** The deployment URL and secret, when both are valid (same rules as `bookingGasFromEnv`). */
+export function bookingGasSettings(env: Record<string, string | undefined> = process.env): { url: string; secret: string } | null {
+  const url = env.BOOKING_GAS_URL?.trim() ?? "";
+  const secret = env.BOOKING_GAS_SECRET ?? "";
+  return isExecUrl(url) && secret.length >= MIN_SECRET_LENGTH ? { url, secret } : null;
+}
+
 async function call(url: string, secret: string, fetchImpl: typeof fetch, action: string, payload: unknown): Promise<GasData | null> {
   const body = JSON.stringify(payload);
   const ts = Date.now();
@@ -176,7 +193,7 @@ async function request(fetchImpl: typeof fetch, url: string, init: RequestInit):
   }
 }
 
-class GasRefusal extends Error {
+export class GasRefusal extends Error {
   constructor(readonly code: string) {
     super(code);
   }

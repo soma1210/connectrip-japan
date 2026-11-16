@@ -1,3 +1,4 @@
+import { SELECT_DRAFTS } from "./selectDrafts";
 import type { SelectArticle, Source } from "./types";
 
 /**
@@ -55,6 +56,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
       spots: [
         {
           spotId: "katsuoji",
+          bestFor: "A greener side of Osaka and its “victory” daruma",
           overview:
             "A temple in the hills of Minoh, north of central Osaka. Katsuoji is known as a temple of winning luck, where people pray for success, and it is temple No. 23 on the Saigoku Kannon pilgrimage. Its “victory” daruma dolls (kachi-daruma) are a well-known symbol of the temple.",
           whyWeRecommend: "It shows a quieter, greener side of Osaka, a long way from the neon of the city centre, and the daruma make it one of the most memorable temples in the region.",
@@ -65,6 +67,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "namba-yasaka-shrine",
+          bestFor: "The giant lion-head stage, near Namba",
           overview:
             "A neighbourhood shrine in Naniwa Ward, close to the Namba area, famous for its Shishiden: a stage built in the shape of a giant lion's head, used for lion dances and performances at the shrine's summer festival.",
           whyWeRecommend: "The lion stage is one of the most striking sights in Osaka, and the shrine is easy to add to a day around Namba.",
@@ -75,6 +78,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "sumiyoshi-taisha",
+          bestFor: "Ancient shrine architecture and the arched bridge",
           overview:
             "The head shrine of about 2,300 Sumiyoshi shrines across Japan. Its four main halls are National Treasures that preserve an ancient style of shrine architecture, and the steep, arched Sorihashi bridge is the symbol of the shrine.",
           whyWeRecommend: "It is a calm, spacious shrine with an architectural style you can see up close, and a good reason to visit a part of Osaka most travellers skip.",
@@ -85,6 +89,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "osaka-tenmangu",
+          bestFor: "A shrine visit with a local shopping street",
           overview:
             "A shrine dedicated to Sugawara no Michizane, the Heian-period scholar and statesman. Many people come to pray for success in exams, and the shrine is the home of the Tenjin Matsuri festival.",
           whyWeRecommend: "It sits right beside Tenjinbashisuji Shopping Street, so it fits naturally into a walk through one of Osaka's most local neighbourhoods.",
@@ -95,6 +100,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "dotonbori",
+          bestFor: "Street food and the evening lights",
           overview: "Osaka's best-known entertainment district, along the Dotonbori canal, with giant illuminated signs, restaurants and street food such as takoyaki and okonomiyaki.",
           whyWeRecommend: "For many visitors the lights of Dotonbori are the image of Osaka, and it is the easiest place to try the city's favourite comfort food.",
           localTips: ["Come back after dark, when the signs along the canal are lit."],
@@ -104,6 +110,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "kuromon-market",
+          bestFor: "Lunch and fresh food",
           overview: "A food market in Nippombashi known as “Osaka's kitchen”, with shops selling fresh fish, fugu (pufferfish), meat, fruit, sweets and ready-to-eat food.",
           whyWeRecommend: "It is a lively way to see what Osaka eats, and a good lunch stop on the way from Osaka Castle to Namba.",
           localTips: ["Make it your lunch stop and try a little from several shops."],
@@ -113,6 +120,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "shinsekai",
+          bestFor: "Old-Osaka atmosphere and kushikatsu",
           overview: "A retro district around Tsutenkaku Tower, home of the lucky Billiken figure. Its streets are lined with restaurants serving kushikatsu, deep-fried skewers.",
           whyWeRecommend: "It has an old-Osaka atmosphere that feels very different from Umeda or Namba.",
           localTips: ["Try kushikatsu: at many restaurants the shared dipping sauce is for one dip only."],
@@ -122,6 +130,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "umeda-sky-building",
+          bestFor: "Panoramic views over the city",
           overview:
             "One of Osaka's best-known landmarks, consisting of Tower East and Tower West joined at the top by the Kuchu Teien Observatory (Floating Garden Observatory) across the 39th, 40th and rooftop floors. Its open-air rooftop deck offers 360-degree panoramic views over the Osaka cityscape.",
           whyWeRecommend:
@@ -140,6 +149,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "osaka-castle",
+          bestFor: "History, stone walls and moats",
           overview:
             "Built by Toyotomi Hideyoshi, the castle fell in the Siege of Osaka and was rebuilt by the Tokugawa shogunate. Today's main tower is the third, restored in 1931 with donations from the people of Osaka, and it has been a museum ever since, with exhibits on Hideyoshi and the castle's history.",
           whyWeRecommend: "The stone walls, moats and park around the tower are worth the visit on their own, and the museum is a good introduction to Osaka's history.",
@@ -150,6 +160,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         },
         {
           spotId: "shitennoji",
+          bestFor: "A calm temple with a very long history",
           overview: "A temple associated with Prince Shotoku, which describes itself as the first officially established Buddhist temple in Japan.",
           whyWeRecommend: "It is a peaceful contrast to lively Shinsekai nearby, and a place with a very long history in the middle of the city.",
           localTips: ["Visit it on the same day as Shinsekai."],
@@ -229,6 +240,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         {
           slot: "Morning",
           spotId: "osaka-castle",
+          bestFor: "History and the castle park",
           plan: "Start at Osaka Castle: walk through the park and past the stone walls and moats to the main tower, and visit the museum inside.",
           stay: null,
           nextLeg: {
@@ -240,6 +252,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         {
           slot: "Lunch",
           spotId: "kuromon-market",
+          bestFor: "Lunch",
           plan: "Have lunch at Kuromon Ichiba Market, trying a little from several of the market's food shops.",
           stay: null,
           nextLeg: {
@@ -251,6 +264,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         {
           slot: "Afternoon",
           spotId: "shinsekai",
+          bestFor: "Retro streets and kushikatsu",
           plan: "Explore Shinsekai: see Tsutenkaku Tower and the retro streets around it, and try kushikatsu if you are hungry.",
           stay: null,
           nextLeg: {
@@ -262,6 +276,7 @@ export const SELECT_ARTICLES: SelectArticle[] = [
         {
           slot: "Evening",
           spotId: "dotonbori",
+          bestFor: "Dinner and the canal-side lights",
           plan: "Finish in Dotonbori for dinner and a walk along the canal under the illuminated signs.",
           stay: null,
           nextLeg: null,
@@ -292,4 +307,6 @@ export const SELECT_ARTICLES: SelectArticle[] = [
       "Editorial review and approval by Connectrip Japan before publishing.",
     ],
   },
+  // Draft guides (selectDrafts.ts, 2026-11-15): after the existing ones, so the existing order and links stay.
+  ...SELECT_DRAFTS,
 ];

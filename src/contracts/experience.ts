@@ -151,6 +151,35 @@ export type ExperienceSummary = {
   cta: CtaSpec<"experienceDetail">;
   /** Optional "Book Now" directly from a card. */
   bookCta?: CtaSpec<"booking">;
+  /**
+   * How lists show the record (2026-11-16). "product" (default): the normal card.
+   * "coming_soon": a placeholder card with no link, button, photo, duration or
+   * price. "hidden": left out of lists (the record is kept).
+   */
+  listing?: "product" | "coming_soon" | "hidden";
+  /**
+   * Shown instead of a TBD price on cards and pages (e.g. "To Be Confirmed").
+   * The price itself stays TBD in the data.
+   */
+  pendingPriceLabel?: string;
+  /** Display text of a decided price on cards, e.g. "From ¥24,800 / group" (the amount itself is `price`). */
+  priceLabel?: string;
+};
+
+/** One group-size price of a private tour (per group, JPY). */
+export type GroupPriceTier = {
+  /** Display label, e.g. "1–2 Guests". */
+  guests: string;
+  minGuests: number;
+  maxGuests: number;
+  price: Money<"JPY">;
+};
+
+/** A place an Experience visits. Not an itinerary step: no order or time is implied. */
+export type ExperiencePlace = {
+  name: string;
+  nameJa?: string;
+  text: string;
 };
 
 /** Everything the Experience Detail template needs. */
@@ -170,4 +199,18 @@ export type Experience = Omit<ExperienceSummary, "cta" | "bookCta"> & {
   /** Optional path for travellers who want something custom. */
   privateGuideCta?: CtaSpec<"privateGuide">;
   seo: SeoMeta;
+  /** Product page extras (2026-11-16). When `places` is set, the detail page uses the product layout. */
+  subtitle?: string;
+  /** Longer introduction for the detail page (`summary` stays the short card text). */
+  introduction?: string;
+  /** Display categories, e.g. ["Culture", "Local Life", "Walking Tour"]. */
+  categories?: string[];
+  /** Display label of the tour type, e.g. "Guided Walking Tour". */
+  tourType?: string;
+  places?: ExperiencePlace[];
+  importantNotes?: string[];
+  /** Per-group prices by group size (private tours). `price.amount` is the lowest tier. */
+  priceTiers?: GroupPriceTier[];
+  /** Short line under the price table, e.g. "Prices are per private group, not per person." */
+  priceNote?: string;
 };

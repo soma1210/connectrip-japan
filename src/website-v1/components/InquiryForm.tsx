@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle2 } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import type {
   InquiryFieldName,
   InquiryFieldSpec,
@@ -73,8 +73,16 @@ function readValues(form: HTMLFormElement, fields: InquiryFieldSpec[]): InquiryF
   return values;
 }
 
+/** Field error codes from the server, in words. */
+const ERROR_TEXT: Record<string, string> = {
+  required: "This field is required.",
+  invalid_format: "Please check this field.",
+  too_long: "This is too long.",
+  out_of_range: "Please enter a number from 0 to 50.",
+};
+
 function Field({ field, error }: { field: InquiryFieldSpec; error?: string }) {
-  const errorLine = error ? <span className="text-[11px] normal-case tracking-normal text-red">{error}</span> : null;
+  const errorLine = error ? <span className="text-[11px] normal-case tracking-normal text-red">{ERROR_TEXT[error] ?? error}</span> : null;
   const help = field.helpText ? (
     <TbdText value={field.helpText} slot="Help text" className="text-[11px] normal-case tracking-normal text-cream/50" />
   ) : null;
@@ -120,12 +128,28 @@ function Field({ field, error }: { field: InquiryFieldSpec; error?: string }) {
   );
 }
 
+/** Status copy (Human instruction 2026-11-16). */
+const STATUS_TEXT = {
+  sending: "Sending your request...",
+  received: "Your request has been received. Our team will review it and get back to you by email.",
+  failed: "We couldn't submit your request. Please try again.",
+  fields: "Please check the highlighted fields.",
+  rateLimited: "Too many requests were sent. Please wait a few minutes and try again.",
+};
+
 /**
  * Inquiry form driven entirely by `InquiryFormModel`. Submits only through
- * the handler it receives (mock in the preview).
+ * the handler it receives (mock in the preview, the Inquiry API when `live`).
  */
-export function InquiryForm({ model, onSubmit, notice }: { model: InquiryFormModel; onSubmit: InquirySubmitHandler; notice?: string }) {
+export function InquiryForm({ model, onSubmit, notice, live = false }: { model: InquiryFormModel; onSubmit: InquirySubmitHandler; notice?: string; live?: boolean }) {
   const [state, setState] = useState<InquiryFormState>({ phase: "idle" });
+  const doneRef = useRef<HTMLDivElement>(null);
+  // The form shrinks to the confirmation: bring it into view so the visitor sees it (phones especially).
+  useEffect(() => {
+    if (state.phase !== "submitted" || !doneRef.current) return;
+    doneRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
+    doneRef.current.focus({ preventScroll: true });
+  }, [state.phase]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -138,13 +162,21 @@ export function InquiryForm({ model, onSubmit, notice }: { model: InquiryFormMod
 
   if (state.phase === "submitted") {
     return (
-      <div className="flex flex-col items-center gap-6 border border-gold/30 bg-navy-dark p-10 text-center">
+      <div ref={doneRef} tabIndex={-1} className="flex flex-col items-center gap-6 border border-gold/30 bg-navy-dark p-10 text-center outline-none">
         <CheckCircle2 className="h-14 w-14 text-gold" strokeWidth={1.5} />
-        <TbdText value={model.successMessage} slot="Success message" as="p" className="text-sm text-cream/80" />
+        {live ? (
+          <p role="status" className="text-sm text-cream/80">
+            {model.successMessage.status === "TBD" ? STATUS_TEXT.received : model.successMessage.value}
+          </p>
+        ) : (
+          <TbdText value={model.successMessage} slot="Success message" as="p" className="text-sm text-cream/80" />
+        )}
         {notice ? <p className="text-xs text-cream/50">{notice}</p> : null}
-        <button type="button" onClick={() => setState({ phase: "idle" })} className="text-xs text-cream/60 underline hover:text-gold">
-          Reset preview
-        </button>
+        {live ? null : (
+          <button type="button" onClick={() => setState({ phase: "idle" })} className="text-xs text-cream/60 underline hover:text-gold">
+            Reset preview
+          </button>
+        )}
       </div>
     );
   }
@@ -178,9 +210,19 @@ export function InquiryForm({ model, onSubmit, notice }: { model: InquiryFormMod
           disabled={state.phase === "submitting"}
           className="w-fit border border-gold bg-red px-8 py-4 text-sm tracking-[0.08em] text-cream transition-colors hover:bg-red-hover disabled:opacity-60"
         >
-          {model.submitLabel.status === "TBD" ? <TbdMark slot="Submit copy" note={model.submitLabel.note} className="border-cream/50 bg-transparent text-cream" /> : model.submitLabel.value}
+          {live && state.phase === "submitting" ? (
+            STATUS_TEXT.sending
+          ) : model.submitLabel.status === "TBD" ? (
+            <TbdMark slot="Submit copy" note={model.submitLabel.note} className="border-cream/50 bg-transparent text-cream" />
+          ) : (
+            model.submitLabel.value
+          )}
         </button>
-        {state.phase === "error" ? <p className="text-sm text-red">Error: {state.result.kind}</p> : null}
+        {state.phase === "error" ? (
+          <p role="alert" className="text-sm text-red">
+            {state.result.kind === "validation" ? STATUS_TEXT.fields : state.result.kind === "rate_limited" ? STATUS_TEXT.rateLimited : STATUS_TEXT.failed}
+          </p>
+        ) : null}
         {notice ? <p className="text-xs text-cream/50">{notice}</p> : null}
       </div>
     </form>

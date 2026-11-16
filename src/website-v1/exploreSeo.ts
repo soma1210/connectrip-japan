@@ -48,6 +48,10 @@ export const exploreEditorialDashboardMetadata = (): Metadata => ({ ...page("Edi
 
 function leadPhoto(a: ExploreArticle) {
   if (a.kind !== "select") return undefined;
+  if (a.content.type === "guide") {
+    const h = a.content.hero;
+    return h.rightsConfirmed ? { src: h.src, alt: h.alt, width: h.width, height: h.height, rights: "CONFIRMED_BY_HUMAN" as const, consent: "NOT_VERIFIED" as const } : undefined;
+  }
   for (const id of articleSpotIds(a)) {
     const photo = displayPhoto(spotById(id));
     if (photo && !photo.unverified) return photo;
@@ -102,6 +106,7 @@ export function articleSources(a: ExploreArticle): { name: string; url: string }
     if (d?.access) list.push(d.access.source);
   }
   if (a.content.type === "itinerary") for (const s of a.content.stops) for (const src of s.nextLeg?.sources ?? []) list.push(src);
+  if (a.content.type === "guide") for (const place of a.content.places) if (place.official) list.push(place.official);
   const seen = new Set<string>();
   return list.filter((s) => (seen.has(s.url) ? false : (seen.add(s.url), true)));
 }
@@ -164,7 +169,7 @@ export function articleGraph(a: ExploreArticle): Record<string, unknown> {
       mainEntity: faq.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
     });
   }
-  if (a.kind === "select") graph.push(placesList(a));
+  if (a.kind === "select" && articleSpotIds(a).length > 0) graph.push(placesList(a));
   return { "@context": "https://schema.org", "@graph": graph };
 }
 

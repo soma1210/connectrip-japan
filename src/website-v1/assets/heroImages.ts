@@ -124,13 +124,17 @@ export function heroMeta(src: string): Pick<HeroImage, "focus" | "focusMobile" |
  * site's gallery (public/images/gallery, Himeji Castle and Fushimi Inari).
  * Order: top row, middle-left, middle-right, bottom row. `hero` = index in
  * HERO_IMAGES; `src` = any other file. Change the list to change the mosaic.
+ *
+ * 2026-11-15: the Hero shows seven photos (2 · 3 · 2): the first six below
+ * plus the centre. The last two stay listed but are not shown.
  */
 export type MosaicPhoto = { src: string; alt: string; focus?: string };
 const heroPhoto = (i: number): MosaicPhoto => ({ src: HERO_IMAGES[i].image.src, alt: HERO_IMAGES[i].image.alt, focus: HERO_IMAGES[i].focus });
 export const HERO_MOSAIC_CENTER: MosaicPhoto = heroPhoto(0);
 export const HERO_MOSAIC: MosaicPhoto[] = [
-  heroPhoto(3),
-  { src: "/images/gallery/gallery-himeji-castle.jpg", alt: "Himeji Castle, Hyogo", focus: "50% 50%" },
+  // Top row (Human instruction 2026-11-15): Katsuo-ji and Nachi Falls.
+  { src: "/images/v1/spots/osaka/katsuoji.webp", alt: "Rows of red victory daruma dolls at Katsuoji Temple, Minoh, Osaka", focus: "50% 50%" },
+  heroPhoto(6),
   heroPhoto(10),
   heroPhoto(5),
   heroPhoto(11),
