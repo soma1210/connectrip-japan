@@ -4,6 +4,7 @@ import { approved } from "@/contracts/status";
 import { isPublicHref, recruitHref, routeHref, type StaticRouteKey } from "../routes";
 import { approvedText, cta, pageName, pageSeo, proposed, tbd } from "./shared";
 import { getCompanyProfileViewModel } from "./currentSitePages";
+import { TERMS_SECTIONS, TERMS_SOURCE, TERMS_TITLE, TERMS_UPDATED_AT } from "./termsOfService";
 import { socialLinks } from "@/data/social-links";
 
 const PAGE_NAMES: Record<Exclude<StaticRouteKey, "home">, string> = {
@@ -78,7 +79,9 @@ export function getFooterInformation(): FooterLink[] {
   const item = (id: string, href: string, label: string): FooterLink => ({ id, href, label, external: /^https?:\/\//.test(href) });
   return [
     item("v1_footer_contact", routeHref("inquiry"), "Contact Us"),
-    item("v1_footer_business", routeHref("businessInquiry"), "For Business"),
+    // "For Business" removed for now (Human instruction 2026-11-18): it overlaps with "Become a Partner".
+    // The Business Inquiries page and URL are unchanged. To restore:
+    // item("v1_footer_business", routeHref("businessInquiry"), "For Business"),
     // Same targets as the header RECRUIT menu.
     item("v1_footer_guide", recruitHref("guideCommunity"), "Become a Guide"),
     item("v1_footer_partner", recruitHref("partner"), "Become a Partner"),
@@ -111,7 +114,7 @@ export function getLayoutViewModel(): LayoutViewModel {
       footer: {
         // NAVIGATION. Contact moved to Information (getFooterInformation).
         links: [navItem("experiences"), navItem("privateGuide"), navItem("travelGuide"), ...howItWorksNav(), footerAboutItem()],
-        // LEGAL. Company Profile is covered by About; Business Inquiries moved to Information ("For Business").
+        // LEGAL. Company Profile is covered by About; Business Inquiries is not in the footer for now (2026-11-18).
         legal: [navItem("privacy"), footerItem("terms", "Terms & Conditions"), navItem("cancelPolicy")],
         // Same accounts and order as the current site's Footer (data/social-links).
         social: proposed(
@@ -231,6 +234,18 @@ export function getAboutViewModel(): AboutViewModel {
 
 export function getLegalViewModel<K extends "privacy" | "terms">(route: K): LegalPageViewModel<K> {
   const name = PAGE_NAMES[route];
+  // Terms: the owner's Terms of Service text (content/termsOfService.ts, 2026-11-18).
+  if (route === "terms") {
+    return {
+      route,
+      seo: { ...pageSeo(TERMS_TITLE, routeHref(route)), title: approved(TERMS_TITLE, TERMS_SOURCE) },
+      content: {
+        title: approved(TERMS_TITLE, TERMS_SOURCE),
+        updatedAt: approved(TERMS_UPDATED_AT, TERMS_SOURCE),
+        sections: approved(TERMS_SECTIONS, TERMS_SOURCE),
+      },
+    };
+  }
   return {
     route,
     seo: pageSeo(name, routeHref(route)),

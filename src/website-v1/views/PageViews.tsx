@@ -397,9 +397,10 @@ export function LegalView({ vm }: { vm: LegalPageViewModel }) {
           </div>
         ) : (
           <div className="flex flex-col gap-10">
-            {c.sections.value.map((s) => (
-              <section key={s.heading}>
-                <h2 className="text-lg">{s.heading}</h2>
+            {c.sections.value.map((s, i) => (
+              <section key={`${i}-${s.heading}`}>
+                {/* An empty heading = plain paragraphs (e.g. the introduction). */}
+                {s.heading ? <h2 className="text-lg">{s.heading}</h2> : null}
                 {s.paragraphs.map((p, i) => (
                   <p key={i} className="mt-3 text-sm leading-loose text-navy/80">{p}</p>
                 ))}

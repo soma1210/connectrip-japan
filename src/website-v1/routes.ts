@@ -17,8 +17,14 @@ export const V1_BASE_PATH = V1_PREVIEW ? "/v1" : "";
  * `src/app/v1` (Experiences, Travel Guide DEMO, Connectrip Select, How It Works,
  * About until it has approved copy, Business Inquiry, Partner) answers 404, and
  * links to it are not rendered.
+ *
+ * `/cancel-policy` is out of the public scope for now (2026-11-18): the
+ * Cancellation & Refund Policy V1 is a draft pending legal review, so the public
+ * page would be empty. Until it is approved, cancellation terms are given to
+ * each guest before the booking is confirmed (Terms of Service, Articles 3–4).
+ * Add it back here once `CANCELLATION_POLICY_VISIBLE` is approved for public mode.
  */
-export const PUBLIC_PATHS: readonly string[] = ["/", "/private-guide", "/inquiry", "/privacy", "/terms", "/cancel-policy", "/company"];
+export const PUBLIC_PATHS: readonly string[] = ["/", "/private-guide", "/inquiry", "/privacy", "/terms", "/company"];
 
 /**
  * Partner application (W1-D23: the official form is the Partner Google Form).

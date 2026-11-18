@@ -5,28 +5,28 @@ import { externalLinkProps, PARTNER_FORM_URL, recruitHref, routeHref } from "../
 import { PRIVACY_POLICY_VISIBLE } from "../content/privacyPolicy";
 
 // Partner Recruitment (ported from the current site's /partner, 2026-10-27).
-// The partner pages are Japanese only: they address businesses in Japan.
+// 2026-11-18: the recruitment page is shown in English (owner instruction); content and design unchanged.
 // 2026-10-28: the old survey's question list was removed; this page only introduces the partner program.
 
 const PARTNER_TYPES = [
-  "飲食店",
-  "ホテル・宿泊施設",
-  "体験・アクティビティ事業者",
-  "旅行会社・旅行代理店",
-  "観光施設",
-  "その他の観光関連事業者",
+  "Restaurants",
+  "Hotels & Accommodations",
+  "Experience & Activity Providers",
+  "Travel Companies & Agencies",
+  "Tourist Attractions",
+  "Other Tourism Businesses",
 ];
 
 const COLLABORATION = [
-  { title: "旅行者へのご紹介", text: "ガイドツアーや旅のご相談の中で、訪日旅行者に貴社の店舗・施設・体験をご紹介します。" },
-  { title: "旅程への組み込み", text: "プライベートガイドの旅程や体験プランに、地域ならではの場所として組み込みます。" },
-  { title: "地域の魅力を一緒に発信", text: "地域の文化や魅力を、Connectrip Japanのサイトや旅の現場を通じて一緒に伝えます。" },
+  { title: "Introducing You to Travelers", text: "During guided tours and travel consultations, we introduce your shop, facility or experience to international visitors to Japan." },
+  { title: "Including You in Itineraries", text: "We include your business in private guide itineraries and experience plans as a place that is unique to the area." },
+  { title: "Sharing Local Appeal Together", text: "Together, we share the culture and appeal of the area through the Connectrip Japan website and on our tours." },
 ];
 
 const FLOW = [
-  { title: "アンケートに回答", text: "事業者向けアンケートで、貴社の事業内容をお聞かせください。" },
-  { title: "回答内容を確認", text: "Connectrip Japanが回答内容を確認し、必要に応じて担当者よりご連絡します。" },
-  { title: "条件のご相談・提携の検討", text: "連携の可能性について、条件を含めてご相談します。" },
+  { title: "Answer the Survey", text: "Tell us about your business in our survey for businesses." },
+  { title: "We Review Your Answers", text: "Connectrip Japan reviews your answers, and a member of our team will contact you if needed." },
+  { title: "Discuss Terms & Partnership", text: "We discuss the possibilities for working together, including terms." },
 ];
 
 // Same classes as CtaLink "primary". Not a CtaLink: the partner survey is not a contract CtaDestination.
@@ -38,7 +38,7 @@ const APPLY_CLASS =
 function ApplyButton({ ctaId }: { ctaId: string }) {
   return (
     <a href={PARTNER_FORM_URL} {...externalLinkProps(PARTNER_FORM_URL)} className={APPLY_CLASS} data-cta-id={ctaId} data-cta-position="section">
-      パートナーアンケートに回答する
+      Answer the Partner Survey
       <ArrowRight className="h-4 w-4" />
     </a>
   );
@@ -49,35 +49,35 @@ function ApplyPrivacyNote() {
   if (!PRIVACY_POLICY_VISIBLE) return null;
   return (
     <p className="mx-auto mt-4 max-w-md text-[11px] leading-relaxed text-cream/55">
-      ご回答（Googleフォーム）は、パートナー募集のご検討とご連絡のためにのみ利用します。詳しくは
+      Your answers (Google Form) are used only to consider your partnership and to contact you. For details, please see our
       <Link href={routeHref("privacy")} className="mx-0.5 text-gold underline underline-offset-4 hover:text-cream">
-        プライバシーポリシー（英語）
+        Privacy Policy
       </Link>
-      をご覧ください。
+      .
     </p>
   );
 }
 
 export function PartnerRecruitView() {
   return (
-    <div lang="ja">
+    <div lang="en">
       {/* Hero */}
       <section className="bg-navy py-16 text-center md:py-24">
         <Container className="max-w-3xl">
           <p className="text-xs tracking-[0.25em] text-gold">PARTNER PROGRAM</p>
           <h1 className="mt-5 font-heading-jp text-3xl leading-snug text-cream md:text-5xl">
-            地域の魅力を、
+            Bring Local Charm
             <br />
-            <span className="text-gold">一緒に旅へ。</span>
+            <span className="text-gold">to Travelers, Together.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-sm leading-loose text-cream/75 md:text-base">
-            Connectrip Japanでは、地域ならではの体験・サービスを
+            Connectrip Japan is looking for partner businesses to bring{" "}
             <br className="hidden sm:inline" />
-            訪日旅行者へ一緒に届けるパートナー事業者様を募集しています。
+            unique local experiences and services to international visitors to Japan.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs text-cream/70">
             <span className="inline-flex items-center gap-1.5 border border-gold/30 px-3 py-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-gold" /> 回答内容は一般公開されません
+              <ShieldCheck className="h-3.5 w-3.5 text-gold" /> Your answers are never made public
             </span>
           </div>
           <div className="mt-10">
@@ -93,9 +93,9 @@ export function PartnerRecruitView() {
           <section>
             <div className="text-center">
               <p className="text-xs tracking-[0.2em] text-red">WHO WE ARE LOOKING FOR</p>
-              <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">募集している事業者様</h2>
+              <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">Businesses We Are Looking For</h2>
               <p className="mt-4 text-sm leading-relaxed text-navy/65">
-                訪日旅行者を迎える、次のような事業者様との連携を広げていきたいと考えています。
+                We want to work with more businesses that welcome international visitors, such as:
               </p>
             </div>
             <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3">
@@ -114,7 +114,7 @@ export function PartnerRecruitView() {
           <section>
             <div className="text-center">
               <p className="text-xs tracking-[0.2em] text-red">COLLABORATION</p>
-              <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">一緒に取り組みたいこと</h2>
+              <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">What We Want to Do Together</h2>
             </div>
             <ul className="mt-10 grid gap-4 md:grid-cols-3">
               {COLLABORATION.map((item) => (
@@ -130,7 +130,7 @@ export function PartnerRecruitView() {
           <section>
             <div className="text-center">
               <p className="text-xs tracking-[0.2em] text-red">FLOW</p>
-              <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">ご回答後の流れ</h2>
+              <h2 className="mt-3 font-heading-jp text-2xl md:text-3xl">After You Answer</h2>
             </div>
             <ol className="mt-10 flex flex-col gap-3">
               {FLOW.map((item, index) => (
@@ -145,7 +145,7 @@ export function PartnerRecruitView() {
                 </li>
               ))}
             </ol>
-            <p className="mt-5 text-center text-xs text-navy/50">ご回答時点で提携が成立するものではありません。</p>
+            <p className="mt-5 text-center text-xs text-navy/50">Answering the survey does not by itself create a partnership.</p>
           </section>
         </Container>
       </div>
@@ -154,20 +154,20 @@ export function PartnerRecruitView() {
       <section className="bg-navy py-16 text-center md:py-20">
         <Container className="max-w-2xl">
           <h2 className="font-heading-jp text-2xl leading-snug text-cream md:text-3xl">
-            ひとつのつながりから、
+            From One Connection,
             <br />
-            新しい旅の可能性を。
+            New Possibilities for Travel.
           </h2>
           <div className="mt-8">
             <ApplyButton ctaId="v1_partner_bottom_apply" />
             <ApplyPrivacyNote />
           </div>
           <p className="mt-8 text-xs text-cream/55">
-            アンケート以外のご相談は{" "}
+            For anything other than the survey, please contact us through{" "}
             <Link href={routeHref("businessInquiry")} className="text-gold underline underline-offset-4 hover:text-cream">
-              法人・企業向けお問い合わせ
-            </Link>{" "}
-            からご連絡ください。
+              Business Inquiries
+            </Link>
+            .
           </p>
         </Container>
       </section>
