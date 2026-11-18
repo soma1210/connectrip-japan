@@ -32,14 +32,15 @@ function seo(title: string, path: string) {
  *   Services Manager (the row is hidden for now: HIDDEN_COMPANY_ROWS below);
  * - 2026-11-15, Human instruction: the representative's official title comes
  *   from content/officers.ts ("Representative Director & CEO"), followed by a
- *   "Deputy Representative" row (Soma Beppu, Director & Deputy Representative:
- *   an internal title, no statutory power of representation).
+ *   "Deputy Head" row (Soma Beppu, Director & Deputy Head: an internal title,
+ *   no statutory power of representation; label and title per Human
+ *   instruction 2026-11-18).
  */
 function withV1CompanyChanges(row: CompanyProfileData["rows"][number]): CompanyProfileData["rows"] {
   if (row.label === "Representative") {
     return [
       { ...row, value: officerLine("representative") },
-      { label: "Deputy Representative", value: officerLine("deputy") },
+      { label: "Deputy Head", value: officerLine("deputy") },
     ];
   }
   if (row.label === "Domestic Travel Services Manager" && typeof row.value === "string") {

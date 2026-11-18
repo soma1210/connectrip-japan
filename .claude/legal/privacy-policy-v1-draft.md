@@ -5,7 +5,7 @@ Last updated: [TO CONFIRM: Effective date]
 > DRAFT — generated from src/website-v1/content/privacyPolicy.ts. Not approved for publication. [TO CONFIRM] marks undecided items.
 >
 > Management decisions recorded:
-> - 2026-11-15: Personal Information Management Officer: Soma Beppu (別府壮真), Director & Deputy Representative (取締役副代表)
+> - 2026-11-15: Personal Information Management Officer: Soma Beppu (別府壮真), Director & Deputy Head (取締役副代表)
 > - 2026-11-15: Privacy contact: contact@connectripjapan.com
 > - 2026-11-15: Requests for disclosure, correction, suspension of use and similar: free of charge in principle
 > - 2026-11-15: Company address: 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan (大阪市西淀川区中島1丁目15番25号)
@@ -25,7 +25,7 @@ Connectrip Japan Co., Ltd. is the business operator responsible for your persona
 - **Company:** Connectrip Japan Co., Ltd.
 - **Address:** 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan
 - **Representative:** Riku Oizumi, Representative Director & CEO
-- **Personal Information Management Officer:** Soma Beppu, Director & Deputy Representative
+- **Personal Information Management Officer:** Soma Beppu, Director & Deputy Head
 - **Privacy contact:** contact@connectripjapan.com
 
 ## 2. Scope of This Policy
@@ -188,7 +188,7 @@ Where we must keep information for legal reasons, we use it only for that reason
 We take necessary and appropriate steps to prevent the leakage, loss or damage of personal information and to manage it safely, including:
 
 - Rules: internal rules on how personal information is collected, used, stored, sent and deleted, and who is responsible for it.
-- Organization: a Personal Information Management Officer (Soma Beppu, Director & Deputy Representative) who is responsible for how we handle personal information, access limited to those who need it, and a procedure for reporting and handling incidents.
+- Organization: a Personal Information Management Officer (Soma Beppu, Director & Deputy Head) who is responsible for how we handle personal information, access limited to those who need it, and a procedure for reporting and handling incidents.
 - People: confidentiality obligations and guidance on handling personal information for our staff and guides.
 - Physical security: preventing unauthorized access to devices and documents, and preventing the theft or loss of devices.
 - Technical security: encrypted connections (HTTPS) on this website, access controls and strong authentication on the services we use, and protection against unauthorized access.
@@ -232,7 +232,7 @@ We may update this policy when our services, the providers we use or the law cha
 For questions, requests or complaints about how we handle personal information, please contact:
 
 - **Company:** Connectrip Japan Co., Ltd.
-- **Responsible Person:** Soma Beppu, Director & Deputy Representative
+- **Responsible Person:** Soma Beppu, Director & Deputy Head
 - **Privacy Contact:** contact@connectripjapan.com
 - **Address:** 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan
 

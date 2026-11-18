@@ -4,15 +4,17 @@
  *
  * - Riku Oizumi: 代表取締役 / Representative Director & CEO (the legal
  *   representative of the company).
- * - Soma Beppu: 取締役副代表 / Director & Deputy Representative. An internal
- *   title, not a representative director: it carries no statutory power of
- *   representation. Do not use "Vice President" for this role.
+ * - Soma Beppu: 取締役副代表 / Director & Deputy Head (official English title,
+ *   Human instruction 2026-11-18). An internal title, not a representative
+ *   director: it carries no statutory power of representation. Do not use
+ *   "Vice President", "Deputy CEO", "Deputy Representative" or any wording
+ *   that suggests a power of representation.
  */
 export type OfficerKey = "representative" | "deputy";
 
 export const OFFICERS = {
   representative: { name: "Riku Oizumi", titleJa: "代表取締役", titleEn: "Representative Director & CEO" },
-  deputy: { name: "Soma Beppu", nameJa: "別府壮真", titleJa: "取締役副代表", titleEn: "Director & Deputy Representative" },
+  deputy: { name: "Soma Beppu", nameJa: "別府壮真", titleJa: "取締役副代表", titleEn: "Director & Deputy Head" },
 } as const;
 
 /**

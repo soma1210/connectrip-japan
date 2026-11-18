@@ -18,7 +18,7 @@
 | A1 | 登記住所 | **決定済み（2026-11-15 経営判断）**: 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan（大阪市西淀川区中島1丁目15番25号）。会社データ `content/data/company.ts` から第1・14条に表示 | 対応済み（経営判断で確定） |
 | A2 | 代表者 | Riku Oizumi, Representative Director & CEO（2026-11-15 指示で確定。`content/officers.ts`） | 対応済み |
 | A3 | 個人情報の問い合わせ先メール | **決定済み（2026-11-15 経営判断）**: contact@connectripjapan.com | 経営判断は完了。技術的な確認（送受信テスト・担当者・返信期限）が未完了: `PRIVACY_TECH_CHECKS`（会議資料 C1） |
-| A4 | 個人情報管理責任者 | **決定済み（2026-11-15 経営判断）**: Soma Beppu（別府壮真）, Director & Deputy Representative（取締役副代表） | 対応済み。`officers.ts` の `PRIVACY_OFFICER` で第1・11・14条に表示。取締役副代表は社内の役職で、代表権はない |
+| A4 | 個人情報管理責任者 | **決定済み（2026-11-15 経営判断）**: Soma Beppu（別府壮真）, Director & Deputy Head（取締役副代表） | 対応済み。`officers.ts` の `PRIVACY_OFFICER` で第1・11・14条に表示。取締役副代表は社内の役職で、代表権はない |
 | A5 | 施行日（Last updated） | 未記入 | 承認日に記入 |
 
 ## B. 外部サービスと移転先
