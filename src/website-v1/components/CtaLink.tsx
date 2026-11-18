@@ -48,6 +48,13 @@ const HEADER_COLOR: Record<Exclude<Variant, "text">, string> = {
 };
 
 /**
+ * The pair box and the navy / gold fill, for buttons that open something on
+ * the page instead of linking (the tour Booking Request, 2026-11-17).
+ */
+export const CTA_PAIR_BOX = PAIR_BOX;
+export const CTA_GOLD_FILL = "border border-gold bg-gold text-navy hover:bg-gold/85";
+
+/**
  * Renders a contract `CtaSpec`. The href comes from the Route Registry via
  * content; tracking hooks onto the data attributes, never called here.
  */

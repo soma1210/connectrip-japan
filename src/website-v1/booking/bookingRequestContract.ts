@@ -59,6 +59,33 @@ export type BookingRequestBody = {
   website: string;
 };
 
+/**
+ * Ready-made tour request body (2026-11-17), checked by the API against the
+ * tour's entry in `src/lib/booking-request/tours.ts`. Number of Guests is sent
+ * as `adults` with `children` 0. No duration (the tour's own) and no price.
+ */
+export type TourBookingRequestBody = {
+  submissionId: string;
+  locale: "en";
+  productType: "ready_made";
+  experienceId: string;
+  planId: null;
+  date: string;
+  startTime: string;
+  adults: number;
+  children: 0;
+  language: string;
+  name: string;
+  email: string;
+  phone: null;
+  country: null;
+  notes: string;
+  consent: true;
+  website: string;
+};
+
+export type AnyBookingRequestBody = BookingRequestBody | TourBookingRequestBody;
+
 /** The only accepted-success shape (HTTP 200). */
 export type BookingRequestAccepted = {
   ok: true;

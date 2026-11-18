@@ -36,6 +36,7 @@ export type BookingRequestField =
   | "interests"
   | "notes"
   | "consent"
+  | "language"
   | "amount"
   | "price"
   | "currency";
@@ -77,6 +78,38 @@ export type PrivateGuideBookingRequest = {
   notes: string | null;
   consent: true;
 };
+
+/**
+ * A Ready-made tour request (2026-11-17) for a tour listed as open in
+ * `src/lib/booking-request/tours.ts`. Start time, party size and language
+ * follow that tour's own entry; duration comes from the entry, not the body.
+ * The form sends Number of Guests as `adults` with `children` 0 (tours count
+ * everyone); the party-size limit applies to adults + children.
+ */
+export type ReadyMadeBookingRequest = {
+  submissionId: string;
+  locale: BookingRequestLocale;
+  productType: "ready_made";
+  experienceId: string;
+  planId: null;
+  /** `YYYY-MM-DD` in Asia/Tokyo. */
+  date: string;
+  /** `HH:mm`, one of the tour's start times. */
+  startTime: string;
+  durationMinutes: number;
+  adults: number;
+  children: number;
+  /** Guide language code, one of the tour's languages. */
+  language: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  country: string | null;
+  notes: string | null;
+  consent: true;
+};
+
+export type BookingRequest = PrivateGuideBookingRequest | ReadyMadeBookingRequest;
 
 export type BookingRequestSuccess = {
   ok: true;

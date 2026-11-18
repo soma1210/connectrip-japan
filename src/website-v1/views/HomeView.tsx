@@ -34,6 +34,7 @@ import { ImageTrail } from "../components/wd/ImageTrail";
 import { TRAIL_EXTRA_IMAGES } from "../assets/trailImages";
 import { CinematicHeroSlider } from "../components/hero/CinematicHeroSlider";
 import { getFeaturedTour } from "../content/featuredTour";
+import { FeaturedTourBooking, type BookingMode } from "../components/booking/FeaturedTourBooking";
 import { PRIVATE_DAY_DESCRIPTION } from "../content/home";
 import { PLAN_AREAS, PLAN_DURATIONS, PLAN_INTERESTS } from "../booking/privateDayPlan";
 import { ACTIVITY_LABELS, AREA_LABELS } from "../content/privateGuide";
@@ -218,7 +219,7 @@ function SceneTitle({
  * the photo slides left and the tour panel arrives from the right. Same tour, copy, facts and CTAs.
  * One tour on sale (Human instruction 2026-11-13).
  */
-function FeaturedExperiences({ section }: { section: HomeContent["featuredExperiences"] }) {
+function FeaturedExperiences({ section, bookingMode }: { section: HomeContent["featuredExperiences"]; bookingMode: BookingMode }) {
   const tour = getFeaturedTour();
   const item = "data-sr-item";
   return (
@@ -271,13 +272,8 @@ function FeaturedExperiences({ section }: { section: HomeContent["featuredExperi
           </dl>
           <div {...{ [item]: "" }} className="flex flex-col gap-3 pt-2 sm:flex-row md:flex-col xl:flex-row">
             <CtaLink cta={tour.detailCta} pair />
-            <CtaLink cta={tour.bookingCta} pair />
+            <FeaturedTourBooking tour={tour} mode={bookingMode} />
           </div>
-          {V1_PREVIEW ? (
-            <p {...{ [item]: "" }} className="text-[11px] text-cream/45">
-              Preview: booking requests for this tour are not open yet, so the booking button is inactive.
-            </p>
-          ) : null}
         </div>
       </div>
       <ShowreelMotion targetId="experiences" />
@@ -516,13 +512,13 @@ function FinalCta({ section, trail }: { section: HomeContent["finalCta"]; trail:
   );
 }
 
-export function HomeView({ vm }: { vm: HomeViewModel }) {
+export function HomeView({ vm, bookingMode = "mock" }: { vm: HomeViewModel; bookingMode?: BookingMode }) {
   const c = vm.content;
   const order = c.sectionOrder.status === "TBD" ? BASELINE_ORDER : c.sectionOrder.value;
 
   const sections: Record<HomeSectionKey, ReactNode | null> = {
     hero: <Hero hero={c.hero} />,
-    featuredExperiences: <FeaturedExperiences section={c.featuredExperiences} />,
+    featuredExperiences: <FeaturedExperiences section={c.featuredExperiences} bookingMode={bookingMode} />,
     privateGuide: <PrivateGuide section={c.privateGuide} />,
     whyConnectrip: <WhyConnectrip section={c.whyConnectrip} />,
     howItWorks: <HowItWorks section={c.howItWorks} />,

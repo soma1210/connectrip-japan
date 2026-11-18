@@ -1,3 +1,4 @@
+import { BOOKABLE_TOURS, bookableTour, languageLabel, timeLabel } from "@/lib/booking-request/tours";
 import type { InquiryKind } from "@/lib/inquiries/status";
 
 /**
@@ -25,6 +26,23 @@ const list = (v: unknown, labels: Record<string, string>): string | null =>
   Array.isArray(v) && v.length ? v.map((x) => labels[String(x)] ?? String(x)).join("、") : null;
 
 export function payloadRows(kind: InquiryKind, p: Record<string, unknown>): PayloadRow[] {
+  if (kind === "booking_request" && p.productType === "ready_made") {
+    const tour = bookableTour(p.experienceId);
+    const minutes = Number(p.durationMinutes);
+    const guests = Number(p.adults ?? 0) + Number(p.children ?? 0);
+    return [
+      { label: "ツアー", value: tour?.title ?? str(p.experienceId) },
+      { label: "ツアーID", value: str(p.experienceId) },
+      { label: "希望日時", value: [str(p.date), typeof p.startTime === "string" ? timeLabel(p.startTime) : null].filter(Boolean).join(" ") || null },
+      { label: "所要時間", value: Number.isFinite(minutes) ? `${minutes / 60}時間` : null },
+      { label: "参加人数", value: Number.isFinite(guests) ? `${guests}名` : null },
+      { label: "希望言語", value: languageLabel(tour, p.language) },
+      { label: "電話番号", value: str(p.phone) },
+      { label: "国・地域", value: str(p.country) },
+      { label: "サイトの言語", value: LOCALES[String(p.locale)] ?? str(p.locale) },
+      { label: "特別なリクエスト", value: str(p.notes) },
+    ];
+  }
   if (kind === "booking_request") {
     const minutes = Number(p.durationMinutes);
     return [
@@ -53,4 +71,8 @@ export function payloadRows(kind: InquiryKind, p: Record<string, unknown>): Payl
   ];
 }
 
-export const SERVICE_LABEL: Record<string, string> = { private_guide: "プライベートガイド" };
+/** `inquiries.service` → label: Private Guide, or a Ready-made tour (service = its product id). */
+export const SERVICE_LABEL: Record<string, string> = {
+  private_guide: "プライベートガイド",
+  ...Object.fromEntries(BOOKABLE_TOURS.map((t) => [t.experienceId, `ツアー：${t.title}`])),
+};

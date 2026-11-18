@@ -1,5 +1,6 @@
 import type { CtaSpec, ImageAsset, Money } from "@/contracts";
-import { experienceHref, routeHref } from "../routes";
+import { OSAKA_LIKE_A_LOCAL_ID, bookableTour, type BookableTour } from "@/lib/booking-request/tours";
+import { experienceHref } from "../routes";
 import { cta, proposed } from "./shared";
 
 /**
@@ -8,9 +9,10 @@ import { cta, proposed } from "./shared";
  * owner's approved copy (do not edit the title).
  *
  * The detail page (`/experiences/osaka-like-a-local`, preview only) exists
- * since 2026-11-13. Not built yet: a booking flow for this tour, so the
- * booking CTA stays `disabled` (CtaLink renders it inactive in the preview and
- * hides it in public mode). Prices (per private group, tax included) are shown
+ * since 2026-11-13. Booking requests are open since 2026-11-17: the booking
+ * CTA opens the tour's request form (components/booking/TourBookingRequest),
+ * checked by the API against `src/lib/booking-request/tours.ts` (`experienceId`).
+ * A request is never a confirmed booking. Prices (per private group, tax included) are shown
  * on the detail page only since 2026-11-13; the Home card shows none. Ema / wish-ball offers and shop
  * participation are still being confirmed, so the copy promises neither.
  */
@@ -44,7 +46,10 @@ export type FeaturedTour = {
   imagePosition: string;
   facts: { label: string; value: string }[];
   detailCta: CtaSpec;
+  /** Opens the request form (a button, not a link). */
   bookingCta: CtaSpec;
+  /** The tour's Booking Request rules (start time, 1–6 guests, language, window). */
+  booking: BookableTour;
 };
 
 const SOURCE = "Featured Experience copy (Human instruction 2026-11-13)";
@@ -135,9 +140,10 @@ export function getFeaturedTour(): FeaturedTour {
       { label: "Area", value: "Osaka / Tenma" },
     ],
     detailCta: cta("v1_home_featured_detail", "experiences", experienceHref(FEATURED_TOUR_SLUG), "section", "secondary", proposed("Experience Detail", SOURCE)),
-    // A tour booking request (same request-first flow as Private Guide) is not built yet.
-    bookingCta: cta("v1_home_featured_booking", "privateGuide", routeHref("privateGuide"), "section", "primary", proposed("Send Booking Request", SOURCE), {
-      disabled: true,
+    // Request-first, like Private Guide: opens the form; the href is the detail page (fallback / tracking only).
+    bookingCta: cta("v1_home_featured_booking", "booking", experienceHref(FEATURED_TOUR_SLUG), "section", "primary", proposed("Send Booking Request", SOURCE), {
+      experienceId: OSAKA_LIKE_A_LOCAL_ID,
     }),
+    booking: bookableTour(OSAKA_LIKE_A_LOCAL_ID)!,
   };
 }

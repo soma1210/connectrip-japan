@@ -1,4 +1,4 @@
-import type { PrivateGuideBookingRequest } from "@/contracts/bookingRequest";
+import type { BookingRequest } from "@/contracts/bookingRequest";
 import { bookingRequestEmail } from "@/lib/booking-request/notification";
 import { inquiryEmail } from "@/lib/inquiry/notification";
 import type { InquiryRecord } from "@/lib/inquiry/rules";
@@ -115,7 +115,7 @@ async function emailFor(db: Db, inquiryId: string): Promise<NotificationEmail | 
   // A payload that no longer fits the builder must not stop the batch or leave the row in 'sending'.
   try {
     if (row.kind === "contact") return inquiryEmail(row.payload as InquiryRecord, row.ref, receivedAt);
-    if (row.kind === "booking_request") return bookingRequestEmail(row.payload as PrivateGuideBookingRequest, row.ref, receivedAt);
+    if (row.kind === "booking_request") return bookingRequestEmail(row.payload as BookingRequest, row.ref, receivedAt);
   } catch {
     return null;
   }

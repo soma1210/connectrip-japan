@@ -15,7 +15,7 @@ const raw = {
   name: "Test Guest", email: "test@example.com", consent: true,
 };
 const validated = validateBookingRequest(raw, Date.now(), id);
-assert.ok(validated.ok);
+assert.ok(validated.ok && validated.booking.productType === "private_guide");
 const booking = validated.booking;
 const hash = bookingBodyHash(booking);
 const calls: { url: string; init: RequestInit }[] = [];

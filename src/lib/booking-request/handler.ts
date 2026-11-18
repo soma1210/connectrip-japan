@@ -1,4 +1,4 @@
-import type { BookingRequestHoneypotResponse, BookingRequestSuccess, PrivateGuideBookingRequest } from "@/contracts/bookingRequest";
+import type { BookingRequest, BookingRequestHoneypotResponse, BookingRequestSuccess } from "@/contracts/bookingRequest";
 import { formStoreFromEnv, type FormStore, type NewSubmission } from "@/lib/inquiries/store";
 import { clientIp, isRateLimited } from "@/lib/rate-limit";
 import { bookingBodyHash, honeypotTripped, validateBookingRequest } from "./rules";
@@ -15,10 +15,11 @@ export function bookingStoreFromEnv(env: Record<string, string | undefined> = pr
   return formStoreFromEnv(env);
 }
 
-export function bookingSubmission(booking: PrivateGuideBookingRequest, bodyHash: string): NewSubmission {
+export function bookingSubmission(booking: BookingRequest, bodyHash: string): NewSubmission {
   return {
     kind: "booking_request",
-    service: booking.productType,
+    // Private Guide: "private_guide"; a Ready-made tour: its product id (admin shows the tour name).
+    service: booking.productType === "ready_made" ? booking.experienceId : booking.productType,
     submissionId: booking.submissionId,
     bodyHash,
     customerName: booking.name,

@@ -1,5 +1,6 @@
-import type { PrivateGuideBookingRequest } from "@/contracts/bookingRequest";
+import type { BookingRequest, PrivateGuideBookingRequest, ReadyMadeBookingRequest } from "@/contracts/bookingRequest";
 import { buildEmailBody, receivedAtLabel, type NotificationEmail } from "@/lib/notify/email";
+import { bookableTour, languageLabel, timeLabel } from "./tours";
 
 /**
  * Staff email for a stored Private Guide booking request (2026-11-16).
@@ -23,7 +24,41 @@ const LOCALES: Record<string, string> = { en: "English", ja: "Japanese", "zh-TW"
 
 const hours = (minutes: number) => `${minutes / 60} hours`;
 
-export function bookingRequestEmail(booking: PrivateGuideBookingRequest, bookingRef: string, receivedAt: Date): NotificationEmail {
+export function bookingRequestEmail(booking: BookingRequest, bookingRef: string, receivedAt: Date): NotificationEmail {
+  return booking.productType === "ready_made"
+    ? tourRequestEmail(booking, bookingRef, receivedAt)
+    : privateGuideEmail(booking, bookingRef, receivedAt);
+}
+
+/** Staff email for a Ready-made tour request (2026-11-17). Same status line: a request, not a booking. */
+function tourRequestEmail(booking: ReadyMadeBookingRequest, bookingRef: string, receivedAt: Date): NotificationEmail {
+  const tour = bookableTour(booking.experienceId);
+  const guests = booking.adults + booking.children;
+  const { text, html } = buildEmailBody(
+    `New Booking Request ${bookingRef}`,
+    [BOOKING_STATUS_LINE, "A tour request was submitted on the website. Nothing is booked or charged until the team confirms it."],
+    [
+      { label: "Request ID", value: bookingRef },
+      { label: "Received at", value: receivedAtLabel(receivedAt) },
+      { label: "Tour", value: tour?.title ?? booking.experienceId },
+      { label: "Tour ID", value: booking.experienceId },
+      { label: "Preferred date", value: `${booking.date} ${timeLabel(booking.startTime)}` },
+      { label: "Duration", value: hours(booking.durationMinutes) },
+      { label: "Guests", value: guests },
+      { label: "Preferred language", value: languageLabel(tour, booking.language) },
+      { label: "Name", value: booking.name },
+      { label: "Email", value: booking.email },
+      { label: "Phone", value: booking.phone },
+      { label: "Country", value: booking.country },
+      { label: "Special requests", value: booking.notes },
+      { label: "Website language", value: LOCALES[booking.locale] ?? booking.locale },
+    ],
+    ["Reply to this email to answer the guest (Reply-To is the guest's address).", "The admin page (/admin/inquiries) is the record of this request; this email is a notification."],
+  );
+  return { subject: `[Connectrip Japan] New Booking Request (${bookingRef})`, text, html, replyTo: booking.email };
+}
+
+function privateGuideEmail(booking: PrivateGuideBookingRequest, bookingRef: string, receivedAt: Date): NotificationEmail {
   const { text, html } = buildEmailBody(
     `New Booking Request ${bookingRef}`,
     [BOOKING_STATUS_LINE, "A request was submitted on the website. Nothing is booked or charged until the team confirms it."],

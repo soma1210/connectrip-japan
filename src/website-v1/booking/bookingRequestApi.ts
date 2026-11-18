@@ -2,6 +2,7 @@ import {
   BOOKING_REF,
   BOOKING_REQUEST_PATH,
   UUID_V4,
+  type AnyBookingRequestBody,
   type BookingRequestBody,
   type BookingRequestField,
 } from "./bookingRequestContract";
@@ -190,9 +191,10 @@ export function fromBookingRequestResponse(status: number, body: unknown): Priva
 }
 
 /**
- * Contract 0.3 submit handler. Not used yet: pass it to the form only once
- * the API is approved and the request model is switched to `live`.
- * `baseUrl` defaults to same-origin (`/api/v1/booking-requests`).
+ * Contract 0.3 submit handler, used by the forms in `live` mode: the Private
+ * Guide form and the Ready-made tour request form (same endpoint, same
+ * Idempotency-Key and result rules). `baseUrl` defaults to same-origin
+ * (`/api/v1/booking-requests`).
  */
 export function createBookingRequestSubmitHandler({
   baseUrl = "",
@@ -202,7 +204,7 @@ export function createBookingRequestSubmitHandler({
   baseUrl?: string;
   fetchImpl?: typeof fetch;
   timeoutMs?: number;
-} = {}): PrivateGuideRequestSubmitHandler {
+} = {}): (body: AnyBookingRequestBody) => ReturnType<PrivateGuideRequestSubmitHandler> {
   return async (body) => {
     const controller = new AbortController();
     let timedOut = false;

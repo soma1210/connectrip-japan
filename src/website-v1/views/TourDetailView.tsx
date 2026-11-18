@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { Amphora, CircleCheck, CircleX, Clock, Flag, Footprints, Globe, Hammer, Info, MapPin, ShoppingBag, Users, type LucideIcon } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { CtaLink } from "../components/CtaLink";
-import { V1_PREVIEW } from "../config";
+import { FeaturedTourBooking, type BookingMode } from "../components/booking/FeaturedTourBooking";
+import { TOUR_REQUEST_NOTICE } from "../booking/tourBookingRequest";
 import type { FeaturedTour } from "../content/featuredTour";
 import { usdReference } from "../content/exchangeRate";
 import { CANCELLATION_POLICY_VISIBLE } from "../content/cancellationPolicy";
@@ -86,7 +86,7 @@ export function IncludeBox({ id, title, icon: Icon, mark, items, note }: { id: s
   );
 }
 
-export function TourDetailView({ tour }: { tour: FeaturedTour }) {
+export function TourDetailView({ tour, bookingMode = "mock" }: { tour: FeaturedTour; bookingMode?: BookingMode }) {
   // Header row: the short facts only (time and end point are in the Tour Details card).
   const quick = tour.detailFacts.filter((f) => f.label !== "Time" && f.label !== "End Point");
   // Official price in JPY; USD is an approximate on-screen reference (null when the rate is missing or out of date).
@@ -244,10 +244,8 @@ export function TourDetailView({ tour }: { tour: FeaturedTour }) {
       <section className="border-t border-gold/20 py-14 md:py-20">
         <Container className="flex max-w-5xl flex-col items-center gap-4 text-center">
           {/* Larger than the shared pair box; `!` because cn() does not resolve class conflicts. */}
-          <CtaLink cta={tour.bookingCta} pair className="h-16! w-80! text-base!" />
-          <p className="max-w-md text-xs leading-relaxed text-cream/55">
-            This is a booking request, not an instant booking. We check availability and reply to confirm.
-          </p>
+          <FeaturedTourBooking tour={tour} mode={bookingMode} className="h-16! w-80! text-base!" />
+          <p className="max-w-md text-xs leading-relaxed text-cream/55">{TOUR_REQUEST_NOTICE}</p>
           {PRIVACY_POLICY_VISIBLE ? (
             <p className="max-w-md text-xs leading-relaxed text-cream/55">
               {PRIVACY_FORM_NOTICE}{" "}
@@ -255,9 +253,6 @@ export function TourDetailView({ tour }: { tour: FeaturedTour }) {
                 Privacy Policy
               </Link>
             </p>
-          ) : null}
-          {V1_PREVIEW ? (
-            <p className="text-[11px] text-cream/45">Preview: booking requests for this tour are not open yet, so this button is inactive.</p>
           ) : null}
         </Container>
       </section>

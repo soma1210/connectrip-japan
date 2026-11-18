@@ -1,14 +1,17 @@
 import { createHash } from "node:crypto";
 import type { AreaKey } from "@/contracts/experience";
 import type {
+  BookingRequest,
   BookingRequestFailure,
   BookingRequestFieldErrors,
   BookingRequestLocale,
   BookingRequestUnavailableReason,
   PrivateGuideBookingRequest,
   PrivateGuideDurationMinutes,
+  ReadyMadeBookingRequest,
 } from "@/contracts/bookingRequest";
 import type { PrivateGuideActivity } from "@/contracts/inquiry";
+import { bookableTour } from "./tours";
 
 /**
  * Normative Private Guide checks for Contract 0.3 / Booking Rules V1.1.
@@ -64,7 +67,7 @@ const PHONE = /^\+?[0-9 ()-]{6,30}$/;
 const MONEY_KEYS = ["amount", "price", "currency"] as const;
 
 export type ValidationResult =
-  | { ok: true; booking: PrivateGuideBookingRequest }
+  | { ok: true; booking: BookingRequest }
   | { ok: false; status: 400 | 422; body: BookingRequestFailure };
 
 /**
@@ -106,7 +109,29 @@ export function endMinute(startTime: string, durationMinutes: number): number {
   return hour * 60 + minute + durationMinutes;
 }
 
-export function bookingBodyHash(booking: PrivateGuideBookingRequest): string {
+export function bookingBodyHash(booking: BookingRequest): string {
+  if (booking.productType === "ready_made") {
+    const tour = {
+      adults: booking.adults,
+      children: booking.children,
+      consent: booking.consent,
+      country: booking.country,
+      date: booking.date,
+      durationMinutes: booking.durationMinutes,
+      email: booking.email,
+      experienceId: booking.experienceId,
+      language: booking.language,
+      locale: booking.locale,
+      name: booking.name,
+      notes: booking.notes,
+      phone: booking.phone,
+      planId: booking.planId,
+      productType: booking.productType,
+      startTime: booking.startTime,
+    };
+    return createHash("sha256").update(JSON.stringify(tour)).digest("hex");
+  }
+  // Private Guide: unchanged field set, so hashes of stored requests stay valid.
   const payload = {
     adults: booking.adults,
     alternateDate: booking.alternateDate,
@@ -154,7 +179,7 @@ export function validateBookingRequest(
   const contact = readContact(raw);
   if (!contact.ok) return contact.result;
 
-  if (productType === "ready_made") return validateReadyMade(raw, contact.value, submissionId);
+  if (productType === "ready_made") return validateReadyMade(raw, contact.value, submissionId, now);
 
   return validatePrivateGuide(raw, contact.value, submissionId, now);
 }
@@ -239,13 +264,15 @@ function validatePrivateGuide(
 }
 
 /**
- * Ready-made uses each product's own window, start list and party size.
- * No published product is open, so a well-formed request is `booking_closed`.
+ * Ready-made uses each product's own window, start list and party size
+ * (src/lib/booking-request/tours.ts). A well-formed request for a tour that is
+ * not listed, or not open, is `booking_closed`.
  */
 function validateReadyMade(
   raw: Record<string, unknown>,
   contact: Contact,
   submissionId: string,
+  now: number,
 ): ValidationResult {
   const errors: BookingRequestFieldErrors = {};
   const experienceId = typeof raw.experienceId === "string" ? raw.experienceId.trim() : "";
@@ -258,11 +285,52 @@ function validateReadyMade(
   }
   const party = readParty(raw, false);
   if (!party.ok) Object.assign(errors, party.errors);
-  if (!readLocale(raw.locale)) errors.locale = raw.locale == null ? "required" : "invalid_format";
-  if (Object.keys(errors).length > 0) return invalid(errors);
-  void contact;
-  void submissionId;
-  return unavailable("booking_closed");
+  const locale = readLocale(raw.locale);
+  if (!locale) errors.locale = raw.locale == null ? "required" : "invalid_format";
+  if (Object.keys(errors).length > 0 || !party.ok || !locale) return invalid(errors);
+
+  const tour = bookableTour(experienceId);
+  if (!tour || !tour.open) return unavailable("booking_closed");
+
+  // An open tour: its own start list, party size, languages and window.
+  const date = readDate(raw.date);
+  if (!date) errors.date = raw.date == null || raw.date === "" ? "required" : "invalid_format";
+  const startTime = typeof raw.startTime === "string" && tour.startTimes.includes(raw.startTime) ? raw.startTime : null;
+  if (!startTime) errors.startTime = raw.startTime == null || raw.startTime === "" ? "required" : "invalid_format";
+  const language = typeof raw.language === "string" && tour.languages.some((l) => l.code === raw.language) ? raw.language : null;
+  if (!language) errors.language = raw.language == null || raw.language === "" ? "required" : "invalid_format";
+  const guests = party.value.adults + party.value.children;
+  if (guests < tour.minGuests || guests > tour.maxGuests) errors.adults = "out_of_range";
+  if (Object.keys(errors).length > 0 || !date || !startTime || !language) return invalid(errors);
+
+  const receipt = tokyoDate(now);
+  if (date < receipt) return unavailable("too_soon", { date: "out_of_range" });
+  if (date > addCalendarDays(receipt, tour.maxDaysAhead)) return unavailable("too_far", { date: "out_of_range" });
+  const start = tokyoInstant(date, startTime);
+  if (!Number.isFinite(start) || start < now + tour.leadHours * 60 * 60 * 1000) {
+    return unavailable("too_soon", { date: "out_of_range" });
+  }
+
+  const booking: ReadyMadeBookingRequest = {
+    submissionId,
+    locale,
+    productType: "ready_made",
+    experienceId: tour.experienceId,
+    planId: null,
+    date,
+    startTime,
+    durationMinutes: tour.durationMinutes,
+    adults: party.value.adults,
+    children: party.value.children,
+    language,
+    name: contact.name,
+    email: contact.email,
+    phone: contact.phone,
+    country: contact.country,
+    notes: contact.notes,
+    consent: true,
+  };
+  return { ok: true, booking };
 }
 
 function checkSlot(

@@ -27,7 +27,7 @@ function body(overrides: Record<string, unknown> = {}) {
 function accept(overrides: Record<string, unknown> = {}, now = NOW) {
   const result = validateBookingRequest(body(overrides), now, ID);
   assert.equal(result.ok, true, JSON.stringify(result));
-  if (!result.ok) throw new Error("unreachable");
+  if (!result.ok || result.booking.productType !== "private_guide") throw new Error("unreachable");
   return result.booking;
 }
 
@@ -234,6 +234,88 @@ check("stale in-progress is not treated as a committed booking", () => {
   assert.equal(decideReplay({ ...row, rulesCheckedAt: NOW - 60 * 1000 }, "hash", NOW), "resume");
   assert.equal(decideReplay({ ...row, idempotencyState: "COMMITTED" }, "hash", NOW), "return");
   assert.equal(decideReplay({ ...row, bodyHash: "nope" }, "hash", NOW), "conflict");
+});
+
+// --- Ready-made tour requests (src/lib/booking-request/tours.ts, 2026-11-17) ---
+const TOUR = "GP-OSA-LIKE-A-LOCAL";
+function tourBody(overrides: Record<string, unknown> = {}) {
+  return body({
+    productType: "ready_made",
+    experienceId: TOUR,
+    date: "2026-11-20",
+    startTime: "09:30",
+    durationMinutes: undefined,
+    adults: 3,
+    children: 0,
+    language: "en",
+    notes: "Vegetarian snacks, please",
+    ...overrides,
+  });
+}
+const tourResult = (overrides: Record<string, unknown> = {}, now = NOW) => validateBookingRequest(tourBody(overrides), now, ID);
+const reasonOf = (r: ReturnType<typeof validateBookingRequest>) => (!r.ok && r.body.kind === "unavailable" ? r.body.reason : r.ok ? "ok" : r.body.kind);
+const fieldErrorsOf = (r: ReturnType<typeof validateBookingRequest>) => (!r.ok && "fieldErrors" in r.body ? r.body.fieldErrors ?? {} : {});
+
+check("an open tour accepts a request with its own start time, party size and language", () => {
+  const r = tourResult();
+  assert.equal(r.ok, true, JSON.stringify(r));
+  if (!r.ok || r.booking.productType !== "ready_made") return;
+  assert.equal(r.booking.experienceId, TOUR);
+  assert.equal(r.booking.durationMinutes, 180);
+  assert.equal(r.booking.adults, 3);
+  assert.equal(r.booking.language, "en");
+  assert.equal(r.booking.email, "alex@example.com");
+  assert.equal(r.booking.notes, "Vegetarian snacks, please");
+  assert.match(bookingBodyHash(r.booking), /^[0-9a-f]{64}$/);
+});
+
+check("an open tour requires date, start time, language and a name / email", () => {
+  for (const [field, override] of [
+    ["date", { date: "" }],
+    ["startTime", { startTime: "" }],
+    ["language", { language: "" }],
+    ["name", { name: "" }],
+    ["email", { email: "not-an-email" }],
+    ["consent", { consent: false }],
+  ] as const) {
+    const r = tourResult(override);
+    assert.equal(r.ok, false, field);
+    if (!r.ok) assert.equal(r.status, 400, field);
+    assert.ok(field in fieldErrorsOf(r), `${field}: ${JSON.stringify(r)}`);
+  }
+});
+
+check("an open tour refuses times, languages and party sizes outside its entry", () => {
+  assert.equal(fieldErrorsOf(tourResult({ startTime: "09:00" })).startTime, "invalid_format");
+  assert.equal(fieldErrorsOf(tourResult({ language: "ja" })).language, "invalid_format");
+  assert.equal(fieldErrorsOf(tourResult({ adults: 7 })).adults, "out_of_range");
+  assert.equal(fieldErrorsOf(tourResult({ adults: 4, children: 3 })).adults, "out_of_range");
+  assert.equal(fieldErrorsOf(tourResult({ adults: 0 })).adults, "out_of_range");
+  assert.equal(tourResult({ adults: 6 }).ok, true);
+});
+
+check("an open tour enforces its booking window (no past dates, 48 h lead, 90 days)", () => {
+  // NOW = 2026-11-10 03:00 JST. 09:30 on 11-11 is < 48 h away, 11-12 09:30 is 54.5 h away.
+  assert.equal(reasonOf(tourResult({ date: "2026-11-09" })), "too_soon");
+  assert.equal(reasonOf(tourResult({ date: "2026-11-11" })), "too_soon");
+  assert.equal(reasonOf(tourResult({ date: "2026-11-12" })), "ok");
+  assert.equal(reasonOf(tourResult({ date: addCalendarDays(tokyoDate(NOW), 90) })), "ok");
+  assert.equal(reasonOf(tourResult({ date: addCalendarDays(tokyoDate(NOW), 91) })), "too_far");
+  assert.equal(reasonOf(tourResult({ date: "2026-02-30" })), "validation");
+});
+
+check("unknown and not-open tours stay closed; alternates and prices are refused", () => {
+  assert.equal(reasonOf(tourResult({ experienceId: "GP-OSA-TENMANGU-DRAFT" })), "booking_closed");
+  assert.equal(reasonOf(tourResult({ experienceId: "GP-OSA-01" })), "booking_closed");
+  assert.equal(reasonOf(tourResult({ alternateDate: "2026-11-21", alternateStartTime: "09:30" })), "validation");
+  assert.equal(reasonOf(tourResult({ amount: 19800 })), "validation");
+});
+
+check("Private Guide hashes do not change with the tour support", () => {
+  // Fixed vector computed with the code before 2026-11-17: stored Private Guide rows must still replay.
+  const pg = accept();
+  assert.equal(bookingBodyHash(pg), "3eabd5da9544eb6304c485235fa5d13a6374468970aaaed8b1706b3d1e54675d");
+  assert.equal("language" in pg, false);
 });
 
 await Promise.all(checks);
