@@ -30,7 +30,7 @@ const PUBLIC_PAGE_META: Record<string, { title?: { absolute: string }; descripti
   "/cancel-policy": { description: "Cancellation and refund policy of Connectrip Japan." },
   "/company": {
     description:
-      "Company profile of Connectrip Japan Inc., founded on November 16, 2026 in Nishiyodogawa-ku, Osaka: private guide services and travel support for visitors to Japan.",
+      "Company profile of Connectrip Japan Co., Ltd., founded on November 16, 2026 in Nishiyodogawa-ku, Osaka: private guide services and travel support for visitors to Japan.",
   },
 };
 

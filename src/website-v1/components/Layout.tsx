@@ -189,7 +189,7 @@ export function V1Footer({ layout }: { layout: LayoutViewModel; recruit: Recruit
       </Container>
 
       <Container className="flex flex-col gap-2 border-t border-cream/10 py-6 text-xs text-cream/40 md:flex-row md:items-center md:justify-between">
-        <span>{V1_PREVIEW ? "Website v1 preview" : `© ${new Date().getFullYear()} Connectrip Japan Inc.`}</span>
+        <span>{V1_PREVIEW ? "Website v1 preview" : `© ${new Date().getFullYear()} Connectrip Japan Co., Ltd.`}</span>
       </Container>
       {/* Brand wordmark across the full width; the letters rise as the footer arrives (components/wd/PageMotion). */}
       <Container className="pb-8 [container-type:inline-size] md:pb-14">

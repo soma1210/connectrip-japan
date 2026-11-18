@@ -9,19 +9,20 @@ Last updated: [TO CONFIRM: Effective date]
 > - 2026-11-15: Privacy contact: contact@connectripjapan.com
 > - 2026-11-15: Requests for disclosure, correction, suspension of use and similar: free of charge in principle
 > - 2026-11-15: Company address: 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan (大阪市西淀川区中島1丁目15番25号)
+> - 2026-11-18: English company name: Connectrip Japan Co., Ltd.; hosting on Vercel; providers updated to Vercel, Neon, Resend and Microsoft 365
 >
 > Technical checks not done:
 > - contact@connectripjapan.com: send and receive test, who reads it and the reply deadline
 
 ## 1. Introduction and Data Controller
 
-Connectrip Japan Inc. (Connectrip Japan 株式会社, "Connectrip Japan", "we", "us" or "our") respects your privacy. This Privacy Policy explains how we collect, use, share and protect personal information when you visit our website, contact us, request or book our services, or apply to work with us.
+Connectrip Japan Co., Ltd. (Connectrip Japan 株式会社, "Connectrip Japan", "we", "us" or "our") respects your privacy. This Privacy Policy explains how we collect, use, share and protect personal information when you visit our website, contact us, request or book our services, or apply to work with us.
 
 We handle personal information in accordance with the Act on the Protection of Personal Information of Japan (APPI) and other applicable laws. Where the data protection laws of other countries apply to our handling of your information, such as the EU or UK General Data Protection Regulation (GDPR), we also aim to meet their requirements.
 
-Connectrip Japan Inc. is the business operator responsible for your personal information (the "data controller").
+Connectrip Japan Co., Ltd. is the business operator responsible for your personal information (the "data controller").
 
-- **Company:** Connectrip Japan Inc.
+- **Company:** Connectrip Japan Co., Ltd.
 - **Address:** 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan
 - **Representative:** Riku Oizumi, Representative Director & CEO
 - **Personal Information Management Officer:** Soma Beppu, Director & Deputy Representative
@@ -44,7 +45,7 @@ This policy does not cover websites, apps or services run by others, including s
 
 ### Information you give us
 
-- Booking requests (Private Guide and Fixed Guided Tours): your name, email address, phone number (optional), country or region of residence (optional), preferred and alternative dates and start times, tour length, the number of adults and children, the areas and interests you choose, and anything you write in your message.
+- Booking requests (Private Guide and Fixed Guided Tours): your name, email address, phone number (optional), country or region of residence (optional), preferred and alternative dates and start times, tour length, the number of adults and children (or, for a fixed tour, the number of guests and your preferred guide language), the areas and interests you choose, and anything you write in your message.
 - Information that helps us plan your tour: for example, mobility or accessibility needs, dietary requirements, allergies or health considerations. You never have to give us this to make a booking. Information about health or disability is sensitive personal information under the APPI: we collect it only when you choose to give it to us for your tour, and we treat your giving it as your consent to that use. We use it only to arrange your tour safely and share it only as described in Section 6.
 - Inquiries: your name, email address and the details of your question. For business inquiries, also your company or organization name, your role and your business contact details.
 - Guide applications and interviews: your name, contact details, area of residence, age range, languages and language level, guiding experience, availability, current occupation and other information you give us in the application form or in an interview. This includes applications and partner survey answers sent through the forms on our earlier website.
@@ -57,7 +58,7 @@ Payments are processed by our payment service provider, Stripe. When you pay a S
 
 ### Information collected automatically
 
-When you visit this website, the servers of our hosting provider ([TO CONFIRM: Website hosting provider]) process technical information that your browser sends, such as your IP address, browser type, device information, the pages requested and the date and time of access. This is used to deliver the website, keep it secure and prevent abuse. Our booking form also uses your IP address for a short time to limit repeated submissions.
+When you visit this website, the servers of our hosting provider (Vercel) process technical information that your browser sends, such as your IP address, browser type, device information, the pages requested and the date and time of access. This is used to deliver the website, keep it secure and prevent abuse. Our booking form also uses your IP address for a short time to limit repeated submissions.
 
 This website does not currently use cookies for analytics or advertising. See Section 9.
 
@@ -110,27 +111,31 @@ We do not sell personal information. We do not give personal information to thir
 
 - Guides who deliver your tour: guides work for us under a contract to deliver tours we arrange. We share only what a guide needs for your tour, usually your name, the date, time and meeting point, the number of people, your areas and interests, the language, and any accessibility, dietary or safety needs that matter for the tour. We share your phone number or messaging contact with the guide only when it is needed to reach you on the day. Guides must keep this information confidential, use it only for your tour and delete it after the tour.
 - Service providers who work for us (see Section 7).
-- Places and partners that are part of your tour: if your tour includes admission, a reservation, transport or a similar arrangement, we share only what is required, such as a name for the reservation and the number of people.
 - Business transfers: if our business is merged, acquired or transferred, personal information may pass to the new owner, who must continue to protect it as described in this policy.
 - Legal requirements and protection: where the law requires it; where it is necessary to protect someone's life, body or property and it is difficult to get your consent; or in response to lawful requests from courts, the police or other public authorities.
 - With your consent: in any other case.
 
 We do not share personal information with other companies for joint use.
 
+> 要確認: ガイドとの契約（業務委託）に、秘密保持・目的外利用の禁止・ツアー後の削除の条項が入っていることを確認（運用資料の条項案を参照）。2026-11-18：旅行業登録まで宿泊・交通・入場等の手配をしない経営判断に合わせ、「ツアーに含まれる入場・予約・交通の手配先への提供」の項目を削除。登録後に手配を始める場合は復活させる。
+
 ## 7. Third-Party Service Providers
 
 We use service providers to run our business. They handle personal information on our behalf, under contract, only to provide their services to us. We supervise them as the law requires. The table also shows where each provider is based and where it stores data, as far as we can identify it.
 
 | Provider | What they do for us | Information involved | Where |
-|---|---|---|---|
-| Google LLC (Google Apps Script, Google Sheets) | Receiving and managing booking requests; a notice to our staff that a new request has arrived (without your personal details) | The details you enter in the booking request form | Google LLC is based in the United States. Data is stored in Google's data centers in the United States and other countries; the service does not let us choose a single country. |
-| Google LLC (Google Forms) | Guide and partner application forms | The details you enter in those forms | As above |
+| --- | --- | --- | --- |
+| Vercel | Hosting this website and processing form submissions | Technical information about your visit and the details you send through our forms, while they are processed | Vercel is based in the United States. Server functions run in [TO CONFIRM: Where Vercel runs this website's server functions — proposed: United States (Vercel's default region; no region is set in vercel.json)]. |
+| Neon | Database that stores booking requests and inquiries, and their handling history | The details you enter in the booking request and inquiry forms | Neon is based in the United States. The database is stored in [TO CONFIRM: Where Neon stores the database — proposed: Singapore (Amazon Web Services, ap-southeast-1), the region of the test database]. |
+| Resend | Sending an email notice to our staff when a booking request or inquiry arrives | The details of your request, including your name and email address | Resend is based in the United States and sends email from servers in the United States. |
+| Microsoft (Microsoft 365) | Our company mailbox (contact@connectripjapan.com): receiving and replying to email | Your email address and the content of your messages | Microsoft is based in the United States. Our mailbox is stored in [TO CONFIRM: Where Microsoft 365 stores the company mailbox]. |
+| Google (Google Forms) | Guide and partner application forms | The details you enter in those forms | Google is based in the United States. Data is stored in Google's data centers in the United States and other countries; the service does not let us choose a single country. |
 | Stripe | Invoices and payments | Your name, email address and payment information | Stripe's systems in the United States and other countries |
-| [TO CONFIRM: Website hosting provider] | Hosting this website and passing form submissions to our systems | Technical information and form submissions while they are sent | To be confirmed with the provider |
-| [TO CONFIRM: Email service provider] | Sending and receiving email | Your email address and the content of your messages | To be confirmed with the provider |
-| Vercel Inc. (Vercel Postgres, Vercel Blob) [TO CONFIRM] | Storing guide applications and partner survey answers received through our earlier website | The details given in those forms | United States (to be confirmed with the provider) |
+| Past application data | Storing guide applications and partner survey answers received through our earlier website | The details given in those forms | [TO CONFIRM: Store of past application data] |
 
 If you contact us through WhatsApp, Instagram, Facebook or TikTok, those companies also handle your messages under their own privacy policies.
+
+> 要確認: 2026-11-18 修正：事業者は実際の構成（Vercel・Neon・Resend・Microsoft 365・Google フォーム・Stripe）に更新し、旧 Google Apps Script／スプレッドシートの行は使用していないため削除。残る確認：各社の契約主体（正式な法人名）、Vercel・Neon・Microsoft 365 の保存リージョン（{{…}}）、旧応募データの保存先、Google フォームが Workspace 契約か個人アカウントか、Stripe の契約主体（Stripe, Inc. / Stripe Payments Japan）と請求書の利用開始。
 
 ## 8. International Data Transfers
 
@@ -141,6 +146,8 @@ Where a provider only stores data for us and, under its contract, does not handl
 Where a provider outside Japan handles personal data on our behalf, we provide it only to providers that have established systems meeting the standards set under the APPI (for example, through contractual commitments and security controls), or with your consent. We take steps to make sure those measures continue to be applied and, if you ask, we will give you information about them.
 
 Personal data that you send to us from the EEA or the UK is received in Japan, which the European Commission and the UK government recognize as providing an adequate level of data protection.
+
+> 要確認: 事業者ごとに「取り扱わない（クラウド例外: Q7-53・Q12-3）」か「委託（第28条）」かを契約で判定し、第28条の根拠（基準適合体制か本人同意か）と、本人の求めに応じた情報提供の手順を法務確認。EU/UK の十分性認定の記載と、GDPR の適用の有無も法務確認。
 
 ## 9. Cookies and Analytics
 
@@ -154,12 +161,14 @@ We plan to measure how visitors use this website with Google Analytics 4, loaded
 
 You can also block or delete cookies in your browser settings.
 
+> 要確認: GA4・GTM・Search Console は導入予定（未導入）。導入時は監査資料の第9条改訂案に差し替え、同意バナー（Consent Mode v2）を先に実装する。電気通信事業法の外部送信規律の対象かを法務確認。
+
 ## 10. Data Retention
 
 We keep personal information only for as long as we need it for the purposes in this policy, or as long as the law requires. After that, we delete it or make it anonymous.
 
 | Information | How long we keep it |
-|---|---|
+| --- | --- |
 | Booking requests that do not lead to a booking, and general inquiries | Up to 2 years after our last contact with you |
 | Confirmed bookings, invoices, payment and accounting records | For the period required by Japanese law (generally 7 years from the end of the fiscal year of the transaction), or longer where the law requires |
 | Guide applications that do not lead to working together | 1 year after the selection ends |
@@ -171,6 +180,8 @@ We keep personal information only for as long as we need it for the purposes in 
 | Server and security logs | As set by our hosting provider; the IP address used to limit repeated booking form submissions is held for about 10 minutes |
 
 Where we must keep information for legal reasons, we use it only for that reason.
+
+> 要確認: 保存期間は経営承認前の暫定基準（2026-11-15）。自動削除は未実装で、運用資料の手動手順が前提。会計記録の年数（法人税法・欠損金の繰越）と旅行業法上の記録保存の有無を法務・税理士に確認。
 
 ## 11. Data Security
 
@@ -184,6 +195,8 @@ We take necessary and appropriate steps to prevent the leakage, loss or damage o
 - Outside Japan: our service providers are based in, and store data in, the countries shown in Section 7, mainly the United States. We take security measures based on an understanding of the personal information protection systems of those countries.
 
 No way of sending or storing information is completely secure. If a data breach is likely to harm your rights and interests, we will report it to the Personal Information Protection Commission of Japan and tell you, as the law requires.
+
+> 要確認: 個人情報管理責任者は 2026-11-15 に任命済み（経営判断）。社内規程・漏えい時の手順（運用資料案）の承認と、実態に合わせた確定が残る。
 
 ## 12. Your Privacy Rights
 
@@ -218,7 +231,7 @@ We may update this policy when our services, the providers we use or the law cha
 
 For questions, requests or complaints about how we handle personal information, please contact:
 
-- **Company:** Connectrip Japan Inc.
+- **Company:** Connectrip Japan Co., Ltd.
 - **Responsible Person:** Soma Beppu, Director & Deputy Representative
 - **Privacy Contact:** contact@connectripjapan.com
 - **Address:** 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan
@@ -226,3 +239,4 @@ For questions, requests or complaints about how we handle personal information, 
 We can reply in English or Japanese.
 
 If you are not satisfied with our reply, you can also contact the Personal Information Protection Commission of Japan: https://www.ppc.go.jp/en/
+

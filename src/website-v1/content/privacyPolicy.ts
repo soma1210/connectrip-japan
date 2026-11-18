@@ -4,11 +4,17 @@ import { PRIVACY_OFFICER, officerLine } from "./officers";
 
 /**
  * Privacy Policy V1 (Human instruction 2026-11-14). English draft for
- * Website v1, written from what the code actually does on 2026-11-14:
- * - booking requests: POST /api/v1/booking-requests → booking Google Apps
- *   Script → Google Sheets (src/lib/booking-request);
+ * Website v1. Revised 2026-11-18 (management decision) to what the code and
+ * services actually do:
+ * - hosting: Vercel (production deploy target decided 2026-11-18);
+ * - booking requests and inquiries: POST /api/v1/booking-requests and
+ *   /api/v1/inquiries → Postgres on Neon (src/lib/inquiries), staff email via
+ *   Resend SMTP (src/lib/notify), reviewed in /admin. The old booking Google
+ *   Apps Script / Google Sheets path (src/lib/booking-request/gas.ts) is no
+ *   longer called by any route, so it is no longer described;
+ * - company mailbox contact@connectripjapan.com: Microsoft 365 (MX record);
  * - guide and partner applications: external Google Forms (routes.ts);
- * - inquiry and business inquiry forms: preview mocks, nothing is sent;
+ * - public inquiry page: contact channels only (the form is preview only);
  * - payments: Stripe invoices in JPY (described in content, no code here);
  * - analytics: none on Website v1 (no GTM / GA / ad tags in src/app/v1);
  *   GTM exists only in the current site's layout (src/app/[locale]);
@@ -24,31 +30,37 @@ import { PRIVACY_OFFICER, officerLine } from "./officers";
  * The review copy of the text is generated from this file
  * (`.claude/legal/privacy-policy-v1-draft.md`), so the two never drift.
  */
-export const PRIVACY_POLICY_SOURCE = "Privacy Policy V1, draft of 2026-11-15 (for the management meeting of 2026-11-16). Pending company approval and legal review: not approved for publication";
+export const PRIVACY_POLICY_SOURCE = "Privacy Policy V1, draft of 2026-11-15, revised 2026-11-18 (providers: Vercel, Neon, Resend, Microsoft 365). Pending company approval and legal review: not approved for publication";
 
 /** Set by a human once the text is legally approved: `{ by: "name", at: "YYYY-MM-DD" }`. */
 export const PRIVACY_POLICY_APPROVAL: { by: string; at: string } | null = null;
 
 export type PendingKey =
-  | "hostingProvider"
-  | "emailProvider"
+  | "hostingRegion"
+  | "databaseRegion"
+  | "mailboxRegion"
   | "legacyStore"
   | "effectiveDate";
 
 /** Unconfirmed facts. `proposed`: a value already used elsewhere on the site, not yet confirmed for this policy. */
 export const PRIVACY_PENDING: Record<PendingKey, { label: string; proposed?: string; check: string }> = {
-  hostingProvider: {
-    label: "Website hosting provider",
-    check: "本番のホスティング事業者を確定（リポジトリには Netlify のテスト設定と Vercel Postgres/Blob の設定が両方ある）",
+  hostingRegion: {
+    label: "Where Vercel runs this website's server functions",
+    proposed: "United States (Vercel's default region; no region is set in vercel.json)",
+    check: "Vercel の本番プロジェクトの Functions Region を確認（vercel.json に指定なし＝既定リージョン）。東京等に変える場合はこの記載も合わせる",
   },
-  emailProvider: {
-    label: "Email service provider",
-    check: "業務用メールの事業者（例: Google Workspace）と、送信に Resend を使うかを確定",
+  databaseRegion: {
+    label: "Where Neon stores the database",
+    proposed: "Singapore (Amazon Web Services, ap-southeast-1), the region of the test database",
+    check: "本番用 Neon プロジェクトのリージョンを確定（テスト用 connectrip-website-v2-test は ap-southeast-1＝シンガポール）",
+  },
+  mailboxRegion: {
+    label: "Where Microsoft 365 stores the company mailbox",
+    check: "Microsoft 365 管理センターの「データの場所」で contact@ のメールボックスの保存国を確認",
   },
   legacyStore: {
     label: "Store of past application data",
-    proposed: "Vercel Inc. (Vercel Postgres, Vercel Blob)",
-    check: "旧サイトのフォームで受けたガイド応募・事業者アンケートが本番データベースに残っているか、契約主体と保存国を確認。データがなければこの行を削除",
+    check: "旧サイトのフォームで受けたガイド応募・事業者アンケート（guide_applications / partner_registrations）が現在どのデータベース（どの Neon プロジェクト・リージョン）にあるかを確認。データがなければこの行を削除",
   },
   effectiveDate: {
     label: "Effective date",
@@ -119,13 +131,13 @@ export const PRIVACY_POLICY = {
       id: "introduction",
       title: "Introduction and Data Controller",
       blocks: [
-        p('Connectrip Japan Inc. (Connectrip Japan 株式会社, "Connectrip Japan", "we", "us" or "our") respects your privacy. This Privacy Policy explains how we collect, use, share and protect personal information when you visit our website, contact us, request or book our services, or apply to work with us.'),
+        p('Connectrip Japan Co., Ltd. (Connectrip Japan 株式会社, "Connectrip Japan", "we", "us" or "our") respects your privacy. This Privacy Policy explains how we collect, use, share and protect personal information when you visit our website, contact us, request or book our services, or apply to work with us.'),
         p("We handle personal information in accordance with the Act on the Protection of Personal Information of Japan (APPI) and other applicable laws. Where the data protection laws of other countries apply to our handling of your information, such as the EU or UK General Data Protection Regulation (GDPR), we also aim to meet their requirements."),
-        p('Connectrip Japan Inc. is the business operator responsible for your personal information (the "data controller").'),
+        p('Connectrip Japan Co., Ltd. is the business operator responsible for your personal information (the "data controller").'),
         {
           kind: "dl",
           items: [
-            ["Company", "Connectrip Japan Inc."],
+            ["Company", "Connectrip Japan Co., Ltd."],
             ["Address", PRIVACY_ADDRESS],
             ["Representative", officerLine("representative")],
             ["Personal Information Management Officer", officerLine(PRIVACY_OFFICER)],
@@ -158,7 +170,7 @@ export const PRIVACY_POLICY = {
       blocks: [
         h3("Information you give us"),
         ul(
-          "Booking requests (Private Guide and Fixed Guided Tours): your name, email address, phone number (optional), country or region of residence (optional), preferred and alternative dates and start times, tour length, the number of adults and children, the areas and interests you choose, and anything you write in your message.",
+          "Booking requests (Private Guide and Fixed Guided Tours): your name, email address, phone number (optional), country or region of residence (optional), preferred and alternative dates and start times, tour length, the number of adults and children (or, for a fixed tour, the number of guests and your preferred guide language), the areas and interests you choose, and anything you write in your message.",
           "Information that helps us plan your tour: for example, mobility or accessibility needs, dietary requirements, allergies or health considerations. You never have to give us this to make a booking. Information about health or disability is sensitive personal information under the APPI: we collect it only when you choose to give it to us for your tour, and we treat your giving it as your consent to that use. We use it only to arrange your tour safely and share it only as described in Section 6.",
           "Inquiries: your name, email address and the details of your question. For business inquiries, also your company or organization name, your role and your business contact details.",
           "Guide applications and interviews: your name, contact details, area of residence, age range, languages and language level, guiding experience, availability, current occupation and other information you give us in the application form or in an interview. This includes applications and partner survey answers sent through the forms on our earlier website.",
@@ -168,7 +180,7 @@ export const PRIVACY_POLICY = {
         h3("Payment information"),
         p("Payments are processed by our payment service provider, Stripe. When you pay a Stripe invoice, you enter your card or payment details on Stripe's systems, and we do not receive or store your full card number. We receive the information we need to confirm and record your payment, such as the amount, date, payment status and limited card details (for example, the card brand and last four digits)."),
         h3("Information collected automatically"),
-        p("When you visit this website, the servers of our hosting provider ({{hostingProvider}}) process technical information that your browser sends, such as your IP address, browser type, device information, the pages requested and the date and time of access. This is used to deliver the website, keep it secure and prevent abuse. Our booking form also uses your IP address for a short time to limit repeated submissions."),
+        p("When you visit this website, the servers of our hosting provider (Vercel) process technical information that your browser sends, such as your IP address, browser type, device information, the pages requested and the date and time of access. This is used to deliver the website, keep it secure and prevent abuse. Our booking form also uses your IP address for a short time to limit repeated submissions."),
         p("This website does not currently use cookies for analytics or advertising. See Section 9."),
       ],
     },
@@ -225,14 +237,13 @@ export const PRIVACY_POLICY = {
         ul(
           "Guides who deliver your tour: guides work for us under a contract to deliver tours we arrange. We share only what a guide needs for your tour, usually your name, the date, time and meeting point, the number of people, your areas and interests, the language, and any accessibility, dietary or safety needs that matter for the tour. We share your phone number or messaging contact with the guide only when it is needed to reach you on the day. Guides must keep this information confidential, use it only for your tour and delete it after the tour.",
           "Service providers who work for us (see Section 7).",
-          "Places and partners that are part of your tour: if your tour includes admission, a reservation, transport or a similar arrangement, we share only what is required, such as a name for the reservation and the number of people.",
           "Business transfers: if our business is merged, acquired or transferred, personal information may pass to the new owner, who must continue to protect it as described in this policy.",
           "Legal requirements and protection: where the law requires it; where it is necessary to protect someone's life, body or property and it is difficult to get your consent; or in response to lawful requests from courts, the police or other public authorities.",
           "With your consent: in any other case.",
         ),
         p("We do not share personal information with other companies for joint use."),
       ],
-      pending: "ガイドとの契約（業務委託）に、秘密保持・目的外利用の禁止・ツアー後の削除の条項が入っていることを確認（運用資料の条項案を参照）。",
+      pending: "ガイドとの契約（業務委託）に、秘密保持・目的外利用の禁止・ツアー後の削除の条項が入っていることを確認（運用資料の条項案を参照）。2026-11-18：旅行業登録まで宿泊・交通・入場等の手配をしない経営判断に合わせ、「ツアーに含まれる入場・予約・交通の手配先への提供」の項目を削除。登録後に手配を始める場合は復活させる。",
     },
     {
       number: 7,
@@ -244,17 +255,18 @@ export const PRIVACY_POLICY = {
           kind: "table",
           headers: ["Provider", "What they do for us", "Information involved", "Where"],
           rows: [
-            ["Google LLC (Google Apps Script, Google Sheets)", "Receiving and managing booking requests; a notice to our staff that a new request has arrived (without your personal details)", "The details you enter in the booking request form", "Google LLC is based in the United States. Data is stored in Google's data centers in the United States and other countries; the service does not let us choose a single country."],
-            ["Google LLC (Google Forms)", "Guide and partner application forms", "The details you enter in those forms", "As above"],
+            ["Vercel", "Hosting this website and processing form submissions", "Technical information about your visit and the details you send through our forms, while they are processed", "Vercel is based in the United States. Server functions run in {{hostingRegion}}."],
+            ["Neon", "Database that stores booking requests and inquiries, and their handling history", "The details you enter in the booking request and inquiry forms", "Neon is based in the United States. The database is stored in {{databaseRegion}}."],
+            ["Resend", "Sending an email notice to our staff when a booking request or inquiry arrives", "The details of your request, including your name and email address", "Resend is based in the United States and sends email from servers in the United States."],
+            ["Microsoft (Microsoft 365)", "Our company mailbox (contact@connectripjapan.com): receiving and replying to email", "Your email address and the content of your messages", "Microsoft is based in the United States. Our mailbox is stored in {{mailboxRegion}}."],
+            ["Google (Google Forms)", "Guide and partner application forms", "The details you enter in those forms", "Google is based in the United States. Data is stored in Google's data centers in the United States and other countries; the service does not let us choose a single country."],
             ["Stripe", "Invoices and payments", "Your name, email address and payment information", "Stripe's systems in the United States and other countries"],
-            ["{{hostingProvider}}", "Hosting this website and passing form submissions to our systems", "Technical information and form submissions while they are sent", "To be confirmed with the provider"],
-            ["{{emailProvider}}", "Sending and receiving email", "Your email address and the content of your messages", "To be confirmed with the provider"],
-            ["{{legacyStore}}", "Storing guide applications and partner survey answers received through our earlier website", "The details given in those forms", "United States (to be confirmed with the provider)"],
+            ["Past application data", "Storing guide applications and partner survey answers received through our earlier website", "The details given in those forms", "{{legacyStore}}"],
           ],
         },
         p("If you contact us through WhatsApp, Instagram, Facebook or TikTok, those companies also handle your messages under their own privacy policies."),
       ],
-      pending: "ホスティング・メール・旧応募データ保存先が未確定。Google は Workspace 契約か個人アカウントかで契約条件が変わる。Stripe は契約主体（Stripe, Inc. / Stripe Payments Japan）と請求書の利用開始を確認。各社のサーバ所在国の記載（Q10-25）を契約・公表資料で確認。",
+      pending: "2026-11-18 修正：事業者は実際の構成（Vercel・Neon・Resend・Microsoft 365・Google フォーム・Stripe）に更新し、旧 Google Apps Script／スプレッドシートの行は使用していないため削除。残る確認：各社の契約主体（正式な法人名）、Vercel・Neon・Microsoft 365 の保存リージョン（{{…}}）、旧応募データの保存先、Google フォームが Workspace 契約か個人アカウントか、Stripe の契約主体（Stripe, Inc. / Stripe Payments Japan）と請求書の利用開始。",
     },
     {
       number: 8,
@@ -363,7 +375,7 @@ export const PRIVACY_POLICY = {
         {
           kind: "dl",
           items: [
-            ["Company", "Connectrip Japan Inc."],
+            ["Company", "Connectrip Japan Co., Ltd."],
             ["Responsible Person", officerLine(PRIVACY_OFFICER)],
             ["Privacy Contact", PRIVACY_CONTACT_EMAIL],
             ["Address", PRIVACY_ADDRESS],

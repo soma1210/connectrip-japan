@@ -45,8 +45,22 @@ function withV1CompanyChanges(row: CompanyProfileData["rows"][number]): CompanyP
   if (row.label === "Domestic Travel Services Manager" && typeof row.value === "string") {
     return [{ ...row, value: [row.value, "Soma Beppu"] }];
   }
+  if (row.label === "Business Activities" && Array.isArray(row.value)) {
+    return [{ ...row, value: row.value.filter((item) => !HIDDEN_BUSINESS_ACTIVITIES.includes(item)) }];
+  }
   return [row];
 }
+
+/**
+ * Business activities hidden until the travel agency registration is complete
+ * (management decision 2026-11-18): we do not sell package tours or arrange
+ * accommodation or transport before then. The data (content/data/company.ts)
+ * is kept; only the display drops them. Private guide services stay.
+ */
+export const HIDDEN_BUSINESS_ACTIVITIES: readonly string[] = [
+  "Planning and sale of package tours",
+  "Arrangement of accommodation, transport and experience programs",
+];
 
 /**
  * Rows hidden on Website v1 until the travel agency registration (Human

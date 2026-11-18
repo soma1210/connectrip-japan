@@ -177,7 +177,7 @@ export function PrivacyPolicyView() {
           ))}
         </div>
 
-        <p className="mt-16 text-center text-xs text-navy/40">Connectrip Japan Inc.</p>
+        <p className="mt-16 text-center text-xs text-navy/40">Connectrip Japan Co., Ltd.</p>
       </Container>
     </div>
   );

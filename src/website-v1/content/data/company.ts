@@ -11,14 +11,14 @@
 export const COMPANY_PROFILE = {
   "seo": {
     "title": "Company Profile",
-    "description": "Company profile for Connectrip Japan Inc. — company name, address, business activities, and travel agency registration details."
+    "description": "Company profile for Connectrip Japan Co., Ltd. — company name, address and business activities."
   },
   "heading": "Company Profile",
   "subheading": "COMPANY PROFILE",
   "rows": [
     {
       "label": "Company Name",
-      "value": "Connectrip Japan Inc.",
+      "value": "Connectrip Japan Co., Ltd.",
       "note": "Connectrip Japan 株式会社"
     },
     {
@@ -54,5 +54,5 @@ export const COMPANY_PROFILE = {
       "value": "Riku Oizumi"
     }
   ],
-  "footerSignature": "Connectrip Japan Inc."
+  "footerSignature": "Connectrip Japan Co., Ltd."
 };
