@@ -811,7 +811,7 @@ export function PrivateGuideRequestForm({
             <FieldShell
               id={id("message")}
               label="Tell us about your ideal day"
-              hint={`Places you want to see, mobility needs, dietary needs… (${values.message.length}/${messageLimitFor(values.travelStyle)})`}
+              hint={`Places you want to see, the pace you like, food you want to try… Please don't include health or medical details. (${values.message.length}/${messageLimitFor(values.travelStyle)})`}
               error={errors.message}
             >
               <textarea

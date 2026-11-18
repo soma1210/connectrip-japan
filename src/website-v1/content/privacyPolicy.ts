@@ -36,38 +36,52 @@ export const PRIVACY_POLICY_SOURCE = "Privacy Policy V1, draft of 2026-11-15, re
 export const PRIVACY_POLICY_APPROVAL: { by: string; at: string } | null = null;
 
 export type PendingKey =
-  | "hostingRegion"
-  | "databaseRegion"
-  | "emailSendingRegion"
-  | "mailboxRegion"
+  | "hostingCountry"
+  | "databaseCountry"
+  | "emailSendingCountry"
+  | "mailboxCountry"
+  | "formsCountry"
+  | "paymentProvider"
   | "legacyStore"
   | "effectiveDate";
 
-/** Unconfirmed facts. `proposed`: a value already used elsewhere on the site, not yet confirmed for this policy. */
+/**
+ * Facts not yet confirmed (2026-11-18 rules: no guessed countries or regions;
+ * only what the law needs, which is the country, not technical regions).
+ * Each value is filled in only from what a person has checked.
+ */
 export const PRIVACY_PENDING: Record<PendingKey, { label: string; proposed?: string; check: string }> = {
-  hostingRegion: {
-    label: "Where Vercel runs this website's server functions",
-    check: "Vercel の本番プロジェクトの Settings → Functions → Region を確認して記入（vercel.json には指定なし。既定値を推測で書かない）",
+  hostingCountry: {
+    label: "Country where Vercel handles the data",
+    check: "Vercel 本番プロジェクトの Functions Region（Settings → Functions）を確認し、その国名を記入。リージョン名などの技術的詳細は書かない",
   },
-  databaseRegion: {
-    label: "Where Neon stores the database",
-    check: "本番用 Neon プロジェクトのリージョンを確定して記入（確認済みの事実：テスト用 connectrip-website-v2-test は AWS ap-southeast-1＝シンガポール。本番は未作成）",
+  databaseCountry: {
+    label: "Country where Neon stores the data",
+    check: "本番 Neon プロジェクトのリージョンの国名を記入（確認済みの事実：テスト用はシンガポール。本番は未作成）",
   },
-  emailSendingRegion: {
-    label: "Where Resend sends email from",
-    check: "Resend の Domains で notify.connectripjapan.com の Region を確認して記入（未確認。推測で書かない）",
+  emailSendingCountry: {
+    label: "Country from which Resend sends our email",
+    check: "Resend → Domains → notify.connectripjapan.com の Region の国名を記入",
   },
-  mailboxRegion: {
-    label: "Where Microsoft 365 stores the company mailbox",
-    check: "Microsoft 365 管理センターの「データの場所」で contact@ のメールボックスの保存国を確認",
+  mailboxCountry: {
+    label: "Country where Microsoft 365 stores our mailbox",
+    check: "Microsoft 365 管理センター → 設定 → 組織設定 → 組織プロファイル → データの場所 の国名を記入",
+  },
+  formsCountry: {
+    label: "Country where Google stores Google Forms answers",
+    check: "Google フォームのアカウント種別（Workspace か個人か）を確認。保存国を選べない場合は「特定できない旨と理由」を記載（個人情報保護法の公表方法）",
+  },
+  paymentProvider: {
+    label: "Stripe contracting company and its country",
+    check: "Stripe の契約主体（Stripe Payments Japan 株式会社 か Stripe, Inc. か）とアカウント開設状況を確認して記入。未開設なら Stripe の記載を外すか判断",
   },
   legacyStore: {
     label: "Store of past application data",
-    check: "旧サイトのフォームで受けたガイド応募・事業者アンケート（guide_applications / partner_registrations）が現在どのデータベース（どの Neon プロジェクト・リージョン）にあるかを確認。データがなければこの行を削除",
+    check: "旧サイトのガイド応募・事業者アンケートのデータが残っているか、どの事業者・国にあるかを確認。なければ第7章のこの行を削除",
   },
   effectiveDate: {
     label: "Effective date",
-    check: "施行日（Last updated）を承認時に記入",
+    check: "実際の公開日を記入（2026-11-18 経営方針）",
   },
 };
 
@@ -135,7 +149,7 @@ export const PRIVACY_POLICY = {
       title: "Introduction and Data Controller",
       blocks: [
         p('Connectrip Japan Co., Ltd. (Connectrip Japan 株式会社, "Connectrip Japan", "we", "us" or "our") respects your privacy. This Privacy Policy explains how we collect, use, share and protect personal information when you visit our website, contact us, request or book our services, or apply to work with us.'),
-        p("We handle personal information in accordance with the Act on the Protection of Personal Information of Japan (APPI) and other applicable laws. Where the data protection laws of other countries apply to our handling of your information, such as the EU or UK General Data Protection Regulation (GDPR), we also aim to meet their requirements."),
+        p("We handle personal information in accordance with the Act on the Protection of Personal Information of Japan (APPI) and other applicable Japanese laws."),
         p('Connectrip Japan Co., Ltd. is the business operator responsible for your personal information (the "data controller").'),
         {
           kind: "dl",
@@ -174,7 +188,7 @@ export const PRIVACY_POLICY = {
         h3("Information you give us"),
         ul(
           "Booking requests (Private Guide and Fixed Guided Tours): your name, email address, phone number (optional), country or region of residence (optional), preferred and alternative dates and start times, tour length, the number of adults and children (or, for a fixed tour, the number of guests and your preferred guide language), the areas and interests you choose, and anything you write in your message.",
-          "Information that helps us plan your tour: for example, mobility or accessibility needs, dietary requirements, allergies or health considerations. You never have to give us this to make a booking. Information about health or disability is sensitive personal information under the APPI: we collect it only when you choose to give it to us for your tour, and we treat your giving it as your consent to that use. We use it only to arrange your tour safely and share it only as described in Section 6.",
+          "Health and similar information: we do not ask for information about your health, medical conditions or disabilities through this website, and our forms are not designed to collect it. Please do not include it in your request. If such information is needed to deliver your tour safely, we will explain why and ask for your explicit consent before we receive it. If you send it to us without being asked, we will not use it unless you give that consent, and we will delete it if you do not.",
           "Inquiries: your name, email address and the details of your question. For business inquiries, also your company or organization name, your role and your business contact details.",
           "Guide applications and interviews: your name, contact details, area of residence, age range, languages and language level, guiding experience, availability, current occupation and other information you give us in the application form or in an interview. This includes applications and partner survey answers sent through the forms on our earlier website.",
           "Messages: if you contact us by email, WhatsApp or a social media direct message, we receive your message and the contact details or account name that the service shows us.",
@@ -210,7 +224,7 @@ export const PRIVACY_POLICY = {
         p("We use personal information for the following purposes:"),
         ul(
           "to reply to your inquiries and booking requests, check availability and prepare quotes;",
-          "to arrange, confirm and deliver your tour, including choosing a guide and contacting you before, during and after your tour;",
+          "to prepare, confirm and deliver your tour, including choosing a guide and contacting you before, during and after your tour;",
           "to issue invoices, process payments, cancellations and refunds, and keep accounting records;",
           "to provide customer support, handle feedback, complaints and incidents, and keep tours safe;",
           "to review guide applications, arrange interviews and manage our work with guides;",
@@ -227,8 +241,6 @@ export const PRIVACY_POLICY = {
         h3("Photos and videos"),
         p("Our guides may take photos or videos during a tour, for example as a souvenir for you. We do not use images in which you can be identified on our website, on social media or in advertising unless you have given us permission for that use, and we keep a record of that permission. For children, we ask a parent or guardian. Saying no does not affect your tour."),
         p("You can withdraw your permission at any time. We will then stop using the images in new material and remove them from our own website and social media accounts where we reasonably can. We may not be able to withdraw material that has already been printed or shared by others."),
-        h3("Legal bases (EEA and UK)"),
-        p("Where the GDPR applies, we rely on: the performance of a contract with you, or steps you ask us to take before one (booking requests and tours); our legitimate interests in replying to inquiries, running and securing our website, improving our services and managing business relationships, balanced against your rights; your consent (marketing, the use of images, and sensitive information where required), which you can withdraw at any time; and compliance with our legal obligations (for example, accounting and tax records)."),
       ],
     },
     {
@@ -238,7 +250,7 @@ export const PRIVACY_POLICY = {
       blocks: [
         p("We do not sell personal information. We do not give personal information to third parties except in the cases below or where the law otherwise allows it."),
         ul(
-          "Guides who deliver your tour: guides work for us under a contract to deliver tours we arrange. We share only what a guide needs for your tour, usually your name, the date, time and meeting point, the number of people, your areas and interests, the language, and any accessibility, dietary or safety needs that matter for the tour. We share your phone number or messaging contact with the guide only when it is needed to reach you on the day. Guides must keep this information confidential, use it only for your tour and delete it after the tour.",
+          "Guides who deliver your tour: guides deliver tours on our behalf. We share only what a guide needs for your tour, usually your name, the date, time and meeting point, the number of people, your areas and interests, and the language. We share your phone number or messaging contact with the guide only when it is needed to reach you on the day. Because guides handle this information on our behalf, we supervise how they handle it, as the APPI requires.",
           "Service providers who work for us (see Section 7).",
           "Business transfers: if our business is merged, acquired or transferred, personal information may pass to the new owner, who must continue to protect it as described in this policy.",
           "Legal requirements and protection: where the law requires it; where it is necessary to protect someone's life, body or property and it is difficult to get your consent; or in response to lawful requests from courts, the police or other public authorities.",
@@ -246,42 +258,39 @@ export const PRIVACY_POLICY = {
         ),
         p("We do not share personal information with other companies for joint use."),
       ],
-      pending: "ガイドとの契約（業務委託）に、秘密保持・目的外利用の禁止・ツアー後の削除の条項が入っていることを確認（運用資料の条項案を参照）。2026-11-18：旅行業登録まで宿泊・交通・入場等の手配をしない経営判断に合わせ、「ツアーに含まれる入場・予約・交通の手配先への提供」の項目を削除。登録後に手配を始める場合は復活させる。",
     },
     {
       number: 7,
       id: "service-providers",
       title: "Third-Party Service Providers",
       blocks: [
-        p("We use service providers to run our business. They handle personal information on our behalf, under contract, only to provide their services to us. We supervise them as the law requires. The table also shows where each provider is based and where it stores data, as far as we can identify it."),
+        p("We use service providers to run our business. Where they handle personal information on our behalf, they may use it only to provide their services to us, and we supervise them as the APPI requires. The table shows the country where each provider handles or stores the data."),
         {
           kind: "table",
-          headers: ["Provider", "What they do for us", "Information involved", "Where"],
+          headers: ["Provider", "What they do for us", "Information involved", "Country"],
           rows: [
-            ["Vercel", "Hosting this website and processing form submissions", "Technical information about your visit and the details you send through our forms, while they are processed", "Vercel is based in the United States. Server functions run in {{hostingRegion}}."],
-            ["Neon", "Database that stores booking requests and inquiries, and their handling history", "The details you enter in the booking request and inquiry forms", "Neon is based in the United States. The database is stored in {{databaseRegion}}."],
-            ["Resend", "Sending an email notice to our staff when a booking request or inquiry arrives", "The details of your request, including your name and email address", "Resend is based in the United States. Email is sent from {{emailSendingRegion}}."],
-            ["Microsoft (Microsoft 365)", "Our company mailbox (contact@connectripjapan.com): receiving and replying to email", "Your email address and the content of your messages", "Microsoft is based in the United States. Our mailbox is stored in {{mailboxRegion}}."],
-            ["Google (Google Forms)", "Guide and partner application forms", "The details you enter in those forms", "Google is based in the United States. Data is stored in Google's data centers in the United States and other countries; the service does not let us choose a single country."],
-            ["Stripe", "Invoices and payments", "Your name, email address and payment information", "Stripe's systems in the United States and other countries"],
+            ["Vercel", "Hosting this website and processing form submissions", "Technical information about your visit and the details you send through our forms", "{{hostingCountry}}"],
+            ["Neon", "Database that stores booking requests and inquiries, and their handling history", "The details you enter in the booking request and inquiry forms", "{{databaseCountry}}"],
+            ["Resend", "Sending an email notice to our staff when a booking request or inquiry arrives", "The details of your request, including your name and email address", "{{emailSendingCountry}}"],
+            ["Microsoft (Microsoft 365)", "Our company mailbox (contact@connectripjapan.com): receiving and replying to email", "Your email address and the content of your messages", "{{mailboxCountry}}"],
+            ["Google (Google Forms)", "Guide and partner application forms", "The details you enter in those forms", "{{formsCountry}}"],
+            ["Stripe", "Invoices and payments", "Your name, email address and payment information", "{{paymentProvider}}"],
             ["Past application data", "Storing guide applications and partner survey answers received through our earlier website", "The details given in those forms", "{{legacyStore}}"],
           ],
         },
         p("If you contact us through WhatsApp, Instagram, Facebook or TikTok, those companies also handle your messages under their own privacy policies."),
       ],
-      pending: "2026-11-18 修正：事業者は実際の構成（Vercel・Neon・Resend・Microsoft 365・Google フォーム・Stripe）に更新し、旧 Google Apps Script／スプレッドシートの行は使用していないため削除。残る確認：各社の契約主体（正式な法人名）、Vercel・Neon・Microsoft 365 の保存リージョン（{{…}}）、旧応募データの保存先、Google フォームが Workspace 契約か個人アカウントか、Stripe の契約主体（Stripe, Inc. / Stripe Payments Japan）と請求書の利用開始。",
     },
     {
       number: 8,
       id: "international-transfers",
       title: "International Data Transfers",
       blocks: [
-        p("Some of our service providers are based outside Japan or store data outside Japan, mainly in the United States (see the table in Section 7)."),
-        p("Where a provider only stores data for us and, under its contract, does not handle that data itself, this is not a provision of personal data to a third party under the APPI. We still protect the data based on an understanding of the personal information protection system of the country concerned (see Section 11)."),
-        p("Where a provider outside Japan handles personal data on our behalf, we provide it only to providers that have established systems meeting the standards set under the APPI (for example, through contractual commitments and security controls), or with your consent. We take steps to make sure those measures continue to be applied and, if you ask, we will give you information about them."),
-        p("Personal data that you send to us from the EEA or the UK is received in Japan, which the European Commission and the UK government recognize as providing an adequate level of data protection."),
+        p("Some of our service providers are located outside Japan or handle data outside Japan. The countries are shown in the table in Section 7."),
+        p("We provide personal data to a third party in a foreign country, including a service provider that handles it on our behalf, only as Article 28 of the APPI permits: either with your consent, given after we have informed you of the country, its personal information protection system and the measures the recipient takes to protect personal information; or to a recipient that has established a system meeting the standards set under the APPI. In the second case, we take the necessary measures to make sure that system continues to be applied, and we give you information about those measures if you ask."),
+        p("Where a provider only stores data for us and does not handle the data itself, we still protect it, taking into account the personal information protection system of the country concerned (see Section 11)."),
       ],
-      pending: "事業者ごとに「取り扱わない（クラウド例外: Q7-53・Q12-3）」か「委託（第28条）」かを契約で判定し、第28条の根拠（基準適合体制か本人同意か）と、本人の求めに応じた情報提供の手順を法務確認。EU/UK の十分性認定の記載と、GDPR の適用の有無も法務確認。",
+      pending: "【法務・公開前に必須】Vercel・Neon・Resend・Microsoft 365・Google・Stripe のそれぞれについて、(a) 当社の個人データを取り扱わない（クラウド例外）、(b) 基準適合体制（第28条第1項）、(c) 本人同意（第28条第2項） のどれに当たるかを、各社の規約・データ処理契約と個人情報保護委員会のガイドラインで確認して決める。(b) なら継続的な措置の確認と情報提供の手順を用意。(c) なら同意取得の前の情報提供が必要で、フォームの変更が要る。契約があるだけで適法とは扱わない（2026-11-18 経営方針）。",
     },
     {
       number: 9,
@@ -291,53 +300,33 @@ export const PRIVACY_POLICY = {
         p("Cookies are small text files that a website stores in your browser. Similar technologies include local storage and session storage."),
         p("This website does not currently use analytics, advertising or social media tracking cookies, and does not load tools such as Google Analytics or Google Tag Manager. We do not use advertising tags."),
         p("We use your browser's session storage for one functional purpose only: to remember, while your browser tab is open, that the opening animation on our home page has already been shown. This stays in your browser, is not sent to us, and is cleared when you close the tab."),
-        p("We plan to measure how visitors use this website with Google Analytics 4, loaded through Google Tag Manager. Before we do, we will update this section to explain what information is sent, to whom and why, and, where the law requires, we will ask for your consent through a cookie notice that also lets you refuse or later withdraw it. We will not send your name, email address, phone number or the content of your messages to Google Analytics."),
         p("You can also block or delete cookies in your browser settings."),
       ],
-      pending: "GA4・GTM・Search Console は導入予定（未導入）。導入時は監査資料の第9条改訂案に差し替え、同意バナー（Consent Mode v2）を先に実装する。電気通信事業法の外部送信規律の対象かを法務確認。",
     },
     {
       number: 10,
       id: "retention",
       title: "Data Retention",
       blocks: [
-        p("We keep personal information only for as long as we need it for the purposes in this policy, or as long as the law requires. After that, we delete it or make it anonymous."),
-        {
-          kind: "table",
-          headers: ["Information", "How long we keep it"],
-          rows: [
-            ["Booking requests that do not lead to a booking, and general inquiries", "Up to 2 years after our last contact with you"],
-            ["Confirmed bookings, invoices, payment and accounting records", "For the period required by Japanese law (generally 7 years from the end of the fiscal year of the transaction), or longer where the law requires"],
-            ["Guide applications that do not lead to working together", "1 year after the selection ends"],
-            ["Information about guides we work with", "While the contract lasts, then for as long as the law requires or we need it for our business (for example, payment records)"],
-            ["Business inquiries that do not lead to a deal", "Up to 3 years after our last contact"],
-            ["Records of complaints and incidents", "After the matter is resolved, for as long as needed under the applicable law (for example, legal limitation periods)"],
-            ["Marketing preferences", "Until you withdraw your consent; after that, we keep only a minimal record (your email address and the date) so that we do not contact you again"],
-            ["Photos and videos used with your permission", "In line with the permission you gave; we keep the record of your permission for as long as we use the material and as needed to show that we had it"],
-            ["Server and security logs", "As set by our hosting provider; the IP address used to limit repeated booking form submissions is held for about 10 minutes"],
-          ],
-        },
-        p("Where we must keep information for legal reasons, we use it only for that reason."),
+        p("We keep personal information only for as long as we need it for the purposes in this policy."),
+        p("Where a law requires us to keep certain records, such as accounting and tax records, we keep them for the period that law requires and use them only for that reason."),
+        p("When we no longer need personal information, we delete it or make it anonymous without delay."),
+        p("The IP address that our booking and inquiry forms use to limit repeated submissions is kept for about 10 minutes."),
       ],
-      pending: "保存期間は経営承認前の暫定基準（2026-11-15）。自動削除は未実装で、運用資料の手動手順が前提。会計記録の年数（法人税法・欠損金の繰越）と旅行業法上の記録保存の有無を法務・税理士に確認。",
     },
     {
       number: 11,
       id: "security",
       title: "Data Security",
       blocks: [
-        p("We take necessary and appropriate steps to prevent the leakage, loss or damage of personal information and to manage it safely, including:"),
+        p("We take steps to prevent the leakage, loss or damage of personal information and to manage it safely, including:"),
         ul(
-          "Rules: internal rules on how personal information is collected, used, stored, sent and deleted, and who is responsible for it.",
-          `Organization: a Personal Information Management Officer (${officerLine(PRIVACY_OFFICER)}) who is responsible for how we handle personal information, access limited to those who need it, and a procedure for reporting and handling incidents.`,
-          "People: confidentiality obligations and guidance on handling personal information for our staff and guides.",
-          "Physical security: preventing unauthorized access to devices and documents, and preventing the theft or loss of devices.",
-          "Technical security: encrypted connections (HTTPS) on this website, access controls and strong authentication on the services we use, and protection against unauthorized access.",
-          "Outside Japan: our service providers are based in, and store data in, the countries shown in Section 7, mainly the United States. We take security measures based on an understanding of the personal information protection systems of those countries.",
+          `Organization: we have appointed a Personal Information Management Officer (${officerLine(PRIVACY_OFFICER)}), who is responsible for how we handle personal information, and we limit access to personal information to the people who need it.`,
+          "Technical security: encrypted connections (HTTPS) on this website, a password-protected administration area with limits on repeated login attempts, and access controls on the services we use.",
+          "Understanding the external environment: our service providers handle or store data in the countries shown in Section 7. We take security measures based on an understanding of the personal information protection systems of those countries.",
         ),
-        p("No way of sending or storing information is completely secure. If a data breach is likely to harm your rights and interests, we will report it to the Personal Information Protection Commission of Japan and tell you, as the law requires."),
+        p("If a data breach is likely to harm your rights and interests, we will report it to the Personal Information Protection Commission of Japan and tell you, as the law requires."),
       ],
-      pending: "個人情報管理責任者は 2026-11-15 に任命済み（経営判断）。社内規程・漏えい時の手順（運用資料案）の承認と、実態に合わせた確定が残る。",
     },
     {
       number: 12,
@@ -351,7 +340,6 @@ export const PRIVACY_POLICY = {
           "stop using or delete information that we handle against the law, that we no longer need, or whose handling may harm your rights or legitimate interests; and",
           "stop giving it to third parties.",
         ),
-        p("If you are in the EEA or the UK, you also have the right to access, correct or erase your personal data, to restrict or object to how we use it, to data portability, and to withdraw your consent at any time (this does not affect what we did before). You can also complain to your local data protection authority."),
         h3("How to make a request"),
         p(`Contact us at ${PRIVACY_CONTACT_EMAIL}. We will confirm your identity before we act, for example by asking for details that match our records. Someone you authorize can make a request for you with proof of that authority. For disclosure, you can ask us to provide the information electronically (for example, by email) or in writing. We will reply without undue delay and within the time the law requires.`),
         p("As a rule, requests for disclosure, correction, suspension of use or deletion, and the other requests above are free of charge."),

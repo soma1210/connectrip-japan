@@ -324,7 +324,7 @@ export function TourBookingRequest({
                     </Field>
                   </div>
 
-                  <Field id={id("message")} label="Special Requests" error={errors.message} hint="Dietary needs, mobility, interests, anything we should know.">
+                  <Field id={id("message")} label="Special Requests" error={errors.message} hint="Interests, the pace you like, anything we should know. Please don't include health or medical details.">
                     <textarea {...a11y("message")} rows={4} maxLength={TOUR_LIMITS.message} value={values.message} onChange={(e) => set("message", e.target.value)} className={inputClass} />
                   </Field>
 
