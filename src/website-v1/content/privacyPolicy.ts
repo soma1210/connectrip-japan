@@ -38,6 +38,7 @@ export const PRIVACY_POLICY_APPROVAL: { by: string; at: string } | null = null;
 export type PendingKey =
   | "hostingRegion"
   | "databaseRegion"
+  | "emailSendingRegion"
   | "mailboxRegion"
   | "legacyStore"
   | "effectiveDate";
@@ -46,13 +47,15 @@ export type PendingKey =
 export const PRIVACY_PENDING: Record<PendingKey, { label: string; proposed?: string; check: string }> = {
   hostingRegion: {
     label: "Where Vercel runs this website's server functions",
-    proposed: "United States (Vercel's default region; no region is set in vercel.json)",
-    check: "Vercel の本番プロジェクトの Functions Region を確認（vercel.json に指定なし＝既定リージョン）。東京等に変える場合はこの記載も合わせる",
+    check: "Vercel の本番プロジェクトの Settings → Functions → Region を確認して記入（vercel.json には指定なし。既定値を推測で書かない）",
   },
   databaseRegion: {
     label: "Where Neon stores the database",
-    proposed: "Singapore (Amazon Web Services, ap-southeast-1), the region of the test database",
-    check: "本番用 Neon プロジェクトのリージョンを確定（テスト用 connectrip-website-v2-test は ap-southeast-1＝シンガポール）",
+    check: "本番用 Neon プロジェクトのリージョンを確定して記入（確認済みの事実：テスト用 connectrip-website-v2-test は AWS ap-southeast-1＝シンガポール。本番は未作成）",
+  },
+  emailSendingRegion: {
+    label: "Where Resend sends email from",
+    check: "Resend の Domains で notify.connectripjapan.com の Region を確認して記入（未確認。推測で書かない）",
   },
   mailboxRegion: {
     label: "Where Microsoft 365 stores the company mailbox",
@@ -257,7 +260,7 @@ export const PRIVACY_POLICY = {
           rows: [
             ["Vercel", "Hosting this website and processing form submissions", "Technical information about your visit and the details you send through our forms, while they are processed", "Vercel is based in the United States. Server functions run in {{hostingRegion}}."],
             ["Neon", "Database that stores booking requests and inquiries, and their handling history", "The details you enter in the booking request and inquiry forms", "Neon is based in the United States. The database is stored in {{databaseRegion}}."],
-            ["Resend", "Sending an email notice to our staff when a booking request or inquiry arrives", "The details of your request, including your name and email address", "Resend is based in the United States and sends email from servers in the United States."],
+            ["Resend", "Sending an email notice to our staff when a booking request or inquiry arrives", "The details of your request, including your name and email address", "Resend is based in the United States. Email is sent from {{emailSendingRegion}}."],
             ["Microsoft (Microsoft 365)", "Our company mailbox (contact@connectripjapan.com): receiving and replying to email", "Your email address and the content of your messages", "Microsoft is based in the United States. Our mailbox is stored in {{mailboxRegion}}."],
             ["Google (Google Forms)", "Guide and partner application forms", "The details you enter in those forms", "Google is based in the United States. Data is stored in Google's data centers in the United States and other countries; the service does not let us choose a single country."],
             ["Stripe", "Invoices and payments", "Your name, email address and payment information", "Stripe's systems in the United States and other countries"],
