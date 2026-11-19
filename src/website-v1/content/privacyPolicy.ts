@@ -3,37 +3,20 @@ import { COMPANY_PROFILE } from "./data/company";
 import { PRIVACY_OFFICER, officerLine } from "./officers";
 
 /**
- * Privacy Policy V1 (Human instruction 2026-11-14). English draft for
- * Website v1. Revised 2026-11-18 (management decision) to what the code and
- * services actually do:
- * - hosting: Vercel (production deploy target decided 2026-11-18);
- * - booking requests and inquiries: POST /api/v1/booking-requests and
- *   /api/v1/inquiries → Postgres on Neon (src/lib/inquiries), staff email via
- *   Resend SMTP (src/lib/notify), reviewed in /admin. The old booking Google
- *   Apps Script / Google Sheets path (src/lib/booking-request/gas.ts) is no
- *   longer called by any route, so it is no longer described;
- * - company mailbox contact@connectripjapan.com: Microsoft 365 (MX record);
- * - guide and partner applications: external Google Forms (routes.ts);
- * - public inquiry page: contact channels only (the form is preview only);
- * - payments: Stripe invoices in JPY (described in content, no code here);
- * - analytics: none on Website v1 (no GTM / GA / ad tags in src/app/v1);
- *   GTM exists only in the current site's layout (src/app/[locale]);
- * - browser storage: one sessionStorage key for the Home opening animation;
- * - rate limiting: client IP kept in memory ~10 minutes (src/lib/rate-limit).
- *
- * DRAFT, NOT legally approved. Values that are not confirmed are written as
- * `{{key}}` and listed in PRIVACY_PENDING. Until a human records approval and
- * every pending item is resolved, the policy is preview only:
- * - preview: `/v1/privacy-policy` shows the draft with "to confirm" markers;
- * - public mode: the route answers 404 (not in PUBLIC_PATHS, and the page
- *   calls notFound()); the existing `/privacy` page is unchanged.
- * The review copy of the text is generated from this file
- * (`.claude/legal/privacy-policy-v1-draft.md`), so the two never drift.
+ * Website V2 policy: existing 14-section text, prepared for public-mode display
+ * on the owner's 2026-11-19 instruction. This is content approval, not a claim
+ * that legal or operational checks have been completed, or deploy approval.
+ * See .claude/legal/privacy-policy-v2-release-review.md for the exact changes
+ * and unresolved release checks. The original draft remains historical evidence.
  */
-export const PRIVACY_POLICY_SOURCE = "Privacy Policy V1, draft of 2026-11-15, revised 2026-11-18 (providers: Vercel, Neon, Resend, Microsoft 365). Pending company approval and legal review: not approved for publication";
+export const PRIVACY_POLICY_SOURCE = "Privacy Policy, revised 2026-11-19";
 
-/** Set by a human once the text is legally approved: `{ by: "name", at: "YYYY-MM-DD" }`. */
-export const PRIVACY_POLICY_APPROVAL: { by: string; at: string } | null = null;
+/** Owner's explicit instruction in the 2026-11-19 implementation request. */
+export const PRIVACY_POLICY_APPROVAL: { by: string; at: string; scope: string } | null = {
+  by: "Owner (instruction in the 2026-11-19 Codex chat)",
+  at: "2026-11-19",
+  scope: "Render the existing approved policy in PR #4; no merge or production deployment. Not legal verification.",
+};
 
 export type PendingKey =
   | "hostingCountry"
@@ -141,7 +124,7 @@ const ul = (...items: string[]): PolicyBlock => ({ kind: "ul", items });
 export const PRIVACY_POLICY = {
   heading: "Privacy Policy",
   subheading: "PRIVACY POLICY",
-  lastUpdated: "{{effectiveDate}}",
+  lastUpdated: "2026-11-19",
   sections: [
     {
       number: 1,
@@ -195,7 +178,7 @@ export const PRIVACY_POLICY = {
           "Photos and videos taken during a tour in which you appear (see Section 5).",
         ),
         h3("Payment information"),
-        p("Payments are processed by our payment service provider, Stripe. When you pay a Stripe invoice, you enter your card or payment details on Stripe's systems, and we do not receive or store your full card number. We receive the information we need to confirm and record your payment, such as the amount, date, payment status and limited card details (for example, the card brand and last four digits)."),
+        p("If you pay an invoice through Stripe, you enter your card or payment details on Stripe's systems, and we do not receive or store your full card number. We receive the information we need to confirm and record your payment, such as the amount, date, payment status and limited card details (for example, the card brand and last four digits)."),
         h3("Information collected automatically"),
         p("When you visit this website, the servers of our hosting provider (Vercel) process technical information that your browser sends, such as your IP address, browser type, device information, the pages requested and the date and time of access. This is used to deliver the website, keep it secure and prevent abuse. Our booking form also uses your IP address for a short time to limit repeated submissions."),
         p("This website does not currently use cookies for analytics or advertising. See Section 9."),
@@ -264,20 +247,21 @@ export const PRIVACY_POLICY = {
       id: "service-providers",
       title: "Third-Party Service Providers",
       blocks: [
-        p("We use service providers to run our business. Where they handle personal information on our behalf, they may use it only to provide their services to us, and we supervise them as the APPI requires. The table shows the country where each provider handles or stores the data."),
+        p("We use service providers to run our business. Where they handle personal information on our behalf, they may use it only to provide their services to us, and we supervise them as the APPI requires. The table describes the services and the information involved."),
         {
           kind: "table",
-          headers: ["Provider", "What they do for us", "Information involved", "Country"],
+          headers: ["Provider", "What they do for us", "Information involved"],
           rows: [
-            ["Vercel", "Hosting this website and processing form submissions", "Technical information about your visit and the details you send through our forms", "Singapore"],
-            ["Neon", "Database that stores booking requests and inquiries, and their handling history", "The details you enter in the booking request and inquiry forms", "Singapore"],
-            ["Resend", "Sending an email notice to our staff when a booking request or inquiry arrives", "The details of your request, including your name and email address", "{{emailSendingCountry}}"],
-            ["Microsoft (Microsoft 365)", "Our company mailbox (contact@connectripjapan.com): receiving and replying to email", "Your email address and the content of your messages", "{{mailboxCountry}}"],
-            ["Google (Google Forms)", "Guide and partner application forms", "The details you enter in those forms", "{{formsCountry}}"],
-            ["Stripe", "Invoices and payments", "Your name, email address and payment information", "{{paymentProvider}}"],
-            ["Past application data", "Storing guide applications and partner survey answers received through our earlier website", "The details given in those forms", "Singapore (stored by Neon)"],
+            ["Vercel", "Hosting this website and processing form submissions", "Technical information about your visit and the details you send through our forms"],
+            ["Neon", "Database that stores booking requests and inquiries, and their handling history", "The details you enter in the booking request and inquiry forms"],
+            ["Resend", "Sending an email notice to our staff when a booking request or inquiry arrives", "The details of your request, including your name and email address"],
+            ["Microsoft (Microsoft 365)", "Our company mailbox (contact@connectripjapan.com): receiving and replying to email", "Your email address and the content of your messages"],
+            ["Google (Google Forms)", "Guide and partner application forms", "The details you enter in those forms"],
+            ["Stripe (when used for payment)", "Invoices and payments", "Your name, email address and payment information"],
+            ["Neon (past application data)", "Storing guide applications and partner survey answers received through our earlier website", "The details given in those forms"],
           ],
         },
+        p("Our Vercel application processing region and Neon database storage region are configured in Singapore. These settings do not describe every location where a provider or its subprocessors may process data."),
         p("If you contact us through WhatsApp, Instagram, Facebook or TikTok, those companies also handle your messages under their own privacy policies."),
       ],
     },
@@ -286,7 +270,7 @@ export const PRIVACY_POLICY = {
       id: "international-transfers",
       title: "International Data Transfers",
       blocks: [
-        p("Some of our service providers are located outside Japan or handle data outside Japan. The countries are shown in the table in Section 7."),
+        p("Some of our service providers are located outside Japan or handle data outside Japan."),
         p("We provide personal data to a third party in a foreign country, including a service provider that handles it on our behalf, only as Article 28 of the APPI permits: either with your consent, given after we have informed you of the country, its personal information protection system and the measures the recipient takes to protect personal information; or to a recipient that has established a system meeting the standards set under the APPI. In the second case, we take the necessary measures to make sure that system continues to be applied, and we give you information about those measures if you ask."),
         p("Where a provider only stores data for us and does not handle the data itself, we still protect it, taking into account the personal information protection system of the country concerned (see Section 11)."),
       ],
@@ -323,7 +307,7 @@ export const PRIVACY_POLICY = {
         ul(
           `Organization: we have appointed a Personal Information Management Officer (${officerLine(PRIVACY_OFFICER)}), who is responsible for how we handle personal information, and we limit access to personal information to the people who need it.`,
           "Technical security: encrypted connections (HTTPS) on this website, a password-protected administration area with limits on repeated login attempts, and access controls on the services we use.",
-          "Understanding the external environment: our service providers handle or store data in the countries shown in Section 7. We take security measures based on an understanding of the personal information protection systems of those countries.",
+          "Understanding the external environment: our service providers may handle or store data outside Japan. We take security measures based on an understanding of the personal information protection systems of those countries.",
         ),
         p("If a data breach is likely to harm your rights and interests, we will report it to the Personal Information Protection Commission of Japan and tell you, as the law requires."),
       ],
@@ -395,23 +379,25 @@ export function privacyPolicyPlaceholders(): PendingKey[] {
   return [...keys];
 }
 
+/** Content can render without pretending operational/legal checks are complete. */
+export function privacyPolicyContentReady(): boolean {
+  return PRIVACY_POLICY_APPROVAL !== null && privacyPolicyPlaceholders().length === 0;
+}
+
 /**
- * Publishable only with a recorded approval, no `{{…}}` left in the text, no
- * section still marked pending and every technical check done. Management
- * decisions (PRIVACY_DECISIONS) alone never make it publishable. Even then, going public also needs the
- * route in PUBLIC_PATHS and a deploy: both human decisions.
+ * Separate release-readiness check. Still false until the recorded legal and
+ * technical checks are actually resolved. Rendering is not deployment approval.
  */
 export function privacyPolicyPublishable(): boolean {
   return (
-    PRIVACY_POLICY_APPROVAL !== null &&
-    privacyPolicyPlaceholders().length === 0 &&
+    privacyPolicyContentReady() &&
     (PRIVACY_POLICY.sections as PolicySection[]).every((s) => !s.pending) &&
     PRIVACY_TECH_CHECKS.every((c) => c.done)
   );
 }
 
-/** Preview: the draft. Public mode: only once publishable. */
-export const PRIVACY_POLICY_VISIBLE = V1_PREVIEW || privacyPolicyPublishable();
+/** The owner requested the complete policy in public mode on this PR. */
+export const PRIVACY_POLICY_VISIBLE = V1_PREVIEW || privacyPolicyContentReady();
 
 /**
  * Short notice shown next to forms before they are sent (preview only while

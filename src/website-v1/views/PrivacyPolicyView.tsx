@@ -121,7 +121,7 @@ export function PrivacyPolicyView() {
   const sections = c.sections as PolicySection[];
   const draft = PRIVACY_POLICY_APPROVAL === null;
   return (
-    <div lang="en" className="bg-cream py-[60px] text-navy md:py-[100px]">
+    <div lang="en" data-wd-skip className="bg-cream py-[60px] text-navy md:py-[100px]">
       <Container className="max-w-3xl">
         {V1_PREVIEW && draft ? (
           <p className="mb-8 border border-dashed border-navy/40 bg-cream-dark/60 px-4 py-2.5 text-xs leading-relaxed text-navy/70">
@@ -167,7 +167,7 @@ export function PrivacyPolicyView() {
                 {s.blocks.map((b, i) => (
                   <Block key={i} block={b} />
                 ))}
-                {V1_PREVIEW && s.pending ? (
+                {V1_PREVIEW && draft && s.pending ? (
                   <p lang="ja" className="mt-4 border-l-2 border-red/50 bg-red/5 px-3 py-2 text-xs leading-relaxed text-navy/60">
                     要確認（プレビューのみ表示）: {s.pending}
                   </p>
