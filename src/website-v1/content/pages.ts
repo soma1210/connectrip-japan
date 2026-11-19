@@ -1,4 +1,4 @@
-import { V1_PREVIEW } from "../config";
+import { V1_CONTENT } from "../config";
 import type { AboutSection, AboutValue, AboutViewModel, LayoutViewModel, LegalPageViewModel, NavItem } from "@/contracts";
 import { approved } from "@/contracts/status";
 import { isPublicHref, recruitHref, routeHref, type StaticRouteKey } from "../routes";
@@ -30,7 +30,7 @@ function navItem(route: Exclude<StaticRouteKey, "home">): NavItem {
 
 /** "How It Works" points at the Home section, which is shown in the preview only. */
 function howItWorksNav(): NavItem[] {
-  return V1_PREVIEW ? [navItem("howItWorks")] : [];
+  return V1_CONTENT ? [navItem("howItWorks")] : [];
 }
 
 /**

@@ -1,5 +1,5 @@
 import type { GuideArea, ParameterizedRouteKey, RouteKey } from "@/contracts";
-import { V1_PREVIEW } from "./config";
+import { V1_CONTENT, V1_PREVIEW } from "./config";
 
 /**
  * Route Registry for Website v1. The only place that knows URLs.
@@ -48,7 +48,21 @@ export const GUIDE_FORM_URL =
 export function isPublicHref(href: string): boolean {
   if (V1_PREVIEW || /^https?:\/\//.test(href) || href.startsWith("mailto:")) return true;
   const path = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
-  return path === GUIDE_COMMUNITY_PATH || PUBLIC_PATHS.includes(path);
+  return path === GUIDE_COMMUNITY_PATH || isServedPath(path);
+}
+
+/**
+ * Stay preview-only even when V1_SHOW_ALL is on: an unapproved cancellation
+ * policy (conflicts with the Terms), mock forms, the reviewers' editorial
+ * dashboard and the retired DEMO Travel Guide hub.
+ */
+export const PREVIEW_ONLY_PATHS: readonly string[] = ["/cancel-policy", "/business-inquiry", "/explore/editorial", "/travel-guide", "/privacy-policy", "/partner/apply"];
+
+/** Whether a public-mode path (no `/v1` prefix) is served to visitors. */
+export function isServedPath(path: string): boolean {
+  if (PUBLIC_PATHS.includes(path)) return true;
+  if (!V1_CONTENT) return false;
+  return !PREVIEW_ONLY_PATHS.some((p) => path === p || path.startsWith(`${p}/`));
 }
 
 export type StaticRouteKey = Exclude<RouteKey, ParameterizedRouteKey>;
@@ -113,7 +127,7 @@ export function recruitHref(key: RecruitRouteKey): string {
   if (key === "guideCommunity") return GUIDE_FORM_URL;
   if (key === "partnerApply") return PARTNER_FORM_URL;
   // Public mode has no Partner page (Japanese, outside the launch scope): go straight to the form.
-  if (!V1_PREVIEW) return PARTNER_FORM_URL;
+  if (!V1_CONTENT) return PARTNER_FORM_URL;
   return withBase(PARTNER_PATH);
 }
 

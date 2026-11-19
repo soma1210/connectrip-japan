@@ -23,7 +23,7 @@ import { PrivateGuidePricing } from "../components/PrivateGuidePricing";
 import { PRIVATE_GUIDE_PRICING_VISIBLE, getPrivateGuidePricing } from "../content/privateGuidePricing";
 import type { PrivateGuideRequestModel } from "../content/privateGuideRequest";
 import { PRIVATE_GUIDE_AREAS_NOTE, PRIVATE_GUIDE_FAQ } from "../content/privateGuideFaq";
-import { V1_PREVIEW } from "../config";
+import { V1_CONTENT, V1_PREVIEW } from "../config";
 import { getLayoutViewModel } from "../content/pages";
 import { routeHref } from "../routes";
 import Link from "next/link";
@@ -372,7 +372,7 @@ export function InquiryView({ vm, formMode = "mock" }: { vm: InquiryViewModel; f
       <Section>
         <div className="mx-auto max-w-3xl">
           {/* Preview: the form, live when the inquiry backend is configured (else the mock). Public mode keeps the contact channels until the form copy is approved. */}
-          {V1_PREVIEW ? formMode === "live" ? <LiveInquiryForm model={c.form} /> : <PreviewInquiryForm model={c.form} /> : <ContactChannels />}
+          {V1_CONTENT && formMode === "live" ? <LiveInquiryForm model={c.form} /> : V1_PREVIEW ? <PreviewInquiryForm model={c.form} /> : <ContactChannels />}
         </div>
       </Section>
     </>

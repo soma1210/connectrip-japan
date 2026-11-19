@@ -1,4 +1,4 @@
-import { V1_PREVIEW } from "../../config";
+import { V1_CONTENT } from "../../config";
 import { jstToday } from "../guides/freshness";
 import { photoRights, spotById, type PhotoRights } from "../spots";
 import { areaName } from "./areas";
@@ -26,7 +26,7 @@ import { UPDATE_ARTICLES } from "./updates";
  *   are not in PUBLIC_PATHS (404) and the sitemap lists nothing. Turning it
  *   on is a human decision, together with PUBLIC_PATHS / proxy routing.
  */
-export const EXPLORE_VISIBLE = V1_PREVIEW;
+export const EXPLORE_VISIBLE = V1_CONTENT;
 export const EXPLORE_PUBLIC = false;
 
 export * from "./types";

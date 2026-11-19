@@ -13,7 +13,7 @@ import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { TbdImage, TbdText, textOr } from "../components/Tbd";
 import { HERO_MOSAIC, HERO_MOSAIC_CENTER, heroFocus, heroMeta, type MosaicPhoto } from "../assets/heroImages";
-import { V1_PREVIEW } from "../config";
+import { V1_CONTENT, V1_PREVIEW } from "../config";
 import { HomeOpeningExperience } from "../components/opening/HomeOpeningExperience";
 import openingStyles from "../components/opening/HomeOpeningExperience.module.css";
 import { SocialProofBlock } from "./SocialProofBlock";
@@ -538,7 +538,7 @@ export function HomeView({ vm, bookingMode = "mock" }: { vm: HomeViewModel; book
       {/* Scroll motion for the sections below the Hero (components/motion). The Hero does not use it. */}
       <RevealObserver />
       {order.map((key) =>
-        sections[key] && (V1_PREVIEW || !PREVIEW_ONLY_SECTIONS.has(key)) ? (
+        sections[key] && (V1_CONTENT || !PREVIEW_ONLY_SECTIONS.has(key)) ? (
           <div key={key} data-home-section={key}>
             {sections[key]}
             {/* Scene change: navy mist stands up over the end of the mosaic as the next scene arrives. */}

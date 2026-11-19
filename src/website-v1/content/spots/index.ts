@@ -1,5 +1,5 @@
 import type { ImageAsset } from "@/contracts";
-import { V1_PREVIEW } from "../../config";
+import { V1_CONTENT } from "../../config";
 import { OSAKA_SPOTS, spotPhoto, type OsakaSpot } from "./osaka";
 
 /**
@@ -36,5 +36,5 @@ export function displayPhoto(spot: Spot): (ImageAsset & { unverified: boolean })
   const photo = spotPhoto(spot);
   if (!photo) return null;
   const unverified = photo.rights !== "CONFIRMED_BY_HUMAN";
-  return unverified && !V1_PREVIEW ? null : { ...photo, unverified };
+  return unverified && !V1_CONTENT ? null : { ...photo, unverified };
 }
