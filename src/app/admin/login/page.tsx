@@ -1,22 +1,24 @@
 import { redirect } from "next/navigation";
-import {
-  isAdminAuthenticated,
-  isAdminConfigured,
-  setAdminSession,
-  verifyAdminPassword,
-} from "@/lib/admin-auth";
+import { isAdminAuthenticated, isAdminConfigured, loginAdmin } from "@/lib/admin-auth";
+
+// Never prerendered: the answer depends on the session cookie.
+export const dynamic = "force-dynamic";
 
 async function login(formData: FormData) {
   "use server";
-  const password = String(formData.get("password") ?? "");
-
-  if (!verifyAdminPassword(password)) {
-    redirect("/admin/login?error=1");
-  }
-
-  await setAdminSession();
+  const password = String(formData.get("password") ?? "").slice(0, 1000);
+  const result = await loginAdmin(password);
+  if (result !== "ok") redirect(`/admin/login?error=${result}`);
   redirect("/admin");
 }
+
+/** Login errors. "invalid" and "locked" say nothing about which part was wrong. */
+const ERRORS: Record<string, string> = {
+  invalid: "パスワードが違います。",
+  locked: "ログインの試行回数が上限に達しました。15分ほど待ってから再度お試しください。",
+  unavailable: "現在ログインできません。データベースの設定を確認してください。",
+  not_configured: "管理画面は未設定です。",
+};
 
 export default async function AdminLoginPage({
   searchParams,
@@ -56,7 +58,7 @@ export default async function AdminLoginPage({
           />
         </label>
         {error ? (
-          <p className="text-sm text-red">パスワードが違います。</p>
+          <p className="text-sm text-red">{Object.hasOwn(ERRORS, error) ? ERRORS[error] : ERRORS.invalid}</p>
         ) : null}
         <button
           type="submit"

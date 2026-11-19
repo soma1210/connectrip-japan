@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>OUR VALUE · Cinematic Scroll Prototype</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!--
+    Connectrip Japan · OUR VALUE Cinematic Scroll Prototype V1.0 (2026-11-15)
+    Stand-alone prototype. Not part of the Next.js site.
+    Photos: the six images the live OUR VALUE section uses, referenced in place
+    (public/images/value/value-card-1..6.jpg), same order and same card mapping.
+  -->
+
+  <!-- Placeholder: previous section (not for the real site) -->
+  <section class="ph ph--before" aria-label="Placeholder previous section">
+    <p class="ph__tag">Prototype · placeholder section</p>
+    <p class="ph__title">Previous section</p>
+    <p class="ph__hint">Scroll down</p>
+  </section>
+
+  <!-- OUR VALUE · Cinematic Section -->
+  <section class="ov" id="our-value" aria-labelledby="ov-title" data-ov>
+    <div class="ov__track" data-ov-track>
+      <div class="ov__stage" data-ov-stage>
+        <div class="ov__intro">
+          <span class="ov__rule" aria-hidden="true"></span>
+          <h2 class="ov__title" id="ov-title">
+            <span class="ov__line"><span>OUR</span></span>
+            <span class="ov__line"><span>VALUE</span></span>
+          </h2>
+          <p class="ov__lead">Discover six reasons to explore Japan with Connectrip Japan.</p>
+          <div class="ov__counter" aria-hidden="true">
+            <span class="ov__reel-window"><span class="ov__reel" data-ov-reel><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span></span></span>
+            <span class="ov__total">/ 06</span>
+          </div>
+          <div class="ov__progress" aria-hidden="true"><span data-ov-bar></span></div>
+        </div>
+
+        <div class="ov__deck">
+          <ol class="ov__cards">
+            <li class="ov__card" data-ov-card>
+              <article class="card">
+                <img src="../../public/images/value/value-card-1.jpg" alt="Authentic Local Experiences" width="960" height="720" decoding="async" />
+                <span class="card__grad" aria-hidden="true"></span>
+                <div class="card__text">
+                  <p class="card__num">01</p>
+                  <h3 class="card__title">Authentic Local Experiences</h3>
+                  <p class="card__desc">Discover Japan beyond the ordinary.</p>
+                </div>
+                <span class="card__shade" aria-hidden="true" data-ov-shade></span>
+              </article>
+            </li>
+            <li class="ov__card" data-ov-card>
+              <article class="card">
+                <img src="../../public/images/value/value-card-2.jpg" alt="Kansai Local Experts" width="960" height="720" decoding="async" />
+                <span class="card__grad" aria-hidden="true"></span>
+                <div class="card__text">
+                  <p class="card__num">02</p>
+                  <h3 class="card__title">Kansai Local Experts</h3>
+                  <p class="card__desc">Explore with people who know Kansai.</p>
+                </div>
+                <span class="card__shade" aria-hidden="true" data-ov-shade></span>
+              </article>
+            </li>
+            <li class="ov__card" data-ov-card>
+              <article class="card">
+                <img src="../../public/images/value/value-card-3.jpg" alt="Beyond the Tourist Trail" width="960" height="720" decoding="async" loading="lazy" />
+                <span class="card__grad" aria-hidden="true"></span>
+                <div class="card__text">
+                  <p class="card__num">03</p>
+                  <h3 class="card__title">Beyond the Tourist Trail</h3>
+                  <p class="card__desc">Find hidden gems and local favorites.</p>
+                </div>
+                <span class="card__shade" aria-hidden="true" data-ov-shade></span>
+              </article>
+            </li>
+            <li class="ov__card" data-ov-card>
+              <article class="card">
+                <img src="../../public/images/value/value-card-4.jpg" alt="Travel Your Way" width="960" height="720" decoding="async" loading="lazy" />
+                <span class="card__grad" aria-hidden="true"></span>
+                <div class="card__text">
+                  <p class="card__num">04</p>
+                  <h3 class="card__title">Travel Your Way</h3>
+                  <p class="card__desc">Personalized around your interests.</p>
+                </div>
+                <span class="card__shade" aria-hidden="true" data-ov-shade></span>
+              </article>
+            </li>
+            <li class="ov__card" data-ov-card>
+              <article class="card">
+                <img src="../../public/images/value/value-card-5.jpg" alt="Support Before You Arrive" width="960" height="720" decoding="async" loading="lazy" />
+                <span class="card__grad" aria-hidden="true"></span>
+                <div class="card__text">
+                  <p class="card__num">05</p>
+                  <h3 class="card__title">Support Before You Arrive</h3>
+                  <p class="card__desc">Get guidance before your journey.</p>
+                </div>
+                <span class="card__shade" aria-hidden="true" data-ov-shade></span>
+              </article>
+            </li>
+            <li class="ov__card" data-ov-card>
+              <article class="card">
+                <img src="../../public/images/value/value-card-6.jpg" alt="More Than a Guide" width="1213" height="910" decoding="async" loading="lazy" />
+                <span class="card__grad" aria-hidden="true"></span>
+                <div class="card__text">
+                  <p class="card__num">06</p>
+                  <h3 class="card__title">More Than a Guide</h3>
+                  <p class="card__desc">Feel welcomed, not just guided.</p>
+                </div>
+                <span class="card__shade" aria-hidden="true" data-ov-shade></span>
+              </article>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Placeholder: next section (not for the real site) -->
+  <section class="ph ph--after" aria-label="Placeholder next section">
+    <p class="ph__tag">Prototype · placeholder section</p>
+    <p class="ph__title">Next section</p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

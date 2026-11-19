@@ -1,0 +1,124 @@
+/*
+ * Home scroll motion (Human instruction 2026-11-14): sections below the Hero.
+ *
+ * How it works
+ * - Markup carries a reveal class from this file plus `data-reveal-item`
+ *   (helper: reveal.ts). Without JS nothing is hidden: the "before" states
+ *   only apply once RevealObserver has set <html data-v1-motion>.
+ * - RevealObserver adds `data-revealed` when the element (or its
+ *   `data-reveal-group`) scrolls into view, once. Content never hides again.
+ * - Transitions only (opacity / transform / clip-path): no layout changes.
+ *
+ * Tokens: text 0.9 s, image mask 1.25 s, image settle 1.6 s, stagger via --d.
+ */
+
+.item {
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0s),
+    transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0s),
+    clip-path 1.25s cubic-bezier(0.65, 0, 0.35, 1) var(--d, 0s);
+}
+/* Already on screen when the page opened (reload, back, #anchor): show at once, no animation. */
+.item[data-revealed="instant"],
+.item[data-revealed="instant"] .settle {
+  transition: none;
+}
+
+/* Text: fade + short rise. */
+:global(html[data-v1-motion]) .up:not([data-revealed]) { opacity: 0; transform: translate3d(0, 22px, 0); }
+/* Quiet fade (containers, small labels). */
+:global(html[data-v1-motion]) .fade:not([data-revealed]) { opacity: 0; }
+
+/* Editorial image reveals: the frame opens sideways while the photo settles from a slight zoom. */
+:global(html[data-v1-motion]) .maskFromLeft:not([data-revealed]) { clip-path: inset(0 100% 0 0); }
+:global(html[data-v1-motion]) .maskFromRight:not([data-revealed]) { clip-path: inset(0 0 0 100%); }
+.maskFromLeft, .maskFromRight, .iris { clip-path: inset(0 0 0 0); }
+/* Cinematic image reveal: the photo appears from behind a mask that opens from its centre. */
+:global(html[data-v1-motion]) .iris:not([data-revealed]) { clip-path: inset(16% 12% 16% 12%); opacity: 0; }
+
+/* Typography reveal: the heading rises out of a mask (its own box is the mask). */
+:global(html[data-v1-motion]) .title:not([data-revealed]) { clip-path: inset(0 0 100% 0); transform: translate3d(0, 0.45em, 0); opacity: 0.2; }
+.title {
+  clip-path: inset(-0.2em -0.2em -0.3em -0.2em);
+  transition:
+    clip-path 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0s),
+    transform 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0s),
+    opacity 0.7s ease var(--d, 0s);
+}
+
+/* Small screens only: a plain rise (used where wide screens have a scroll-linked scene instead). */
+@media (max-width: 767px) {
+  :global(html[data-v1-motion]) .upMobile:not([data-revealed]) { opacity: 0; transform: translate3d(0, 14px, 0); }
+}
+
+/*
+ * ---- Scroll-linked scenes (wide screens with a mouse; RevealObserver writes the variables) ----
+ * --p  : 0 → 1 while the scene scrolls into place (eased in JS, so wheel steps stay smooth)
+ * --py : parallax offset in px
+ * Every rule falls back to the finished state (--p: 1, --py: 0), so without JS, on phones and
+ * with reduced motion the scene is simply there.
+ */
+
+/* Full-width image reveal from the right edge: a soft-edged mask travels left with the scroll
+ * (no hard wipe line). At --p: 1 the mask is fully open. */
+.wipeFromRight {
+  --edge: calc((1 - var(--p, 1)) * 112%);
+  -webkit-mask-image: linear-gradient(90deg, transparent calc(var(--edge) - 16%), #000 var(--edge));
+  mask-image: linear-gradient(90deg, transparent calc(var(--edge) - 16%), #000 var(--edge));
+}
+/* Inset → full bleed: the picture starts as a framed print and grows to fill the scene. */
+.insetExpand { clip-path: inset(calc((1 - var(--p, 1)) * 11%) calc((1 - var(--p, 1)) * 9%)); }
+/* Camera inside a scene: eases back from a push-in while the frame opens, and drifts with the scroll. */
+.sceneCamera {
+  transform: translate3d(0, var(--py, 0px), 0) scale(calc(1.02 + (1 - var(--p, 1)) * var(--zoom, 0.1)));
+  will-change: transform;
+}
+/* Parallax only (a layer that moves slower than the page). */
+.drift { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
+
+/* Scene change after the Hero: the next scene's dusk rises over the last frame of the Hero. */
+.dusk {
+  opacity: var(--p, 0);
+  transform: translate3d(0, calc((1 - var(--p, 0)) * 22%), 0);
+  will-change: transform, opacity;
+}
+
+/* Photo inside a revealing frame: settles from 1.07 to 1. */
+.settle {
+  transition: transform 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0s);
+  will-change: transform;
+}
+:global(html[data-v1-motion]) .item:not([data-revealed]) .settle { transform: scale(1.07); }
+
+/* Hover: only the photo grows a little. */
+.hoverPhoto { transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1); }
+@media (hover: hover) {
+  .hoverArea:hover .hoverPhoto { transform: scale(1.035); }
+}
+
+/* Small screens: simpler and lighter. No sideways masks, shorter travel. */
+@media (max-width: 767px) {
+  :global(html[data-v1-motion]) .maskFromLeft:not([data-revealed]),
+  :global(html[data-v1-motion]) .maskFromRight:not([data-revealed]),
+  :global(html[data-v1-motion]) .iris:not([data-revealed]) {
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  :global(html[data-v1-motion]) .up:not([data-revealed]) { transform: translate3d(0, 14px, 0); }
+  :global(html[data-v1-motion]) .item:not([data-revealed]) .settle { transform: scale(1.03); }
+}
+
+/* Reduced motion: no movement, zoom or mask; a short fade only. */
+@media (prefers-reduced-motion: reduce) {
+  .item { transition: opacity 0.3s ease; }
+  .settle, .hoverPhoto { transition: none; }
+  :global(html[data-v1-motion]) .item:not([data-revealed]) { opacity: 0; transform: none; clip-path: inset(0 0 0 0); }
+  :global(html[data-v1-motion]) .item:not([data-revealed]) .settle { transform: none; }
+  .hoverArea:hover .hoverPhoto { transform: none; }
+  .title { transition: opacity 0.3s ease; }
+  .wipeFromRight { -webkit-mask-image: none; mask-image: none; }
+  .insetExpand { clip-path: none; }
+  .sceneCamera, .drift { transform: none; }
+  .dusk { opacity: 0; transform: none; }
+}

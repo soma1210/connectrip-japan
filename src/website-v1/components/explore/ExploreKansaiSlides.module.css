@@ -1,0 +1,160 @@
+/*
+ * Explore Kansai — 2 slides (V1 prototype, 2026-11-15).
+ * Motion: transform / opacity only. Everything is static under reduced motion.
+ */
+
+/* Background stage: both photos, cross-faded by --mix (0 = Select, 1 = Updates), set from scroll. */
+.layer {
+  position: absolute;
+  inset: 0;
+  will-change: opacity;
+  transition: opacity 0.12s linear;
+}
+.layerSelect {
+  opacity: calc(1 - var(--mix, 0));
+}
+.layerUpdates {
+  opacity: var(--mix, 0);
+}
+/* Very slow camera push-in. */
+.camera {
+  position: absolute;
+  inset: 0;
+  animation: slowZoom 42s ease-in-out infinite alternate;
+  transform-origin: 50% 55%;
+}
+.layerUpdates .camera {
+  animation-duration: 48s;
+  transform-origin: 40% 50%;
+}
+@keyframes slowZoom {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* Entrance: hidden only once JS has armed the section (no-JS shows everything). */
+.armed [data-anim] {
+  opacity: 0;
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 110ms + var(--d, 0ms));
+}
+.armed [data-anim="fade"] {
+  transform: translateY(10px);
+}
+.armed [data-anim="rise"] {
+  transform: translateY(44px);
+}
+.armed [data-anim="right"] {
+  transform: translateX(72px);
+}
+.armed [data-in] [data-anim] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Floating cards: a gentle staggered rest position on wide screens, slight lift on hover. */
+.float {
+  transition:
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.6s ease,
+    border-color 0.4s ease;
+}
+.float:hover,
+.float:focus-visible {
+  transform: scale(1.025);
+  box-shadow: 0 30px 70px -24px rgba(3, 8, 20, 0.85);
+}
+@media (min-width: 768px) {
+  .offset1 {
+    margin-top: 1.75rem;
+  }
+  .offset2 {
+    margin-top: 0.75rem;
+  }
+}
+
+/* Horizontal rails: native swipe, no visible scrollbar, vertical scrolling untouched. */
+.rail {
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.glass {
+  background: linear-gradient(160deg, rgba(246, 239, 226, 0.1), rgba(246, 239, 226, 0.03));
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .camera {
+    animation: none;
+  }
+  .layer {
+    transition: none;
+  }
+  .armed [data-anim] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .float,
+  .float:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ---- Round 3 (2026-11-15): Select strips, auto-scrolling updates ---- */
+
+/* Timer line along the bottom of the open Select strip (auto-advance). */
+.timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--color-gold), var(--color-red));
+  transform-origin: left;
+  animation: stripTimer var(--t, 4800ms) linear both;
+}
+@keyframes stripTimer {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Endless right-to-left rail: the track holds two copies and slides by one. */
+.loop {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.loopTrack {
+  display: flex;
+  width: max-content;
+  animation: loopScroll var(--loop-duration, 48s) linear infinite;
+  will-change: transform;
+}
+.loop:hover .loopTrack,
+.loop:focus-within .loopTrack {
+  animation-play-state: paused;
+}
+@keyframes loopScroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loop { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .loopTrack { animation: none; }
+  .loopTrack > ul[aria-hidden] { display: none; }
+  .timer { display: none; }
+}

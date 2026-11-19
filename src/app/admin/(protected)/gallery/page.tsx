@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { getGalleryItems } from "@/lib/data/gallery";
 import { addGalleryItem, removeGalleryItem } from "./actions";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export default async function AdminGalleryPage() {
+  await requireAdmin();
   const items = await getGalleryItems();
 
   return (

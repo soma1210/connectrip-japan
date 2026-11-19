@@ -1,0 +1,290 @@
+/*
+ * White Desert–style motion layer (components/wd). Imported by the v1 layout
+ * after globals.css and kept outside Tailwind's layers, so these rules win
+ * over utility classes where they overlap (header states).
+ * To switch the whole layer off, remove the <WdMotion /> line and this import
+ * from src/app/v1/layout.tsx.
+ */
+
+/* ---- No sideways scrolling from motion that starts off screen (overflow-x: clip keeps sticky scenes working) ---- */
+main { overflow-x: clip; }
+
+/* ---- Lenis (smooth scroll) ---- */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ---- Cursor follower ---- */
+.wd-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 98;
+  display: none;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.wd-cursor[data-on] { display: block; }
+.wd-cursor[data-hidden] { opacity: 0; }
+.wd-cursor__dot,
+.wd-cursor__ring {
+  position: absolute;
+  border-radius: 50%;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease,
+    border-color 0.3s ease;
+}
+.wd-cursor__dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: var(--color-gold);
+}
+.wd-cursor__ring {
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border: 1px solid var(--color-gold);
+  opacity: 0;
+  transform: scale(0.2);
+}
+.wd-cursor[data-state="action"] .wd-cursor__dot { transform: scale(0.5); }
+.wd-cursor[data-state="action"] .wd-cursor__ring { opacity: 0.95; transform: scale(1); }
+.wd-cursor[data-state="photo"] .wd-cursor__dot { transform: scale(0); }
+.wd-cursor[data-state="photo"] .wd-cursor__ring { opacity: 0.7; transform: scale(1.9); border-color: var(--color-cream); }
+.wd-cursor[data-press] .wd-cursor__ring { transform: scale(0.75); }
+
+/* ---- Header: clear over the Home Hero, frosted when scrolled, tucked away while scrolling down ---- */
+.wd-header {
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.5s ease,
+    border-color 0.5s ease,
+    backdrop-filter 0.5s ease;
+}
+.wd-header[data-hidden] { transform: translate3d(0, -100%, 0); }
+.wd-header[data-clear] {
+  background-color: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+}
+.wd-header[data-scrolled]:not([data-clear]) {
+  background-color: rgb(13 31 54 / 0.7);
+  backdrop-filter: blur(16px) saturate(1.4);
+}
+/* Nav links: a gold line runs under the label on hover. */
+.wd-header nav a {
+  position: relative;
+}
+.wd-header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.wd-header nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---- CTAs: a sheen sweeps across on hover; the label lifts and is replaced from below ---- */
+a[data-cta-id] {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+a[data-cta-id]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgb(245 243 238 / 0.28) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  a[data-cta-id]:hover::before { transform: translateX(120%); }
+}
+
+/* ---- Mist scene change ---- */
+.wd-mist {
+  position: relative;
+  overflow-x: clip;
+  z-index: 4;
+  pointer-events: none;
+  perspective: 900px;
+}
+.wd-mist__layer {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  background: url("/images/v1/motion/mist-navy.png") center bottom / 100% 100% no-repeat;
+  transform-origin: 50% 100%;
+}
+.wd-mist__layer--back {
+  inset: -8% -6% 0;
+  background-position: 30% bottom;
+  background-size: 140% 100%;
+  filter: blur(8px);
+}
+
+/* ---- Words rising out of masks (headings split by PageMotion) ---- */
+.wd-word {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  vertical-align: top;
+}
+.wd-word > span { display: inline-block; }
+
+/* ---- Page transition curtain ---- */
+.wd-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-navy-dark);
+  pointer-events: none;
+  animation: wd-curtain-lift 1.15s cubic-bezier(0.76, 0, 0.24, 1) 0.2s both;
+}
+.wd-curtain__line {
+  width: min(32vw, 280px);
+  height: 1px;
+  background: var(--color-gold);
+  transform-origin: left;
+  animation: wd-curtain-line 0.75s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+@keyframes wd-curtain-lift {
+  from { clip-path: inset(0 0 0 0); }
+  to { clip-path: inset(0 0 100% 0); }
+}
+@keyframes wd-curtain-line {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* ---- Footer wordmark: the brand name across the full width, rising letter by letter ---- */
+.wd-wordmark {
+  display: flex;
+  justify-content: space-between;
+  overflow: clip; /* hides the letters before they rise (PageMotion) */
+  padding-top: 0.08em;
+  /* Room below the baseline: the mincho J's tail descends ~0.15em and was cut
+     off by the clip with line-height 0.95 (2026-11-15). */
+  padding-bottom: 0.2em;
+  font-family: var(--font-heading-en);
+  font-size: 8.85cqi; /* fills the footer container width (its wrapper is an inline-size container) */
+  line-height: 0.95;
+  letter-spacing: 0;
+  color: var(--color-cream);
+  white-space: nowrap;
+  user-select: none;
+}
+.wd-wordmark [data-l] {
+  display: inline-block;
+  transform-origin: left bottom;
+}
+.wd-wordmark [data-l="space"] { width: 0.35em; }
+
+/* ---- Reduced motion: the layer stays still ---- */
+@media (prefers-reduced-motion: reduce) {
+  .wd-curtain,
+  .wd-curtain__line { animation: none; }
+  .wd-curtain { display: none; }
+  .wd-header { transition: none; }
+}
+
+/* ==== Round 2 (2026-11-15): bolder scenes ==== */
+
+/* ---- Scroll progress line ---- */
+.wd-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-gold), #e7cf98 60%, var(--color-red));
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+/* ---- Tilt cards: smooth return, and a light that follows the pointer ---- */
+[data-wd-tilt] {
+  position: relative;
+  transition:
+    rotate 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-wd-tilt][data-wd-tilting] { transition-duration: 0.15s; }
+[data-wd-tilt]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgb(201 164 92 / 0.22), transparent 55%);
+  transition: opacity 0.4s ease;
+}
+[data-wd-tilt][data-wd-tilting]::after { opacity: 1; }
+
+/* ---- Magnetic CTAs: spring back ---- */
+a[data-cta-id] { transition-property: color, background-color, border-color, translate; transition-duration: 0.15s, 0.15s, 0.15s, 0.5s; transition-timing-function: ease, ease, ease, cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* ---- Page intro aurora: slow drifting light behind inner-page titles ---- */
+.wd-aurora::before,
+.wd-aurora::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.wd-aurora::before {
+  left: -20vmax;
+  top: -40vmax;
+  background: radial-gradient(circle, rgb(201 164 92 / 0.35), transparent 60%);
+  animation: wd-aurora-a 18s ease-in-out infinite alternate;
+}
+.wd-aurora::after {
+  right: -25vmax;
+  top: -30vmax;
+  background: radial-gradient(circle, rgb(169 45 58 / 0.3), transparent 60%);
+  animation: wd-aurora-b 22s ease-in-out infinite alternate;
+}
+@keyframes wd-aurora-a {
+  to { transform: translate3d(30vmax, 12vmax, 0) scale(1.2); }
+}
+@keyframes wd-aurora-b {
+  to { transform: translate3d(-28vmax, 18vmax, 0) scale(0.85); }
+}
+
+/* ---- Letters of page titles ---- */
+.wd-chars { display: inline-block; white-space: nowrap; }
+.wd-char { display: inline-block; will-change: transform, filter; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-aurora::before,
+  .wd-aurora::after { animation: none; }
+  [data-wd-tilt] { transition: none; }
+}

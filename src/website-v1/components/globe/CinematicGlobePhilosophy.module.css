@@ -1,0 +1,397 @@
+/*
+ * Cinematic Globe Philosophy section (V1.4). Everything is scoped to this
+ * module; no global element styles.
+ *
+ * Colour: the site's own deep navy. The base is `--color-navy-dark`, the
+ * background of OUR VALUE, SNS and the footer, so the section starts and ends
+ * on exactly that colour. Depth comes from a slightly deeper navy in the
+ * middle and a faint navy-blue light around the Earth — never black.
+ *
+ * Default (server HTML, no JS, reduced motion, short landscape screens):
+ * the finished picture in the normal flow — globe, philosophy and link
+ * visible, no sticky track. `data-motion="on"` (set by the component once it
+ * can animate): the scroll track with the sticky stage; the choreography
+ * drives the inline opacity / transform values.
+ */
+
+.section {
+  --globe-bg: var(--color-navy-dark);
+  --globe-bg-deep: color-mix(in srgb, var(--color-navy-dark) 80%, #030b17);
+  --globe-light: color-mix(in srgb, var(--color-navy-light) 60%, transparent);
+  --globe-text: #f7f5f0;
+  --globe-gold: #d6c3a0;
+  --globe-gold-soft: rgba(214, 195, 160, 0.42);
+  --globe-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  position: relative;
+  color: var(--globe-text);
+  background: var(--globe-bg);
+  overflow-x: clip;
+}
+
+.track {
+  position: relative;
+  background: var(--globe-bg);
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse 78% 62% at 50% 68%, var(--globe-light) 0%, transparent 72%),
+    linear-gradient(180deg, var(--globe-bg) 0%, var(--globe-bg-deep) 34%, var(--globe-bg-deep) 70%, var(--globe-bg) 100%);
+}
+
+.section[data-motion="on"] .track {
+  height: 340vh;
+}
+.section[data-motion="on"] .stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+}
+
+/* Deep starfield (2026-11-15): two layers of stars drift at different speeds and twinkle; a faint nebula of navy and gold behind them. */
+.stars {
+  position: absolute;
+  inset: -10%;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    url("/images/v1/globe/stars-near.webp") 0 0 / 1200px auto repeat,
+    radial-gradient(ellipse 60% 40% at 18% 22%, rgba(201, 164, 92, 0.1), transparent 70%),
+    radial-gradient(ellipse 50% 45% at 84% 30%, rgba(90, 140, 230, 0.12), transparent 70%);
+  opacity: 0.6;
+  animation: starsDriftNear 140s linear infinite, starsTwinkle 6s ease-in-out infinite alternate;
+}
+.stars::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/images/v1/globe/stars-far.webp") 0 0 / 1600px auto repeat;
+  opacity: 0.55;
+  animation: starsDriftFar 260s linear infinite;
+}
+@keyframes starsDriftNear {
+  to { background-position: -1200px 300px, 0 0, 0 0; }
+}
+@keyframes starsDriftFar {
+  to { background-position: -1600px 400px; }
+}
+@keyframes starsTwinkle {
+  from { opacity: 0.45; }
+  to { opacity: 0.7; }
+}
+
+/*
+ * Globe: large and close. On wide screens about a third larger than v1.2
+ * (1440 × 900: ~1010 px, was 760 px), its centre two thirds down the stage so
+ * the upper curve rises behind the words and the lower part runs off screen.
+ */
+.globeLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transform: translateY(19%);
+}
+
+.globeBox::before,
+.globeBox::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+}
+/* Backlight: blue air glow around the whole Earth, brighter on the sunlit side. */
+.globeBox::before {
+  inset: -14%;
+  z-index: 0;
+  background: radial-gradient(circle at 44% 44%, rgba(110, 165, 255, 0.34) 30%, rgba(70, 120, 230, 0.14) 46%, transparent 64%);
+  filter: blur(8px);
+  animation: globeBreathe 9s ease-in-out infinite alternate;
+}
+/* Sun flare on the lit limb. */
+.globeBox::after {
+  width: 46%;
+  height: 46%;
+  left: -6%;
+  top: 2%;
+  z-index: 4;
+  background: radial-gradient(circle, rgba(255, 236, 200, 0.26), rgba(232, 190, 116, 0.08) 38%, transparent 66%);
+  mix-blend-mode: screen;
+  animation: globeBreathe 7s ease-in-out infinite alternate-reverse;
+}
+@keyframes globeBreathe {
+  from { opacity: 0.75; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1.03); }
+}
+.globeBox {
+  position: relative;
+  width: min(88vw, 112vh, 1180px);
+  height: min(88vw, 112vh, 1180px);
+  flex: none;
+}
+.section[data-motion="on"] .globeBox {
+  will-change: transform, opacity;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+/* Connections and the static image cover 120% of the box, so arcs can pass outside the disc (globeRenderer ARC_SCALE). */
+.fallback,
+.arcs {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  max-width: none;
+}
+.fallback {
+  z-index: 1;
+  object-fit: contain;
+  transition: opacity 0.6s ease;
+}
+.arcs {
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* WebGL ready: the live Earth replaces the static image. */
+.section[data-renderer="webgl"] .canvas,
+.section[data-renderer="webgl"] .arcs {
+  opacity: 1;
+}
+.section[data-renderer="webgl"] .fallback {
+  opacity: 0;
+}
+
+/*
+ * Over the globe: the top and bottom of the stage return to the site navy
+ * (the Earth sinks into the footer colour), and a soft navy veil sits behind
+ * the words instead of heavy text shadows.
+ */
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 52% 30% at 50% 36%, color-mix(in srgb, var(--globe-bg) 62%, transparent) 0%, transparent 100%),
+    linear-gradient(180deg, var(--globe-bg) 0%, transparent 16%, transparent 72%, var(--globe-bg) 100%);
+}
+
+/* Philosophy: plain HTML text over the globe. */
+.foreground {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  max-width: 68rem;
+  padding: 6rem 1.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -14vh;
+}
+
+.eyebrow {
+  font-family: var(--globe-sans);
+  font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--globe-gold);
+  margin: 0 0 1.45rem;
+  text-shadow: 0 1px 10px rgba(8, 20, 36, 0.6);
+}
+
+.heading {
+  font-family: var(--font-shippori-mincho-b1), "Times New Roman", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.35rem, 5.4vw, 4.65rem);
+  line-height: 1.14;
+  letter-spacing: 0.02em;
+  color: var(--globe-text);
+  margin: 0 0 2.15rem;
+  text-shadow: 0 2px 20px rgba(8, 20, 36, 0.55);
+}
+
+.line {
+  display: block;
+}
+.line + .line {
+  margin-top: 0.18em;
+}
+
+.ctaWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.55rem;
+}
+
+.goldLine {
+  width: 4.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--globe-gold) 50%, transparent 100%);
+}
+
+.storyLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 44px;
+  font-family: var(--globe-sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--globe-text);
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--globe-gold-soft);
+  transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  text-shadow: 0 1px 10px rgba(8, 20, 36, 0.6);
+}
+.storyLink:hover,
+.storyLink:focus-visible {
+  color: var(--globe-gold);
+  border-bottom-color: var(--globe-gold);
+  transform: translateY(-1px);
+}
+.storyLink:focus-visible {
+  outline: 1px solid var(--globe-gold);
+  outline-offset: 4px;
+}
+.storyLink svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--globe-gold);
+  transition: transform 0.3s ease;
+}
+.storyLink:hover svg,
+.storyLink:focus-visible svg {
+  transform: translateX(3px);
+}
+
+/* Keyboard focus inside the philosophy always shows the finished words and link, whatever the scroll. */
+.foreground:focus-within .eyebrow,
+.foreground:focus-within .line,
+.foreground:focus-within .ctaWrap {
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+/* Pause Motion (shown only while the globe moves on its own). */
+.hud {
+  position: absolute;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  z-index: 5;
+  display: none;
+}
+.section[data-motion="on"] .hud {
+  display: block;
+}
+/* Static image (no WebGL): nothing moves on its own, so no control. */
+.section[data-renderer="fallback"] .hud {
+  display: none;
+}
+
+.motionButton {
+  min-height: 32px;
+  background: rgba(6, 14, 26, 0.68);
+  border: 1px solid rgba(214, 195, 160, 0.28);
+  color: rgba(247, 245, 240, 0.82);
+  font-family: var(--globe-sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.48rem 0.88rem;
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+.motionButton:hover,
+.motionButton:focus-visible {
+  border-color: var(--globe-gold);
+  color: var(--globe-gold);
+}
+.motionButton:focus-visible {
+  outline: 1px solid var(--globe-gold);
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .section[data-motion="on"] .track {
+    height: 290vh;
+  }
+  /* Phones: the Earth is wider than the screen (sides cropped), Japan below the words. */
+  .globeLayer {
+    transform: translateY(17%);
+  }
+  .globeBox {
+    width: min(150vw, 82vh);
+    height: min(150vw, 82vh);
+  }
+  .foreground {
+    padding: 5rem 1.25rem;
+    margin-top: -20vh;
+  }
+  .eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    margin-bottom: 1.1rem;
+  }
+  .heading {
+    font-size: clamp(1.6rem, 7.4vw, 2.75rem); /* the site serif is wider than v1.2's Times: keeps two lines down to 360 px */
+    line-height: 1.18;
+    margin-bottom: 1.75rem;
+  }
+  .hud {
+    bottom: 1.15rem;
+    right: 1.15rem;
+  }
+  .motionButton {
+    font-size: 0.6rem;
+    padding: 0.4rem 0.72rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallback,
+  .canvas,
+  .arcs,
+  .storyLink,
+  .storyLink svg {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stars, .stars::before, .globeBox::before, .globeBox::after { animation: none; }
+}

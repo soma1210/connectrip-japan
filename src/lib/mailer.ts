@@ -79,14 +79,14 @@ export async function sendMail({
   text: string;
   html?: string;
   replyTo?: string;
-}) {
+}): Promise<{ sent: boolean; messageId?: string }> {
   if (!transporter) {
     console.log("[mailer] SMTP is not configured (see .env.example). Logging submission instead:");
     console.log({ subject, replyTo, text });
-    return;
+    return { sent: false };
   }
 
-  await transporter.sendMail({
+  const info = await transporter.sendMail({
     from: SMTP_FROM || SMTP_USER,
     to: CONTACT_TO_EMAIL,
     replyTo,
@@ -94,4 +94,5 @@ export async function sendMail({
     text,
     html,
   });
+  return { sent: true, messageId: info.messageId };
 }

@@ -4,15 +4,23 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:v1": "NEXT_PUBLIC_WEBSITE_V1_PREVIEW=1 WEBSITE_V1_PREVIEW_ROOT=1 next dev -p 3002",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:init": "node scripts/init-db.mjs"
+    "db:init": "node scripts/init-db.mjs",
+    "db:migrate": "bun scripts/migrate.ts",
+    "check:v1-guides": "NEXT_PUBLIC_WEBSITE_V1_PREVIEW=1 bun scripts/check-v1-guides.ts",
+    "check:booking": "bun src/lib/booking-request/rules.test.ts && bun src/lib/booking-request/api.test.ts",
+    "check:inquiries": "bun src/lib/notify/forms.test.ts && bun src/lib/inquiries/db.test.ts && bun src/lib/inquiries/admin.test.ts && bun src/lib/admin/session.test.ts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "0.9.5",
     "@next/third-parties": "^16.3.3",
     "@vercel/blob": "^2.8.0",
     "@vercel/postgres": "^0.10.0",
+    "gsap": "^3.15.1",
+    "lenis": "^1.3.27",
     "lucide-react": "^1.33.0",
     "motion": "^13.1.1",
     "next": "16.3.2",
@@ -23,6 +31,7 @@
     "react-icons": "^5.7.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.3.16",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/nodemailer": "^8.0.1",

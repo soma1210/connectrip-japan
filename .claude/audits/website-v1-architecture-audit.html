@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website V1 診断レポート</title>
+<style>
+:root{
+  --bg:#f6f4ef; --surface:#ffffff; --ink:#14233a; --ink2:#4a5568; --muted:#7a8494; --line:#e3ded3;
+  --bar:#2f5d8a; --track:#ebe7de; --accent:#b08a3e;
+  --ok:#2e7d4f; --ok-bg:#e6f3ea; --warn:#a86a00; --warn-bg:#fdf1dc; --bad:#b3261e; --bad-bg:#fbe5e3; --na:#5b6170; --na-bg:#eceef2;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1622; --surface:#172131; --ink:#e8ecf2; --ink2:#b7c0cd; --muted:#8b95a5; --line:#2a3647;
+    --bar:#6fa3d6; --track:#243044; --accent:#d4b06a;
+    --ok:#6fcf97; --ok-bg:#16301f; --warn:#f0b54a; --warn-bg:#33270f; --bad:#ff8a80; --bad-bg:#3a1a18; --na:#aab2c0; --na-bg:#232c3a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1622; --surface:#172131; --ink:#e8ecf2; --ink2:#b7c0cd; --muted:#8b95a5; --line:#2a3647;
+  --bar:#6fa3d6; --track:#243044; --accent:#d4b06a;
+  --ok:#6fcf97; --ok-bg:#16301f; --warn:#f0b54a; --warn-bg:#33270f; --bad:#ff8a80; --bad-bg:#3a1a18; --na:#aab2c0; --na-bg:#232c3a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+main{max-width:1080px;margin:0 auto;padding:32px 16px 80px}
+h1{font-size:26px;margin:0 0 4px;letter-spacing:.02em}
+h2{font-size:19px;margin:48px 0 14px;padding-bottom:6px;border-bottom:2px solid var(--accent)}
+h3{font-size:15px;margin:0 0 6px}
+p{margin:6px 0}
+.sub{color:var(--muted);font-size:13px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.kpi .v{font-size:34px;font-weight:700;line-height:1.1}
+.kpi .l{font-size:12px;color:var(--muted)}
+.verdict{background:var(--bad-bg);border-color:var(--bad);color:var(--ink)}
+.verdict .v{color:var(--bad)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:1px 8px;border-radius:999px;white-space:nowrap;font-weight:600}
+.ok{background:var(--ok-bg);color:var(--ok)} .warn{background:var(--warn-bg);color:var(--warn)}
+.bad{background:var(--bad-bg);color:var(--bad)} .na{background:var(--na-bg);color:var(--na)}
+.bars{display:flex;flex-direction:column;gap:12px}
+.row{display:grid;grid-template-columns:190px 1fr 44px;gap:12px;align-items:center}
+.row .name{font-size:14px}
+.track{background:var(--track);height:14px;border-radius:0 4px 4px 0;position:relative}
+.fill{background:var(--bar);height:100%;border-radius:0 4px 4px 0}
+.tick{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--muted);opacity:.5}
+.row .num{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.reason{grid-column:2 / 4;font-size:12.5px;color:var(--ink2);margin-top:-6px}
+.row:hover .fill{filter:brightness(1.15)}
+.legend-band{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600}
+.scroll{overflow-x:auto}
+/* architecture */
+.arch{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:stretch}
+.node{border:1.5px solid var(--bar);border-radius:8px;padding:10px;font-size:13px;background:var(--surface)}
+.node b{display:block;font-size:13.5px}
+.node.manual{border-style:dashed;border-color:var(--muted)}
+.node.test{border-color:var(--warn)}
+.node.legacy{border-color:var(--bad)}
+.arrow{color:var(--muted);font-size:12px;text-align:center;align-self:center}
+.lane{font-size:12px;color:var(--muted);margin:14px 0 6px;font-weight:600}
+/* journey */
+.journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;counter-reset:s}
+.step{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--surface);font-size:13px;position:relative}
+.step .n{font-size:11px;color:var(--muted)}
+.step.s-ok{border-left:4px solid var(--ok)} .step.s-warn{border-left:4px solid var(--warn)}
+.step.s-bad{border-left:4px solid var(--bad)} .step.s-na{border-left:4px solid var(--na)}
+/* risk matrix */
+.matrix{display:grid;grid-template-columns:40px repeat(3,1fr);grid-template-rows:repeat(3,auto) 30px;gap:6px}
+.cell{border-radius:8px;padding:8px;min-height:96px;display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;border:1px solid var(--line)}
+.h3{background:var(--bad-bg)} .h2{background:var(--warn-bg)} .h1{background:var(--na-bg)}
+.ylab,.xlab{font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+.ylab{writing-mode:vertical-rl}
+.tag{font-size:12px;padding:2px 7px;border-radius:5px;background:var(--surface);border:1px solid var(--line);cursor:default}
+.tag.p0{border-color:var(--bad);color:var(--bad);font-weight:700}
+.tag.p1{border-color:var(--warn);color:var(--warn);font-weight:600}
+/* roadmap */
+.road{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.phase{border-top:5px solid var(--bar);}
+.phase.p-1{border-top-color:var(--bad)} .phase.p-2{border-top-color:var(--warn)} .phase.p-3{border-top-color:var(--ok)}
+.phase ul{margin:6px 0 0;padding-left:18px;font-size:13.5px}
+.when{font-size:12px;color:var(--muted)}
+ol.rank{padding-left:0;list-style:none;margin:0;counter-reset:r}
+ol.rank li{counter-increment:r;display:grid;grid-template-columns:36px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+ol.rank li::before{content:counter(r);font-weight:700;font-size:20px;color:var(--accent);text-align:center}
+.qa .card{margin-bottom:10px}
+.qa h3{color:var(--bar)}
+.states{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;margin-top:8px}
+.st{padding:3px 9px;border-radius:6px;border:1px solid var(--line);background:var(--surface)}
+.st.impl{border-color:var(--ok);color:var(--ok);font-weight:700}
+code{font-size:12.5px;background:var(--track);padding:1px 5px;border-radius:4px}
+.toggle{position:fixed;top:12px;right:12px;font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+@media (max-width:760px){
+  .row{grid-template-columns:110px 1fr 36px}
+  .arch{grid-template-columns:1fr 1fr}
+  .road{grid-template-columns:1fr}
+  .matrix{grid-template-columns:28px repeat(3,1fr)}
+  .cell{min-height:70px}
+}
+</style>
+</head>
+<body>
+<button class="toggle" onclick="var r=document.documentElement;r.dataset.theme=(r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches))?'light':'dark'">表示切替</button>
+<main>
+<h1>Connectrip Japan｜Website V1 総合診断</h1>
+<p class="sub">2026-11-14 監査 ・ branch <code>claude/website-v1-launch</code> HEAD <code>e05a98b</code> ・ コードと仕様書の読み取り、既存テストの実行のみ（変更・送信なし）</p>
+
+<h2>1. 結論 ― Executive Dashboard</h2>
+<div class="grid kpis">
+  <div class="card kpi"><div class="l">総合スコア（8領域の平均）</div><div class="v">53<span style="font-size:16px"> / 100</span></div><div class="sub">調査で確認できた割合 約74%</div></div>
+  <div class="card kpi verdict"><div class="l">公開準備状況</div><div class="v">公開不可</div><div class="sub">P0が1件でも残る間は公開しない</div></div>
+  <div class="card kpi"><div class="l">P0（公開前に必須）</div><div class="v" style="color:var(--bad)">6</div><div class="sub">法務3・セキュリティ1・本番環境1・画像権利1</div></div>
+  <div class="card kpi"><div class="l">P1（早急に改善）</div><div class="v" style="color:var(--warn)">10</div><div class="sub">運用フロー・通知・計測など</div></div>
+</div>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-top:14px">
+  <div class="card"><h3>最大のリスク</h3><p>個人情報を集めるフォームがあるのに、公開時の <b>Privacy Policy・Terms が空</b>。キャンセル規定は旧サイトの内容（USDデポジット・手配料）で、V1の予約方式と<b>矛盾</b>している。</p></div>
+  <div class="card"><h3>次に着手すべき最重要項目</h3><p><b>予約リクエストの受付後の運用フロー</b>（状態の進め方・担当者・返信期限・顧客への連絡）。キャンセル規定・受付メール・請求・計測がすべてこれを前提にします。</p></div>
+</div>
+<p class="sub" style="margin-top:10px">予約受付の技術は強く、運営・法務・計測が弱い、という偏りを平均した点数です。点数で安心しないでください。</p>
+
+<h2>2. Scorecard ― 8領域の比較</h2>
+<div class="card">
+  <div class="bars" role="img" aria-label="8領域のスコア棒グラフ">
+    <div class="row" title="02 予約・問い合わせ設計：70点"><span class="name">02 予約・問い合わせ</span><div class="track"><div class="fill" style="width:70%"></div><i class="tick" style="left:60%"></i><i class="tick" style="left:75%"></i></div><span class="num">70</span><span class="reason">受付・3層検証・二重送信対策は優秀。受付後の状態はREQUESTEDのみ、顧客への受付メールなし</span></div>
+    <div class="row" title="05 システム・データ設計：76点"><span class="name">05 システム・データ</span><div class="track"><div class="fill" style="width:76%"></div><i class="tick" style="left:60%"></i><i class="tick" style="left:75%"></i></div><span class="num">76</span><span class="reason">契約型の設計と冪等性が良い。旧サイトのコード同居、作業の大部分が未commit</span></div>
+    <div class="row" title="04 セキュリティ：63点"><span class="name">04 セキュリティ ⚠P0</span><div class="track"><div class="fill" style="width:63%"></div><i class="tick" style="left:60%"></i><i class="tick" style="left:75%"></i></div><span class="num">63</span><span class="reason">予約APIはHMAC署名・nonceで堅い。旧管理画面に認証なしの操作が残り、旧問い合わせAPIにスパム対策なし</span></div>
+    <div class="row" title="08 事業拡張性：48点"><span class="name">08 事業拡張性</span><div class="track"><div class="fill" style="width:48%"></div><i class="tick" style="left:60%"></i><i class="tick" style="left:75%"></i></div><span class="num">48</span><span class="reason">地域・商品は追加しやすい構造。ガイド管理・多言語・外部連携は未着手</span></div>
+    <div class="row" title="01 事業・サービス設計：47点"><span class="name">01 事業・サービス</span><div class="track"><div class="fill" style="width:47%"></div><i class="tick" style="left:60%"></i><i class="tick" style="left:75%"></i></div><span class="num">47</span><span class="reason">予約ルールは承認済みで明確。料金非表示、キャンセル・規約未確定、旅行業の提供範囲が未確認</span></div>
+    <div class="row" title="06 SEO・AIO・マーケティング：47点"><span class="name">06 SEO・計測</span><div class="track"><div class="fill" style="width:47%"></div><i class="tick" style="left:60%"></i><i class="tick" style="left:75%"></i></div><span class="num">47</span><span class="reason">メタ情報・構造化データは良い。GA4・コンバージョン計測ゼロ、公開コンテンツ7ページのみ</span></div>
+    <div class="row" title="03 顧客・業務運営管理：42点"><span class="name">03 業務運営管理</span><div class="track"><div class="fill" style="width:42%"></div><i class="tick" style="left:60%"></i><i class="tick" style="left:75%"></i></div><span class="num">42</span><span class="reason">Sheetsへの保存と管理者通知まで。状態を進める手段・担当・履歴・期限通知がない</span></div>
+    <div class="row" title="07 公開・運用準備：33点"><span class="name">07 公開・運用準備</span><div class="track"><div class="fill" style="width:33%"></div><i class="tick" style="left:60%"></i><i class="tick" style="left:75%"></i></div><span class="num">33</span><span class="reason">本番Sheets/GAS未準備、法務ページ空、監視なし、写真の権利未確認</span></div>
+  </div>
+  <div class="legend-band"><span>縦線：60点（重要な不足の境目）・75点（基本設計良好）</span><span>90〜100 十分 / 75〜89 良好 / 60〜74 一部重要な不足 / 40〜59 問題が出やすい / 0〜39 重大な不足</span></div>
+</div>
+<details class="card" style="margin-top:10px"><summary>表で見る（点数と確認率）</summary>
+<div class="scroll"><table>
+<tr><th>領域</th><th>スコア</th><th>確認率</th></tr>
+<tr><td>01 事業・サービス設計</td><td>47</td><td>80%</td></tr>
+<tr><td>02 予約・問い合わせ設計</td><td>70</td><td>85%</td></tr>
+<tr><td>03 顧客・業務運営管理</td><td>42</td><td>65%</td></tr>
+<tr><td>04 セキュリティ</td><td>63</td><td>85%</td></tr>
+<tr><td>05 システム・データ設計</td><td>76</td><td>85%</td></tr>
+<tr><td>06 SEO・AIO・マーケティング</td><td>47</td><td>70%</td></tr>
+<tr><td>07 公開・運用準備</td><td>33</td><td>55%</td></tr>
+<tr><td>08 事業拡張性</td><td>48</td><td>75%</td></tr>
+<tr><th>総合</th><th>53</th><th>約74%</th></tr>
+</table></div>
+<p class="sub">各領域の評価項目・配点・証拠区分は Markdown 版（同じフォルダの .md）に記載しています。</p>
+</details>
+
+<h2>3. System Architecture ― 実装されている構成</h2>
+<div class="card">
+  <div class="lane">予約リクエストの流れ（実装済み）</div>
+  <div class="arch">
+    <div class="node"><b>訪問者</b>英語のWebサイト</div>
+    <div class="node"><b>Website V1</b>Next.js 16 / Netlify<br>公開は7ページ</div>
+    <div class="node"><b>予約リクエストフォーム</b>/private-guide<br>受付番号を表示</div>
+    <div class="node"><b>Next.js API</b>/api/v1/booking-requests<br>検証・レート制限・honeypot</div>
+    <div class="node test"><b>Apps Script</b>HMAC署名＋nonce<br><span class="chip warn">⚠ テスト用</span></div>
+    <div class="node test"><b>Google Sheets</b>Bookings 51列 / StatusLog<br><span class="chip warn">⚠ Testシート</span></div>
+    <div class="node"><b>管理者通知メール</b>個人情報なし</div>
+    <div class="node manual"><b>運営担当者</b>Sheetsを目で確認</div>
+  </div>
+  <div class="lane">ここから先は人の作業（システムなし）</div>
+  <div class="arch">
+    <div class="node manual"><b>顧客への返信</b>手動メール</div>
+    <div class="node manual"><b>ガイド手配</b>仕組みなし</div>
+    <div class="node manual"><b>Stripe請求書</b>手動発行</div>
+    <div class="node manual"><b>入金確認・確定</b>状態を記録できない</div>
+  </div>
+  <div class="lane">旧サイトの残り（公開モードでも到達可能）</div>
+  <div class="arch">
+    <div class="node legacy"><b>/admin</b>共有パスワード<br><span class="chip bad">✕ 一部操作が無認証</span></div>
+    <div class="node legacy"><b>旧問い合わせAPI</b>contact / reservation / business-inquiry<br><span class="chip bad">✕ スパム対策なし</span></div>
+    <div class="node"><b>Vercel Postgres / Blob</b>gallery・vlog・reviews・応募</div>
+    <div class="node"><b>Google Forms</b>ガイド・パートナー応募</div>
+  </div>
+  <p class="sub" style="margin-top:10px">実線＝システム、点線＝人の作業、黄＝テスト環境、赤＝問題あり。存在しない機能は描いていません。</p>
+</div>
+
+<h2>4. Reservation Journey ― 予約確定までの流れ</h2>
+<div class="journey">
+  <div class="step s-warn"><div class="n">1</div><b>サイトを見つける</b><br><span class="chip warn">◐ 部分実装</span><br>メタ情報あり、計測なし</div>
+  <div class="step s-warn"><div class="n">2</div><b>内容を理解</b><br><span class="chip warn">◐ 部分実装</span><br>料金が表示されない</div>
+  <div class="step s-bad"><div class="n">3</div><b>規約・キャンセル確認</b><br><span class="chip bad">✕ 未実装</span><br>Privacy・Terms空</div>
+  <div class="step s-ok"><div class="n">4</div><b>フォーム送信</b><br><span class="chip ok">✓ 実装済み</span><br>3層検証・二重送信対策</div>
+  <div class="step s-ok"><div class="n">5</div><b>受付番号の表示</b><br><span class="chip ok">✓ 実装済み</span><br>「確定ではない」と明示</div>
+  <div class="step s-na"><div class="n">6</div><b>本番Sheetsに保存</b><br><span class="chip na">? 要確認</span><br>テスト環境のみ7/7 PASS</div>
+  <div class="step s-bad"><div class="n">7</div><b>顧客に受付メール</b><br><span class="chip bad">✕ 未実装</span></div>
+  <div class="step s-na"><div class="n">8</div><b>運営に通知</b><br><span class="chip na">? 要確認</span><br>実装済み・宛先設定は外部</div>
+  <div class="step s-bad"><div class="n">9</div><b>空き確認・ガイド手配</b><br><span class="chip bad">✕ 未実装</span></div>
+  <div class="step s-bad"><div class="n">10</div><b>料金提示・Stripe請求</b><br><span class="chip bad">✕ 未実装</span><br>手動運用・記録不可</div>
+  <div class="step s-bad"><div class="n">11</div><b>入金確認→確定</b><br><span class="chip bad">✕ 未実装</span></div>
+  <div class="step s-bad"><div class="n">12</div><b>お断り・取消・返金</b><br><span class="chip bad">✕ 未実装</span></div>
+</div>
+<div class="card" style="margin-top:12px">
+  <h3>状態モデルの検証</h3>
+  <div class="states">
+    <span class="st impl">received＝REQUESTED ✓ 実装</span> →
+    <span class="st">in_review ✕</span> →
+    <span class="st">proposed ✕</span> →
+    <span class="st">confirmed 📄仕様のみ</span> /
+    <span class="st">declined ✕</span> /
+    <span class="st">cancelled 📄仕様のみ</span>
+  </div>
+  <p class="sub" style="margin-top:8px">Sheetsには見積・請求・入金・返金の列がありますが、状態を進める処理がありません。さらに <code>status</code> 列は直接編集すると元に戻る保護対象です（<code>Code.gs:79-95, 672-683</code>）。</p>
+</div>
+
+<h2>5. Risk Matrix ― 影響 × 発生可能性</h2>
+<div class="card">
+  <div class="matrix">
+    <div class="ylab">影響 大</div>
+    <div class="cell h2"><span class="tag p0" title="旧管理画面のサーバーアクションに認証なし">P0-3 管理操作の無認証</span><span class="tag p0" title="会社概要の事業内容と旅行業登録の表示">P0-5 旅行業の表示</span></div>
+    <div class="cell h3"><span class="tag p0" title="本番Sheets/GAS未準備・フォームからのE2E未確認">P0-4 本番環境未準備</span><span class="tag p0" title="Hero 12枚がNOT_VERIFIEDのまま公開">P0-6 写真の権利</span></div>
+    <div class="cell h3"><span class="tag p0" title="Privacy Policy・Termsが公開時に空">P0-1 規約・Privacy空</span><span class="tag p0" title="キャンセル規定が旧サイトの内容">P0-2 キャンセル矛盾</span><span class="tag p1" title="REQUESTEDから先へ進めない">P1-1 状態管理なし</span></div>
+    <div class="ylab">中</div>
+    <div class="cell h1"><span class="tag p1">P1-4 管理画面の認証</span><span class="tag p1">P1-8 noindex残り</span></div>
+    <div class="cell h2"><span class="tag p1">P1-3 旧APIスパム</span><span class="tag p1">P1-6 監視なし</span><span class="tag p1">P1-9 未commit</span></div>
+    <div class="cell h3"><span class="tag p1">P1-2 受付メールなし</span><span class="tag p1">P1-5 計測なし</span><span class="tag p1">P1-7 期限通知なし</span><span class="tag p1">P1-10 料金非表示</span></div>
+    <div class="ylab">小</div>
+    <div class="cell h1"><span class="tag">P2 セキュリティヘッダー</span></div>
+    <div class="cell h1"><span class="tag">P2 レート制限の限界</span><span class="tag">P2 貼り付けで空白化</span></div>
+    <div class="cell h2"><span class="tag">P2 公開コンテンツ不足</span><span class="tag">P2 E2E・CIなし</span></div>
+    <div></div><div class="xlab">発生可能性 低い</div><div class="xlab">中くらい</div><div class="xlab">高い（ほぼ確実）</div>
+  </div>
+  <p class="sub" style="margin-top:10px">右上（影響大・ほぼ確実）に<b>法務と運営</b>の問題が集中しています。技術的な脆弱性は左側（起きにくいが起きると大きい）。赤枠＝P0、黄枠＝P1。</p>
+</div>
+
+<h2>6. Improvement Roadmap</h2>
+<div class="road">
+  <div class="card phase p-1"><h3>Phase 1｜公開前に整える</h3><div class="when">1〜2週間</div>
+    <ul>
+      <li>未commit作業の保全（承認後）</li>
+      <li>旧管理アクションに認証・旧API停止</li>
+      <li>キャンセル規定・料金方針を決定</li>
+      <li>Privacy・Terms・特商法・旅行業表示（専門家確認）</li>
+      <li>写真の権利確認</li>
+      <li>状態の最小運用＋顧客への受付メール</li>
+      <li>本番Sheets/GAS・環境変数・本番E2E・noindex解除確認</li>
+    </ul>
+    <p class="sub">完了条件：本番でフォーム→Sheets→通知→受付メールを1件確認、法務ページ承認済み</p>
+  </div>
+  <div class="card phase p-2"><h3>Phase 2｜予約運用を安定させる</h3><div class="when">公開後1〜2か月</div>
+    <ul>
+      <li>GA4・予約リクエストのコンバージョン</li>
+      <li>返信期限・エラーの通知</li>
+      <li>料金表示・FAQ</li>
+      <li>対応履歴・返信テンプレート</li>
+      <li>管理画面の認証強化、セキュリティヘッダー</li>
+    </ul>
+    <p class="sub">完了条件：全リクエストの状態と返信期限がSheetsで追える</p>
+  </div>
+  <div class="card phase p-3"><h3>Phase 3｜事業成長に備える</h3><div class="when">3か月〜（件数を見て判断）</div>
+    <ul>
+      <li>ガイドの空き・割当管理</li>
+      <li>京都・神戸・奈良、多言語、固定ツアー公開</li>
+      <li>Stripe連携、OTA・体験事業者連携</li>
+      <li>AIによる返信下書き・振り分け</li>
+    </ul>
+    <p class="sub">着手の目安：週30件を超えSheets運用が限界に近づいたとき</p>
+  </div>
+</div>
+<p class="sub" style="margin-top:8px">仕様書の公開目標は 2026-11-15 ですが、P0が残っているため、その日の公開は推奨しません。</p>
+
+<h2>7. Priority Ranking ― 次に設計すべきTOP 10</h2>
+<div class="card">
+<ol class="rank">
+  <li><div><b>予約リクエストの運用フロー（状態・担当・期限）</b><br><span class="sub">請求・確定・キャンセル・計測・ガイド割当がすべてこれを前提にする</span></div></li>
+  <li><div><b>キャンセル・返金規定（Private Guide用）</b><br><span class="sub">1の「取消・お断り」と同時に決まる。P0-2</span></div></li>
+  <li><div><b>Privacy・Terms・特商法・旅行業の表示</b><br><span class="sub">2と提供範囲が決まれば書ける。P0-1・P0-5</span></div></li>
+  <li><div><b>顧客への受付メール</b><br><span class="sub">1の最初の状態を顧客に伝える。文面は2・3を参照</span></div></li>
+  <li><div><b>本番環境（Sheets・Apps Script・環境変数）とE2E</b><br><span class="sub">1〜4を入れてから作れば作り直しが不要</span></div></li>
+  <li><div><b>旧管理アクションの認証・旧APIの停止</b><br><span class="sub">小さく独立しているので並行できる</span></div></li>
+  <li><div><b>写真の権利確認</b><br><span class="sub">人の作業。並行できる</span></div></li>
+  <li><div><b>計測（GA4・コンバージョン）</b><br><span class="sub">公開日から数字を取らないと比較の基準がなくなる</span></div></li>
+  <li><div><b>返信期限・エラーの通知</b><br><span class="sub">1の状態があって初めて「未対応」を判定できる</span></div></li>
+  <li><div><b>料金表示とFAQ</b><br><span class="sub">申込率の改善。公開後の問い合わせを見てから決めてもよい</span></div></li>
+</ol>
+</div>
+
+<h2>8. 経営判断のための回答</h2>
+<div class="qa">
+  <div class="card"><h3>Q1. どの程度完成しているか</h3><p>内部設計・運営・予約・集客で見ると<b>約5割（53点）</b>。予約受付の技術は約8割、受付後の運営は約4割、法務・公開準備は約3割、集客は約5割です。</p></div>
+  <div class="card"><h3>Q2. 公開を妨げる最大の問題</h3><p><b>必須（P0）：</b>Privacy・Terms空／キャンセル規定の矛盾／旧管理アクションの無認証／本番予約環境未準備・E2E未確認／旅行業法上の表示（専門家確認待ち）／写真の権利。<br><b>推奨：</b>状態の最小運用、受付メール、旧API停止、noindex確認、未commit作業の保全。<br>一つに絞るなら<b>「顧客と交わす約束（規約・Privacy・キャンセル）が未確定なこと」</b>。</p></div>
+  <div class="card"><h3>Q3. 次に設計すべき機能</h3><p><b>予約リクエストの受付後の運用フロー。</b>REQUESTED → IN_REVIEW → PROPOSED → CONFIRMED / DECLINED / EXPIRED / CANCELLED（→ COMPLETED）。Apps Scriptのメニュー＋StatusLog＋Gmailテンプレートで足ります。Webの管理画面は作りません。</p></div>
+  <div class="card"><h3>Q4. なぜ最優先か</h3><p>売上は「受付」ではなく「確定」で発生します。今は受付から確定までが記録されず、返信遅れ・請求漏れ・二重手配を防げません。キャンセル規定・受付メール・計測・ガイド割当・Stripe連携・AI支援がこの状態を前提にするため、先に決めれば作り直しを防げます。Sheetsにはすでに見積・請求・入金・返金の列があり、足すのは「進める手段」と「記録」だけです。</p></div>
+  <div class="card"><h3>Q5. 今は作らなくてよい機能</h3><p>Web予約管理画面、Stripe自動連携、即時予約・空き枠カレンダー、多言語版、OTA・体験事業者API、AI自動返信、Sheets→DB移行。いずれも件数・商品・運用が固まってからで間に合います。</p></div>
+  <div class="card"><h3>Q6. 最短で安全な順序</h3><p>① 今日：作業の保全・旧管理アクション認証・旧API停止 → ② 今週：キャンセル規定と料金方針 → 法務原案を専門家へ／写真の権利確認 → ③ 来週：状態の最小運用と受付メール → ④ 公開直前：本番環境・本番E2E・noindex解除・GA4 → ⑤ 法務承認がそろった時点で公開 → ⑥ 公開後1〜2か月：通知・料金表示・FAQ・対応履歴。</p></div>
+</div>
+
+<h2>この監査の制約</h2>
+<div class="card">
+  <ul style="margin:0;padding-left:18px;font-size:13.5px">
+    <li>本番環境（Netlifyの環境変数、本番Sheets、Apps Scriptのトリガー・共有設定、Gmail）は見ていません。</li>
+    <li>フォーム送信・メール送信をしていないため、Webフォームからの実機E2Eは未確認です。</li>
+    <li>表示速度・アクセシビリティは計測していません。</li>
+    <li>旅行業法・個人情報保護法・特定商取引法の判断はしていません（専門家・行政確認待ち）。</li>
+    <li>秘密値・個人情報は記載していません。</li>
+  </ul>
+</div>
+</main>
+</body>
+</html>

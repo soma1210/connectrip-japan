@@ -1,0 +1,206 @@
+import Image from "next/image";
+import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import Link from "next/link";
+import type { ReactNode } from "react";
+import type { Brand, LayoutViewModel } from "@/contracts";
+import { Container } from "@/components/ui/Container";
+import { V1_PREVIEW } from "../config";
+import { externalLinkProps, isPublicHref, routeHref } from "../routes";
+import { CtaLink } from "./CtaLink";
+import { getFooterInformation, type RecruitNav } from "../content/pages";
+import { MobileMenu } from "./MobileMenu";
+import { RecruitDropdown } from "./RecruitMenu";
+import { TbdText } from "./Tbd";
+
+const SOCIAL_ICONS = {
+  tiktok: FaTiktok,
+  instagram: FaInstagram,
+  whatsapp: FaWhatsapp,
+  facebook: FaFacebookF,
+  youtube: FaYoutube,
+} as const;
+
+/** Preview notice. The v1 preview is noindex and not approved content. */
+export function PreviewBanner() {
+  return (
+    <div className="bg-gold px-4 py-2 text-center font-sans text-[11px] leading-snug tracking-[0.06em] text-navy">
+      WEBSITE V1 PREVIEW — Not public. Dashed “TBD” boxes are undecided; other text is a Working Baseline, not approved copy.
+    </div>
+  );
+}
+
+function BrandMark({ brand }: { brand: Brand }) {
+  const words = brand.name.status === "TBD" ? [] : brand.name.value.toUpperCase().split(" ");
+  return (
+    <Link href={routeHref("home")} className="flex items-center gap-3">
+      {brand.logo.status !== "TBD" ? (
+        <Image src={brand.logo.value.src} alt={brand.logo.value.alt} width={200} height={200} className="h-14 w-14 md:h-16 md:w-16" priority />
+      ) : null}
+      {words.length > 0 ? (
+        <span className="flex flex-col leading-none">
+          {words.map((word) => (
+            <span key={word} className="font-heading-en text-lg tracking-[0.12em] text-cream">
+              {word}
+            </span>
+          ))}
+        </span>
+      ) : (
+        <TbdText value={brand.name} slot="Brand name" />
+      )}
+    </Link>
+  );
+}
+
+/** Header CTAs: compact version of the shared paired CTAs (CtaLink `pair="header"`). */
+function HeaderCtas({ nav }: { nav: LayoutViewModel["nav"] }) {
+  return (
+    <>
+      <CtaLink cta={nav.headerCta} pair="header" />
+      {nav.headerSecondaryCta ? <CtaLink cta={nav.headerSecondaryCta} pair="header" /> : null}
+    </>
+  );
+}
+
+/** Same structure and styles as the current site's Header. */
+export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
+  const nav = { ...layout.nav, primary: layout.nav.primary.filter((item) => isPublicHref(item.href)) };
+  return (
+    <header id="v1-header" className="wd-header sticky top-0 z-50 border-b border-dashed border-gold/30 bg-navy/95 backdrop-blur">
+      <Container className="flex h-20 items-center justify-between max-w-[1340px]!">
+        <BrandMark brand={layout.brand} />
+
+        {/* Inline nav from 1340px: below that, logo + nav + both CTAs leave under 24px between groups. */}
+        <nav className="hidden items-center gap-10 min-[1340px]:flex">
+          {nav.primary.map((item) => (
+            <Link key={item.id} href={item.href} className="text-xs tracking-[0.1em] text-cream/80 transition-colors hover:text-gold">
+              <TbdText value={item.label} slot="Nav label" />
+            </Link>
+          ))}
+          <RecruitDropdown recruit={recruit} />
+        </nav>
+
+        {/* Logo → Explore Our Tours → Plan a Private Day → menu (Human instruction 2026-11-09 / 2026-11-11).
+            The CTAs sit in the bar once it has room for them; below that they open at the top of the menu. */}
+        <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-3 min-[720px]:flex">
+            <HeaderCtas nav={nav} />
+          </div>
+          <MobileMenu items={nav.primary} recruit={recruit} ctaClassName="min-[720px]:hidden">
+            <HeaderCtas nav={nav} />
+          </MobileMenu>
+        </div>
+      </Container>
+    </header>
+  );
+}
+
+const FOOTER_LINK = "text-sm text-cream/70 transition-colors hover:text-gold";
+
+function FooterGroup({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div>
+      <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">{title}</p>
+      <nav aria-label={title.charAt(0) + title.slice(1).toLowerCase()} className="mt-4 flex flex-col gap-3">
+        {children}
+      </nav>
+    </div>
+  );
+}
+
+/**
+ * Same styles as the current site's Footer. Groups (Human instruction
+ * 2026-11-14): Navigation / Information / Legal, next to the brand and SNS.
+ * Links to pages that are not public are left out (isPublicHref).
+ */
+export function V1Footer({ layout }: { layout: LayoutViewModel; recruit: RecruitNav }) {
+  const { footer } = layout.nav;
+  const links = footer.links.filter((item) => isPublicHref(item.href));
+  const information = getFooterInformation().filter((item) => isPublicHref(item.href));
+  const legal = footer.legal.filter((item) => isPublicHref(item.href));
+  return (
+    <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
+      <Container className="grid gap-12 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-8">
+        <div>
+          <BrandMark brand={layout.brand} />
+          <div className="mt-6">
+            <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">SNS</p>
+            <div className="mt-4">
+              {footer.social.status === "TBD" ? (
+                <TbdText value={footer.social} slot="SNS links" />
+              ) : (
+                // Same icon buttons as the current site's Footer.
+                <div className="flex flex-wrap gap-3">
+                  {footer.social.value.map((link) => {
+                    const Icon = SOCIAL_ICONS[link.platform];
+                    const name = link.label.status === "TBD" ? link.platform : link.label.value;
+                    return (
+                      <a
+                        key={link.platform}
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        aria-label={name}
+                        title={name}
+                        className="flex h-10 w-10 items-center justify-center border border-cream/20 text-cream/70 transition-colors hover:border-gold hover:text-gold"
+                      >
+                        <Icon className="h-4 w-4" />
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Phones: two columns (Navigation | Information, Legal below); from 640px: three. */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
+          <FooterGroup title="NAVIGATION">
+            {links.map((item) => (
+              <Link key={item.id} href={item.href} className={FOOTER_LINK}>
+                <TbdText value={item.label} slot="Nav label" />
+              </Link>
+            ))}
+          </FooterGroup>
+
+          <FooterGroup title="INFORMATION">
+            {information.map((item) =>
+              item.external ? (
+                // Google Forms open in a new tab (same targets as the header RECRUIT menu).
+                <a key={item.id} href={item.href} {...externalLinkProps(item.href)} className={FOOTER_LINK}>
+                  {item.label}
+                </a>
+              ) : (
+                <Link key={item.id} href={item.href} className={FOOTER_LINK}>
+                  {item.label}
+                </Link>
+              ),
+            )}
+          </FooterGroup>
+
+          <FooterGroup title="LEGAL">
+            {legal.map((item) => (
+              <Link key={item.id} href={item.href} className={FOOTER_LINK}>
+                <TbdText value={item.label} slot="Nav label" />
+              </Link>
+            ))}
+          </FooterGroup>
+        </div>
+      </Container>
+
+      <Container className="flex flex-col gap-2 border-t border-cream/10 py-6 text-xs text-cream/40 md:flex-row md:items-center md:justify-between">
+        <span>{V1_PREVIEW ? "Website v1 preview" : `© ${new Date().getFullYear()} Connectrip Japan Co., Ltd.`}</span>
+      </Container>
+      {/* Brand wordmark across the full width; the letters rise as the footer arrives (components/wd/PageMotion). */}
+      <Container className="pb-8 [container-type:inline-size] md:pb-14">
+        <p data-wd-wordmark className="wd-wordmark" aria-label="CONNECTRIP JAPAN">
+          {"CONNECTRIP JAPAN".split("").map((ch, i) => (
+            <span key={i} aria-hidden data-l={ch === " " ? "space" : ""}>
+              {ch === " " ? "\u00a0" : ch}
+            </span>
+          ))}
+        </p>
+      </Container>
+    </footer>
+  );
+}

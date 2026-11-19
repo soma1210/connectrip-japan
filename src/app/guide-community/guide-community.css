@@ -1,0 +1,154 @@
+/*
+ * Connectrip Guide Community — standalone stylesheet.
+ *
+ * This page does not load the main site's globals.css. Every color, radius and
+ * font used by the form is a CSS variable below: change the values here to
+ * restyle the whole page (Astra handoff point). Components use them through
+ * the Tailwind names in @theme (bg-gc-primary, text-gc-muted, …).
+ */
+@import "tailwindcss";
+
+:root {
+  /* Base */
+  --gc-bg: #f7f6f2;              /* off-white page background */
+  --gc-surface: #ffffff;         /* cards, inputs */
+  --gc-surface-muted: #f0efea;   /* light gray panels */
+  --gc-border: #e2e0d8;
+  --gc-border-strong: #c7c4b9;
+
+  /* Text */
+  --gc-text: #1c2925;
+  --gc-text-muted: #56635e;
+  --gc-text-subtle: #65716b;
+
+  /* Main color: deep green */
+  --gc-primary: #1f5241;
+  --gc-primary-hover: #173f32;
+  --gc-primary-soft: #e5eee9;
+  --gc-on-primary: #ffffff;
+
+  /* Single accent: warm lantern amber. `accent-ink` is the text-safe shade. */
+  --gc-accent: #d98a3a;
+  --gc-accent-soft: #fbefe1;
+  --gc-accent-ink: #9a5414;
+
+  /* Feedback */
+  --gc-danger: #b0392d;
+  --gc-danger-soft: #fbeceb;
+
+  /* Shape */
+  --gc-radius-sm: 10px;
+  --gc-radius: 10px;
+  --gc-radius-lg: 14px;
+}
+
+@theme inline {
+  --color-gc-bg: var(--gc-bg);
+  --color-gc-surface: var(--gc-surface);
+  --color-gc-surface-muted: var(--gc-surface-muted);
+  --color-gc-border: var(--gc-border);
+  --color-gc-border-strong: var(--gc-border-strong);
+  --color-gc-text: var(--gc-text);
+  --color-gc-muted: var(--gc-text-muted);
+  --color-gc-subtle: var(--gc-text-subtle);
+  --color-gc-primary: var(--gc-primary);
+  --color-gc-primary-hover: var(--gc-primary-hover);
+  --color-gc-primary-soft: var(--gc-primary-soft);
+  --color-gc-on-primary: var(--gc-on-primary);
+  --color-gc-accent: var(--gc-accent);
+  --color-gc-accent-soft: var(--gc-accent-soft);
+  --color-gc-accent-ink: var(--gc-accent-ink);
+  --color-gc-danger: var(--gc-danger);
+  --color-gc-danger-soft: var(--gc-danger-soft);
+
+  --radius-gc-sm: var(--gc-radius-sm);
+  --radius-gc: var(--gc-radius);
+  --radius-gc-lg: var(--gc-radius-lg);
+
+  --font-gc-sans: var(--font-gc-body), "Hiragino Sans", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+  --font-gc-display: var(--font-gc-heading), var(--font-gc-body), system-ui, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--gc-bg);
+  color: var(--gc-text);
+  font-family: var(--font-gc-sans);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--gc-primary-soft);
+  color: var(--gc-primary);
+}
+
+/* Gentle reveal for conditional questions and "その他" inputs. */
+@keyframes gc-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.gc-appear {
+  animation: gc-appear 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-appear {
+    animation: none;
+  }
+}
+
+/* Editorial layout: one continuous application, with quiet section dividers. */
+.gc-hero { background: var(--gc-surface); border-top: 4px solid var(--gc-primary); border-bottom: 1px solid var(--gc-border); }
+.gc-hero-inner { display: flex; flex-direction: column; gap: 20px; padding-top: 24px; padding-bottom: 28px; }
+.gc-hero-title { max-width: 560px; font-size: clamp(32px, 7.9vw, 48px); line-height: 1.14; font-weight: 700; letter-spacing: -.045em; color: var(--gc-primary); text-wrap: balance; }
+.gc-hero-tagline { max-width: 32ch; font-size: 16px; line-height: 1.5; color: var(--gc-text-muted); }
+.gc-hero-intro { display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.9; color: var(--gc-text-muted); }
+.gc-hero-facts { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; }
+.gc-hero-facts li { padding: 6px 10px; }
+.gc-hero-facts li:last-child { width: 100%; background: transparent; padding-left: 0; border-radius: 0; }
+[data-slot="hero-visual"] { overflow: hidden; border-radius: var(--gc-radius); }
+[data-slot="hero-visual"] img { width: 100%; max-height: 280px; object-fit: cover; }
+.gc-section { gap: 0; }
+.gc-section-heading { padding: 0 0 20px; border-bottom: 1px solid var(--gc-border-strong); }
+.gc-section-heading > p:first-child { color: var(--gc-primary); }
+.gc-section-english { margin-left: 12px; font-weight: 500; letter-spacing: .02em; color: var(--gc-text-muted); }
+.gc-question { padding: 24px 0; border-bottom: 1px solid var(--gc-border); }
+.gc-question:last-child { border-bottom: 0; padding-bottom: 0; }
+.gc-question[data-invalid] { border-bottom-color: var(--gc-danger); }
+.gc-question input, .gc-question textarea, .gc-question select { scroll-margin-top: 100px; }
+.gc-language { border-left: 3px solid var(--gc-primary); background: var(--gc-surface); }
+.gc-language > p { padding-bottom: 8px; border-bottom: 1px solid var(--gc-border); }
+.gc-language [data-layout="list"] label { background: var(--gc-bg); }
+/* Restore the selected tint the rule above would otherwise override. */
+.gc-language [data-layout="list"] label:has(:checked) { background: var(--gc-primary-soft); }
+.gc-choice { transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease; }
+.gc-choice:has(:checked) { box-shadow: inset 0 0 0 1px var(--gc-primary); }
+.gc-choice:active { background: var(--gc-primary-soft); }
+.gc-choice:has(:focus-visible) { outline: 2px solid var(--gc-primary); outline-offset: 3px; }
+.gc-consent { border-radius: 0; border-width: 1px 0 0; background: transparent; padding: 24px 0 0; }
+.gc-submit { min-height: 58px; letter-spacing: .04em; }
+.gc-submit:disabled { color: var(--gc-text-muted); background: var(--gc-border); }
+.gc-submit:active:not(:disabled) { background: var(--gc-primary-hover); transform: translateY(1px); }
+.gc-completion-card { border-top: 4px solid var(--gc-primary); border-bottom: 1px solid var(--gc-border); }
+@media (min-width: 640px) {
+  .gc-hero-inner { padding-top: 36px; padding-bottom: 36px; gap: 22px; }
+  .gc-hero-intro { font-size: 15px; }
+  .gc-hero-facts { font-size: 13px; }
+  .gc-hero-facts li:last-child { width: auto; padding-left: 10px; }
+  .gc-question { padding: 28px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gc-choice, .gc-submit, [role="progressbar"] > div { transition: none; }
+}

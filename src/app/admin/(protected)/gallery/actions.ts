@@ -3,8 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { put } from "@vercel/blob";
 import { createGalleryItem, deleteGalleryItem, getGalleryItems } from "@/lib/data/gallery";
+import { requireAdmin } from "@/lib/admin-auth";
 
 export async function addGalleryItem(formData: FormData) {
+  // Server Actions are public endpoints: check the session here, not only in the layout.
+  await requireAdmin();
+
   const altJa = String(formData.get("altJa") ?? "").trim();
   const altEn = String(formData.get("altEn") ?? "").trim();
   const file = formData.get("image") as File | null;
@@ -36,6 +40,9 @@ export async function addGalleryItem(formData: FormData) {
 }
 
 export async function removeGalleryItem(id: number) {
+  // Server Actions are public endpoints: check the session here, not only in the layout.
+  await requireAdmin();
+
   await deleteGalleryItem(id);
   revalidatePath("/admin/gallery");
   revalidatePath("/");
