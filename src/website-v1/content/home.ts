@@ -8,7 +8,7 @@ import { HERO_IMAGES, HERO_PLACEHOLDER_SOURCE } from "../assets/heroImages";
 import { valueCardImages } from "@/data/images";
 import { socialLinks } from "@/data/social-links";
 import { SNS_COPY_EN, SNS_COPY_JA } from "./data/sns";
-import { V1_PREVIEW } from "../config";
+import { V1_CONTENT, V1_PREVIEW } from "../config";
 import { cta, pageName, pageSeo, proposed, tbd } from "./shared";
 
 /** T-05 Home Working Baseline (W1-D05). Wording is not final copy. */
@@ -142,7 +142,7 @@ export function getHomeViewModel(): HomeViewModel {
         heading: t05("Your Kansai. Your Way."),
         supporting: proposed("Explore beyond the guidebooks.", PRIVATE_DAY_SOURCE),
         // Human-provided photo (2026-11-13). Licence NOT_VERIFIED: preview only; public mode keeps no photo.
-        image: V1_PREVIEW ? proposed(YOUR_KANSAI_IMAGE, YOUR_KANSAI_IMAGE_SOURCE) : tbd("Private Guide photo: licence not verified"),
+        image: V1_CONTENT ? proposed(YOUR_KANSAI_IMAGE, YOUR_KANSAI_IMAGE_SOURCE) : tbd("Private Guide photo: licence not verified"),
         areas: (Object.keys(AREA_LABELS) as AreaKey[]).map((key) => ({ key, label: AREA_LABELS[key] })),
         interests: (Object.keys(ACTIVITY_LABELS) as PrivateGuideActivity[]).map((key) => ({ key, label: ACTIVITY_LABELS[key] })),
         cta: cta("v1_home_private", "privateGuide", routeHref("privateGuide"), "section", "primary", t05("Plan a Private Day")),

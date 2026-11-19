@@ -1,5 +1,5 @@
 import type { CtaSpec, Money } from "@/contracts";
-import { V1_PREVIEW } from "../config";
+import { V1_CONTENT } from "../config";
 import { routeHref } from "../routes";
 import { cta, proposed } from "./shared";
 
@@ -19,7 +19,7 @@ import { cta, proposed } from "./shared";
  */
 export const PRIVATE_GUIDE_PRICING_SOURCE = "Private Guide Pricing V1, owner's instruction of 2026-11-14 (JPY, per group, tax included)";
 
-export const PRIVATE_GUIDE_PRICING_VISIBLE = V1_PREVIEW;
+export const PRIVATE_GUIDE_PRICING_VISIBLE = V1_CONTENT;
 
 export type PricingDuration = { key: "half" | "full"; label: string; hours: string };
 

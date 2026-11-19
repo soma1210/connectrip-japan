@@ -13,5 +13,16 @@
  */
 export const V1_PREVIEW = process.env.NEXT_PUBLIC_WEBSITE_V1_PREVIEW === "1";
 
+/**
+ * Launch decision (owner, 2026-11-19): the public site shows the same pages and
+ * sections as the preview, without the review annotations (preview banner, TBD
+ * boxes, status labels, placeholder SAMPLE articles, mock forms). Pages that
+ * stay preview-only are listed in `PREVIEW_ONLY_PATHS` (routes.ts).
+ */
+export const V1_SHOW_ALL = true;
+
+/** Content visibility: true in the preview and on the launched public site. */
+export const V1_CONTENT = V1_PREVIEW || V1_SHOW_ALL;
+
 /** Production organization name: public author of Travel Guide articles (W1-D10 K-3). */
 export const ORGANIZATION_NAME = "Connectrip Japan";

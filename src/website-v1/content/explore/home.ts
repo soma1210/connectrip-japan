@@ -1,4 +1,4 @@
-import { V1_PREVIEW } from "../../config";
+import { V1_CONTENT, V1_PREVIEW } from "../../config";
 import { exploreHref, exploreSelectHref, exploreUpdatesHref } from "../../routes";
 import { displayPhoto, spotById } from "../spots";
 import { AREA_INFO } from "./areas";
@@ -89,7 +89,7 @@ export type ExploreNewsCard = {
 function guidePhoto(a: SelectArticle): { src: string; alt: string; unverified: boolean } | null {
   if (a.content.type !== "guide") return null;
   const h = a.content.hero;
-  if (!h.rightsConfirmed && !V1_PREVIEW) return null;
+  if (!h.rightsConfirmed && !V1_CONTENT) return null;
   return { src: h.src, alt: h.alt, unverified: !h.rightsConfirmed };
 }
 

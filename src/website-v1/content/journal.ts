@@ -1,5 +1,5 @@
 import type { IsoDate } from "@/contracts";
-import { V1_PREVIEW } from "../config";
+import { V1_CONTENT, V1_PREVIEW } from "../config";
 import { experienceHref, journalArticleHref, journalPageHref } from "../routes";
 import { FEATURED_TOUR_SLUG, getFeaturedTour } from "./featuredTour";
 import { addDays, jstToday } from "./guides/freshness";
@@ -78,7 +78,7 @@ export const JOURNAL_PHOTO = {
   alt: "Kiyomizu-dera pagoda in Kyoto under a blue evening sky",
   rightsVerified: false,
 };
-export const showJournalPhoto = V1_PREVIEW || JOURNAL_PHOTO.rightsVerified;
+export const showJournalPhoto = V1_CONTENT || JOURNAL_PHOTO.rightsVerified;
 
 // ---------------------------------------------------------------------------
 // DEMO samples (layout and pagination review only). Generic wording, no real
@@ -138,7 +138,7 @@ export const JOURNAL_RECORDS: JournalRecord[] = [
 
 function isListed(r: JournalRecord): boolean {
   if (r.status === "archived") return false;
-  return V1_PREVIEW || (r.status === "published" && !r.demo);
+  return V1_PREVIEW || ((V1_CONTENT || r.status === "published") && !r.demo);
 }
 
 function byNewest(a: JournalRecord, b: JournalRecord): number {

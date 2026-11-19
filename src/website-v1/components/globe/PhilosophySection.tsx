@@ -1,4 +1,4 @@
-import { V1_PREVIEW } from "../../config";
+import { V1_CONTENT } from "../../config";
 import { GLOBE_ASSETS, PHILOSOPHY_COPY, philosophyStoryHref } from "../../content/philosophy";
 import { CinematicGlobePhilosophy } from "./CinematicGlobePhilosophy";
 
@@ -10,7 +10,7 @@ import { CinematicGlobePhilosophy } from "./CinematicGlobePhilosophy";
  * dropping it entirely would need a build-config alias (next.config.ts).
  */
 export function PhilosophySection() {
-  if (!V1_PREVIEW) return null;
+  if (!V1_CONTENT) return null;
   return (
     <CinematicGlobePhilosophy
       eyebrow={PHILOSOPHY_COPY.eyebrow}

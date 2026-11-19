@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { V1_PREVIEW } from "./website-v1/config";
-import { PUBLIC_PATHS } from "./website-v1/routes";
+import { isServedPath } from "./website-v1/routes";
 
 /**
  * Website v1 is the only site (2026-11-15: the legacy multilingual site is
@@ -25,7 +25,7 @@ export default function proxy(request: NextRequest) {
     target.pathname = "/v1/__not-found";
     return NextResponse.rewrite(target);
   }
-  target.pathname = PUBLIC_PATHS.includes(path) ? (path === "/" ? "/v1" : `/v1${path}`) : "/v1/__not-found";
+  target.pathname = isServedPath(path) ? (path === "/" ? "/v1" : `/v1${path}`) : "/v1/__not-found";
   return NextResponse.rewrite(target);
 }
 
