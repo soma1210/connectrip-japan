@@ -13,12 +13,7 @@ export function generateMetadata() {
   return toMetadata(getLegalViewModel("privacy").seo);
 }
 
-/**
- * Public mode: the Privacy Policy V1 once it is publishable (recorded approval,
- * no open items: content/privacyPolicy.ts); until then the existing empty page.
- * Preview: the V1 draft lives at `/v1/privacy-policy` (routes.ts), so this old
- * preview URL forwards there.
- */
+/** Render approved policy content; release checks are tracked separately. */
 export default function V1PrivacyPage() {
   if (V1_PREVIEW) redirect(routeHref("privacy"));
   return (
