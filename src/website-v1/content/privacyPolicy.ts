@@ -73,7 +73,7 @@ export const PRIVACY_PENDING: Record<PendingKey, { label: string; proposed?: str
  * review or technical verification). Decided on 2026-11-15.
  */
 export const PRIVACY_DECISIONS = [
-  { id: "privacyOfficer", decidedAt: "2026-11-15", decision: "Personal Information Management Officer: Soma Beppu (別府壮真), Director & Deputy Head (取締役副代表)" },
+  { id: "privacyOfficer", decidedAt: "2026-11-15", decision: "Personal Information Management Officer: Soma Beppu (別府壮真), Director & Deputy Representative | EVP (取締役副代表)" },
   { id: "privacyContact", decidedAt: "2026-11-15", decision: "Privacy contact: contact@connectripjapan.com" },
   { id: "requestFee", decidedAt: "2026-11-15", decision: "Requests for disclosure, correction, suspension of use and similar: free of charge in principle" },
   { id: "address", decidedAt: "2026-11-15", decision: "Company address: 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan (大阪市西淀川区中島1丁目15番25号)" },
