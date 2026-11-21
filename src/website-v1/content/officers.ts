@@ -4,17 +4,15 @@
  *
  * - Riku Oizumi: 代表取締役 / Representative Director & CEO (the legal
  *   representative of the company).
- * - Soma Beppu: 取締役副代表 / Director & Deputy Head (official English title,
- *   Human instruction 2026-11-18). An internal title, not a representative
- *   director: it carries no statutory power of representation. Do not use
- *   "Vice President", "Deputy CEO", "Deputy Representative" or any wording
- *   that suggests a power of representation.
+ * - Soma Beppu: 取締役副代表 / Director & Deputy Representative | EVP
+ *   (official title, Human instruction 2026-11-21; replaces "Director &
+ *   Deputy Head"). EVP = Executive Vice President; business cards use "EVP".
  */
 export type OfficerKey = "representative" | "deputy";
 
 export const OFFICERS = {
   representative: { name: "Riku Oizumi", titleJa: "代表取締役", titleEn: "Representative Director & CEO" },
-  deputy: { name: "Soma Beppu", nameJa: "別府壮真", titleJa: "取締役副代表", titleEn: "Director & Deputy Head" },
+  deputy: { name: "Soma Beppu", nameJa: "別府壮真", titleJa: "取締役副代表", titleEn: "Director & Deputy Representative | EVP" },
 } as const;
 
 /**
@@ -25,10 +23,15 @@ export const OFFICERS = {
 export const PRIVACY_OFFICER: OfficerKey = "deputy";
 export const PRIVACY_OFFICER_DECISION = { decidedAt: "2026-11-15", by: "Management decision (経営判断)" } as const;
 
-/** "Riku Oizumi, Representative Director & CEO". */
+/**
+ * "Riku Oizumi, Representative Director & CEO". " | " is glued to its
+ * neighbours (no-break spaces, plus a word joiner because browsers may break
+ * after "|" even before a no-break space), so a narrow screen never leaves
+ * "EVP" alone on a line: "Representative | EVP" wraps as one unit.
+ */
 export function officerLine(key: OfficerKey): string {
   const o = OFFICERS[key];
-  return `${o.name}, ${o.titleEn}`;
+  return `${o.name}, ${o.titleEn.replace(/ \| /g, " |⁠ ")}`;
 }
 
 /**
