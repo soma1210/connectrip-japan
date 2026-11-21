@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 import { getExploreHomeSlides } from "../content/explore/home";
 import { ExploreKansaiSlides } from "../components/explore/ExploreKansaiSlides";
@@ -22,6 +22,7 @@ import { reveal, revealGroup, revealGroupLate } from "../components/motion/revea
 import { RevealObserver } from "../components/motion/RevealObserver";
 import mosaic from "../components/wd/HeroMosaic.module.css";
 import { HeroMosaicMotion } from "../components/wd/HeroMosaicMotion";
+import { HomeSceneStack } from "../components/wd/HomeSceneStack";
 import { MistRise } from "../components/wd/MistRise";
 import { FixedBannerMotion } from "../components/wd/FixedBannerMotion";
 import { ShowreelMotion } from "../components/wd/ShowreelMotion";
@@ -539,17 +540,27 @@ export function HomeView({ vm, bookingMode = "mock" }: { vm: HomeViewModel; book
       <RevealObserver />
       {order.map((key) =>
         sections[key] && (V1_CONTENT || !PREVIEW_ONLY_SECTIONS.has(key)) ? (
-          <div key={key} data-home-section={key}>
-            {sections[key]}
-            {/* Scene change: navy mist stands up over the end of the mosaic as the next scene arrives. */}
-            {key === "hero" ? <MistRise /> : null}
-            {/* The prefectures of Kansai, between the tour and the private day (content/prefectures.ts). */}
-            {key === "featuredExperiences" ? <PrefectureScene id="kansai-prefectures" prefectures={KANSAI_PREFECTURES} /> : null}
-          </div>
+          <Fragment key={key}>
+            <div data-home-section={key}>
+              {key === "hero" ? (
+                <>{sections.hero}<MistRise /></>
+              ) : (
+                <div data-home-stack-layer>{sections[key]}</div>
+              )}
+            </div>
+            {key === "featuredExperiences" && (
+              <div data-home-section="prefectures">
+                <div data-home-stack-layer>
+                  <PrefectureScene id="kansai-prefectures" prefectures={KANSAI_PREFECTURES} />
+                </div>
+              </div>
+            )}
+          </Fragment>
         ) : null,
       )}
       {/* Cinematic Globe Philosophy (preview only, Human instruction 2026-11-14): after all Home content, right before the footer. */}
-      <PhilosophySection />
+      <div data-home-section="philosophy"><PhilosophySection /></div>
+      <HomeSceneStack />
     </>
   );
 }
