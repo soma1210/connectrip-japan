@@ -288,3 +288,49 @@ a[data-cta-id] { transition-property: color, background-color, border-color, tra
   .wd-aurora::after { animation: none; }
   [data-wd-tilt] { transition: none; }
 }
+
+/* ---- SNS fan (phones only, 2026-11-21) ----
+ * The account cards are held like a hand of cards: centred, overlapping from
+ * left to right, each turned a little more round a point below the deck.
+ * Two numbers on the deck drive every card (calc below):
+ *   --g  0 → 1  the cards arrive from a loose spread and gather in the centre
+ *   --p  0 → 1  the gathered pile opens into the fan
+ * Both are 1 by default, so without JavaScript and with reduced motion the
+ * fan simply stands open and every link works. components/wd/SnsMotion scrubs
+ * them with the scroll on phones (transform + opacity only). Wide screens keep
+ * the grid. */
+@media (max-width: 767px) {
+  [data-sns-deck] {
+    --g: 1;
+    --p: 1;
+    --w: clamp(116px, 31vw, 140px);
+    --h: calc(var(--w) * 1.48);
+    /* Centre-to-centre step between neighbours: the whole fan stays inside the screen. */
+    --s: calc((100vw - 2.75rem - var(--w)) / (var(--n, 4) - 1) * 0.74);
+    position: relative;
+    display: block;
+    height: calc(var(--h) + 4.25rem);
+    perspective: 1000px;
+  }
+  [data-sns-deck] > [data-sns-card] {
+    position: absolute;
+    top: 1.25rem;
+    left: 50%;
+    width: var(--w);
+    height: var(--h);
+    margin-left: calc(var(--w) / -2);
+    transform-origin: 50% 125%;
+    transform:
+      translate3d(
+        calc(var(--k) * (var(--s) * var(--p) + 26vw * (1 - var(--g)))),
+        calc(var(--k) * var(--k) * 7px * var(--p) + (1 - var(--g)) * 140px),
+        calc((1 - var(--g)) * -160px)
+      )
+      rotate(calc(var(--k) * (8deg * var(--p) + 1.5deg * (1 - var(--p)) - 20deg * (1 - var(--g)))))
+      rotateX(calc((1 - var(--g)) * 30deg));
+    opacity: min(1, calc(var(--g) * 1.6));
+  }
+  [data-sns-deck] > [data-sns-card] > a { height: 100%; }
+  /* While the hand is still moving, no card takes a tap (a scroll that starts on a card stays a scroll). */
+  [data-sns-deck][data-sns-moving] a { pointer-events: none; }
+}
