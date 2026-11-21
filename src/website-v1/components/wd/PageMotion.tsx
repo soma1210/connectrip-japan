@@ -125,6 +125,39 @@ export function PageMotion() {
         );
       }
 
+      // ---- Hairline rules draw in from the left (data-wd-rule). ----
+      for (const rule of main.querySelectorAll<HTMLElement>("[data-wd-rule]")) {
+        gsap.fromTo(rule, { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 1.2, ease: "power4.inOut", scrollTrigger: { trigger: rule, start: "top 92%", once: true } });
+      }
+
+      // ---- Manifesto line (data-wd-highlight): its letters light up one after another with the scroll. ----
+      for (const p of main.querySelectorAll<HTMLElement>("[data-wd-highlight]")) {
+        if (!isTextOnly(p)) continue;
+        const text = p.textContent ?? "";
+        const original = [...p.childNodes].map((n) => n.cloneNode(true));
+        p.setAttribute("aria-label", text);
+        p.replaceChildren(
+          ...text.split(/(\s+)/).map((part) => {
+            if (/^\s+$/.test(part)) return document.createTextNode(" ");
+            const word = document.createElement("span");
+            word.style.whiteSpace = "nowrap";
+            word.setAttribute("aria-hidden", "true");
+            for (const ch of part) {
+              const c = document.createElement("span");
+              c.className = "wd-hl";
+              c.textContent = ch;
+              word.append(c);
+            }
+            return word;
+          }),
+        );
+        undo.push(() => {
+          p.replaceChildren(...original);
+          p.removeAttribute("aria-label");
+        });
+        gsap.fromTo(p.querySelectorAll(".wd-hl"), { opacity: 0.12 }, { opacity: 1, ease: "none", stagger: 0.02, scrollTrigger: { trigger: p, start: "top 80%", end: "bottom 50%", scrub: 0.4 } });
+      }
+
       // ---- Numbers (prices, figures of 100 and more) count up when they come into view. ----
       for (const el of main.querySelectorAll<HTMLElement>("dd, p, span, strong, td")) {
         if (el.closest(SKIP) || el.children.length) continue;
@@ -186,10 +219,16 @@ export function PageMotion() {
       for (const h of main.querySelectorAll<HTMLElement>("h1")) {
         if (h.closest(SKIP) || !isTextOnly(h) || !h.textContent?.trim()) continue;
         undo.push(splitWords(h, true));
+        // Page title: letters rise out of their masks, one after another (after the curtain lifts).
+        h.querySelectorAll<HTMLElement>(".wd-chars").forEach((w) => {
+          w.style.overflow = "clip";
+          w.style.setProperty("overflow-clip-margin", "0.12em");
+          w.style.paddingBottom = "0.06em";
+        });
         gsap.fromTo(
           h.querySelectorAll(".wd-char"),
-          { yPercent: -80, autoAlpha: 0, filter: "blur(12px)", rotate: -8 },
-          { yPercent: 0, autoAlpha: 1, filter: "blur(0px)", rotate: 0, duration: 1.3, ease: "expo.out", stagger: { each: 0.035, from: "center" }, delay: 0.25 },
+          { yPercent: 115 },
+          { yPercent: 0, duration: 1.4, ease: "expo.out", stagger: 0.03, delay: 0.55 },
         );
       }
 
@@ -237,7 +276,8 @@ export function PageMotion() {
       // ---- Text blocks, lists, cards: staggered rise. ----
       const all = [...main.querySelectorAll<HTMLElement>(BLOCKS)].filter((el) => !el.closest(SKIP) && el.offsetHeight > 0);
       const blocks = all.filter((el) => !all.some((other) => other !== el && other.contains(el)));
-      gsap.set(blocks, { autoAlpha: 0, y: 46 });
+      // Text blocks come into focus: a short rise out of a soft blur (no plain fade-up).
+      gsap.set(blocks, { autoAlpha: 0, y: 22, filter: "blur(8px)" });
       ScrollTrigger.batch(blocks, {
         start: "top 92%",
         once: true,
@@ -245,12 +285,13 @@ export function PageMotion() {
           gsap.to(batch, {
             autoAlpha: 1,
             y: 0,
-            duration: 1.1,
-            ease: "expo.out",
-            stagger: 0.08,
+            filter: "blur(0px)",
+            duration: 1.5,
+            ease: "power3.out",
+            stagger: 0.07,
             overwrite: true,
-            // No transform left behind: sticky / fixed children keep working.
-            onComplete: () => gsap.set(batch, { clearProps: "transform,opacity,visibility" }),
+            // Nothing left behind: sticky / fixed children keep working.
+            onComplete: () => gsap.set(batch, { clearProps: "transform,opacity,visibility,filter" }),
           }),
       });
       // Anything already passed (anchor jump, restored scroll) is shown at once.

@@ -289,7 +289,7 @@ export function OurValueCinematicSection({
                 </span>
               ))}
             </h2>
-            {lead ? <p className={styles.lead}>{lead}</p> : null}
+            {lead ? <p data-wd-highlight className={styles.lead}>{lead}</p> : null}
             <div className={styles.counter} aria-hidden>
               <span className={styles.reelWindow}>
                 <span ref={reelRef} className={styles.reel}>

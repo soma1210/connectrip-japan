@@ -1,14 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --color-navy: #162e4c;
-  --color-navy-light: #1c375c;
-  --color-navy-dark: #0d1f36;
-  --color-gold: #c9a45c;
-  --color-red: #a92d3a;
+  /*
+   * Luxury black theme (2026-11-22, second pass of the award redesign):
+   * lacquer black, ivory type, enji used sparingly, kon (navy) for deep panels.
+   * The "brand" names keep their roles: paper = page, ink = text.
+   */
+  --brand-paper: #0a0a0a;
+  --brand-mist: #131312;
+  --brand-ink: #eee8de;
+  --brand-ink-deep: #040404;
+  --brand-enji: #b3343f;
+  --brand-enji-deep: #8f2530;
+  --brand-snow: #f5f1e8;
+  --brand-line: rgba(238, 232, 222, 0.14);
+  --brand-kon: #162e4c;
+  --brand-kon-deep: #0d1f36;
+
+  /* The original colour names, re-pointed so every page follows the black theme. */
+  --color-navy: #0a0a0a;
+  --color-navy-light: #161615;
+  --color-navy-dark: #111110;
+  --color-gold: #b3343f;
+  --color-red: #b3343f;
   --color-red-hover: #8f2530;
-  --color-cream: #f5f3ee;
-  --color-cream-dark: #e9e5db;
+  --color-cream: #eee8de;
+  --color-cream-dark: #d8d0c3;
+}
+
+/* Scenes on photos: the same black palette with light accents. */
+.theme-dark {
+  --color-navy: #0a0a0a;
+  --color-navy-light: #161615;
+  --color-navy-dark: #111110;
+  --color-gold: #eee8de;
+  --color-cream: #f5f1e8;
+  --color-cream-dark: #e9e3d8;
+  color: var(--color-cream);
 }
 
 @theme inline {
@@ -20,23 +48,89 @@
   --color-red-hover: var(--color-red-hover);
   --color-cream: var(--color-cream);
   --color-cream-dark: var(--color-cream-dark);
+  --color-ink: var(--brand-ink);
+  --color-ink-deep: var(--brand-ink-deep);
+  --color-enji: var(--brand-enji);
+  --color-enji-deep: var(--brand-enji-deep);
+  --color-paper: var(--brand-paper);
+  --color-mist: var(--brand-mist);
+  --color-snow: var(--brand-snow);
+  --color-kon: var(--brand-kon);
+  --color-kon-deep: var(--brand-kon-deep);
 
-  --font-heading-en: var(--font-shippori-mincho-b1);
-  --font-heading-jp: var(--font-shippori-mincho-b1);
-  --font-body: var(--font-shippori-mincho-b1);
+  --font-heading-en: var(--font-sans-ui), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-heading-jp: var(--font-sans-ui), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-sans-ui), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans-ui), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sans-ui), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
 
   --container-app: 1200px;
 }
 
 body {
-  background: var(--color-navy);
-  color: var(--color-cream);
+  background: var(--brand-paper);
+  color: var(--brand-ink);
   font-family: var(--font-body);
   font-weight: 400;
-  line-height: 1.9;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display type: a firm, tightly set gothic (Human instruction 2026-11-22: heavier), explicit weight classes still win. */
+:where(h1, h2, h3, .font-display) {
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+/* Section titles keep the ink colour; enji stays for small labels and accents. */
+:where(h1, h2, h3).text-gold {
+  color: var(--brand-ink);
+}
+.theme-dark :where(h1, h2, h3).text-gold {
+  color: var(--color-cream);
 }
 
 ::selection {
-  background: var(--color-gold);
-  color: var(--color-navy);
+  background: var(--brand-enji);
+  color: #fff;
+}
+
+/* Film grain over everything (very faint, still): the lacquer surface. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::after { animation: none; }
+}
+
+/*
+ * Lines stay quiet (award redesign 2026-11-22): the old gold borders become
+ * fine neutral hairlines; enji is kept for accents, not for every frame.
+ */
+[class*="border-gold"] {
+  border-color: var(--brand-line);
+}
+[class*="hover:border-gold"]:hover {
+  border-color: var(--brand-ink);
+}
+.theme-dark [class*="border-gold"] {
+  border-color: rgb(245 243 238 / 0.18);
+}
+.theme-dark [class*="hover:border-gold"]:hover {
+  border-color: rgb(245 243 238 / 0.7);
 }

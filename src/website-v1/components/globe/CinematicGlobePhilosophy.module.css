@@ -226,7 +226,7 @@
 }
 
 .heading {
-  font-family: var(--font-shippori-mincho-b1), "Times New Roman", Georgia, serif;
+  font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(2.35rem, 5.4vw, 4.65rem);
   line-height: 1.14;

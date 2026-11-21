@@ -27,7 +27,7 @@ export function HowItWorksScene({ id, heading, flows }: { id: string; heading: s
     <section id={id} data-hiw className="relative bg-navy md:h-[420svh]">
       <div data-hiw-stage className="relative overflow-hidden md:sticky md:top-0 md:flex md:h-svh md:flex-col md:justify-center">
         {/* Light that follows the active step. */}
-        <div data-hiw-glow aria-hidden className="pointer-events-none absolute -top-1/4 left-1/3 hidden h-[80vmax] w-[80vmax] rounded-full bg-[radial-gradient(circle,rgba(201,164,92,0.16),transparent_60%)] md:block" />
+        <div data-hiw-glow aria-hidden className="pointer-events-none absolute -top-1/4 left-1/3 hidden h-[80vmax] w-[80vmax] rounded-full bg-[radial-gradient(circle,rgba(169,45,58,0.08),transparent_60%)] md:block" />
 
         <div className="relative mx-auto w-full max-w-(--container-app) px-5 py-16 md:px-10 md:py-0">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -54,6 +54,7 @@ export function HowItWorksScene({ id, heading, flows }: { id: string; heading: s
             </div>
           </div>
 
+          <span data-wd-rule aria-hidden className="mt-8 block h-px w-full bg-ink/15" />
           <div className="mt-10 md:mt-8 md:grid md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-center md:gap-16">
             {/* Giant rolling step number (wide screens). */}
             <div aria-hidden className="relative hidden h-[min(34vh,19rem)] overflow-hidden md:block">
@@ -61,7 +62,7 @@ export function HowItWorksScene({ id, heading, flows }: { id: string; heading: s
                 {numbers.map((n, i) => (
                   <span
                     key={i}
-                    className="block h-[min(34vh,19rem)] font-heading-en text-[min(34vh,19rem)] leading-none font-bold tracking-[-0.04em] text-transparent [-webkit-text-stroke:1.5px_rgba(201,164,92,0.85)]"
+                    className="block h-[min(34vh,19rem)] font-heading-en text-[min(34vh,19rem)] leading-none font-bold tracking-[-0.04em] text-transparent [-webkit-text-stroke:1.5px_rgba(22,46,76,0.85)]"
                   >
                     {n}
                   </span>

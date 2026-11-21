@@ -367,7 +367,7 @@ export function CinematicGlobePhilosophy({ eyebrow, lines, storyLabel, storyHref
   }, [textures]);
 
   return (
-    <section ref={sectionRef} id="our-philosophy" className={styles.section} aria-labelledby="our-philosophy-heading">
+    <section ref={sectionRef} id="our-philosophy" data-wd-inset className={`theme-dark ${styles.section}`} aria-labelledby="our-philosophy-heading">
       <div ref={trackRef} className={styles.track}>
         <div className={styles.stage}>
           <div className={styles.stars} aria-hidden />

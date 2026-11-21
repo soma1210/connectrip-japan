@@ -48,7 +48,7 @@ export function SnsSlide({ accounts }: { accounts: { platform: SnsAccountPlatfor
           <p className="font-heading-en text-sm text-cream/80 italic md:text-lg">{c.tagline}</p>
         </div>
 
-        <ul data-sns-deck className="mt-10 grid grid-cols-2 gap-3 [perspective:1200px] sm:gap-4 md:mt-14 lg:grid-cols-4 lg:gap-6">
+        <ul data-sns-deck className="wd-skew mt-10 grid grid-cols-2 gap-3 [perspective:1200px] sm:gap-4 md:mt-14 lg:grid-cols-4 lg:gap-6">
           {accounts.map((a) => {
             const Icon = ICONS[a.platform];
             const text = c.accounts[a.platform];
@@ -62,7 +62,7 @@ export function SnsSlide({ accounts }: { accounts: { platform: SnsAccountPlatfor
                   aria-label={`${text.action} (opens in a new tab)`}
                   className="group flex w-full flex-col items-center rounded-xl border border-cream/20 bg-transparent px-3 py-6 text-center transition-[transform,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-gold/60 focus-visible:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:px-5 md:py-9"
                 >
-                  <span className={cn("flex h-12 w-12 items-center justify-center rounded-xl text-white md:h-14 md:w-14", ICON_TILES[a.platform])} aria-hidden>
+                  <span className={cn("wd-bob flex h-12 w-12 items-center justify-center rounded-xl text-white md:h-14 md:w-14", ICON_TILES[a.platform])} style={{ animationDelay: `${accounts.indexOf(a) * -1.05}s` }} aria-hidden>
                     <Icon className="h-6 w-6 md:h-7 md:w-7" />
                   </span>
                   <span className="mt-4 font-heading-en text-lg text-cream md:mt-5 md:text-2xl">{a.label}</span>

@@ -1,0 +1,77 @@
+/* Award Home loader. The window matches the Hero's first-screen window (size and place). */
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  pointer-events: none;
+  --win-w: clamp(200px, 19vw, 380px);
+  --win-h: min(62svh, calc(var(--win-w) * 1.6));
+}
+/* Shown only while the opening boot script says this load plays it (no flash on later visits). */
+:global(html[data-v1-opening="pending"]) .root,
+:global(html[data-v1-opening="play"]) .root,
+:global(html[data-v1-opening="reduced"]) .root,
+:global(html[data-v1-opening="reduced-out"]) .root {
+  display: block;
+}
+@media (max-width: 767px) {
+  .root {
+    --win-w: 46vw;
+    --win-h: 44svh;
+  }
+}
+.paper {
+  position: absolute;
+  inset: 0;
+  background: var(--brand-paper);
+}
+.window {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--win-w);
+  height: var(--win-h);
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--brand-mist);
+}
+@media (max-width: 767px) {
+  .window { top: 52%; }
+}
+.frame {
+  position: absolute;
+  inset: 0;
+}
+.mask {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.1em;
+}
+.mask > span {
+  display: inline-block;
+}
+.brand {
+  position: absolute;
+  left: 5vw;
+  top: 4.5svh;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+}
+.count {
+  position: absolute;
+  right: 4vw;
+  bottom: 2svh;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 16vw, 15rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--brand-ink);
+  font-variant-numeric: tabular-nums;
+}

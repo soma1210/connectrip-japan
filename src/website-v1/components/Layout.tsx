@@ -23,7 +23,7 @@ const SOCIAL_ICONS = {
 /** Preview notice. The v1 preview is noindex and not approved content. */
 export function PreviewBanner() {
   return (
-    <div className="bg-gold px-4 py-2 text-center font-sans text-[11px] leading-snug tracking-[0.06em] text-navy">
+    <div className="bg-enji-deep px-4 py-2 text-center font-sans text-[11px] leading-snug tracking-[0.06em] text-white/90">
       WEBSITE V1 PREVIEW — Not public. Dashed “TBD” boxes are undecided; other text is a Working Baseline, not approved copy.
     </div>
   );
@@ -39,7 +39,7 @@ function BrandMark({ brand }: { brand: Brand }) {
       {words.length > 0 ? (
         <span className="flex flex-col leading-none">
           {words.map((word) => (
-            <span key={word} className="font-heading-en text-lg tracking-[0.12em] text-cream">
+            <span key={word} className="font-heading-en text-[17px] tracking-[0.16em] text-cream">
               {word}
             </span>
           ))}
@@ -65,15 +65,22 @@ function HeaderCtas({ nav }: { nav: LayoutViewModel["nav"] }) {
 export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
   const nav = { ...layout.nav, primary: layout.nav.primary.filter((item) => isPublicHref(item.href)) };
   return (
-    <header id="v1-header" className="wd-header sticky top-0 z-50 border-b border-dashed border-gold/30 bg-navy/95 backdrop-blur">
-      <Container className="flex h-20 items-center justify-between max-w-[1340px]!">
+    <header id="v1-header" className="wd-header sticky top-0 z-50 border-b border-cream/10 bg-navy/90 backdrop-blur-md">
+      <Container className="flex h-20 items-center justify-between max-w-[1440px]!">
         <BrandMark brand={layout.brand} />
 
         {/* Inline nav from 1340px: below that, logo + nav + both CTAs leave under 24px between groups. */}
         <nav className="hidden items-center gap-10 min-[1340px]:flex">
           {nav.primary.map((item) => (
-            <Link key={item.id} href={item.href} className="text-xs tracking-[0.1em] text-cream/80 transition-colors hover:text-gold">
-              <TbdText value={item.label} slot="Nav label" />
+            <Link key={item.id} href={item.href} className="font-sans text-[12px] font-medium tracking-[0.14em] text-cream/75 uppercase transition-colors hover:text-cream">
+              {item.label.status === "TBD" ? (
+                <TbdText value={item.label} slot="Nav label" />
+              ) : (
+                <span className="wd-roll">
+                  <span>{item.label.value}</span>
+                  <span aria-hidden>{item.label.value}</span>
+                </span>
+              )}
             </Link>
           ))}
           <RecruitDropdown recruit={recruit} />
@@ -94,12 +101,12 @@ export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit
   );
 }
 
-const FOOTER_LINK = "text-sm text-cream/70 transition-colors hover:text-gold";
+const FOOTER_LINK = "text-sm text-cream/65 underline-offset-4 transition-colors hover:text-cream hover:underline";
 
 function FooterGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">{title}</p>
+      <p className="font-sans text-[11px] font-medium tracking-[0.24em] text-cream/45 uppercase">{title}</p>
       <nav aria-label={title.charAt(0) + title.slice(1).toLowerCase()} className="mt-4 flex flex-col gap-3">
         {children}
       </nav>
@@ -118,12 +125,13 @@ export function V1Footer({ layout }: { layout: LayoutViewModel; recruit: Recruit
   const information = getFooterInformation().filter((item) => isPublicHref(item.href));
   const legal = footer.legal.filter((item) => isPublicHref(item.href));
   return (
-    <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
-      <Container className="grid gap-12 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-8">
+    // Closing band: deep navy (theme-dark), the brand name across the full width.
+    <footer className="theme-dark bg-kon-deep">
+      <Container className="grid gap-12 pt-20 pb-16 md:pt-28 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-8">
         <div>
           <BrandMark brand={layout.brand} />
           <div className="mt-6">
-            <p className="font-heading-en text-xs tracking-[0.15em] text-cream/50 italic">SNS</p>
+            <p className="font-sans text-[11px] font-medium tracking-[0.24em] text-cream/45 uppercase">SNS</p>
             <div className="mt-4">
               {footer.social.status === "TBD" ? (
                 <TbdText value={footer.social} slot="SNS links" />
@@ -141,7 +149,7 @@ export function V1Footer({ layout }: { layout: LayoutViewModel; recruit: Recruit
                         rel="noreferrer noopener"
                         aria-label={name}
                         title={name}
-                        className="flex h-10 w-10 items-center justify-center border border-cream/20 text-cream/70 transition-colors hover:border-gold hover:text-gold"
+                        className="flex h-11 w-11 items-center justify-center rounded-full border border-cream/20 text-cream/70 transition-colors duration-300 hover:border-red hover:bg-red hover:text-white"
                       >
                         <Icon className="h-4 w-4" />
                       </a>

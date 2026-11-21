@@ -2,6 +2,8 @@ import { CustomCursor } from "./CustomCursor";
 import { HeaderMotion } from "./HeaderMotion";
 import { Interactions } from "./Interactions";
 import { PageMotion } from "./PageMotion";
+import { PageTransition } from "./PageTransition";
+import { SceneEdges } from "./SceneEdges";
 import { SmoothScroll } from "./SmoothScroll";
 
 /**
@@ -16,8 +18,10 @@ export function WdMotion() {
       <SmoothScroll />
       <HeaderMotion />
       <PageMotion />
+      <SceneEdges />
       <CustomCursor />
       <Interactions />
+      <PageTransition />
     </>
   );
 }

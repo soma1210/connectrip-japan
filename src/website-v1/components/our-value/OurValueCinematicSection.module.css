@@ -7,8 +7,8 @@
 .section {
   position: relative;
   background:
-    radial-gradient(70% 60% at 72% 50%, rgba(28, 55, 92, 0.55), transparent 70%),
-    var(--color-navy-dark);
+    radial-gradient(70% 60% at 72% 50%, rgba(22, 46, 76, 0.07), transparent 70%),
+    var(--brand-paper);
 }
 
 /* Base (phones, reduced motion, no JS): heading on top, cards in a column. */
@@ -22,7 +22,7 @@
   display: block;
   width: 3rem;
   height: 1px;
-  background: rgba(201, 164, 92, 0.6);
+  background: var(--brand-enji);
   margin-bottom: 1.5rem;
 }
 .title {
@@ -32,7 +32,7 @@
   font-size: clamp(2.75rem, 13vw, 4rem);
   line-height: 0.98;
   letter-spacing: 0.04em;
-  color: var(--color-gold);
+  color: var(--brand-ink);
 }
 .line {
   display: block;
@@ -47,7 +47,7 @@
   max-width: 26rem;
   font-size: 0.9375rem;
   line-height: 1.8;
-  color: rgba(245, 243, 238, 0.82);
+  color: rgba(22, 46, 76, 0.72);
 }
 .counter,
 .progress {
@@ -70,9 +70,10 @@
   position: relative;
   aspect-ratio: 4 / 3; /* the photos are 4:3, so nothing is cropped or stretched */
   overflow: hidden;
-  border: 1px solid rgba(201, 164, 92, 0.3);
+  border: 1px solid rgba(22, 46, 76, 0.1);
   border-radius: 6px;
-  background: var(--color-navy);
+  background: var(--brand-ink);
+  box-shadow: 0 40px 80px -40px rgba(13, 31, 54, 0.45);
   container-type: inline-size;
   isolation: isolate;
 }
@@ -97,7 +98,7 @@
   font-family: var(--font-heading-en);
   font-size: clamp(0.75rem, 2.6cqw, 0.9375rem);
   letter-spacing: 0.26em;
-  color: rgba(201, 164, 92, 0.8);
+  color: rgba(245, 243, 238, 0.75);
 }
 .cardTitle {
   margin: 0.3em 0 0;
@@ -106,7 +107,7 @@
   font-size: clamp(1.125rem, 5.6cqw, 2.125rem);
   line-height: 1.22;
   letter-spacing: 0.01em;
-  color: var(--color-gold);
+  color: #f5f3ee;
 }
 .desc {
   margin: 0.55em 0 0;
@@ -118,7 +119,7 @@
 .shade {
   position: absolute;
   inset: 0;
-  background: var(--color-navy-dark);
+  background: var(--brand-ink-deep);
   opacity: 0;
   pointer-events: none;
 }
@@ -222,7 +223,7 @@
     will-change: transform;
   }
   .total {
-    color: rgba(245, 243, 238, 0.55);
+    color: rgba(22, 46, 76, 0.5);
   }
   .progress {
     display: block;
@@ -230,7 +231,7 @@
     width: min(14rem, 70%);
     height: 1px;
     margin-top: 1rem;
-    background: rgba(245, 243, 238, 0.16);
+    background: rgba(22, 46, 76, 0.14);
   }
   .bar {
     position: absolute;

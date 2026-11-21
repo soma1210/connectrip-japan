@@ -27,7 +27,8 @@
   height: 400svh;
   /* Starts under the sticky header (5rem); the header is clear at the top of Home. */
   margin-top: -5rem;
-  background: var(--color-navy-dark);
+  /* The mosaic ends on white paper. */
+  background: var(--brand-paper);
 }
 @media (max-width: 767px) {
   .component {
@@ -62,7 +63,7 @@
   position: relative;
   overflow: clip;
   border-radius: var(--radius);
-  background: var(--color-navy);
+  background: var(--brand-mist);
   isolation: isolate;
 }
 
@@ -80,6 +81,45 @@
   z-index: 2;
   opacity: 0;
   pointer-events: none;
+}
+
+/* A white veil settles over the finished mosaic, then the headline rises huge in navy. */
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgb(255 255 255 / 0.8);
+  opacity: 0;
+  pointer-events: none;
+}
+.bigTitle {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 0 0.28em;
+  padding: 0 4vw;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 11.5vw, 13rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--brand-ink);
+  pointer-events: none;
+}
+.bigWord {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.1em;
+  padding-bottom: 0.06em;
+}
+.bigWord > span {
+  display: inline-block;
+  transform: translateY(110%);
 }
 
 .content {
@@ -158,6 +198,7 @@
 
 /* ---- Reduced motion: one full-screen photo, no zoom ---- */
 @media (prefers-reduced-motion: reduce) {
+  .bigTitle { display: none; }
   .component { height: auto; }
   .sticky { position: relative; }
   .contentSticky { position: relative; }

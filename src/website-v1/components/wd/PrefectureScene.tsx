@@ -16,7 +16,7 @@ import { PrefectureMotion } from "./PrefectureMotion";
  */
 const SLOTS = [
   // left (tall), right top, right bottom
-  "max-md:inset-0 md:left-[3.5vw] md:top-1/2 md:h-[min(66svh,44rem)] md:w-[27vw] md:-translate-y-1/2",
+  "max-md:inset-0 md:left-[4vw] md:top-1/2 md:h-[min(70svh,46rem)] md:w-[27vw] md:-translate-y-1/2 md:[clip-path:url(#aw-kato)]",
   "max-md:hidden md:right-[3.5vw] md:top-[11svh] md:h-[34svh] md:w-[24vw]",
   "max-md:hidden md:right-[9vw] md:bottom-[9svh] md:h-[30svh] md:w-[19vw]",
 ] as const;
@@ -25,9 +25,9 @@ export function PrefectureScene({ id, prefectures }: { id: string; prefectures: 
   const n = prefectures.length;
   return (
     <section id={id} aria-label="The prefectures of Kansai" className="relative bg-navy-dark" style={{ height: `${100 + n * 60}svh` } as CSSProperties}>
-      <div data-pf-stage className="sticky top-0 h-svh overflow-hidden">
+      <div data-pf-stage className="sticky top-0 isolate h-svh overflow-hidden" style={{ backgroundColor: prefectures[0]?.tint }}>
         {SLOTS.map((slot, s) => (
-          <div key={s} data-pf-slot={s} className={`absolute isolate overflow-hidden md:rounded-[4px] ${slot}`}>
+          <div key={s} data-pf-slot={s} data-ripple className={`wd-skew absolute isolate z-[1] overflow-hidden md:rounded-[4px] ${slot}`}>
             {prefectures.map((p, i) => (
               <div key={p.key} data-pf-photo={i} className="absolute inset-0 invisible data-[on]:visible">
                 <div data-pf-cam className="absolute inset-0">
@@ -47,12 +47,24 @@ export function PrefectureScene({ id, prefectures }: { id: string; prefectures: 
           </div>
         ))}
 
+        {/* The prefecture's name in kanji, vertical and huge, glowing faintly behind everything. */}
+        {prefectures.map((p, i) => (
+          <span
+            key={`k-${p.key}`}
+            data-pf-watermark={i}
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 left-1/2 -z-0 -translate-x-1/2 -translate-y-1/2 font-heading-jp text-[min(20vh,15vw)] leading-[1] font-bold tracking-[0.04em] whitespace-nowrap text-white/[0.07] opacity-0 [writing-mode:vertical-rl]"
+          >
+            {p.kanji}
+          </span>
+        ))}
+
         <p className="absolute top-[7svh] left-1/2 -translate-x-1/2 font-heading-en text-[11px] tracking-[0.34em] whitespace-nowrap text-gold uppercase md:text-xs">
           The prefectures of Kansai
         </p>
 
         {/* The names: a column that glides up through the centre line. */}
-        <div className="absolute inset-x-0 top-[12svh] bottom-[12svh] overflow-hidden [mask-image:linear-gradient(transparent,#000_22%,#000_78%,transparent)] md:inset-x-[31vw]">
+        <div className="absolute inset-x-0 top-[12svh] bottom-[12svh] z-[2] overflow-hidden [mask-image:linear-gradient(transparent,#000_22%,#000_78%,transparent)] md:inset-x-[31vw]">
           <ol data-pf-list className="absolute inset-x-0 top-1/2 will-change-transform">
             {prefectures.map((p, i) => (
               <li key={p.key} data-pf-name={i} className="flex h-[1.25em] items-center justify-center gap-[0.18em] font-heading-en text-[clamp(3rem,13vw,4.4rem)] leading-none whitespace-nowrap text-cream will-change-[opacity,transform] md:text-[clamp(3.4rem,6.4vw,7.4rem)]">
@@ -69,7 +81,7 @@ export function PrefectureScene({ id, prefectures }: { id: string; prefectures: 
           <span data-pf-count>01</span> / {String(n).padStart(2, "0")}
         </p>
       </div>
-      <PrefectureMotion targetId={id} count={n} />
+      <PrefectureMotion targetId={id} count={n} tints={prefectures.map((p) => p.tint)} />
     </section>
   );
 }

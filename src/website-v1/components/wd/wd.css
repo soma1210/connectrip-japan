@@ -54,7 +54,7 @@ html.lenis body { height: auto; }
 .wd-cursor[data-state="action"] .wd-cursor__dot { transform: scale(0.5); }
 .wd-cursor[data-state="action"] .wd-cursor__ring { opacity: 0.95; transform: scale(1); }
 .wd-cursor[data-state="photo"] .wd-cursor__dot { transform: scale(0); }
-.wd-cursor[data-state="photo"] .wd-cursor__ring { opacity: 0.7; transform: scale(1.9); border-color: var(--color-cream); }
+.wd-cursor[data-state="photo"] .wd-cursor__ring { opacity: 0.9; transform: scale(1.9); border-color: #fff; }
 .wd-cursor[data-press] .wd-cursor__ring { transform: scale(0.75); }
 
 /* ---- Header: clear over the Home Hero, frosted when scrolled, tucked away while scrolling down ---- */
@@ -66,14 +66,19 @@ html.lenis body { height: auto; }
     backdrop-filter 0.5s ease;
 }
 .wd-header[data-hidden] { transform: translate3d(0, -100%, 0); }
+/* Over the Home Hero photo: clear bar, light text (the night palette inside the header). */
 .wd-header[data-clear] {
+  --color-cream: #f5f3ee;
+  --color-navy: #162e4c;
+  --color-gold: #f5f3ee;
   background-color: transparent;
   border-color: transparent;
   backdrop-filter: none;
 }
 .wd-header[data-scrolled]:not([data-clear]) {
-  background-color: rgb(13 31 54 / 0.7);
-  backdrop-filter: blur(16px) saturate(1.4);
+  background-color: rgb(10 10 10 / 0.72);
+  backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 1px 0 rgb(238 232 222 / 0.08);
 }
 /* Nav links: a gold line runs under the label on hover. */
 .wd-header nav a {
@@ -128,7 +133,7 @@ a[data-cta-id]::before {
   position: absolute;
   inset: 0;
   visibility: hidden;
-  background: url("/images/v1/motion/mist-navy.png") center bottom / 100% 100% no-repeat;
+  background: url("/images/v1/motion/mist-paper.png") center bottom / 100% 100% no-repeat;
   transform-origin: 50% 100%;
 }
 .wd-mist__layer--back {
@@ -149,32 +154,39 @@ a[data-cta-id]::before {
 }
 .wd-word > span { display: inline-block; }
 
-/* ---- Page transition curtain ---- */
+/* ---- Page transition (PageTransition): a lacquer-black curtain with a fine line and the brand name ---- */
 .wd-curtain {
   position: fixed;
   inset: 0;
   z-index: 95;
+  visibility: hidden;
+  pointer-events: none;
+  background: #050505;
+  clip-path: inset(100% 0% 0% 0%);
+}
+.wd-curtain__inner {
+  position: absolute;
+  inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-navy-dark);
-  pointer-events: none;
-  animation: wd-curtain-lift 1.15s cubic-bezier(0.76, 0, 0.24, 1) 0.2s both;
+  gap: 1.4rem;
 }
 .wd-curtain__line {
-  width: min(32vw, 280px);
+  display: block;
+  width: min(36vw, 320px);
   height: 1px;
-  background: var(--color-gold);
-  transform-origin: left;
-  animation: wd-curtain-line 0.75s cubic-bezier(0.65, 0, 0.35, 1) both;
+  background: rgb(238 232 222 / 0.6);
+  transform: scaleX(0);
 }
-@keyframes wd-curtain-lift {
-  from { clip-path: inset(0 0 0 0); }
-  to { clip-path: inset(0 0 100% 0); }
-}
-@keyframes wd-curtain-line {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+.wd-curtain__mark {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  padding-left: 0.5em;
+  color: var(--brand-ink);
 }
 
 /* ---- Footer wordmark: the brand name across the full width, rising letter by letter ---- */
@@ -202,8 +214,6 @@ a[data-cta-id]::before {
 
 /* ---- Reduced motion: the layer stays still ---- */
 @media (prefers-reduced-motion: reduce) {
-  .wd-curtain,
-  .wd-curtain__line { animation: none; }
   .wd-curtain { display: none; }
   .wd-header { transition: none; }
 }
@@ -218,7 +228,7 @@ a[data-cta-id]::before {
   right: 0;
   z-index: 70;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-gold), #e7cf98 60%, var(--color-red));
+  background: linear-gradient(90deg, var(--brand-ink), var(--brand-enji));
   transform: scaleX(0);
   transform-origin: left;
   pointer-events: none;
@@ -239,7 +249,7 @@ a[data-cta-id]::before {
   border-radius: 0.75rem;
   pointer-events: none;
   opacity: 0;
-  background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgb(201 164 92 / 0.22), transparent 55%);
+  background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgb(238 232 222 / 0.12), transparent 55%);
   transition: opacity 0.4s ease;
 }
 [data-wd-tilt][data-wd-tilting]::after { opacity: 1; }
@@ -263,13 +273,13 @@ a[data-cta-id] { transition-property: color, background-color, border-color, tra
 .wd-aurora::before {
   left: -20vmax;
   top: -40vmax;
-  background: radial-gradient(circle, rgb(201 164 92 / 0.35), transparent 60%);
+  background: radial-gradient(circle, rgb(22 46 76 / 0.55), transparent 60%);
   animation: wd-aurora-a 18s ease-in-out infinite alternate;
 }
 .wd-aurora::after {
   right: -25vmax;
   top: -30vmax;
-  background: radial-gradient(circle, rgb(169 45 58 / 0.3), transparent 60%);
+  background: radial-gradient(circle, rgb(179 52 63 / 0.22), transparent 60%);
   animation: wd-aurora-b 22s ease-in-out infinite alternate;
 }
 @keyframes wd-aurora-a {
@@ -287,4 +297,153 @@ a[data-cta-id] { transition-property: color, background-color, border-color, tra
   .wd-aurora::before,
   .wd-aurora::after { animation: none; }
   [data-wd-tilt] { transition: none; }
+}
+
+
+/* ---- Rolling labels (buttons, nav): the words roll up and the same words roll in from below ---- */
+.wd-roll {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  height: 1.25em;
+  overflow: hidden;
+  line-height: 1.25;
+  vertical-align: middle;
+}
+.wd-roll > span {
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+}
+:is(a, button):hover .wd-roll > span,
+:is(a, button):focus-visible .wd-roll > span {
+  transform: translateY(-100%);
+}
+.wd-roll > span + span { color: inherit; }
+@media (prefers-reduced-motion: reduce) {
+  .wd-roll > span { transition: none; }
+}
+
+/* ---- Lean with the scroll speed (--wd-v from SmoothScroll, -1…1) ---- */
+.wd-skew {
+  transform: skewY(calc(var(--wd-v, 0) * 2.2deg));
+  transition: transform 0.12s linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wd-skew { transform: none; }
+}
+
+/* Full-screen menu open: the bar sits clear on the white panel, in navy. */
+html[data-menu-open] .wd-header,
+html[data-menu-open] .wd-header[data-clear] {
+  --color-cream: #eee8de;
+  --color-navy: #0a0a0a;
+  --color-gold: #b3343f;
+  background-color: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* White Hero at the top of the award Home: a clear bar, navy text. */
+.wd-header[data-clear-ink] {
+  background-color: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* ---- Rotating badge (award Home) ---- */
+.aw-badge {
+  display: grid;
+  place-items: center;
+}
+.aw-badge > * { grid-area: 1 / 1; }
+.aw-badge__ring {
+  animation: aw-spin 22s linear infinite;
+}
+.aw-badge__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--brand-enji);
+  box-shadow: 0 0 0 10px rgb(179 52 63 / 0.15), 0 0 30px 6px rgb(179 52 63 / 0.35);
+  animation: aw-pulse 2.4s ease-in-out infinite;
+}
+@keyframes aw-spin { to { transform: rotate(360deg); } }
+@keyframes aw-pulse {
+  0%, 100% { box-shadow: 0 0 0 8px rgb(179 52 63 / 0.15), 0 0 24px 4px rgb(179 52 63 / 0.3); }
+  50% { box-shadow: 0 0 0 16px rgb(179 52 63 / 0.06), 0 0 40px 10px rgb(179 52 63 / 0.45); }
+}
+
+/* ---- Footer wordmark: a wave of letters lifts under the pointer ---- */
+.wd-wordmark [data-l] {
+  transition: translate 0.6s cubic-bezier(0.25, 1, 0.5, 1), color 0.4s ease;
+}
+.wd-wordmark [data-l]:hover { translate: 0 -16%; color: var(--brand-enji); }
+.wd-wordmark [data-l]:hover + [data-l],
+.wd-wordmark [data-l]:has(+ [data-l]:hover) { translate: 0 -9%; }
+.wd-wordmark [data-l]:hover + [data-l] + [data-l],
+.wd-wordmark [data-l]:has(+ [data-l] + [data-l]:hover) { translate: 0 -4%; }
+
+/* ---- Spotlight: a soft light follows the pointer over the whole site ---- */
+.wd-spot {
+  position: fixed;
+  inset: 0;
+  z-index: 88;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgb(238 232 222 / 0.07), rgb(179 52 63 / 0.035) 40%, transparent 70%);
+}
+.wd-spot[data-on] { opacity: 1; }
+
+/* ---- Gentle float (icons) ---- */
+.wd-bob { animation: wd-bob 4.2s ease-in-out infinite; }
+@keyframes wd-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aw-badge__ring, .aw-badge__dot, .wd-bob { animation: none; }
+  .wd-spot { display: none; }
+}
+
+/* ---- Place-name band (award Home) ---- */
+.aw-marquee {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(3rem, 8vw, 7rem) 0;
+  background: linear-gradient(180deg, var(--brand-paper), #120708 50%, var(--brand-paper));
+}
+.aw-marquee__track + .aw-marquee__track { margin-top: clamp(0.4rem, 1.2vw, 1.2rem); }
+.aw-marquee__row {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.aw-marquee__word {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding-right: 0.4em;
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 11vw, 11rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(238 232 222 / 0.32);
+  transition: color 0.6s ease, -webkit-text-stroke-color 0.6s ease;
+}
+.aw-marquee__word--jp { font-weight: 700; -webkit-text-stroke-color: rgb(179 52 63 / 0.7); }
+.aw-marquee__track:hover .aw-marquee__word { color: var(--brand-ink); -webkit-text-stroke-color: transparent; }
+.aw-marquee__track:hover .aw-marquee__word--jp { color: var(--brand-enji); }
+.aw-marquee__dot {
+  width: 0.12em;
+  height: 0.12em;
+  border-radius: 999px;
+  background: var(--brand-enji);
 }

@@ -32,6 +32,8 @@ export function HeroMosaicMotion({ targetId }: { targetId: string }) {
     const castle = q("[data-mosaic-castle]");
     const label = q("[data-hero-label]");
     const neighbours = root.querySelectorAll<HTMLElement>("[data-mosaic-neighbour]");
+    const bigWords = root.querySelectorAll<HTMLElement>("[data-big-word]");
+    const veil = q("[data-mosaic-veil]");
     if (!grid || !stage) return;
 
     let endScale = 0.3;
@@ -80,7 +82,10 @@ export function HeroMosaicMotion({ targetId }: { targetId: string }) {
         .fromTo(castle, { opacity: 0 }, { opacity: 1, duration: 0.16 }, 0.02)
         .to(grid, { scale: () => endScale, ease: "power2.inOut", duration: 0.8 }, 0)
         .fromTo(neighbours, { scale: 1.3 }, { scale: 1, ease: "power1.out", duration: 0.8 }, 0)
-        .to({}, { duration: 0.2 });
+        // The headline comes back huge across the finished mosaic, word by word.
+        .fromTo(veil, { opacity: 0 }, { opacity: 1, duration: 0.1 }, 0.7)
+        .fromTo(bigWords, { yPercent: 110, y: 0 }, { yPercent: 0, y: 0, ease: "power3.out", stagger: 0.025, duration: 0.12 }, 0.72)
+        .to({}, { duration: 0.16 });
       return () => {
         gsap.set(grid, { clearProps: "transform" });
         if (held) root.dispatchEvent(new CustomEvent("hero:release"));

@@ -1,0 +1,184 @@
+/*
+ * Award Home · Hero. AwardHeroMotion writes --win-w / --win-h (px): the window
+ * on the first screen (the type is laid out around it).
+ * The values below are the first paint before JS.
+ */
+.hero {
+  --stage: max(100svh, 560px);
+  --win-w: clamp(200px, 19vw, 380px);
+  --win-h: min(62svh, calc(var(--win-w) * 1.6));
+  position: relative;
+  height: 210svh;
+  margin-top: -5rem;
+  background: var(--brand-paper);
+  color: var(--brand-ink);
+}
+@media (max-width: 767px) {
+  .hero {
+    --win-w: 46vw;
+    --win-h: 44svh;
+    height: 190svh;
+  }
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: var(--stage);
+  overflow: clip;
+}
+
+/* ---- The window ---- */
+.frame {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  clip-path: url(#aw-hero-window);
+  background: var(--brand-mist);
+}
+.cam {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s cubic-bezier(0.45, 0, 0.55, 1);
+}
+.slide[data-on] {
+  opacity: 1;
+}
+.sheen {
+  position: absolute;
+  inset: -10% -40%;
+  background: linear-gradient(105deg, transparent 42%, rgb(255 248 235 / 0.22) 50%, transparent 58%);
+  transform: translateX(-60%);
+  animation: sheen 6.5s cubic-bezier(0.65, 0, 0.35, 1) 2.5s infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+@keyframes sheen {
+  0% { transform: translateX(-60%); }
+  35%, 100% { transform: translateX(60%); }
+}
+.shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(10 10 10 / 0) 40%, rgb(10 10 10 / 0.85));
+  opacity: 0;
+}
+
+/* ---- Floating photos (first screen) ---- */
+.float {
+  position: absolute;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.8);
+  will-change: transform;
+}
+.float0 { left: 5vw; top: 16svh; width: 10vw; aspect-ratio: 4 / 5; }
+.float1 { right: 6vw; top: 11svh; width: 12.5vw; aspect-ratio: 3 / 2; }
+.float2 { left: 31vw; top: 70svh; width: 7vw; aspect-ratio: 1; }
+@media (max-width: 767px) {
+  /* Phones: one small photo on each side of the window. */
+  .float0 { left: 3vw; top: 36svh; width: 19vw; }
+  .float1 { right: 3vw; top: 56svh; width: 21vw; }
+  .float2 { display: none; }
+}
+
+/* ---- The headline ---- */
+.type {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  font-family: var(--font-display);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--brand-ink);
+}
+.mask {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.15em;
+  padding-bottom: 0.08em;
+}
+.mask > span {
+  display: inline-block;
+}
+.wordLeft,
+.wordRight {
+  position: absolute;
+  top: 50%;
+  font-size: clamp(2.6rem, 6.3vw, 9rem);
+  transform: translateY(-62%);
+  white-space: nowrap;
+}
+.wordLeft { right: calc(50% + var(--win-w) / 2 + 1.8vw); }
+.wordRight { left: calc(50% + var(--win-w) / 2 + 1.8vw); }
+.wordRest {
+  position: absolute;
+  right: 5vw;
+  bottom: 6svh;
+  font-size: clamp(2.6rem, 6.3vw, 9rem);
+  white-space: nowrap;
+}
+@media (max-width: 767px) {
+  .wordLeft,
+  .wordRight {
+    top: 11svh;
+    font-size: 12.5vw;
+    transform: none;
+  }
+  .wordLeft { right: auto; left: 5vw; }
+  .wordRight { left: auto; right: 5vw; top: calc(11svh + 13vw); }
+  .wordRest {
+    right: auto;
+    left: 50%;
+    bottom: 19svh;
+    transform: translateX(-50%);
+    font-size: 12.5vw;
+  }
+}
+
+.place {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--win-h) / 2 + 1.4rem);
+  z-index: 3;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  color: var(--brand-enji);
+}
+.ctas {
+  position: absolute;
+  left: 5vw;
+  bottom: 6svh;
+  z-index: 4;
+  display: flex;
+  gap: 12px;
+}
+@media (max-width: 767px) {
+  .place { top: calc(52% - var(--win-h) / 2 - 1.9rem); }
+  .ctas {
+    left: 5vw;
+    right: 5vw;
+    bottom: 4svh;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ctas > * { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheen { display: none; }
+  .hero { height: auto; }
+  .stage { position: relative; }
+}

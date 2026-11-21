@@ -27,7 +27,10 @@ export function HeaderMotion() {
       const y = window.scrollY;
       const hero = document.getElementById("home-hero");
       const clear = !!hero && y < 24;
-      header.toggleAttribute("data-clear", clear);
+      // A white Hero (award Home) keeps navy text on the clear bar; a photo Hero turns it light.
+      const ink = hero?.dataset.headerTone === "ink";
+      header.toggleAttribute("data-clear", clear && !ink);
+      header.toggleAttribute("data-clear-ink", clear && ink);
       header.toggleAttribute("data-scrolled", y > 24);
       // Keyboard focus only: a clicked link keeps focus but should not pin the bar.
       const busy = !!header.querySelector(":focus-visible, [aria-expanded='true']");
@@ -47,6 +50,7 @@ export function HeaderMotion() {
       cancelAnimationFrame(frame);
       header.removeAttribute("data-hidden");
       header.removeAttribute("data-clear");
+      header.removeAttribute("data-clear-ink");
     };
   }, [pathname]);
 

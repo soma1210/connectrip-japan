@@ -91,7 +91,7 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
   const line = (i: number) => ({ className: cinematic.line, style: { "--i": i } as CSSProperties });
   const words = hero.headline.status === "TBD" ? [] : hero.headline.value.split(" ");
   return (
-    <section id="home-hero" data-v1-hero className={`touch-pan-y ${mosaic.component}`}>
+    <section id="home-hero" data-v1-hero className={`theme-dark touch-pan-y ${mosaic.component}`}>
       {/* Home Opening Experience (W1-D21): overlay on top; the Hero below is always in the HTML. */}
       {first ? <HomeOpeningExperience image={{ src: first.src, focus: heroFocus(first.src) }} /> : null}
 
@@ -122,6 +122,17 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
             <MosaicCell key={p.src} photo={p} />
           ))}
         </div>
+        {/* The headline again, huge, once the mosaic is all on screen (navy on the white page, inverted over the photos). Decorative: the h1 below is the real heading. */}
+        <div data-mosaic-veil aria-hidden className={mosaic.veil} />
+        {words.length > 0 ? (
+          <p data-mosaic-title aria-hidden className={mosaic.bigTitle}>
+            {words.map((word, i) => (
+              <span key={i} className={mosaic.bigWord}>
+                <span data-big-word>{word}</span>
+              </span>
+            ))}
+          </p>
+        ) : null}
       </div>
 
       {/* Headline + CTAs: held on screen over the stage, faded by the scroll (HeroMosaicMotion). */}
@@ -198,7 +209,9 @@ function SceneTitle({
   if (heading.status === "TBD") return <SectionTitle heading={heading} supporting={supporting} slot={slot} headingSizeClassName={headingSizeClassName} />;
   return (
     <div className="mb-8 md:mb-12">
-      <div className="mt-6 md:mt-14">
+      {/* A hairline draws across above the title. */}
+      <span data-wd-rule aria-hidden className="mt-6 block h-px w-full bg-ink/15 md:mt-14" />
+      <div className="mt-6 md:mt-10">
         <h2 data-wd-letters aria-label={heading.value} className={`ml-6 font-heading-en font-bold tracking-[0.08em] text-gold [perspective:600px] md:ml-10 ${headingSizeClassName}`}>
           <Letters text={heading.value} />
         </h2>
@@ -235,7 +248,7 @@ function FeaturedExperiences({ section }: { section: HomeContent["featuredExperi
         <div data-sr-shade aria-hidden className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] bg-gradient-to-r from-navy-dark/0 via-navy to-navy md:block md:opacity-0" />
 
         {/* Giant title (difference blend: it inverts over the photo as the window opens behind it). */}
-        <div data-sr-title className="pointer-events-none order-first px-5 md:absolute md:inset-0 md:flex md:flex-col md:items-center md:justify-center md:px-0 md:mix-blend-difference">
+        <div data-sr-title className="pointer-events-none order-first px-5 md:absolute md:inset-0 md:flex md:flex-col md:items-center md:justify-center md:px-0 ">
           {section.heading.status === "TBD" ? (
             <SectionTitle heading={section.heading} supporting={section.supporting} slot="Featured Experiences" />
           ) : (
@@ -473,7 +486,7 @@ function FinalCta({ section, trail }: { section: HomeContent["finalCta"]; trail:
       id="final-cta"
       data-fixed-banner
       {...revealGroupLate}
-      className="relative flex min-h-[520px] items-center justify-center overflow-hidden bg-navy md:min-h-[100svh]"
+      className="theme-dark relative flex min-h-[520px] items-center justify-center overflow-hidden bg-navy md:min-h-[100svh]"
     >
       {image ? (
         <div data-fb-frame className="absolute inset-0 bg-navy-dark [clip-path:inset(0)]">

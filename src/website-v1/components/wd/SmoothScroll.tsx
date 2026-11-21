@@ -26,12 +26,23 @@ export function SmoothScroll() {
 
     lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.95, allowNestedScroll: true, anchors: { offset: -96 } });
     lenis.on("scroll", ScrollTrigger.update);
+    // Scroll speed as a CSS variable (--wd-v, eased): `.wd-skew` elements lean with fast scrolling.
+    const root = document.documentElement;
+    let v = 0;
+    let last = "";
+    const lean = () => {
+      const target = Math.max(-1, Math.min(1, (lenis?.velocity ?? 0) / 40));
+      v += (target - v) * 0.12;
+      const next = Math.abs(v) < 0.001 ? "0" : v.toFixed(3);
+      if (next !== last) root.style.setProperty("--wd-v", (last = next));
+    };
+    gsap.ticker.add(lean);
     const tick = (time: number) => lenis?.raf(time * 1000);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    // Hold still while the Opening overlay is on screen.
-    const sync = () => (openingActive() ? lenis?.stop() : lenis?.start());
+    // Hold still while the Opening overlay or the full-screen menu is on screen.
+    const sync = () => (openingActive() || document.documentElement.hasAttribute("data-menu-open") ? lenis?.stop() : lenis?.start());
     sync();
     const observer = new MutationObserver(sync);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: [OPENING_ATTR, "data-menu-open"] });
@@ -39,6 +50,8 @@ export function SmoothScroll() {
     return () => {
       observer.disconnect();
       gsap.ticker.remove(tick);
+      gsap.ticker.remove(lean);
+      root.style.removeProperty("--wd-v");
       lenis?.destroy();
       lenis = null;
     };

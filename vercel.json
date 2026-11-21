@@ -2,7 +2,8 @@
   "git": {
     "deploymentEnabled": {
       "claude/website-v1-launch": false,
-      "claude/website-v2-launch": false
+      "claude/website-v2-launch": false,
+      "claude/website-v3-award": false
     }
   }
 }

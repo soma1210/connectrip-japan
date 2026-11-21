@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { gsap } from "./gsap";
 
 /**
  * Site-wide pointer and scroll feedback:
@@ -11,10 +12,13 @@ import { useEffect, useRef } from "react";
  *   soft light follows the pointer across them.
  * - Magnetic CTAs: the paired buttons are pulled a little towards the pointer
  *   and spring back when it leaves (CSS `translate`, so no transform clashes).
- * Mouse devices with motion only for tilt / magnetic; the progress line shows everywhere.
+ * - Spotlight: a soft light trails the pointer across the whole site.
+ * - Ripple: photos inside `data-ripple` ripple like water as the pointer arrives.
+ * Mouse devices with motion only for tilt / magnetic / light / ripple; the progress line shows everywhere.
  */
 export function Interactions() {
   const bar = useRef<HTMLDivElement>(null);
+  const spot = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const line = bar.current;
@@ -73,12 +77,53 @@ export function Interactions() {
         cta.style.setProperty("translate", `${(dx * 0.22).toFixed(1)}px ${(dy * 0.32).toFixed(1)}px`);
       }
     };
+    // Spotlight: a soft light trails the pointer (eased).
+    const light = spot.current;
+    let lx = window.innerWidth / 2;
+    let ly = window.innerHeight / 2;
+    let tx = lx;
+    let ty = ly;
+    let lraf = 0;
+    const glide = () => {
+      lx += (tx - lx) * 0.12;
+      ly += (ty - ly) * 0.12;
+      light?.style.setProperty("--mx", `${lx.toFixed(1)}px`);
+      light?.style.setProperty("--my", `${ly.toFixed(1)}px`);
+      lraf = Math.abs(tx - lx) + Math.abs(ty - ly) > 0.5 ? requestAnimationFrame(glide) : 0;
+    };
+    const onLight = (e: PointerEvent) => {
+      tx = e.clientX;
+      ty = e.clientY;
+      light?.setAttribute("data-on", "");
+      if (!lraf) lraf = requestAnimationFrame(glide);
+    };
+
+    // Ripple: photos inside [data-ripple] ripple like water when the pointer arrives.
+    const disp = document.getElementById("wd-ripple-map");
+    const turb = document.getElementById("wd-ripple-noise");
+    let rippled: HTMLElement | null = null;
+    const onOver = (e: PointerEvent) => {
+      const img = (e.target as HTMLElement | null)?.closest("[data-ripple]")?.querySelector<HTMLElement>("img") ?? null;
+      if (!img || img === rippled || !disp) return;
+      if (rippled) rippled.style.filter = "";
+      rippled = img;
+      img.style.filter = "url(#wd-ripple)";
+      const st = { s: 0, f: 0.004 };
+      gsap.killTweensOf(st);
+      gsap
+        .timeline({ onComplete: () => { if (rippled === img) { img.style.filter = ""; rippled = null; } } })
+        .to(st, { s: 34, f: 0.022, duration: 0.45, ease: "power2.out", onUpdate: () => { disp.setAttribute("scale", st.s.toFixed(1)); turb?.setAttribute("baseFrequency", `${st.f.toFixed(4)} ${(st.f * 2.4).toFixed(4)}`); } })
+        .to(st, { s: 0, f: 0.004, duration: 1.1, ease: "power3.out", onUpdate: () => { disp.setAttribute("scale", st.s.toFixed(1)); turb?.setAttribute("baseFrequency", `${st.f.toFixed(4)} ${(st.f * 2.4).toFixed(4)}`); } });
+    };
+
     const leave = () => {
       reset(tilted, "tilt");
       reset(pulled, "pull");
       tilted = pulled = null;
     };
     if (fine) {
+      window.addEventListener("pointermove", onLight, { passive: true });
+      document.addEventListener("pointerover", onOver, { passive: true });
       window.addEventListener("pointermove", move, { passive: true });
       document.documentElement.addEventListener("pointerleave", leave);
     }
@@ -86,11 +131,25 @@ export function Interactions() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointermove", onLight);
+      document.removeEventListener("pointerover", onOver);
+      cancelAnimationFrame(lraf);
       document.documentElement.removeEventListener("pointerleave", leave);
       cancelAnimationFrame(frame);
       leave();
     };
   }, []);
 
-  return <div ref={bar} aria-hidden className="wd-progress" />;
+  return (
+    <>
+      <div ref={bar} aria-hidden className="wd-progress" />
+      <div ref={spot} aria-hidden className="wd-spot" />
+      <svg aria-hidden width="0" height="0" className="absolute">
+        <filter id="wd-ripple" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence id="wd-ripple-noise" type="fractalNoise" baseFrequency="0.004 0.0096" numOctaves="2" seed="3" result="noise" />
+          <feDisplacementMap id="wd-ripple-map" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+    </>
+  );
 }

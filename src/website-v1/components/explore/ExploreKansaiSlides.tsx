@@ -99,7 +99,8 @@ export function ExploreKansaiSlides({
       ref={root}
       id={id}
       aria-label="Explore Kansai"
-      className="relative isolate bg-navy-dark"
+      data-wd-inset
+      className="theme-dark relative isolate bg-navy-dark"
     >
       {/* Background stage: pinned behind both slides while the section is on screen. The absolute wrapper is the
           section's height, so the sticky stage never travels past the section's end (no bleed into the next one). */}
@@ -207,11 +208,20 @@ function SlideHeading({
         </p>
         <h2
           id={titleId}
-          data-anim="fade"
-          style={{ "--d": "120ms" } as CSSProperties}
-          className="mt-3 font-heading-en text-[clamp(2.3rem,9vw,3.2rem)] leading-[1.04] tracking-[0.01em] text-cream drop-shadow-[0_2px_24px_rgba(5,11,24,0.55)] md:text-[clamp(3rem,4.6vw,4.6rem)]"
+          data-wd-letters
+          aria-label={title}
+          className="mt-3 font-heading-en text-[clamp(2.3rem,9vw,3.2rem)] leading-[1.04] tracking-[-0.02em] text-cream drop-shadow-[0_2px_24px_rgba(5,11,24,0.55)] [perspective:600px] md:text-[clamp(3rem,5.4vw,5.6rem)]"
         >
-          {title}
+          {title.split(" ").map((word, w, all) => (
+            <span key={w} aria-hidden className="inline-block whitespace-nowrap">
+              {[...word].map((ch, i) => (
+                <span key={i} data-wd-l className="inline-block">
+                  {ch}
+                </span>
+              ))}
+              {w < all.length - 1 ? "\u00a0" : null}
+            </span>
+          ))}
         </h2>
         <p
           data-anim="fade"
@@ -292,7 +302,7 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
       ref={root}
       onMouseEnter={() => (hover.current = true)}
       onMouseLeave={() => (hover.current = false)}
-      className={cn(s.rail, "flex h-[min(68svh,640px)] gap-1.5 overflow-x-auto")}
+      className={cn(s.rail, "wd-skew flex h-[min(68svh,640px)] gap-1.5 overflow-x-auto")}
     >
       {cards.map((c, i) => {
         const on = i === active;
@@ -301,6 +311,7 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
             key={c.id}
             href={c.href}
             data-strip
+            data-ripple
             onMouseEnter={() => setActive(i)}
             onFocus={() => setActive(i)}
             aria-label={`${c.title} (${c.category} · ${c.area})`}
@@ -488,7 +499,7 @@ function NewsRail({
           {data.empty}
         </p>
       ) : (
-        <div data-anim="fade" style={{ "--d": "300ms" } as CSSProperties} className={cn(s.loop, "-mx-5 mt-10 md:-mx-10 md:mt-12")}>
+        <div data-anim="fade" style={{ "--d": "300ms" } as CSSProperties} className={cn(s.loop, "wd-skew -mx-5 mt-10 md:-mx-10 md:mt-12")}>
           <div className={s.loopTrack} style={{ "--loop-duration": `${Math.max(24, cards.length * 7)}s` } as CSSProperties}>
             {[0, 1].map((copy) => (
               <ul
