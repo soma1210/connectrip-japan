@@ -60,7 +60,10 @@ export function PrefectureScene({ id, prefectures }: { id: string; prefectures: 
           </span>
         ))}
 
-        <p className="absolute top-[7svh] left-1/2 -translate-x-1/2 font-heading-en text-[11px] tracking-[0.34em] whitespace-nowrap text-gold uppercase md:text-xs">
+        {/* Lettering as on the other slides (Human instruction 2026-11-23): bold uppercase, a
+            vermilion bar, the current name heavy cream with its kanji beside it. */}
+        <p className="absolute top-[7svh] left-1/2 flex -translate-x-1/2 items-center gap-3 font-heading-en text-[11px] font-bold tracking-[0.34em] whitespace-nowrap text-cream uppercase md:text-xs">
+          <span aria-hidden className="h-[3px] w-7 rounded-full bg-red" />
           The prefectures of Kansai
         </p>
 
@@ -68,15 +71,17 @@ export function PrefectureScene({ id, prefectures }: { id: string; prefectures: 
         <div className="absolute inset-x-0 top-[49svh] bottom-[9svh] z-[2] overflow-hidden md:top-[12svh] md:bottom-[12svh] [mask-image:linear-gradient(transparent,#000_22%,#000_78%,transparent)] md:inset-x-[31vw]">
           <ol data-pf-list className="absolute inset-x-0 top-1/2 will-change-transform">
             {prefectures.map((p, i) => (
-              <li key={p.key} data-pf-name={i} className="flex h-[1.25em] items-center justify-center font-heading-en text-[clamp(3rem,13vw,4.4rem)] leading-none whitespace-nowrap text-cream will-change-[opacity,transform] md:text-[clamp(3.4rem,6.4vw,7.4rem)]">
+              <li key={p.key} data-pf-name={i} className="flex h-[1.25em] items-center justify-center font-heading-en text-[clamp(2.6rem,12vw,4rem)] leading-none whitespace-nowrap text-cream uppercase will-change-[opacity,transform] md:text-[clamp(3rem,5.2vw,6.2rem)]">
                 <button
                   type="button"
                   data-pf-pick={i}
                   aria-label={`${p.name} (${p.kanji})`}
-                  className="flex h-full cursor-pointer touch-manipulation items-center gap-[0.18em] px-[0.25em] outline-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-1 focus-visible:outline-offset-[-0.1em] focus-visible:outline-gold/70"
+                  className="group/pf flex h-full cursor-pointer touch-manipulation items-center gap-[0.22em] px-[0.25em] outline-none [-webkit-tap-highlight-color:transparent] focus-visible:outline-1 focus-visible:outline-offset-[-0.1em] focus-visible:outline-gold/70"
                 >
-                  <span>{p.name}</span>
-                  <span data-pf-kanji className="font-heading-jp text-[0.2em] leading-[1.1] tracking-[0.2em] text-gold opacity-0 [writing-mode:vertical-rl]">
+                  <span className="font-light tracking-[-0.04em] text-[#d6c29a] uppercase transition-colors duration-500 group-aria-[current=true]/pf:font-extrabold group-aria-[current=true]/pf:tracking-[-0.05em] group-aria-[current=true]/pf:text-cream">
+                    {p.name}
+                  </span>
+                  <span data-pf-kanji className="font-heading-jp text-[0.2em] leading-[1.1] font-bold tracking-[0.2em] text-gold opacity-0 [writing-mode:vertical-rl]">
                     {p.kanji}
                   </span>
                 </button>
@@ -85,8 +90,8 @@ export function PrefectureScene({ id, prefectures }: { id: string; prefectures: 
           </ol>
         </div>
 
-        <p aria-hidden className="absolute bottom-[6svh] left-1/2 -translate-x-1/2 font-heading-en text-xs tracking-[0.3em] text-cream/60">
-          <span data-pf-count>01</span> / {String(n).padStart(2, "0")}
+        <p aria-hidden className="absolute bottom-[6svh] left-1/2 -translate-x-1/2 font-heading-en text-xs font-medium tracking-[0.3em] text-cream/60">
+          <span data-pf-count className="font-bold text-red">01</span> / {String(n).padStart(2, "0")}
         </p>
       </div>
       <PrefectureMotion targetId={id} count={n} tints={prefectures.map((p) => p.tint)} />

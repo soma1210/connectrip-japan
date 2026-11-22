@@ -8,6 +8,9 @@ import { SNS_SLIDE_COPY } from "../../content/data/sns";
 import { reveal, revealGroup } from "../motion/reveal";
 
 const ICONS = { tiktok: FaTiktok, instagram: FaInstagram, facebook: FaFacebookF, whatsapp: FaWhatsapp } as const;
+// Wide screens: each account card takes an Our Value card colour and tilt (wd.css "SNS cards, wide").
+const CARD_THEMES = { tiktok: "ice", instagram: "wine", facebook: "blush", whatsapp: "sage" } as const;
+const CARD_TILT = [-3, 2.5, -2, 3];
 const ICON_TILES = {
   tiktok: "bg-black",
   instagram: "bg-gradient-to-tr from-[#FEDA75] via-[#D62976] to-[#4F5BD5]",
@@ -31,10 +34,11 @@ export function SnsSlide({ accounts }: { accounts: { platform: SnsAccountPlatfor
           id="sns-title"
           data-wd-letters
           aria-label={c.heading}
-          className="mt-3 font-heading-en text-[clamp(2.3rem,9vw,3.2rem)] leading-[1.05] text-cream [perspective:600px] md:text-[clamp(3.4rem,6vw,6rem)]"
+          className="mt-3 font-heading-en text-[clamp(2.3rem,9vw,3.2rem)] leading-[0.9] font-extrabold tracking-[-0.03em] text-cream uppercase [perspective:600px] md:text-[clamp(3.4rem,6vw,6rem)]"
         >
           {c.heading.split(" ").map((word, w, all) => (
-            <span key={w} aria-hidden className="inline-block whitespace-nowrap">
+            // Classic + pop, as Our Value: the last word bold, the others thin (Human instruction 2026-11-22).
+            <span key={w} aria-hidden className={cn("inline-block whitespace-nowrap", w < all.length - 1 && "font-light tracking-[-0.045em]")}>
               {[...word].map((ch, i) => (
                 <span key={i} data-wd-l className="inline-block">
                   {ch}
@@ -60,7 +64,14 @@ export function SnsSlide({ accounts }: { accounts: { platform: SnsAccountPlatfor
             const text = c.accounts[a.platform];
             return (
               // Cards fly in from scattered positions and settle into the grid (components/wd/SnsMotion); 3D tilt under the pointer.
-              <li key={a.platform} data-sns-card data-wd-tilt style={{ "--k": i - (accounts.length - 1) / 2 } as CSSProperties} className="flex will-change-transform">
+              <li
+                key={a.platform}
+                data-sns-card
+                data-sns-theme={CARD_THEMES[a.platform]}
+                data-wd-tilt
+                style={{ "--k": i - (accounts.length - 1) / 2, "--sns-r": `${CARD_TILT[i % CARD_TILT.length]}deg` } as CSSProperties}
+                className="flex will-change-transform"
+              >
                 <a
                   href={a.href}
                   target="_blank"
@@ -68,12 +79,15 @@ export function SnsSlide({ accounts }: { accounts: { platform: SnsAccountPlatfor
                   aria-label={`${text.action} (opens in a new tab)`}
                   className="group flex w-full flex-col items-center rounded-xl border border-cream/20 bg-transparent px-3 py-6 text-center max-md:items-start max-md:border-gold/35 max-md:bg-navy max-md:px-3 max-md:py-3.5 max-md:text-left max-md:shadow-[0_18px_40px_-12px_rgba(3,8,20,0.75)] transition-[transform,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-gold/60 focus-visible:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:px-5 md:py-9"
                 >
-                  <span className={cn("flex h-12 w-12 items-center justify-center rounded-xl text-white max-md:h-10 max-md:w-10 md:h-14 md:w-14", ICON_TILES[a.platform])} aria-hidden>
+                  <span data-sns-num aria-hidden className="hidden">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span data-sns-icon className={cn("flex h-12 w-12 items-center justify-center rounded-xl text-white max-md:h-10 max-md:w-10 md:h-14 md:w-14", ICON_TILES[a.platform])} aria-hidden>
                     <Icon className="h-6 w-6 md:h-7 md:w-7" />
                   </span>
-                  <span className="mt-4 font-heading-en text-lg text-cream max-md:mt-3 max-md:text-[15px] max-md:leading-tight md:mt-5 md:text-2xl">{a.label}</span>
-                  <span className="mt-1.5 mb-5 font-heading-en text-xs leading-snug text-cream/70 italic max-md:mb-3 max-md:text-[11px] md:mb-6 md:text-sm">{text.description}</span>
-                  <span className="mt-auto inline-flex items-center gap-2 rounded-full whitespace-nowrap border border-gold/70 px-3 py-1.5 font-heading-en text-[11px] tracking-[0.04em] text-cream transition-colors group-hover:border-gold group-hover:text-gold md:px-5 md:py-2 md:text-sm">
+                  <span data-sns-name className="mt-4 font-heading-en text-lg text-cream max-md:mt-3 max-md:text-[15px] max-md:leading-tight md:mt-5 md:text-2xl">{a.label}</span>
+                  <span data-sns-desc className="mt-1.5 mb-5 font-heading-en text-xs leading-snug text-cream/70 italic max-md:mb-3 max-md:text-[11px] md:mb-6 md:text-sm">{text.description}</span>
+                  <span data-sns-cta className="mt-auto inline-flex items-center gap-2 rounded-full whitespace-nowrap border border-gold/70 px-3 py-1.5 font-heading-en text-[11px] tracking-[0.04em] text-cream transition-colors group-hover:border-gold group-hover:text-gold md:px-5 md:py-2 md:text-sm">
                     {/* Phones: the short verb (the card's aria-label still names the platform). */}
                     <span className="sm:hidden">{text.short}</span>
                     <span className="max-sm:hidden">{text.action}</span>
