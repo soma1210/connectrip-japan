@@ -2,6 +2,7 @@ import { CustomCursor } from "./CustomCursor";
 import { HeaderMotion } from "./HeaderMotion";
 import { Interactions } from "./Interactions";
 import { PageMotion } from "./PageMotion";
+import { PageTransition } from "./PageTransition";
 import { SmoothScroll } from "./SmoothScroll";
 
 /**
@@ -18,6 +19,8 @@ export function WdMotion() {
       <PageMotion />
       <CustomCursor />
       <Interactions />
+      {/* Black curtain with the brand name between pages (from the V3 award site, 2026-11-22). */}
+      <PageTransition />
     </>
   );
 }

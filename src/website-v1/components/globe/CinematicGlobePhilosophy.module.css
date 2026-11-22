@@ -222,18 +222,18 @@
   text-transform: uppercase;
   color: var(--globe-gold);
   margin: 0 0 1.45rem;
-  text-shadow: 0 1px 10px rgba(8, 20, 36, 0.6);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
 }
 
 .heading {
-  font-family: var(--font-shippori-mincho-b1), "Times New Roman", Georgia, serif;
+  font-family: var(--font-heading-en);
   font-weight: 400;
   font-size: clamp(2.35rem, 5.4vw, 4.65rem);
   line-height: 1.14;
   letter-spacing: 0.02em;
   color: var(--globe-text);
   margin: 0 0 2.15rem;
-  text-shadow: 0 2px 20px rgba(8, 20, 36, 0.55);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.55);
 }
 
 .line {
@@ -272,7 +272,7 @@
   padding: 0.55rem 0.9rem;
   border-bottom: 1px solid var(--globe-gold-soft);
   transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
-  text-shadow: 0 1px 10px rgba(8, 20, 36, 0.6);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
 }
 .storyLink:hover,
 .storyLink:focus-visible {

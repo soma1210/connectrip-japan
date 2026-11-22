@@ -13,7 +13,7 @@ import { CtaLink } from "../components/CtaLink";
 import { FlowSteps } from "../components/FlowSteps";
 import { TbdImage, TbdText, textOr } from "../components/Tbd";
 import { HERO_MOSAIC, HERO_MOSAIC_CENTER, heroFocus, heroMeta, type MosaicPhoto } from "../assets/heroImages";
-import { V1_CONTENT, V1_PREVIEW } from "../config";
+import { V1_CONTENT } from "../config";
 import { HomeOpeningExperience } from "../components/opening/HomeOpeningExperience";
 import openingStyles from "../components/opening/HomeOpeningExperience.module.css";
 import { SocialProofBlock } from "./SocialProofBlock";
@@ -27,7 +27,7 @@ import { MistRise } from "../components/wd/MistRise";
 import { FixedBannerMotion } from "../components/wd/FixedBannerMotion";
 import { ShowreelMotion } from "../components/wd/ShowreelMotion";
 import { HowItWorksScene } from "../components/wd/HowItWorksScene";
-import { PrivateGuideMotion } from "../components/wd/PrivateGuideMotion";
+import { TypeWindow } from "../components/wd/TypeWindow";
 import { PrefectureScene } from "../components/wd/PrefectureScene";
 import { KANSAI_PREFECTURES } from "../content/prefectures";
 import { KineticCta } from "../components/wd/KineticCta";
@@ -36,7 +36,6 @@ import { TRAIL_EXTRA_IMAGES } from "../assets/trailImages";
 import { CinematicHeroSlider } from "../components/hero/CinematicHeroSlider";
 import { getFeaturedTour } from "../content/featuredTour";
 import { FeaturedTourBooking, type BookingMode } from "../components/booking/FeaturedTourBooking";
-import { PRIVATE_DAY_DESCRIPTION } from "../content/home";
 import { PLAN_AREAS, PLAN_DURATIONS, PLAN_INTERESTS } from "../booking/privateDayPlan";
 import { ACTIVITY_LABELS, AREA_LABELS } from "../content/privateGuide";
 import { PhilosophySection } from "../components/globe/PhilosophySection";
@@ -292,87 +291,6 @@ const PRIVATE_DAY_OPTIONS: { label: string; items: string[] }[] = [
   { label: "DURATION", items: PLAN_DURATIONS.map((d) => d.label) },
 ];
 
-function PrivateGuide({ section }: { section: HomeContent["privateGuide"] }) {
-  // Choices are made in the request form, not here: the CTA opens it directly.
-  const cta = { ...section.cta, href: `${section.cta.href}#request` };
-  // Public mode: no photo while its licence is undecided; the text then stands alone.
-  const showPhoto = V1_PREVIEW || section.image.status !== "TBD";
-  return (
-    /*
-     * Scene (Human instruction 2026-11-14): left text, right a large photo that bleeds to the screen edge.
-     * Wide screens: the photo opens from the right edge with the scroll (--p) while its camera eases back
-     * and drifts (parallax); the heading rises out of a mask once the photo is under way, then copy → options → CTA.
-     * Phones (< md, 2026-11-15): the same photo lies under the whole section, behind a navy veil, and the
-     * text sits on it (no separate photo block). Wide screens are unchanged.
-     */
-    <section id="private-guide" className="relative isolate overflow-hidden bg-navy-dark md:h-[240svh] md:overflow-visible">
-      {/* Wide screens: at least one screen tall, growing with the content on short windows (never cut). */}
-      <div className="relative flex md:sticky md:top-0 md:min-h-svh md:items-center md:overflow-clip">
-        {showPhoto ? (
-          // Wide screens: the night street assembles from seven vertical strips that rise out of order, then the camera eases back.
-          <div data-pg-photo className="absolute inset-y-0 right-0 -z-10 hidden w-[58%] md:flex" data-cursor="photo">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <div key={i} data-pg-strip className="relative -mr-px h-full flex-1 overflow-hidden" aria-hidden={i > 0 || undefined}>
-                <div data-pg-cam className="absolute inset-y-0" style={{ width: "700%", left: `${-i * 100}%` }}>
-                  <TbdImage value={section.image} slot="Private Guide photo" sizes="58vw" />
-                </div>
-              </div>
-            ))}
-            {/* The photo dissolves into the navy on the text side. */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-dark via-navy-dark/45 via-30% to-transparent to-60%" />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-dark/55 via-transparent via-30%" />
-          </div>
-        ) : null}
-        {showPhoto ? (
-          // Phones only: the night street as the section background. Lamps and the street sit low in the frame, under the options and the CTA.
-          <div className="absolute inset-0 -z-10 md:hidden" aria-hidden>
-            <TbdImage value={section.image} slot="Private Guide photo" sizes="100vw" className="object-[64%_center]" />
-            {/* Black veil (about 40%) for legible white text; the navy gradient is lighter in the middle so the lights still show. */}
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="absolute inset-0 bg-gradient-to-b from-navy-dark from-[4%] via-navy-dark/25 via-40% to-navy-dark/55" />
-          </div>
-        ) : null}
-        {/* Wide screens: top padding clears the fixed header; bottom padding keeps the CTA off the screen edge.
-            Short windows (height ≤ 780px): the gaps between the groups tighten a little (type sizes unchanged). */}
-        <Container className="py-14 md:pt-10 md:pb-14">
-          {/* Phones: a soft shadow keeps the words clear of the lights in the photo. */}
-          <div className={showPhoto ? "max-md:[text-shadow:0_1px_14px_rgba(8,20,36,0.85)] max-md:[&_a]:[text-shadow:none] md:max-w-[46%]" : undefined}>
-            <SceneTitle heading={section.heading} supporting={section.supporting} slot="Private Guide" headingSizeClassName="text-[2.5rem] leading-tight md:text-6xl" />
-            <p data-pg-item className="-mt-4 mb-6 max-w-xl text-sm leading-relaxed text-cream/80 max-md:text-cream/90 md:-mt-6 [@media(min-width:768px)_and_(max-height:780px)]:-mt-9 [@media(min-width:768px)_and_(max-height:780px)]:mb-5">
-              {PRIVATE_DAY_DESCRIPTION}
-            </p>
-            {/* One group per row. */}
-            <dl className="grid max-w-xl grid-cols-2 gap-x-5 gap-y-3.5 md:flex md:flex-col md:gap-4 [@media(min-width:768px)_and_(max-height:780px)]:gap-3">
-              {PRIVATE_DAY_OPTIONS.map((group) => (
-                <div key={group.label} data-pg-item className="col-span-2">
-                  {/* A gold rule is drawn across before each group appears (wide screens). */}
-                  <span data-pg-line aria-hidden className="mb-2.5 hidden h-px w-full origin-left bg-gradient-to-r from-gold/70 to-gold/0 md:block" />
-                  <dt className="font-heading-en text-[11px] tracking-[0.2em] text-gold/80 max-md:text-gold">{group.label}</dt>
-                  <dd className="mt-1 text-sm leading-relaxed text-cream/80 max-md:text-cream/90">
-                    {/* Phones: a line breaks only between choices ("8 Hours" stays whole). */}
-                    {group.items.map((item, j) => (
-                      <span key={item}>
-                        {j > 0 ? " · " : null}
-                        <span className="max-md:whitespace-nowrap">{item}</span>
-                      </span>
-                    ))}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <div data-pg-item className="mt-8 flex flex-wrap gap-4 [@media(min-width:768px)_and_(max-height:780px)]:mt-6">
-              {/* Phones: full width. Same link, label and behaviour. */}
-              <CtaLink cta={cta} pair className="max-md:w-full" />
-              {section.learnMore ? <CtaLink cta={section.learnMore} /> : null}
-            </div>
-          </div>
-        </Container>
-      </div>
-      <PrivateGuideMotion targetId="private-guide" />
-    </section>
-  );
-}
-
 /**
  * OUR VALUE (W1-D07, WORKING_BASELINE): same layout as the current site's
  * ValueSection — SectionHeading, 1 / 2 / 3-column grid, reused ValueCard.
@@ -432,7 +350,8 @@ function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
   );
 }
 
-function HowItWorks({ section }: { section: HomeContent["howItWorks"] }) {
+/** How It Works scene: its own page (/how-it-works) since 2026-11-22, no longer on Home. */
+export function HowItWorks({ section }: { section: HomeContent["howItWorks"] }) {
   // Pinned step-by-step scene (components/wd/HowItWorksScene); the plain two-box layout stays as the TBD fallback.
   if (section.heading.status !== "TBD") return <HowItWorksScene id="how-it-works" heading={section.heading.value} flows={section.flows} />;
   return (
@@ -520,9 +439,10 @@ export function HomeView({ vm, bookingMode = "mock" }: { vm: HomeViewModel; book
   const sections: Record<HomeSectionKey, ReactNode | null> = {
     hero: <Hero hero={c.hero} />,
     featuredExperiences: <FeaturedExperiences section={c.featuredExperiences} bookingMode={bookingMode} />,
-    privateGuide: <PrivateGuide section={c.privateGuide} />,
+    privateGuide: <TypeWindow section={c.privateGuide} options={PRIVATE_DAY_OPTIONS} />,
     whyConnectrip: <WhyConnectrip section={c.whyConnectrip} />,
-    howItWorks: <HowItWorks section={c.howItWorks} />,
+    // How It Works is not on Home (Human instruction 2026-11-22): it has its own page, linked from the menu.
+    howItWorks: null,
     travelGuide: <TravelGuide />,
     // On hold since T-05 (W1-D05). Rendered only when content provides it.
     socialProof: c.socialProof ? (

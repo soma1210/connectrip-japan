@@ -21,7 +21,7 @@ import { getLenis } from "./SmoothScroll";
  * past the names in between. With a mouse, hovering a name lifts it.
  * Reduced motion: the names step without gliding and photos simply swap.
  */
-export function PrefectureMotion({ targetId, count }: { targetId: string; count: number }) {
+export function PrefectureMotion({ targetId, count, tints }: { targetId: string; count: number; tints: string[] }) {
   useEffect(() => {
     const root = document.getElementById(targetId);
     if (!root) return;
@@ -30,6 +30,8 @@ export function PrefectureMotion({ targetId, count }: { targetId: string; count:
     const buttons = [...root.querySelectorAll<HTMLButtonElement>("[data-pf-pick]")];
     const counter = root.querySelector<HTMLElement>("[data-pf-count]");
     const slots = [...root.querySelectorAll<HTMLElement>("[data-pf-slot]")];
+    const stage = root.querySelector<HTMLElement>("[data-pf-stage]");
+    const marks = [...root.querySelectorAll<HTMLElement>("[data-pf-watermark]")];
     if (!list || !names.length) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -41,6 +43,11 @@ export function PrefectureMotion({ targetId, count }: { targetId: string; count:
       const first = active === -1;
       active = i;
       if (counter) counter.textContent = String(i + 1).padStart(2, "0");
+      // Each prefecture has its own deep colour and its kanji behind everything.
+      if (stage && tints[i]) gsap.to(stage, { backgroundColor: tints[i], duration: first || reduced ? 0 : 1.2, ease: "power2.inOut", overwrite: "auto" });
+      marks.forEach((m, j) =>
+        gsap.to(m, { opacity: j === i ? 1 : 0, scale: j === i ? 1 : 1.08, filter: j === i ? "blur(0px)" : "blur(12px)", duration: first || reduced ? 0 : 1.4, ease: "power3.out", overwrite: "auto" }),
+      );
       buttons.forEach((b, k) => (k === i ? b.setAttribute("aria-current", "true") : b.removeAttribute("aria-current")));
       slots.forEach((slot, s) => {
         const photos = [...slot.querySelectorAll<HTMLElement>("[data-pf-photo]")];
@@ -173,7 +180,7 @@ export function PrefectureMotion({ targetId, count }: { targetId: string; count:
       gsap.killTweensOf([pos, ...lift]);
       gsap.set(list, { clearProps: "transform" });
     };
-  }, [targetId, count]);
+  }, [targetId, count, tints]);
 
   return null;
 }

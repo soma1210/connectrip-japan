@@ -149,32 +149,39 @@ a[data-cta-id]::before {
 }
 .wd-word > span { display: inline-block; }
 
-/* ---- Page transition curtain ---- */
+/* ---- Page transition (PageTransition, from the V3 award site 2026-11-22): a black curtain with a fine line and the brand name ---- */
 .wd-curtain {
   position: fixed;
   inset: 0;
   z-index: 95;
+  visibility: hidden;
+  pointer-events: none;
+  background: #050505;
+  clip-path: inset(100% 0% 0% 0%);
+}
+.wd-curtain__inner {
+  position: absolute;
+  inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-navy-dark);
-  pointer-events: none;
-  animation: wd-curtain-lift 1.15s cubic-bezier(0.76, 0, 0.24, 1) 0.2s both;
+  gap: 1.4rem;
 }
 .wd-curtain__line {
-  width: min(32vw, 280px);
+  display: block;
+  width: min(36vw, 320px);
   height: 1px;
-  background: var(--color-gold);
-  transform-origin: left;
-  animation: wd-curtain-line 0.75s cubic-bezier(0.65, 0, 0.35, 1) both;
+  background: rgb(243 232 210 / 0.6);
+  transform: scaleX(0);
 }
-@keyframes wd-curtain-lift {
-  from { clip-path: inset(0 0 0 0); }
-  to { clip-path: inset(0 0 100% 0); }
-}
-@keyframes wd-curtain-line {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+.wd-curtain__mark {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  padding-left: 0.5em;
+  color: var(--color-cream);
 }
 
 /* ---- Footer wordmark: the brand name across the full width, rising letter by letter ---- */
@@ -202,8 +209,6 @@ a[data-cta-id]::before {
 
 /* ---- Reduced motion: the layer stays still ---- */
 @media (prefers-reduced-motion: reduce) {
-  .wd-curtain,
-  .wd-curtain__line { animation: none; }
   .wd-curtain { display: none; }
   .wd-header { transition: none; }
 }
@@ -356,4 +361,14 @@ a[data-cta-id] { transition-property: color, background-color, border-color, tra
   [data-sns-deck] > [data-sns-card] > a { height: 100%; }
   /* While the hand is still moving, no card takes a tap (a scroll that starts on a card stays a scroll). */
   [data-sns-deck][data-sns-moving] a { pointer-events: none; }
+}
+
+/* Full-screen menu open: the bar sits clear on the black panel (no blur or border). */
+html[data-menu-open] .wd-header,
+html[data-menu-open] .wd-header[data-clear] {
+  background-color: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  transform: none;
 }

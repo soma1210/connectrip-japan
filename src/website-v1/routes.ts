@@ -77,10 +77,10 @@ const STATIC_PATHS: Record<StaticRouteKey, string> = {
    */
   travelGuide: "/explore",
   /**
-   * The How It Works section on Home (2026-11-15: the separate /how-it-works
-   * page was removed). Preview only, like the Home section itself.
+   * How It Works: its own page again (Human instruction 2026-11-22: removed
+   * from Home, reached from the menu).
    */
-  howItWorks: "#how-it-works",
+  howItWorks: "/how-it-works",
   about: "/about",
   inquiry: "/inquiry",
   /**

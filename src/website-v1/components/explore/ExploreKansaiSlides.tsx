@@ -315,7 +315,7 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
                 )}
               />
             ) : (
-              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(201,164,92,0.18),rgba(13,31,54,0.2))]" />
+              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(201,164,92,0.18),rgba(10,10,10,0.2))]" />
             )}
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,11,24,0.55)_0%,transparent_28%,transparent_52%,rgba(5,11,24,0.9)_100%)]" />
 
@@ -384,7 +384,7 @@ function SelectCard({ card }: { card: ExploreSlideCard }) {
             ) : null}
           </>
         ) : (
-          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(201,164,92,0.18),rgba(13,31,54,0.2))]" />
+          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(201,164,92,0.18),rgba(10,10,10,0.2))]" />
         )}
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-dark/80 to-transparent" />
       </div>

@@ -22,6 +22,8 @@ export type PrefecturePhoto = { src: string; alt: string; focus?: string };
 export type Prefecture = {
   key: string;
   name: string;
+  /** Deep background colour of its scene (award Home 2026-11-22). */
+  tint: string;
   /** Japanese name, shown small beside the active name. */
   kanji: string;
   photos: [PrefecturePhoto, PrefecturePhoto, PrefecturePhoto];
@@ -33,6 +35,7 @@ const H = "/images/v1/hero";
 export const KANSAI_PREFECTURES: Prefecture[] = [
   {
     key: "osaka",
+    tint: "#2a0c11",
     name: "Osaka",
     kanji: "大阪府",
     photos: [
@@ -43,6 +46,7 @@ export const KANSAI_PREFECTURES: Prefecture[] = [
   },
   {
     key: "kyoto",
+    tint: "#1c1124",
     name: "Kyoto",
     kanji: "京都府",
     photos: [
@@ -53,6 +57,7 @@ export const KANSAI_PREFECTURES: Prefecture[] = [
   },
   {
     key: "hyogo",
+    tint: "#0d1f36",
     name: "Hyogo",
     kanji: "兵庫県",
     photos: [
@@ -63,6 +68,7 @@ export const KANSAI_PREFECTURES: Prefecture[] = [
   },
   {
     key: "shiga",
+    tint: "#08232a",
     name: "Shiga",
     kanji: "滋賀県",
     photos: [
@@ -73,6 +79,7 @@ export const KANSAI_PREFECTURES: Prefecture[] = [
   },
   {
     key: "nara",
+    tint: "#14200f",
     name: "Nara",
     kanji: "奈良県",
     photos: [
@@ -83,6 +90,7 @@ export const KANSAI_PREFECTURES: Prefecture[] = [
   },
   {
     key: "wakayama",
+    tint: "#0d1e18",
     name: "Wakayama",
     kanji: "和歌山県",
     photos: [
