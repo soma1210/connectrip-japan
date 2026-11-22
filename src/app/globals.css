@@ -91,3 +91,27 @@ body {
   background: var(--color-gold);
   color: #0a0a0a;
 }
+
+/*
+ * iPhone Safari: native date / time inputs keep a fixed minimum width (wider
+ * than a phone column) and a taller box than the other fields. Let them shrink
+ * to their column, align the value left and match the height of the selects.
+ */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  line-height: 1.5rem;
+  text-align: left;
+}
+input[type="date"]::-webkit-date-and-time-value,
+input[type="time"]::-webkit-date-and-time-value,
+input[type="datetime-local"]::-webkit-date-and-time-value {
+  min-height: 1.5rem;
+  margin: 0;
+  text-align: left;
+}

@@ -65,7 +65,7 @@ function HeaderCtas({ nav }: { nav: LayoutViewModel["nav"] }) {
 export function V1Header({ layout, recruit }: { layout: LayoutViewModel; recruit: RecruitNav }) {
   const nav = { ...layout.nav, primary: layout.nav.primary.filter((item) => isPublicHref(item.href)) };
   return (
-    <header id="v1-header" className="wd-header sticky top-0 z-50 border-b border-dashed border-gold/30 bg-navy/95 backdrop-blur">
+    <header id="v1-header" className="wd-header sticky top-0 z-50 border-b border-cream/10 bg-navy/90 backdrop-blur-md">
       <Container className="flex h-20 items-center justify-between max-w-[1340px]!">
         <BrandMark brand={layout.brand} />
 
@@ -118,7 +118,7 @@ export function V1Footer({ layout }: { layout: LayoutViewModel; recruit: Recruit
   const information = getFooterInformation().filter((item) => isPublicHref(item.href));
   const legal = footer.legal.filter((item) => isPublicHref(item.href));
   return (
-    <footer className="border-t border-dashed border-gold/30 bg-navy-dark">
+    <footer className="border-t border-cream/10 bg-navy-dark">
       <Container className="grid gap-12 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] lg:gap-8">
         <div>
           <BrandMark brand={layout.brand} />

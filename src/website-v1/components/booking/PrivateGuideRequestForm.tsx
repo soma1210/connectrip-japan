@@ -631,7 +631,7 @@ export function PrivateGuideRequestForm({
               </FieldShell>
             </div>
 
-            <div className="flex flex-col gap-4 border-t border-dashed border-gold/20 pt-5">
+            <div className="flex flex-col gap-4 border-t border-cream/10 pt-5">
               <p className="text-xs leading-relaxed text-cream/60">
                 Second choice <span className="text-cream/40">(optional)</span>: another date or start time that would also work for you, with
                 the same length.

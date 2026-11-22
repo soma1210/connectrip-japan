@@ -41,7 +41,7 @@ export function TravelGuideListView({ vm }: { vm: TravelGuideListViewModel }) {
             <ArticleGroup key={group.key} group={group} showEmpty={group.key !== "previewOnly"} />
           ))}
         </div>
-        <div className="mt-14 flex flex-wrap gap-4 border-t border-dashed border-gold/20 pt-10">
+        <div className="mt-14 flex flex-wrap gap-4 border-t border-cream/10 pt-10">
           {c.experiencesCta ? <CtaLink cta={c.experiencesCta} /> : null}
           {c.privateGuideCta ? <CtaLink cta={c.privateGuideCta} /> : null}
         </div>

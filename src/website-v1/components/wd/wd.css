@@ -72,7 +72,7 @@ html.lenis body { height: auto; }
   backdrop-filter: none;
 }
 .wd-header[data-scrolled]:not([data-clear]) {
-  background-color: rgb(13 31 54 / 0.7);
+  background-color: rgb(10 10 10 / 0.78);
   backdrop-filter: blur(16px) saturate(1.4);
 }
 /* Nav links: a gold line runs under the label on hover. */
