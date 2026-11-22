@@ -11,12 +11,12 @@ import { PrefectureMotion } from "./PrefectureMotion";
  * photos of the current prefecture frame it — one tall on the left, two on
  * the right — and are replaced by the next prefecture's photos with a rising
  * curtain as its name reaches the centre. Larger photos than the reference.
- * Phones: the left photo becomes the full-screen background behind the names.
+ * Phones: the left photo sits framed in the upper half (the colour shows around it), the names below.
  * Data: content/prefectures.ts.
  */
 const SLOTS = [
   // left (tall), right top, right bottom
-  "max-md:inset-0 md:left-[4vw] md:top-1/2 md:h-[min(70svh,46rem)] md:w-[27vw] md:-translate-y-1/2 md:[clip-path:url(#aw-kato)]",
+  "max-md:left-[8vw] max-md:right-[8vw] max-md:top-[13svh] max-md:h-[33svh] max-md:rounded-[4px] md:left-[4vw] md:top-1/2 md:h-[min(70svh,46rem)] md:w-[27vw] md:-translate-y-1/2 md:[clip-path:url(#aw-kato)]",
   "max-md:hidden md:right-[3.5vw] md:top-[11svh] md:h-[34svh] md:w-[24vw]",
   "max-md:hidden md:right-[9vw] md:bottom-[9svh] md:h-[30svh] md:w-[19vw]",
 ] as const;
@@ -42,8 +42,6 @@ export function PrefectureScene({ id, prefectures }: { id: string; prefectures: 
                 </div>
               </div>
             ))}
-            {/* Phones: the photo is a background; a veil keeps the names readable. */}
-            {s === 0 ? <div aria-hidden className="absolute inset-0 z-[999] bg-navy-dark/55 md:hidden" /> : null}
           </div>
         ))}
 
@@ -64,7 +62,7 @@ export function PrefectureScene({ id, prefectures }: { id: string; prefectures: 
         </p>
 
         {/* The names: a column that glides up through the centre line. */}
-        <div className="absolute inset-x-0 top-[12svh] bottom-[12svh] z-[2] overflow-hidden [mask-image:linear-gradient(transparent,#000_22%,#000_78%,transparent)] md:inset-x-[31vw]">
+        <div className="absolute inset-x-0 top-[49svh] bottom-[9svh] z-[2] overflow-hidden md:top-[12svh] md:bottom-[12svh] [mask-image:linear-gradient(transparent,#000_22%,#000_78%,transparent)] md:inset-x-[31vw]">
           <ol data-pf-list className="absolute inset-x-0 top-1/2 will-change-transform">
             {prefectures.map((p, i) => (
               <li key={p.key} data-pf-name={i} className="flex h-[1.25em] items-center justify-center gap-[0.18em] font-heading-en text-[clamp(3rem,13vw,4.4rem)] leading-none whitespace-nowrap text-cream will-change-[opacity,transform] md:text-[clamp(3.4rem,6.4vw,7.4rem)]">
