@@ -23,7 +23,7 @@ export function ExperiencesView({ vm }: { vm: ExperiencesListViewModel }) {
           </div>
         )}
         {c.privateGuideCta ? (
-          <div className="mt-12 border-t border-dashed border-gold/20 pt-10">
+          <div className="mt-12 border-t border-cream/10 pt-10">
             <CtaLink cta={c.privateGuideCta} />
           </div>
         ) : null}

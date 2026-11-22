@@ -137,7 +137,7 @@ export function AboutView({ vm }: { vm: AboutViewModel }) {
   const c = vm.content;
   return (
     <>
-      <header className="relative overflow-hidden border-b border-dashed border-gold/20 bg-navy-dark">
+      <header className="relative overflow-hidden border-b border-cream/10 bg-navy-dark">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,rgba(201,164,92,0.10),transparent_60%)]" />
         <Container className="relative flex flex-col items-center py-20 text-center md:py-32">
           <TbdText value={c.intro.eyebrow} slot="About eyebrow" as="p" className="text-[11px] tracking-[0.34em] text-gold uppercase md:text-xs" />
@@ -146,7 +146,7 @@ export function AboutView({ vm }: { vm: AboutViewModel }) {
           <TbdText value={c.intro.tagline} slot="About tagline" as="p" className="mt-8 font-heading-en text-lg leading-relaxed text-cream/80 md:text-2xl" />
         </Container>
       </header>
-      <nav aria-label="On this page" className="border-b border-dashed border-gold/20 bg-navy">
+      <nav aria-label="On this page" className="border-b border-cream/10 bg-navy">
         <Container>
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 py-5 text-[11px] tracking-[0.18em] text-cream/70 uppercase md:gap-x-10 md:text-xs">
             {/* Founders sits after Company Overview (2026-11-16). */}
