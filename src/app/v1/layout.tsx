@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Shippori_Mincho_B1 } from "next/font/google";
+import { Inter_Tight } from "next/font/google";
 import { getLayoutViewModel, getRecruitNav } from "@/website-v1/content/pages";
 import { PreviewBanner, V1Footer, V1Header } from "@/website-v1/components/Layout";
 import { ORGANIZATION_NAME, V1_PREVIEW } from "@/website-v1/config";
@@ -12,11 +12,11 @@ import "../globals.css";
 import "@/website-v1/components/wd/wd.css";
 import { WdMotion } from "@/website-v1/components/wd/WdMotion";
 
-// Same font setup as the current site.
-const shipporiMinchoB1 = Shippori_Mincho_B1({
-  variable: "--font-shippori-mincho-b1",
+// One gothic family for the whole site (Human instruction 2026-11-22).
+const interTight = Inter_Tight({
+  variable: "--font-gothic",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 /**
@@ -48,7 +48,7 @@ export default function WebsiteV1Layout({ children }: { children: ReactNode }) {
   const recruit = getRecruitNav();
   return (
     // suppressHydrationWarning: the opening boot script sets data-v1-opening / overflow on <html> before hydration.
-    <html lang="en" className={`${shipporiMinchoB1.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${interTight.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="flex min-h-full flex-col bg-navy text-cream">
         {/* Home Opening Experience (W1-D21): decides before first paint whether to play (Home, first load per session). */}
         <script dangerouslySetInnerHTML={{ __html: openingBootScript(routeHref("home")) }} />

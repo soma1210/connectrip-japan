@@ -212,7 +212,7 @@ function GuidePhoto({ image, label, priority, sizes = "(min-width: 768px) 768px,
   }
   if (!V1_PREVIEW) return null;
   return (
-    <div className={cn("flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gold/35 bg-[linear-gradient(135deg,rgba(201,164,92,0.10),rgba(13,31,54,0.0))] px-6 text-center", className)}>
+    <div className={cn("flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gold/35 bg-[linear-gradient(135deg,rgba(201,164,92,0.10),rgba(10,10,10,0.0))] px-6 text-center", className)}>
       <Camera className="h-5 w-5 text-gold/70" aria-hidden />
       <p className="font-heading-en text-sm text-cream/75">{label}</p>
       <p className="text-[11px] tracking-wide text-gold/75">Preview · photo to come (own or rights-cleared)</p>
@@ -242,7 +242,7 @@ function SpotPhoto({ spot, priority, sizes = "(min-width: 768px) 768px, 100vw", 
   }
   if (!V1_PREVIEW) return null;
   return (
-    <div className={cn("flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gold/35 bg-[linear-gradient(135deg,rgba(201,164,92,0.10),rgba(13,31,54,0.0))] px-6 text-center", className)}>
+    <div className={cn("flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-gold/35 bg-[linear-gradient(135deg,rgba(201,164,92,0.10),rgba(10,10,10,0.0))] px-6 text-center", className)}>
       <Camera className="h-5 w-5 text-gold/70" aria-hidden />
       <p className="font-heading-en text-sm text-cream/75">{spot.name}</p>
       <p className="text-[11px] tracking-wide text-gold/75">Preview · photo to come (own or rights-cleared)</p>

@@ -7,7 +7,7 @@
 .section {
   position: relative;
   background:
-    radial-gradient(70% 60% at 72% 50%, rgba(28, 55, 92, 0.55), transparent 70%),
+    radial-gradient(70% 60% at 72% 50%, rgba(207, 169, 95, 0.08), transparent 70%),
     var(--color-navy-dark);
 }
 
@@ -22,7 +22,7 @@
   display: block;
   width: 3rem;
   height: 1px;
-  background: rgba(201, 164, 92, 0.6);
+  background: rgba(207, 169, 95, 0.6);
   margin-bottom: 1.5rem;
 }
 .title {
@@ -47,7 +47,7 @@
   max-width: 26rem;
   font-size: 0.9375rem;
   line-height: 1.8;
-  color: rgba(245, 243, 238, 0.82);
+  color: rgba(243, 232, 210, 0.82);
 }
 .counter,
 .progress {
@@ -70,7 +70,7 @@
   position: relative;
   aspect-ratio: 4 / 3; /* the photos are 4:3, so nothing is cropped or stretched */
   overflow: hidden;
-  border: 1px solid rgba(201, 164, 92, 0.3);
+  border: 1px solid rgba(207, 169, 95, 0.3);
   border-radius: 6px;
   background: var(--color-navy);
   container-type: inline-size;
@@ -84,7 +84,7 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, rgba(13, 31, 54, 0.96) 0%, rgba(13, 31, 54, 0.62) 30%, rgba(13, 31, 54, 0) 62%),
+    linear-gradient(to top, rgba(10, 10, 10, 0.96) 0%, rgba(10, 10, 10, 0.62) 30%, rgba(10, 10, 10, 0) 62%),
     linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 40%);
 }
 .text {
@@ -97,7 +97,7 @@
   font-family: var(--font-heading-en);
   font-size: clamp(0.75rem, 2.6cqw, 0.9375rem);
   letter-spacing: 0.26em;
-  color: rgba(201, 164, 92, 0.8);
+  color: rgba(207, 169, 95, 0.8);
 }
 .cardTitle {
   margin: 0.3em 0 0;
@@ -112,7 +112,7 @@
   margin: 0.55em 0 0;
   font-size: clamp(0.8125rem, 3cqw, 1.0625rem);
   line-height: 1.6;
-  color: rgba(245, 243, 238, 0.92);
+  color: rgba(243, 232, 210, 0.92);
 }
 /* Depth: cards waiting in the stack are dimmed (opacity set from JS). */
 .shade {
@@ -222,7 +222,7 @@
     will-change: transform;
   }
   .total {
-    color: rgba(245, 243, 238, 0.55);
+    color: rgba(243, 232, 210, 0.55);
   }
   .progress {
     display: block;
@@ -230,7 +230,7 @@
     width: min(14rem, 70%);
     height: 1px;
     margin-top: 1rem;
-    background: rgba(245, 243, 238, 0.16);
+    background: rgba(243, 232, 210, 0.16);
   }
   .bar {
     position: absolute;
@@ -258,7 +258,7 @@
     transform-origin: 50% 50%;
   }
   .item .card {
-    box-shadow: 0 34px 80px -34px rgba(2, 8, 18, 0.9);
+    box-shadow: 0 34px 80px -34px rgba(0, 0, 0, 0.9);
   }
   /* Deck entrance: the first card rises into place, the stack follows a little later. */
   .section[data-armed]:not([data-in]) .item .card {

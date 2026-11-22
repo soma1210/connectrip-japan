@@ -1,14 +1,27 @@
 @import "tailwindcss";
 
+/*
+ * Dark cream theme (Human instruction 2026-11-22): the whole site sits on the
+ * lacquer black of the V3 award site, type is a large gothic in cream, and the
+ * accents are gold and vermilion (shu). The original colour names keep their
+ * roles so every page follows: navy = page/background, cream = text,
+ * gold = accent, red = CTA (now vermilion).
+ */
 :root {
-  --color-navy: #162e4c;
-  --color-navy-light: #1c375c;
-  --color-navy-dark: #0d1f36;
-  --color-gold: #c9a45c;
-  --color-red: #a92d3a;
-  --color-red-hover: #8f2530;
-  --color-cream: #f5f3ee;
-  --color-cream-dark: #e9e5db;
+  color-scheme: dark;
+  --color-navy: #0a0a0a;
+  --color-navy-light: #171614;
+  --color-navy-dark: #0f0e0d;
+  --color-gold: #cfa95f;
+  --color-red: #e0532f;
+  --color-red-hover: #c4431f;
+  --color-cream: #f3e8d2;
+  --color-cream-dark: #e4d5b8;
+
+  /* Raised dark surfaces that replace the former white / cream panels. */
+  --surface: #151412;
+  --surface-2: #1c1a17;
+  --surface-line: rgba(243, 232, 210, 0.1);
 }
 
 @theme inline {
@@ -21,9 +34,25 @@
   --color-cream: var(--color-cream);
   --color-cream-dark: var(--color-cream-dark);
 
-  --font-heading-en: var(--font-shippori-mincho-b1);
-  --font-heading-jp: var(--font-shippori-mincho-b1);
-  --font-body: var(--font-shippori-mincho-b1);
+  /* One gothic family (Inter Tight) with Japanese gothic fallbacks. */
+  --font-heading-en: var(--font-gothic), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-heading-jp: var(--font-gothic), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-gothic), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-gothic), "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+
+  /* Larger type on every screen (only font sizes grow; spacing is unchanged). */
+  --text-xs: 0.8125rem;
+  --text-sm: 1rem;
+  --text-base: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.4rem;
+  --text-2xl: 1.7rem;
+  --text-3xl: 2.125rem;
+  --text-4xl: 2.6rem;
+  --text-5xl: 3.4rem;
+  --text-6xl: 4.25rem;
+  --text-7xl: 5rem;
+  --text-8xl: 6.5rem;
 
   --container-app: 1200px;
 }
@@ -33,10 +62,32 @@ body {
   color: var(--color-cream);
   font-family: var(--font-body);
   font-weight: 400;
-  line-height: 1.9;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Former light panels (white / cream cards, forms, popovers) become raised dark
+ * surfaces. Inside them navy and cream swap, so their dark text turns cream and
+ * their dark buttons turn cream with dark labels — no component edits needed.
+ */
+.bg-white,
+.bg-cream,
+.bg-cream-dark,
+.bg-cream-dark\/60 {
+  --color-navy: #f3e8d2;
+  --color-navy-light: #e4d5b8;
+  --color-navy-dark: #f3e8d2;
+  --color-cream: var(--surface);
+  --color-cream-dark: var(--surface-2);
+  color: #f3e8d2;
+}
+.bg-white {
+  background-color: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--surface-line);
 }
 
 ::selection {
   background: var(--color-gold);
-  color: var(--color-navy);
+  color: #0a0a0a;
 }

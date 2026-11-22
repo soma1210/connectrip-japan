@@ -31,7 +31,7 @@ export function SmoothScroll() {
     gsap.ticker.lagSmoothing(0);
 
     // Hold still while the Opening overlay is on screen.
-    const sync = () => (openingActive() ? lenis?.stop() : lenis?.start());
+    const sync = () => (openingActive() || document.documentElement.hasAttribute("data-menu-open") ? lenis?.stop() : lenis?.start());
     sync();
     const observer = new MutationObserver(sync);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: [OPENING_ATTR, "data-menu-open"] });
