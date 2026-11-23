@@ -295,10 +295,8 @@ a[data-cta-id] { transition-property: color, background-color, border-color, tra
 }
 
 /* Only the boundary between Home scenes is pinned. The extra screen of
-   containing block overlaps the next scene without adding to page length.
-   HomeSceneStack decides which scenes are held (phones: all; wide screens:
-   Select → SNS). */
-@media (prefers-reduced-motion: no-preference) {
+   containing block overlaps the next scene without adding to page length. */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
   [data-home-section]:has(> [data-stack-ready]) {
     position: relative;
     isolation: isolate;
@@ -310,19 +308,12 @@ a[data-cta-id] { transition-property: color, background-color, border-color, tra
     height: 100svh;
     pointer-events: none;
   }
-  /* The scene that slides over the last held one must paint above it. */
-  [data-home-section]:has(> [data-stack-ready]) + [data-home-section] {
-    position: relative;
-    isolation: isolate;
-  }
   [data-home-stack-layer][data-stack-ready] {
     position: sticky;
     top: min(0px, calc(100svh - var(--scene-height)));
     min-height: 100svh;
     background: var(--color-navy);
   }
-}
-@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
   [data-home-section="philosophy"] { position: relative; isolation: isolate; background: var(--color-navy); }
 }
 
@@ -380,168 +371,4 @@ html[data-menu-open] .wd-header[data-clear] {
   backdrop-filter: none;
   box-shadow: none;
   transform: none;
-}
-
-/*
- * SNS cards, wide (Human instruction 2026-11-22): on wide screens the account cards
- * become solid, rounded, slightly tilted cards in the Our Value palette (same type,
- * vermilion arrow, number top right), so the two sections read as one family. Phones
- * keep the fanned hand above. The section background stays as it is.
- */
-@media (min-width: 768px) {
-  #sns [data-sns-card] {
-    --sns-bg: #efe6d1;
-    --sns-ink: #6e1325;
-    --sns-text: #7a2d36;
-  }
-  #sns [data-sns-theme="wine"] {
-    --sns-bg: #6e1325;
-    --sns-ink: #f8efc2;
-    --sns-text: #f3dcc9;
-  }
-  #sns [data-sns-theme="blush"] {
-    --sns-bg: #e4c6b6;
-    --sns-ink: #6e1325;
-    --sns-text: #6f2a32;
-  }
-  #sns [data-sns-theme="sage"] {
-    --sns-bg: #2f4a3c;
-    --sns-ink: #f8efc2;
-    --sns-text: #dfe6d3;
-  }
-
-  #sns [data-sns-card] > a {
-    position: relative;
-    align-items: flex-start;
-    text-align: left;
-    min-height: clamp(19rem, 26vw, 23rem);
-    padding: 1.1rem 1.35rem 1.5rem;
-    border: 0;
-    border-radius: 1.4rem;
-    background: var(--sns-bg);
-    color: var(--sns-text);
-    rotate: var(--sns-r, 0deg);
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 0.25) inset,
-      0 34px 60px -28px rgb(0 0 0 / 0.9);
-    transition:
-      rotate 0.6s cubic-bezier(0.2, 0.9, 0.25, 1.2),
-      translate 0.6s cubic-bezier(0.2, 0.9, 0.25, 1.2),
-      scale 0.6s cubic-bezier(0.2, 0.9, 0.25, 1.2),
-      box-shadow 0.6s ease;
-  }
-  #sns [data-sns-card] > a:hover,
-  #sns [data-sns-card] > a:focus-visible {
-    rotate: 0deg;
-    translate: 0 -14px;
-    scale: 1.03;
-    border: 0;
-    box-shadow:
-      0 1px 0 rgb(255 255 255 / 0.25) inset,
-      0 46px 80px -30px rgb(0 0 0 / 0.95);
-  }
-
-  #sns [data-sns-num] {
-    display: block;
-    position: absolute;
-    top: 1.1rem;
-    right: 1.25rem;
-    font-family: var(--font-heading-en);
-    font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
-    color: var(--sns-ink);
-    opacity: 0.55;
-  }
-
-  #sns [data-sns-icon] {
-    width: clamp(4.25rem, 6vw, 5.5rem);
-    height: clamp(4.25rem, 6vw, 5.5rem);
-    border-radius: 1rem;
-    rotate: -4deg;
-    box-shadow: 0 14px 26px -14px rgb(0 0 0 / 0.7);
-    transition: rotate 0.6s cubic-bezier(0.2, 0.9, 0.25, 1.2), scale 0.6s ease;
-  }
-  #sns [data-sns-card]:nth-child(even) [data-sns-icon] {
-    rotate: 3deg;
-  }
-  #sns [data-sns-card] > a:hover [data-sns-icon] {
-    rotate: 0deg;
-    scale: 1.06;
-  }
-  #sns [data-sns-icon] svg {
-    width: 45%;
-    height: 45%;
-  }
-
-  #sns [data-sns-name] {
-    margin-top: auto;
-    padding-top: 1.6rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    line-height: 0.95;
-    font-size: clamp(1.5rem, 2.1vw, 2.15rem);
-    color: var(--sns-ink);
-  }
-
-  #sns [data-sns-desc] {
-    margin: 0.7rem 0 1.25rem;
-    font-style: normal;
-    font-weight: 500;
-    font-size: clamp(0.95rem, 1.05vw, 1.05rem);
-    line-height: 1.4;
-    color: var(--sns-text);
-  }
-
-  #sns [data-sns-cta] {
-    margin-top: 0;
-    padding: 0;
-    border: 0;
-    gap: 0.55rem;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.01em;
-    color: var(--sns-ink);
-  }
-  #sns [data-sns-cta] svg {
-    width: 1.35rem;
-    height: 1.35rem;
-    color: #e0532f;
-    transition: translate 0.5s cubic-bezier(0.2, 0.9, 0.25, 1.2);
-  }
-  #sns [data-sns-card] > a:hover [data-sns-cta] {
-    color: var(--sns-ink);
-  }
-  #sns [data-sns-card] > a:hover [data-sns-cta] svg {
-    translate: 6px 0;
-  }
-}
-
-@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
-  #sns [data-sns-card] > a,
-  #sns [data-sns-icon] {
-    transition: none;
-  }
-}
-
-/* ---- Stack depth (wide screens, 2026-11-22): see components/wd/StackDepth.tsx ----
-   The held slide sinks back while the next one slides over it. */
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-  [data-depth] {
-    overflow: clip;
-    scale: calc(1 - 0.07 * var(--depth, 0));
-    transform-origin: 50% calc(100% - 50svh);
-    border-radius: calc(var(--depth, 0) * 28px);
-  }
-  [data-depth]::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 60;
-    pointer-events: none;
-    border-radius: inherit;
-    background: #0a0908;
-    opacity: calc(var(--depth, 0) * 0.6);
-  }
 }
