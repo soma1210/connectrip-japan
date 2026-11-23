@@ -23,7 +23,6 @@ import { RevealObserver } from "../components/motion/RevealObserver";
 import mosaic from "../components/wd/HeroMosaic.module.css";
 import { HeroMosaicMotion } from "../components/wd/HeroMosaicMotion";
 import { HomeSceneStack } from "../components/wd/HomeSceneStack";
-import { StackDepth } from "../components/wd/StackDepth";
 import { MistRise } from "../components/wd/MistRise";
 import { FixedBannerMotion } from "../components/wd/FixedBannerMotion";
 import { ShowreelMotion } from "../components/wd/ShowreelMotion";
@@ -40,8 +39,7 @@ import { FeaturedTourBooking, type BookingMode } from "../components/booking/Fea
 import { PLAN_AREAS, PLAN_DURATIONS, PLAN_INTERESTS } from "../booking/privateDayPlan";
 import { ACTIVITY_LABELS, AREA_LABELS } from "../content/privateGuide";
 import { PhilosophySection } from "../components/globe/PhilosophySection";
-import { OurValueDeck } from "../components/our-value/OurValueDeck";
-import { FeaturedFacts, FeaturedIndex, FeaturedPhotoFrame, FeaturedSeal, FeaturedTitle } from "../components/wd/FeaturedPop";
+import { OurValueCinematicSection } from "../components/our-value/OurValueCinematicSection";
 
 /**
  * Not shown in public mode (launch scope 2026-11-11): DEMO experiences with TBD
@@ -256,25 +254,23 @@ function FeaturedExperiences({ section, bookingMode }: { section: HomeContent["f
           )}
         </div>
 
-        {/* Gold frame and caption over the photo once it has moved left (wide screens). */}
-        <FeaturedPhotoFrame caption={tour.detailFacts.find((x) => x.label === "Meeting Area")?.value ?? "Osaka"} />
-
-        {/* The tour panel (editorial version, Human instruction 2026-11-22: components/wd/FeaturedPop). */}
-        <div data-sr-panel className="relative flex flex-col gap-7 px-5 py-10 md:absolute md:inset-y-0 md:right-0 md:w-[46%] md:justify-center md:px-12 md:py-0 lg:px-16 xl:pr-24">
-          <FeaturedSeal>大阪</FeaturedSeal>
-          <div {...{ [item]: "" }}>
-            <FeaturedIndex n="01" label="Featured Tour" />
-          </div>
-          <h3 aria-label={tour.title} className="font-heading-en text-[1.85rem] leading-[1.12] font-light tracking-[-0.01em] text-cream md:text-[clamp(1.9rem,2.6vw,2.75rem)]">
-            <FeaturedTitle title={tour.title} />
+        {/* The tour panel. */}
+        <div data-sr-panel className="flex flex-col gap-6 px-5 py-10 md:absolute md:inset-y-0 md:right-0 md:w-[46%] md:justify-center md:px-12 md:py-0 lg:px-16 xl:pr-24">
+          <h3 {...{ [item]: "" }} className="font-heading-en text-2xl leading-snug tracking-wide text-gold md:text-[2.1rem] md:leading-[1.2]">
+            {tour.title}
           </h3>
-          <p {...{ [item]: "" }} className="max-w-[34rem] text-sm leading-[1.75] font-light text-cream/70 md:text-[0.98rem]">
+          <p {...{ [item]: "" }} className="text-sm leading-relaxed text-cream/80 md:text-[0.98rem]">
             {tour.summary}
           </p>
-          <div {...{ [item]: "" }}>
-            <FeaturedFacts facts={tour.facts} />
-          </div>
-          <div {...{ [item]: "" }} className="flex flex-col gap-3 pt-1 sm:flex-row md:flex-col xl:flex-row">
+          <dl {...{ [item]: "" }} className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-cream/15 pt-6 text-sm">
+            {tour.facts.map((f) => (
+              <div key={f.label}>
+                <dt className="font-heading-en text-[11px] tracking-[0.15em] text-cream/45 uppercase">{f.label}</dt>
+                <dd className="mt-1 text-cream/90">{f.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <div {...{ [item]: "" }} className="flex flex-col gap-3 pt-2 sm:flex-row md:flex-col xl:flex-row">
             <CtaLink cta={tour.detailCta} pair />
             <FeaturedTourBooking tour={tour} mode={bookingMode} />
           </div>
@@ -305,9 +301,10 @@ function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
   // grid below stays as the fallback while the heading or the cards are still TBD.
   if (section.heading.status !== "TBD" && section.items.status !== "TBD") {
     return (
-      <OurValueDeck
+      <OurValueCinematicSection
         id="value"
         heading={section.heading.value}
+        lead={section.supporting && section.supporting.status !== "TBD" ? section.supporting.value : undefined}
         cards={section.items.value.map((item) => ({
           title: textOr(item.title, ""),
           description: textOr(item.description, ""),
@@ -484,7 +481,6 @@ export function HomeView({ vm, bookingMode = "mock" }: { vm: HomeViewModel; book
       {/* Cinematic Globe Philosophy (preview only, Human instruction 2026-11-14): after all Home content, right before the footer. */}
       <div data-home-section="philosophy"><PhilosophySection /></div>
       <HomeSceneStack />
-      <StackDepth />
     </>
   );
 }
