@@ -33,6 +33,7 @@ import {
 } from "../../booking/privateGuideRequest";
 import type { PrivateGuideRequestModel, RequestOption } from "../../content/privateGuideRequest";
 import { attemptAfter, createBookingRequestSubmitHandler, prepareSubmission } from "../../booking/bookingRequestApi";
+import { trackBookingRequestReceived } from "../analytics/trackEvent";
 import type { BookingRequestBody } from "../../booking/bookingRequestContract";
 import { TbdText, textOr } from "../Tbd";
 
@@ -483,6 +484,8 @@ export function PrivateGuideRequestForm({
     let next: PrivateGuideRequestOutcome;
     try {
       const result = await submit(body);
+      // Analytics only: counted when the API accepted the request (live mode), never on click.
+      if (model.mode === "live" && result.ok && result.kind === "received") trackBookingRequestReceived("private_guide", result.bookingRef);
       next = outcomeFor(result, model.mode);
       // Keep the same body / submissionId for a retry, except after 409 (or success).
       setAttempt(attemptAfter(result, body));

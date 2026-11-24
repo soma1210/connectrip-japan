@@ -19,6 +19,7 @@ import { FlowSteps } from "../components/FlowSteps";
 import { LiveInquiryForm } from "../components/LiveInquiryForm";
 import { PreviewInquiryForm } from "../components/PreviewInquiryForm";
 import { PrivateGuideRequestForm } from "../components/booking/PrivateGuideRequestForm";
+import { BookingStartTracker } from "../components/analytics/BookingStartTracker";
 import { PrivateGuidePricing } from "../components/PrivateGuidePricing";
 import { PRIVATE_GUIDE_PRICING_VISIBLE, getPrivateGuidePricing } from "../content/privateGuidePricing";
 import type { PrivateGuideRequestModel } from "../content/privateGuideRequest";
@@ -50,7 +51,9 @@ export function PrivateGuideView({ vm, request }: { vm: PrivateGuideViewModel; r
 
       {request ? (
         <Section id="request" className="scroll-mt-20">
-          <PrivateGuideRequestForm model={request} />
+          <BookingStartTracker form="private_guide">
+            <PrivateGuideRequestForm model={request} />
+          </BookingStartTracker>
         </Section>
       ) : null}
       <Section>

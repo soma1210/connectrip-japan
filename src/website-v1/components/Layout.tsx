@@ -11,6 +11,8 @@ import { getFooterInformation, type RecruitNav } from "../content/pages";
 import { MobileMenu } from "./MobileMenu";
 import { RecruitDropdown } from "./RecruitMenu";
 import { TbdText } from "./Tbd";
+import { CookieSettingsButton } from "./analytics/CookieSettingsButton";
+import { GA_ENABLED } from "../analytics";
 
 const SOCIAL_ICONS = {
   tiktok: FaTiktok,
@@ -184,6 +186,8 @@ export function V1Footer({ layout }: { layout: LayoutViewModel; recruit: Recruit
                 <TbdText value={item.label} slot="Nav label" />
               </Link>
             ))}
+            {/* Reopens the cookie panel; only where analytics (and so the banner) exists. */}
+            {GA_ENABLED ? <CookieSettingsButton className={FOOTER_LINK} /> : null}
           </FooterGroup>
         </div>
       </Container>

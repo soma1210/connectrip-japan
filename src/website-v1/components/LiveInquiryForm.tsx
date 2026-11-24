@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import type { InquiryFormModel, InquirySubmitHandler } from "@/contracts";
 import { InquiryForm } from "./InquiryForm";
+import { trackContactReceived } from "./analytics/trackEvent";
 
 /**
  * Live wiring of the Inquiry form (2026-11-16): `POST /api/v1/inquiries`.
@@ -39,6 +40,8 @@ export function LiveInquiryForm({ model }: { model: InquiryFormModel }) {
     }
     const { response, body } = result;
     if (response.ok && body?.ok) {
+      // Analytics only (no effect on the form): counted once per stored inquiry, after the API confirmed it.
+      if (submissionId.current) trackContactReceived(submissionId.current);
       submissionId.current = null;
       return { ok: true };
     }
