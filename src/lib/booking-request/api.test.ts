@@ -4,6 +4,12 @@ import { bookingGasFromEnv, createBookingGas, signBookingEnvelope } from "./gas"
 import { addCalendarDays, bookingBodyHash, tokyoDate, validateBookingRequest } from "./rules";
 import { submitBookingRequest, type BookingGas } from "./submit";
 
+// Safety (2026-11-24): Bun loads .env.local on its own, and it can point at a real Neon database.
+// This test must only ever see "no database configured", so it never reads or writes real data.
+// (The route reads POSTGRES_URL per request, not at import, so clearing it here is in time.)
+delete process.env.POSTGRES_URL;
+delete process.env.POSTGRES_URL_NON_POOLING;
+
 const id = "8f0c1c3e-6b1a-4e3a-9c2d-1a2b3c4d5e6f";
 const url = "https://script.google.com/macros/s/test-deployment/exec";
 const secret = "test-only-secret-with-at-least-32-characters";

@@ -11,6 +11,7 @@ import { routeHref } from "@/website-v1/routes";
 import "../globals.css";
 import "@/website-v1/components/wd/wd.css";
 import { WdMotion } from "@/website-v1/components/wd/WdMotion";
+import { Analytics } from "@/website-v1/components/analytics/Analytics";
 
 // One gothic family for the whole site (Human instruction 2026-11-22).
 const interTight = Inter_Tight({
@@ -58,6 +59,8 @@ export default function WebsiteV1Layout({ children }: { children: ReactNode }) {
         <V1Footer layout={layout} recruit={recruit} />
         {/* White Desert–style motion layer (components/wd). */}
         <WdMotion />
+        {/* Cookie consent + GA4 (Vercel Production only; see website-v1/analytics.ts). */}
+        <Analytics />
       </body>
     </html>
   );

@@ -7,6 +7,7 @@ import { ctaDataAttributes, type CtaSpec } from "@/contracts";
 import { cn } from "@/lib/cn";
 import { timeLabel, type BookableTour } from "@/lib/booking-request/tours";
 import { createBookingRequestSubmitHandler, newSubmissionId } from "../../booking/bookingRequestApi";
+import { trackBookingRequestReceived, trackBookingRequestStart } from "../analytics/trackEvent";
 import type { TourBookingRequestBody } from "../../booking/bookingRequestContract";
 import { outcomeFor, type PrivateGuideRequestOutcome, type PrivateGuideRequestResult, type RejectedReason } from "../../booking/privateGuideRequest";
 import {
@@ -139,6 +140,7 @@ export function TourBookingRequest({
     }
     getLenis()?.stop();
     dialogRef.current?.showModal();
+    trackBookingRequestStart("fixed_tour", tour.experienceId); // analytics only
   }
 
   function close() {
@@ -191,6 +193,8 @@ export function TourBookingRequest({
       result = { ok: false, kind: "unknown", cause: "unexpected" };
     }
     inFlight.current = false;
+    // Analytics only: counted when the API accepted the request (live mode), never on click.
+    if (mode === "live" && result.ok && result.kind === "received") trackBookingRequestReceived("fixed_tour", result.bookingRef, tour.experienceId);
 
     // Keep the same body for "send again" unless it succeeded or the server says the id belongs to another body.
     if ((result.ok && result.kind === "received") || (!result.ok && result.kind === "conflict")) attempt.current = null;

@@ -77,6 +77,10 @@ export const PRIVACY_DECISIONS = [
   { id: "privacyContact", decidedAt: "2026-11-15", decision: "Privacy contact: contact@connectripjapan.com" },
   { id: "requestFee", decidedAt: "2026-11-15", decision: "Requests for disclosure, correction, suspension of use and similar: free of charge in principle" },
   { id: "address", decidedAt: "2026-11-15", decision: "Company address: 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan (大阪市西淀川区中島1丁目15番25号)" },
+  // Google Analytics basic settings (owner instruction 2026-11-24). Whether GA4 is actually set this way is a tech check below.
+  { id: "ga4Retention", decidedAt: "2026-11-24", decision: "GA4 data retention (event and user data): 14 months" },
+  { id: "ga4NoAdvertising", decidedAt: "2026-11-24", decision: "GA4: Google signals off; no Google Ads link" },
+  { id: "consentValidity", decidedAt: "2026-11-24", decision: "Cookie consent record kept in the browser for 12 months, then asked again" },
 ] as const;
 
 /**
@@ -99,6 +103,12 @@ export const PRIVACY_CONTACT_EMAIL = "contact@connectripjapan.com";
  */
 export const PRIVACY_TECH_CHECKS: { id: string; label: string; done: boolean }[] = [
   { id: "privacyContactDelivery", label: "contact@connectripjapan.com: send and receive test, who reads it and the reply deadline", done: false },
+  // Google Analytics (2026-11-24): the Section 9 text is true only with these settings.
+  // done: confirmed by the owner in the GA4 admin, reported 2026-11-24.
+  { id: "ga4Retention", label: "GA4 → Admin → Data collection and modification → Data retention: event data and user data set to 14 months (Section 9)", done: true },
+  { id: "ga4NoAdvertising", label: "GA4: Google signals off, no Google Ads link, all data sharing settings off (Sections 7 and 9)", done: true },
+  // done: checked with `vercel env ls` on 2026-11-24 (Production only; nothing in Preview / Development).
+  { id: "ga4ProductionOnly", label: "Vercel: NEXT_PUBLIC_GA_MEASUREMENT_ID set for Production only (not Preview / Development)", done: true },
 ];
 
 export type PolicyBlock =
@@ -181,7 +191,7 @@ export const PRIVACY_POLICY = {
         p("If you pay an invoice through Stripe, you enter your card or payment details on Stripe's systems, and we do not receive or store your full card number. We receive the information we need to confirm and record your payment, such as the amount, date, payment status and limited card details (for example, the card brand and last four digits)."),
         h3("Information collected automatically"),
         p("When you visit this website, the servers of our hosting provider (Vercel) process technical information that your browser sends, such as your IP address, browser type, device information, the pages requested and the date and time of access. This is used to deliver the website, keep it secure and prevent abuse. Our booking form also uses your IP address for a short time to limit repeated submissions."),
-        p("This website does not currently use cookies for analytics or advertising. See Section 9."),
+        p("If you agree, this website also uses Google Analytics, which uses cookies to collect information about how you use the website. We do not use it unless you accept analytics cookies, and we do not use advertising cookies. See Section 9."),
       ],
     },
     {
@@ -195,7 +205,7 @@ export const PRIVACY_POLICY = {
           "through the external forms we link to, such as the Google Forms used for guide and partner applications;",
           "from the guides who deliver your tour, for example if something happens on the day that we need to follow up on;",
           "from travel companies or other business partners who make a request on your behalf, where this applies; and",
-          "automatically, when you use this website (see Section 3).",
+          "automatically, when you use this website (see Sections 3 and 9).",
         ),
       ],
     },
@@ -213,6 +223,7 @@ export const PRIVACY_POLICY = {
           "to review guide applications, arrange interviews and manage our work with guides;",
           "to reply to business inquiries and manage our relationships with business partners;",
           "to run, maintain and secure this website, and to prevent fraud, spam and abuse;",
+          "to understand how visitors find and use this website, through Google Analytics, if you accept analytics cookies (see Section 9);",
           "to improve our services, using information that does not identify you wherever possible;",
           "to send marketing messages, only if you have agreed to receive them (see below); and",
           "to comply with laws and regulations, respond to requests from public authorities, and establish or defend legal claims.",
@@ -257,6 +268,7 @@ export const PRIVACY_POLICY = {
             ["Resend", "Sending an email notice to our staff when a booking request or inquiry arrives", "The details of your request, including your name and email address"],
             ["Microsoft (Microsoft 365)", "Our company mailbox (contact@connectripjapan.com): receiving and replying to email", "Your email address and the content of your messages"],
             ["Google (Google Forms)", "Guide and partner application forms", "The details you enter in those forms"],
+            ["Google (Google Analytics)", "Measuring how visitors use this website, only if you accept analytics cookies (see Section 9)", "Information about your visit and your device collected through cookies, such as the pages you view, how you arrived at the website and your approximate location"],
             ["Stripe (when used for payment)", "Invoices and payments", "Your name, email address and payment information"],
             ["Neon (past application data)", "Storing guide applications and partner survey answers received through our earlier website", "The details given in those forms"],
           ],
@@ -282,10 +294,29 @@ export const PRIVACY_POLICY = {
       title: "Cookies and Analytics",
       blocks: [
         p("Cookies are small text files that a website stores in your browser. Similar technologies include local storage and session storage."),
-        p("This website does not currently use analytics, advertising or social media tracking cookies, and does not load tools such as Google Analytics or Google Tag Manager. We do not use advertising tags."),
+        h3("Google Analytics"),
+        p("With your consent, this website uses Google Analytics 4, a web analytics service provided by Google LLC (United States). We use it to understand how visitors find and use this website, for example which pages are viewed, where visits come from (such as a search engine, social media or another website), the approximate country or region of visitors and the type of device, so that we can improve the website and our services. We look at this information in aggregate reports and do not use it to identify individual visitors."),
+        p("If you accept analytics cookies, Google Analytics stores cookies in your browser (named \"_ga\" and \"_ga_\" followed by an identifier) that keep a random identifier for up to 2 years, and your browser sends Google information such as:"),
+        ul(
+          "the pages you visit, the page or website you came from, and the date, time and length of your visit;",
+          "your interactions with the website, such as scrolling, clicks on links to other websites, and whether a booking request or inquiry was successfully sent (but not what you wrote in it);",
+          "your browser, operating system, language, screen size and type of device; and",
+          "your IP address, which Google uses to estimate your approximate location (such as your country, region and city). Google Analytics does not log or store IP addresses.",
+        ),
+        p("We do not send Google your name, email address, phone number, the content of your messages, or any other information you enter in our forms. We do not use Google Analytics advertising features, such as Google signals or remarketing, our Google Analytics account is not linked to Google Ads, and we do not allow this information to be used for personalized advertising."),
+        p("Google handles this information on its systems, which may be located in the United States and other countries outside Japan (see Section 8). For how Google uses information from websites that use its services, see https://policies.google.com/technologies/partner-sites and Google's Privacy Policy at https://policies.google.com/privacy"),
+        p("We have set Google Analytics to delete the visit-level and user-level information linked to its cookies after 14 months. Reports that only show totals and do not identify individual visitors may be kept longer."),
+        h3("Your choice"),
+        p("Google Analytics is off until you choose. When you first visit, a banner asks whether you accept analytics cookies. Google Analytics is loaded only if you select \"Accept Analytics\". If you select \"Reject Analytics\" or make no choice, it is not loaded and no information is sent to Google through it. Closing the banner or continuing to browse is not treated as consent. Rejecting analytics cookies does not affect your use of this website."),
+        p("You can change your choice or withdraw your consent at any time with the \"Cookie Settings\" link at the bottom of every page. If you withdraw it, Google Analytics stops collecting information from that point and we delete its cookies from your browser. Withdrawing consent does not affect information collected before you withdrew it."),
+        p("We remember your choice in your browser's local storage for 12 months, after which we ask again. This record contains only your choice and the date, stays in your browser and is not sent to us or to Google."),
+        p("You can also block or delete cookies in your browser settings, or use Google's browser add-on to opt out of Google Analytics: https://tools.google.com/dlpage/gaoptout"),
+        h3("Other storage"),
+        p("We do not use advertising or social media tracking cookies, and we do not use advertising tags."),
         p("We use your browser's session storage for one functional purpose only: to remember, while your browser tab is open, that the opening animation on our home page has already been shown. This stays in your browser, is not sent to us, and is cleared when you close the tab."),
-        p("You can also block or delete cookies in your browser settings."),
+        p("If you have questions about cookies or Google Analytics, please contact us (see Section 14)."),
       ],
+      pending: "【公開前に承認が必要・2026-11-24 GA4 追加】(1) この章と第3・4・5・7・10章の GA4 に関する追記文言の法務確認と承認。(2) 基本設定（保持14か月・Google シグナル無効・Google 広告リンクなし・データ共有すべてオフ・同意記録12か月）は 2026-11-24 に決定し、GA4 管理画面の設定もオーナーが確認済み。(2b) 第13章の「重要な変更は事前に告知」に当たるかの判断と、当たる場合の告知方法・期間。(3) Google への送信が個人情報保護法上の「外国にある第三者への提供」「個人関連情報の第三者提供」に当たるかの整理（第8章の確認事項と合わせる）。(4) 電気通信事業法の外部送信規律の該当性の判定記録。(5) 公開日に「Last updated」を更新。",
     },
     {
       number: 10,
@@ -296,6 +327,7 @@ export const PRIVACY_POLICY = {
         p("Where a law requires us to keep certain records, such as accounting and tax records, we keep them for the period that law requires and use them only for that reason."),
         p("When we no longer need personal information, we delete it or make it anonymous without delay."),
         p("The IP address that our booking and inquiry forms use to limit repeated submissions is kept for about 10 minutes."),
+        p("For how long Google Analytics information and your cookie choice are kept, see Section 9."),
       ],
     },
     {
