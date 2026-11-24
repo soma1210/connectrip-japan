@@ -134,7 +134,7 @@ const ul = (...items: string[]): PolicyBlock => ({ kind: "ul", items });
 export const PRIVACY_POLICY = {
   heading: "Privacy Policy",
   subheading: "PRIVACY POLICY",
-  lastUpdated: "2026-11-19",
+  lastUpdated: "2026-11-24", // GA4 / cookie consent added (published 2026-11-24)
   sections: [
     {
       number: 1,
@@ -316,7 +316,7 @@ export const PRIVACY_POLICY = {
         p("We use your browser's session storage for one functional purpose only: to remember, while your browser tab is open, that the opening animation on our home page has already been shown. This stays in your browser, is not sent to us, and is cleared when you close the tab."),
         p("If you have questions about cookies or Google Analytics, please contact us (see Section 14)."),
       ],
-      pending: "【公開前に承認が必要・2026-11-24 GA4 追加】(1) この章と第3・4・5・7・10章の GA4 に関する追記文言の法務確認と承認。(2) 基本設定（保持14か月・Google シグナル無効・Google 広告リンクなし・データ共有すべてオフ・同意記録12か月）は 2026-11-24 に決定し、GA4 管理画面の設定もオーナーが確認済み。(2b) 第13章の「重要な変更は事前に告知」に当たるかの判断と、当たる場合の告知方法・期間。(3) Google への送信が個人情報保護法上の「外国にある第三者への提供」「個人関連情報の第三者提供」に当たるかの整理（第8章の確認事項と合わせる）。(4) 電気通信事業法の外部送信規律の該当性の判定記録。(5) 公開日に「Last updated」を更新。",
+      pending: "【公開前に承認が必要・2026-11-24 GA4 追加】(1) この章と第3・4・5・7・10章の GA4 に関する追記文言の法務確認と承認。(2) 基本設定（保持14か月・Google シグナル無効・Google 広告リンクなし・データ共有すべてオフ・同意記録12か月）は 2026-11-24 に決定し、GA4 管理画面の設定もオーナーが確認済み。(2b) 第13章の「重要な変更は事前に告知」に当たるかの判断と、当たる場合の告知方法・期間。(3) Google への送信が個人情報保護法上の「外国にある第三者への提供」「個人関連情報の第三者提供」に当たるかの整理（第8章の確認事項と合わせる）。(4) 電気通信事業法の外部送信規律の該当性の判定記録。(5) 「Last updated」は公開日 2026-11-24 に更新済み。",
     },
     {
       number: 10,
