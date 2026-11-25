@@ -83,6 +83,8 @@ export function organizationJsonLd(): JsonLd {
     logo: `${SITE_URL}/images/logo/logo.png`,
     foundingDate: isoDate(companyRow("Founded")),
     address: address ? { "@type": "PostalAddress", streetAddress: address, addressCountry: "JP" } : undefined,
+    // The Private Guide areas the Home and Private Guide pages name (2026-11-25).
+    areaServed: ["Osaka", "Kyoto", "Nara", "Kobe"].map((name) => ({ "@type": "City", name })),
     // Profiles linked in the site footer (WhatsApp is a chat link, not a profile).
     sameAs: [socialLinks.tiktok, socialLinks.instagram.split("?")[0]],
   };

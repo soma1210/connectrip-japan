@@ -32,7 +32,7 @@ export function HowItWorksScene({ id, heading, flows }: { id: string; heading: s
 
         <div className="relative mx-auto w-full max-w-(--container-app) px-5 py-16 md:px-10 md:pt-24 md:pb-12">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <h2 data-wd-letters aria-label={heading} className="font-heading-en text-5xl font-bold tracking-[0.06em] text-gold [perspective:600px] md:text-7xl">
+            <h1 data-wd-letters aria-label={heading} className="font-heading-en text-5xl font-bold tracking-[0.06em] text-gold [perspective:600px] md:text-7xl">
               {heading.split(" ").map((word, w, words) => (
                 <span key={w} aria-hidden className="inline-block whitespace-nowrap">
                   {[...word].map((ch, i) => (
@@ -43,7 +43,7 @@ export function HowItWorksScene({ id, heading, flows }: { id: string; heading: s
                   {w < words.length - 1 ? " " : null}
                 </span>
               ))}
-            </h2>
+            </h1>
             {/* Service tabs: show which service is on screen; choosing one glides the page to it. */}
             <div data-hiw-tabs className="relative flex gap-6 pb-3 md:gap-10">
               {list.map((flow, f) => (
