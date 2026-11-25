@@ -24,7 +24,9 @@ export function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.95, allowNestedScroll: true, anchors: { offset: -96 } });
+    // Tuned 2026-11-22 (Human instruction: one flick glided two slides on): a shorter glide (lerp
+    // 0.085 → 0.13) and less distance per wheel / trackpad movement (0.95 → 0.7), still smooth.
+    lenis = new Lenis({ lerp: 0.13, wheelMultiplier: 0.7, allowNestedScroll: true, anchors: { offset: -96 } });
     lenis.on("scroll", ScrollTrigger.update);
     const tick = (time: number) => lenis?.raf(time * 1000);
     gsap.ticker.add(tick);

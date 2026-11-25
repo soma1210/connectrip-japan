@@ -31,6 +31,12 @@ export function ShowreelMotion({ targetId }: { targetId: string }) {
     const cam = root.querySelector<HTMLElement>("[data-sr-cam]");
     const items = root.querySelectorAll<HTMLElement>("[data-sr-item]");
     const shade = root.querySelector<HTMLElement>("[data-sr-shade]");
+    // Editorial decoration of the tour panel (FeaturedPop).
+    const panel = root.querySelector<HTMLElement>("[data-sr-panel]");
+    const words = root.querySelectorAll<HTMLElement>("[data-sr-word]");
+    const lines = root.querySelectorAll<HTMLElement>("[data-sr-line]");
+    const frame = root.querySelector<HTMLElement>("[data-sr-frame]");
+    const seal = root.querySelector<HTMLElement>("[data-sr-seal]");
     if (!photo) return;
 
     const mm = gsap.matchMedia();
@@ -60,12 +66,21 @@ export function ShowreelMotion({ targetId }: { targetId: string }) {
         .to(photo, { clipPath: "inset(0% 46% 0% 0% round 0px)", ease: "power3.inOut", duration: 0.26 }, 0.52)
         .fromTo(shade, { opacity: 0 }, { opacity: 1, duration: 0.2 }, 0.56)
         .fromTo(items, { x: 120, autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: "power3.out", stagger: 0.035, duration: 0.18 }, 0.6);
+      // The panel and its decoration stay out of the opening (they must not sit over the giant title).
+      if (panel) tl.fromTo(panel, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04, immediateRender: true }, 0.57);
+      if (words.length) tl.fromTo(words, { yPercent: 115 }, { yPercent: 0, ease: "power3.out", stagger: 0.008, duration: 0.14, immediateRender: true }, 0.61);
+      if (lines.length) tl.fromTo(lines, { scaleX: 0 }, { scaleX: 1, ease: "power2.inOut", stagger: 0.012, duration: 0.14, immediateRender: true }, 0.63);
+      if (frame) tl.fromTo(frame, { autoAlpha: 0, scale: 1.03 }, { autoAlpha: 1, scale: 1, ease: "power2.out", duration: 0.16, immediateRender: true }, 0.66);
+      if (seal) tl.fromTo(seal, { scale: 1.9, rotation: -14, autoAlpha: 0 }, { scale: 1, rotation: 0, autoAlpha: 1, ease: "expo.out", duration: 0.1, immediateRender: true }, 0.74);
     });
     mm.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
       if (letters.length) gsap.from(letters, { yPercent: 110, autoAlpha: 0, stagger: 0.025, duration: 1, ease: "expo.out", scrollTrigger: { trigger: title, start: "top 88%" } });
       gsap.fromTo(photo, { clipPath: "inset(18% 12% 18% 12% round 18px)" }, { clipPath: "inset(0% 0% 0% 0% round 0px)", ease: "none", scrollTrigger: { trigger: photo, start: "top 95%", end: "center 55%", scrub: 0.5 } });
       gsap.fromTo(cam, { scale: 1.35 }, { scale: 1, ease: "none", scrollTrigger: { trigger: photo, start: "top bottom", end: "bottom top", scrub: true } });
       gsap.from(items, { y: 40, autoAlpha: 0, stagger: 0.08, duration: 1, ease: "expo.out", scrollTrigger: { trigger: items[0], start: "top 90%" } });
+      if (words.length) gsap.from(words, { yPercent: 115, stagger: 0.03, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: words[0], start: "top 90%" } });
+      lines.forEach((l) => gsap.from(l, { scaleX: 0, duration: 1.2, ease: "power2.inOut", scrollTrigger: { trigger: l, start: "top 92%" } }));
+      if (seal) gsap.from(seal, { scale: 1.9, rotation: -14, autoAlpha: 0, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: seal, start: "top 85%" } });
     });
     return () => mm.revert();
   }, [targetId]);

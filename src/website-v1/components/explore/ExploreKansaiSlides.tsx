@@ -5,7 +5,6 @@ import {
   useRef,
   useState,
   type CSSProperties,
-  type ReactNode,
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +18,17 @@ import type {
   getExploreHomeSlides,
 } from "../../content/explore/home";
 import s from "./ExploreKansaiSlides.module.css";
+import { SelectHead, SelectTape } from "./SelectPop";
+import pop from "./SelectPop.module.css";
+
+// The kinds of news the Updates slide covers (its description), carried by its running band.
+const UPDATE_WORDS = [
+  "Events",
+  "Transport",
+  "Seasonal highlights",
+  "Attractions",
+  "Travel advisories",
+];
 
 type Data = ReturnType<typeof getExploreHomeSlides>;
 
@@ -134,91 +144,124 @@ export function ExploreKansaiSlides({
       </div>
 
       {/* Slide 1 — Connectrip Japan Select */}
+      {/* Black, as the Featured Tour slide (Human instruction 2026-11-23: elegant, after the
+          Osaka Tenmangu slide; it was cream "paper"). */}
       <div
         data-slide="select"
-        className="relative flex min-h-[100svh] items-center"
+        // No sticky hold and no ribbon / band (Human instruction 2026-11-25): Updates follows
+        // Select in normal flow, so the two slides never overlap.
+        className="relative flex min-h-[100svh] items-center overflow-clip bg-[#0f0e0d]"
       >
-        <div className="mx-auto w-full max-w-(--container-app) px-5 py-24 md:px-10 md:py-20">
-          <SlideHeading
+        <div className="relative mx-auto w-full max-w-(--container-app) px-5 pt-24 pb-14 md:px-10 md:py-20 lg:flex lg:h-svh lg:flex-col lg:pt-[calc(81px+clamp(2rem,7svh,4rem))] lg:pb-[clamp(1.25rem,5svh,3rem)]">
+          <SelectHead
             eyebrow={select.eyebrow}
             title={select.title}
             description={select.description}
             titleId={`${id}-select`}
+            index="03"
+            seal="関西"
           />
+          {/* Wide screens: one gold hairline between the heading and the guides, with the
+              guide count and the link to all guides (replaces the running band, 2026-11-25). */}
+          <div
+            data-anim="fade"
+            style={{ "--d": "250ms" } as CSSProperties}
+            className="mt-[clamp(1.25rem,4svh,2.5rem)] hidden items-center justify-between border-t border-gold/30 pt-[clamp(0.6rem,1.6svh,1rem)] lg:flex"
+          >
+            <p className="font-heading-en text-[11px] tracking-[0.3em] text-cream/60 uppercase">
+              Guides <span className="text-gold">01 — {String(select.cards.length).padStart(2, "0")}</span>
+            </p>
+            <Link
+              href={select.more.href}
+              className="group inline-flex items-center gap-2 font-heading-en text-sm tracking-[0.1em] text-gold hover:text-cream"
+            >
+              {select.more.label}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+            </Link>
+          </div>
           {/* Large screens (≥1024 px): strip accordion (the hovered / current guide opens wide, the rest stay narrow strips). */}
-          <div data-anim="fade" style={{ "--d": "300ms" } as CSSProperties} className="mt-10 hidden lg:block">
+          <div
+            data-anim="fade"
+            style={{ "--d": "300ms" } as CSSProperties}
+            // Wide screens (Human instruction 2026-11-23): the strips take the rest of the screen
+            // under the heading and the band, so every guide is fully in view on short laptop screens too.
+            className="mt-10 hidden lg:mt-[clamp(0.75rem,2svh,1.25rem)] lg:block lg:max-h-[40rem] lg:min-h-[220px] lg:flex-1"
+          >
             <SelectStrips cards={select.cards} />
           </div>
           {/* Phones and tablets: swipe cards. */}
-          <ul className={cn(s.rail, "-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-6 md:-mx-10 md:scroll-px-10 md:px-10 lg:hidden")}>
+          <ul
+            className={cn(
+              s.rail,
+              "-mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-6 md:-mx-10 md:scroll-px-10 md:px-10 lg:hidden",
+            )}
+          >
             {select.cards.map((c, i) => (
-              <li key={c.id} data-anim="rise" style={{ "--i": Math.min(i, 3), "--d": "320ms" } as CSSProperties} className="w-[78%] shrink-0 snap-start sm:w-[46%] md:w-[38%]">
+              <li
+                key={c.id}
+                data-anim="rise"
+                style={
+                  { "--i": Math.min(i, 3), "--d": "320ms" } as CSSProperties
+                }
+                className="w-[78%] shrink-0 snap-start sm:w-[46%] md:w-[38%]"
+              >
                 <SelectCard card={c} />
               </li>
             ))}
           </ul>
-          {/* The Osaka Map card was taken off this slide (Human instruction 2026-11-15); the map page and its data stay. */}
-          <div className="mt-8 md:mt-10">
+                    {/* The Osaka Map card was taken off this slide (Human instruction 2026-11-15); the map page and its data stay. */}
+          <div className="mt-8 md:mt-10 lg:hidden">
             <MoreLink {...select.more} />
           </div>
         </div>
       </div>
 
       {/* Slide 2 — Kansai Travel Updates */}
+      {/* While there are no updates yet (2026-11-25): heading on the left, the notice and the link beside
+          it, and the running band of what the updates cover across the foot of the slide. Phones keep
+          one full screen; wide screens take the height of their content (no empty screen). */}
       <div
         ref={second}
         data-slide="updates"
-        className="relative flex min-h-[100svh] items-center"
+        // Phones too take the height of their content (2026-11-25): the band follows the link
+        // instead of waiting at the foot of an emptier screen.
+        className="relative flex flex-col overflow-clip border-t border-[#cfa95f]/25 bg-[#141210] md:min-h-[100svh] lg:min-h-0"
       >
-        <div className="mx-auto w-full max-w-(--container-app) px-5 py-24 md:px-10 md:py-28">
-          <NewsRail data={updates} titleId={`${id}-updates`} />
-          <MoreLink {...updates.more} />
+        <div className="relative mx-auto flex w-full max-w-(--container-app) flex-1 flex-col justify-center px-5 pt-16 pb-9 md:px-10 md:pt-28 md:pb-12 lg:pt-[clamp(6.5rem,14svh,8.5rem)] lg:pb-[clamp(2.75rem,6svh,4rem)]">
+          <div
+            className={cn(
+              updates.cards.length === 0 &&
+                "lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(20rem,29rem)] lg:items-end lg:gap-x-[clamp(3rem,6vw,6.5rem)]",
+            )}
+          >
+            <SelectHead
+              tone="dark"
+              index="04"
+              eyebrow={updates.eyebrow}
+              title={updates.title}
+              description={updates.description}
+              titleId={`${id}-updates`}
+            />
+            {updates.cards.length === 0 ? (
+              <div className="mt-10 lg:mt-0 lg:mb-2">
+                <NewsRail data={updates} />
+                <MoreLink {...updates.more} className="mt-6 md:mt-7" />
+              </div>
+            ) : null}
+          </div>
+          {updates.cards.length > 0 ? (
+            <>
+              <NewsRail data={updates} />
+              <MoreLink {...updates.more} />
+            </>
+          ) : null}
+        </div>
+        {/* Phones: room under the band, so it reads whole above the edge of the screen. */}
+        <div className="pb-9 md:pb-0">
+          <SelectTape tone="dark" size="feature" words={UPDATE_WORDS} />
         </div>
       </div>
     </section>
-  );
-}
-
-function SlideHeading({
-  eyebrow,
-  title,
-  description,
-  titleId,
-  aside,
-}: {
-  eyebrow: string;
-  title: string;
-  description: string;
-  titleId: string;
-  aside?: ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <div className="max-w-3xl">
-        <p
-          data-anim="fade"
-          className="font-heading-en text-xs tracking-[0.28em] text-gold uppercase md:text-sm"
-        >
-          {eyebrow}
-        </p>
-        <h2
-          id={titleId}
-          data-anim="fade"
-          style={{ "--d": "120ms" } as CSSProperties}
-          className="mt-3 font-heading-en text-[clamp(2.3rem,9vw,3.2rem)] leading-[1.04] tracking-[0.01em] text-cream drop-shadow-[0_2px_24px_rgba(5,11,24,0.55)] md:text-[clamp(3rem,4.6vw,4.6rem)]"
-        >
-          {title}
-        </h2>
-        <p
-          data-anim="fade"
-          style={{ "--d": "240ms" } as CSSProperties}
-          className="mt-4 max-w-2xl text-sm leading-relaxed text-cream/80 md:text-base"
-        >
-          {description}
-        </p>
-      </div>
-      {aside}
-    </div>
   );
 }
 
@@ -255,12 +298,16 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
   // Auto-advance while on screen and not being pointed at.
   useEffect(() => {
     const el = root.current;
-    if (!el || n < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || n < 2 || matchMedia("(prefers-reduced-motion: reduce)").matches)
+      return;
     let visible = false;
-    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), { threshold: 0.4 });
+    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), {
+      threshold: 0.4,
+    });
     io.observe(el);
     const id = window.setInterval(() => {
-      if (visible && !hover.current && !el.contains(document.activeElement)) setActive((a) => (a + 1) % n);
+      if (visible && !hover.current && !el.contains(document.activeElement))
+        setActive((a) => (a + 1) % n);
     }, AUTO_MS);
     return () => {
       io.disconnect();
@@ -277,7 +324,14 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
       gsap.fromTo(
         el.querySelectorAll("[data-strip]"),
         { clipPath: "inset(100% 0% 0% 0%)", y: 60 },
-        { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 1.3, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: el, start: "top 85%" } },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          y: 0,
+          duration: 1.3,
+          ease: "expo.out",
+          stagger: 0.06,
+          scrollTrigger: { trigger: el, start: "top 85%" },
+        },
       );
     });
     return () => mm.revert();
@@ -288,7 +342,10 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
       ref={root}
       onMouseEnter={() => (hover.current = true)}
       onMouseLeave={() => (hover.current = false)}
-      className={cn(s.rail, "flex h-[min(68svh,640px)] gap-1.5 overflow-x-auto")}
+      className={cn(
+        s.rail,
+        "flex h-full gap-1.5 overflow-x-auto",
+      )}
     >
       {cards.map((c, i) => {
         const on = i === active;
@@ -311,7 +368,9 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
                 sizes="(min-width: 768px) 50vw, 1px"
                 className={cn(
                   "object-cover transition-[filter,transform] duration-[1100ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-                  on ? "scale-100" : "scale-125 blur-[5px] brightness-[0.5] saturate-[0.7]",
+                  on
+                    ? "scale-100"
+                    : "scale-125 blur-[5px] brightness-[0.5] saturate-[0.7]",
                 )}
               />
             ) : (
@@ -334,7 +393,9 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
             <div
               className={cn(
                 "absolute inset-x-0 bottom-0 p-7 transition-[opacity,transform] duration-700 lg:p-9",
-                on ? "translate-y-0 opacity-100 delay-200" : "pointer-events-none translate-y-6 opacity-0",
+                on
+                  ? "translate-y-0 opacity-100 delay-200"
+                  : "pointer-events-none translate-y-6 opacity-0",
               )}
             >
               <p className="flex flex-wrap items-center gap-x-2 gap-y-1 font-heading-en text-[11px] tracking-[0.18em] text-gold uppercase">
@@ -343,14 +404,31 @@ function SelectStrips({ cards }: { cards: ExploreSlideCard[] }) {
                 </span>
                 <Flags flags={c.flags} />
               </p>
-              <h3 className="mt-3 max-w-[30rem] font-heading-en text-[clamp(1.6rem,2.4vw,2.4rem)] leading-[1.15] text-cream">{c.title}</h3>
-              {c.summary ? <p className="mt-3 line-clamp-2 max-w-[30rem] text-sm leading-relaxed text-cream/80">{c.summary}</p> : null}
+              <h3 className="mt-3 max-w-[30rem] font-heading-en text-[clamp(1.6rem,2.4vw,2.4rem)] leading-[1.15] font-light text-cream">
+                {c.title}
+              </h3>
+              {c.summary ? (
+                <p className="mt-3 line-clamp-2 max-w-[30rem] text-sm leading-relaxed text-cream/80">
+                  {c.summary}
+                </p>
+              ) : null}
               <span className="mt-5 inline-flex items-center gap-2 font-heading-en text-xs tracking-[0.14em] text-gold uppercase">
-                Read the guide <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden />
+                Read the guide{" "}
+                <ArrowRight
+                  className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1"
+                  aria-hidden
+                />
               </span>
             </div>
             {/* Timer line of the auto-advance. */}
-            {on ? <span key={`t${active}`} aria-hidden className={s.timer} style={{ "--t": `${AUTO_MS}ms` } as CSSProperties} /> : null}
+            {on ? (
+              <span
+                key={`t${active}`}
+                aria-hidden
+                className={s.timer}
+                style={{ "--t": `${AUTO_MS}ms` } as CSSProperties}
+              />
+            ) : null}
           </Link>
         );
       })}
@@ -364,7 +442,7 @@ function SelectCard({ card }: { card: ExploreSlideCard }) {
       href={card.href}
       className={cn(
         s.float,
-        "group block overflow-hidden rounded-xl border border-gold/25 bg-navy-dark/70 shadow-[0_24px_60px_-28px_rgba(3,8,20,0.9)] hover:border-gold/60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold",
+        "group block overflow-hidden rounded-[3px] border border-gold/25 bg-[#171513] shadow-[0_24px_50px_-26px_rgba(0,0,0,0.8)] hover:border-gold/60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold",
       )}
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-navy md:aspect-[16/10]">
@@ -395,7 +473,7 @@ function SelectCard({ card }: { card: ExploreSlideCard }) {
           </span>
           <Flags flags={card.flags} />
         </p>
-        <h3 className="mt-2 font-heading-en text-xl leading-snug text-cream transition-colors group-hover:text-gold md:text-[1.4rem]">
+        <h3 className="mt-2 font-heading-en text-xl leading-snug font-light text-cream transition-colors group-hover:text-gold md:text-[1.4rem]">
           {card.title}
         </h3>
         <span className="mt-4 inline-flex items-center gap-2 font-heading-en text-xs tracking-[0.14em] text-gold/90 uppercase">
@@ -417,35 +495,35 @@ function SelectCard({ card }: { card: ExploreSlideCard }) {
  * pauses while the pointer or keyboard focus is on it. Reduced motion: a
  * plain horizontal rail that can be swiped.
  */
-function NewsRail({
-  data,
-  titleId,
-}: {
-  data: Data["updates"];
-  titleId: string;
-}) {
+function NewsRail({ data }: { data: Data["updates"] }) {
   const cards = data.cards;
   return (
     <>
-      <SlideHeading
-        eyebrow={data.eyebrow}
-        title={data.title}
-        description={data.description}
-        titleId={titleId}
-      />
       {cards.length === 0 ? (
         <p
           data-anim="rise"
           className={cn(
             s.glass,
-            "mt-10 max-w-2xl rounded-xl border border-cream/15 p-6 text-sm leading-relaxed text-cream/80",
+            pop.notice,
+            "max-w-2xl border border-cream/15 p-6 text-sm leading-relaxed text-cream/80 md:p-7 md:text-[0.95rem]",
           )}
         >
           {data.empty}
         </p>
       ) : (
-        <div data-anim="fade" style={{ "--d": "300ms" } as CSSProperties} className={cn(s.loop, "-mx-5 mt-10 md:-mx-10 md:mt-12")}>
-          <div className={s.loopTrack} style={{ "--loop-duration": `${Math.max(24, cards.length * 7)}s` } as CSSProperties}>
+        <div
+          data-anim="fade"
+          style={{ "--d": "300ms" } as CSSProperties}
+          className={cn(s.loop, "-mx-5 mt-10 md:-mx-10 md:mt-12")}
+        >
+          <div
+            className={s.loopTrack}
+            style={
+              {
+                "--loop-duration": `${Math.max(24, cards.length * 7)}s`,
+              } as CSSProperties
+            }
+          >
             {[0, 1].map((copy) => (
               <ul
                 key={copy}
@@ -454,7 +532,10 @@ function NewsRail({
                 className="flex shrink-0 gap-4 pr-4 md:gap-6 md:pr-6"
               >
                 {cards.map((c) => (
-                  <li key={`${copy}-${c.id}`} className="flex w-[78vw] shrink-0 sm:w-[340px] md:w-[360px]">
+                  <li
+                    key={`${copy}-${c.id}`}
+                    className="flex w-[78vw] shrink-0 sm:w-[340px] md:w-[360px]"
+                  >
                     <NewsCard card={c} hidden={copy === 1} />
                   </li>
                 ))}
@@ -467,12 +548,24 @@ function NewsRail({
   );
 }
 
-function NewsCard({ card, hidden = false }: { card: ExploreNewsCard; hidden?: boolean }) {
+function NewsCard({
+  card,
+  hidden = false,
+}: {
+  card: ExploreNewsCard;
+  hidden?: boolean;
+}) {
   const body = (
     <>
       {card.image ? (
         <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl">
-          <Image src={card.image.src} alt={hidden ? "" : card.image.alt} fill sizes="(min-width: 768px) 360px, 78vw" className="object-cover transition-transform duration-[1.2s] group-hover:scale-[1.06]" />
+          <Image
+            src={card.image.src}
+            alt={hidden ? "" : card.image.alt}
+            fill
+            sizes="(min-width: 768px) 360px, 78vw"
+            className="object-cover transition-transform duration-[1.2s] group-hover:scale-[1.06]"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/70 via-transparent to-transparent" />
         </div>
       ) : null}
@@ -483,29 +576,44 @@ function NewsCard({ card, hidden = false }: { card: ExploreNewsCard; hidden?: bo
           </span>
           <Flags flags={card.flags} />
         </p>
-        <h3 className="mt-3 font-heading-en text-lg leading-snug text-cream transition-colors group-hover:text-gold md:text-[1.25rem]">{card.title}</h3>
+        <h3 className="mt-3 font-heading-en text-lg leading-snug text-cream transition-colors group-hover:text-gold md:text-[1.25rem]">
+          {card.title}
+        </h3>
         <div className="mt-auto flex items-center justify-between pt-5">
-          <span className="text-xs tracking-[0.06em] text-cream/65">{card.date ?? ""}</span>
-          <ArrowRight className="h-5 w-5 text-gold transition-transform group-hover:translate-x-1" strokeWidth={1.5} aria-hidden />
+          <span className="text-xs tracking-[0.06em] text-cream/65">
+            {card.date ?? ""}
+          </span>
+          <ArrowRight
+            className="h-5 w-5 text-gold transition-transform group-hover:translate-x-1"
+            strokeWidth={1.5}
+            aria-hidden
+          />
         </div>
       </div>
     </>
   );
-  const cls = cn(s.glass, "group flex w-full flex-col rounded-xl border border-cream/15 hover:border-gold/60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold");
+  const cls = cn(
+    s.glass,
+    "group flex w-full flex-col rounded-xl border border-cream/15 hover:border-gold/60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold",
+  );
   // Placeholder updates have no page yet: they open the updates hub.
   return (
-    <Link href={card.href ?? exploreUpdatesHref()} tabIndex={hidden ? -1 : undefined} className={cls}>
+    <Link
+      href={card.href ?? exploreUpdatesHref()}
+      tabIndex={hidden ? -1 : undefined}
+      className={cls}
+    >
       {body}
     </Link>
   );
 }
 
-function MoreLink({ href, label }: { href: string; label: string }) {
+function MoreLink({ href, label, className = "mt-8 md:mt-10" }: { href: string; label: string; className?: string }) {
   return (
     <p
       data-anim="fade"
       style={{ "--d": "700ms" } as CSSProperties}
-      className="mt-8 md:mt-10"
+      className={className}
     >
       <Link
         href={href}

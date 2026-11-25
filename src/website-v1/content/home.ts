@@ -5,7 +5,6 @@ import { getHowItWorksFlows } from "./howItWorks";
 import { ACTIVITY_LABELS, AREA_LABELS } from "./privateGuide";
 import { getHomeArticleSummaries, getHomeTravelGuideGroups } from "./travelGuide";
 import { HERO_IMAGES, HERO_PLACEHOLDER_SOURCE } from "../assets/heroImages";
-import { valueCardImages } from "@/data/images";
 import { socialLinks } from "@/data/social-links";
 import { SNS_COPY_EN, SNS_COPY_JA } from "./data/sns";
 import { V1_CONTENT, V1_PREVIEW } from "../config";
@@ -69,7 +68,7 @@ const FINAL_CTA_IMAGE = {
 };
 
 /**
- * OUR VALUE: the current site's section (W1-D07, images from
+ * WHY TRAVEL WITH CONNECTRIP (2026-11-25), formerly OUR VALUE: the current site section (W1-D07, images from
  * `valueCardImages`) with English copy for Website v1 (Human instruction
  * 2026-11-09).
  * Supersedes the T-05 "Why Connectrip" pillars (Local Knowledge / Flexible
@@ -84,37 +83,21 @@ const SNS_SOURCE = "SNS section (content/data/sns.ts, data/social-links). WORKIN
 /** Public mode uses the English version of the same section (2026-11-11). */
 const SNS_COPY = V1_PREVIEW ? SNS_COPY_JA : SNS_COPY_EN;
 
-const OUR_VALUE_SOURCE = "OUR VALUE English copy (Human instruction 2026-11-15, final card copy). WORKING_BASELINE (W1-D07)";
+const OUR_VALUE_SOURCE = "WHY TRAVEL WITH CONNECTRIP: heading and four final titles + lines (Human instruction 2026-11-25; replaces OUR VALUE and its six cards)";
 const ourValue = {
-  heading: "OUR VALUE",
-  subheading: "Discover six reasons to explore Japan with Connectrip Japan.",
-  // Order matches valueCardImages (card i ↔ value-card-{i + 1}.jpg); do not reorder one without the other.
+  heading: "WHY TRAVEL WITH CONNECTRIP",
+  // Four strengths; titles are final (do not edit).
   cards: [
-    { title: "Authentic Local Experiences", description: "Discover Japan beyond the ordinary." },
-    { title: "Kansai Local Experts", description: "Explore with people who know Kansai." },
-    { title: "Beyond the Tourist Trail", description: "Find hidden gems and local favorites." },
-    { title: "Travel Your Way", description: "Personalized around your interests." },
-    { title: "Support Before You Arrive", description: "Get guidance before your journey." },
-    { title: "More Than a Guide", description: "Feel welcomed, not just guided." },
+    { title: "Experience the Real Japan", description: "Discover authentic culture, hidden gems, and the everyday beauty of Japan." },
+    { title: "Local Experts You Can Trust", description: "Explore Kansai with passionate local experts who bring its culture and stories to life." },
+    { title: "Journeys Made Personal", description: "Thoughtfully crafted around your interests, preferences, and pace." },
+    { title: "The Art of Hospitality", description: "Experience genuine Japanese hospitality and meaningful human connections." },
   ],
 };
-const VALUE_IMAGE_SIZES: [number, number][] = [
-  [960, 720], [960, 720], [960, 720], [960, 720], [960, 720], [1213, 910],
-];
-const OUR_VALUE_ITEMS: WhyItem[] = ourValue.cards.map((card, i) => ({
+// No photos in this section (Human instruction 2026-11-25): items carry no image.
+const OUR_VALUE_ITEMS: WhyItem[] = ourValue.cards.map((card) => ({
   title: proposed(card.title, OUR_VALUE_SOURCE),
   description: proposed(card.description, OUR_VALUE_SOURCE),
-  image: proposed(
-    {
-      src: valueCardImages[i],
-      alt: card.title,
-      width: VALUE_IMAGE_SIZES[i][0],
-      height: VALUE_IMAGE_SIZES[i][1],
-      rights: "NOT_VERIFIED" as const,
-      consent: "NOT_VERIFIED" as const,
-    },
-    OUR_VALUE_SOURCE,
-  ),
 }));
 
 export function getHomeViewModel(): HomeViewModel {
@@ -149,7 +132,7 @@ export function getHomeViewModel(): HomeViewModel {
       },
       whyConnectrip: {
         heading: proposed(ourValue.heading, OUR_VALUE_SOURCE),
-        supporting: proposed(ourValue.subheading, OUR_VALUE_SOURCE),
+        supporting: tbd("No subheading for WHY TRAVEL WITH CONNECTRIP"),
         items: proposed(OUR_VALUE_ITEMS, OUR_VALUE_SOURCE),
       },
       howItWorks: {
