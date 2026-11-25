@@ -44,6 +44,13 @@ const nextConfig: NextConfig = {
   // the guide form's is the Guide Google Form (2026-11-11).
   async redirects() {
     return [
+      // One host for search engines (2026-11-25 SEO audit): www served the same pages with a 200.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.connectripjapan.com" }],
+        destination: "https://connectripjapan.com/:path*",
+        permanent: true,
+      },
       // Guide applications: the Guide Google Form (2026-11-11). The in-site form
       // under src/app/guide-community and its API/data are kept, not served.
       {

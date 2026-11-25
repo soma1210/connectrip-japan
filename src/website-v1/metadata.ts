@@ -13,24 +13,45 @@ export const OG_IMAGE = { url: `${SITE_URL}/images/logo/logo.png`, width: 1254, 
  * Private Guide areas (W1-D04) and the Company profile. No prices, reviews
  * or unapproved promises. `title` replaces the page name only where set.
  */
-const PUBLIC_PAGE_META: Record<string, { title?: { absolute: string }; description: string }> = {
+export const PUBLIC_PAGE_META: Record<string, { title?: { absolute: string }; description: string }> = {
   "/": {
     title: { absolute: "Private Guides in Osaka, Kyoto, Nara & Kobe | Connectrip Japan" },
     description:
-      "Connectrip Japan is an Osaka-based company offering private guides in Osaka, Kyoto, Nara and Kobe. Choose 4, 6 or 8 hours and send a booking request; we reply after checking our guides' availability.",
+      "Explore Osaka, Kyoto, Nara and Kobe with a private English-speaking local guide. Choose 4, 6 or 8 hours and send a booking request to Connectrip Japan.",
   },
   "/private-guide": {
     title: { absolute: "Private Guide in Osaka, Kyoto, Nara & Kobe | Connectrip Japan" },
     description:
-      "Request a private guide for 4, 6 or 8 hours in Osaka, Kyoto, Nara or Kobe, for up to 6 people. Days end by 20:00 Japan time. A request is not a confirmed booking: we check availability and reply.",
+      "Request a private English-speaking guide in Osaka, Kyoto, Nara or Kobe for 4, 6 or 8 hours. We check guide availability and reply within 2 business days.",
   },
-  "/inquiry": { description: "Questions before you request a private guide? Contact Connectrip Japan." },
-  "/privacy": { description: "How Connectrip Japan handles the personal information you send us." },
-  "/terms": { description: "Terms for using the Connectrip Japan website." },
+  "/inquiry": {
+    description:
+      "Have a question before requesting a private guide in Osaka, Kyoto, Nara or Kobe? Message Connectrip Japan on TikTok, Instagram, WhatsApp or Facebook.",
+  },
+  "/privacy": {
+    description:
+      "How Connectrip Japan Co., Ltd. collects, uses and protects the personal information you send in booking requests and inquiries, and how we use cookies.",
+  },
+  "/terms": {
+    description:
+      "The terms for using the Connectrip Japan website and private guide services: booking requests and confirmation, pricing, cancellations and liability.",
+  },
+  "/about": {
+    description:
+      "Meet the team behind Connectrip Japan, an Osaka-based private guide company founded in 2026: our founders, mission, values and the services we offer.",
+  },
+  "/experiences": {
+    description:
+      "Private guided experiences in Osaka with a local guide, starting with Osaka Tenmangu Shrine and Tenjinbashisuji, Japan's longest shopping street.",
+  },
+  "/experiences/osaka-like-a-local": {
+    description:
+      "Discover Osaka like a local on a 3-hour private walking tour for 1 to 6 guests: shrine traditions at Osaka Tenmangu, local crafts and Japanese souvenirs.",
+  },
   "/cancel-policy": { description: "Cancellation and refund policy of Connectrip Japan." },
   "/company": {
     description:
-      "Company profile of Connectrip Japan Co., Ltd., founded on November 16, 2026 in Nishiyodogawa-ku, Osaka: private guide services and travel support for visitors to Japan.",
+      "Company profile of Connectrip Japan Co., Ltd., founded November 16, 2026 in Nishiyodogawa-ku, Osaka: private guide services and travel support in Japan.",
   },
 };
 
