@@ -1,0 +1,206 @@
+/* Backdrop of the Home "Your Kansai. Your Way." type window. See KansaiMap.tsx. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 60% at 30% 60%, rgb(207 169 95 / 0.06), transparent 70%),
+    #15120f;
+}
+
+.mapWrap {
+  position: absolute;
+  inset: 30% -40% -6% -40%;
+  opacity: 0.5;
+}
+
+@media (min-width: 768px) {
+  .mapWrap {
+    inset: 34% 28% -8% -4%;
+    opacity: 1;
+    mask-image: linear-gradient(90deg, #000 0%, #000 72%, transparent 100%);
+  }
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ---------- Land, water ---------- */
+.sea {
+  fill: #0f0d0b;
+}
+
+.land {
+  fill: #15120f;
+}
+
+.coast {
+  fill: none;
+  stroke: rgb(207 169 95 / 0.42);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.contours {
+  fill: none;
+  stroke: rgb(207 169 95 / 0.13);
+  stroke-width: 1;
+}
+
+.grid {
+  stroke: rgb(207 169 95 / 0.1);
+  stroke-width: 0.8;
+}
+
+.roads {
+  fill: none;
+  stroke: rgb(207 169 95 / 0.12);
+  stroke-width: 1;
+}
+
+.rivers {
+  fill: none;
+  stroke: rgb(171 150 112 / 0.5);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 1 1;
+}
+
+/* Rail lines: a double line, as on old survey maps. */
+.railOuter {
+  fill: none;
+  stroke: rgb(207 169 95 / 0.55);
+  stroke-width: 6;
+  stroke-dasharray: 1 1;
+}
+
+.railInner {
+  fill: none;
+  stroke: #15120f;
+  stroke-width: 3.2;
+}
+
+.water {
+  font-family: var(--font-heading-en);
+  font-size: 14px;
+  letter-spacing: 0.6em;
+  fill: rgb(207 169 95 / 0.38);
+}
+
+/* ---------- Markers ---------- */
+.ring {
+  fill: #15120f;
+  stroke: rgb(214 194 154 / 0.85);
+  stroke-width: 1.4;
+}
+
+.dot {
+  fill: #d6c29a;
+}
+
+.name {
+  font-family: var(--font-heading-en);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  fill: rgb(232 220 196 / 0.82);
+}
+
+.km {
+  font-family: var(--font-heading-en);
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  fill: rgb(207 169 95 / 0.62);
+}
+
+.hub .ring {
+  stroke: #e0532f;
+  stroke-width: 1.8;
+}
+
+.hub .dot {
+  fill: #e0532f;
+}
+
+.hub .name {
+  font-weight: 600;
+  fill: #f3e8d2;
+}
+
+.ping {
+  fill: none;
+  stroke: #e0532f;
+  stroke-width: 1.2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: km-ping 2.8s ease-out infinite;
+}
+
+@keyframes km-ping {
+  from {
+    scale: 0.6;
+    opacity: 0.9;
+  }
+  to {
+    scale: 2.2;
+    opacity: 0;
+  }
+}
+
+/* ---------- Paper seen through the letters ---------- */
+.leaf {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(80% 60% at 50% 45%, #efe3c6 0%, #e2d2ae 55%, #d2bd92 100%);
+}
+
+.leaf::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ---------- Grain ---------- */
+.grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: km-grain 1.4s steps(4) infinite;
+}
+
+@keyframes km-grain {
+  0% {
+    translate: 0 0;
+  }
+  25% {
+    translate: -3% 2%;
+  }
+  50% {
+    translate: 2% -3%;
+  }
+  75% {
+    translate: -2% -1%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ping,
+  .grain {
+    animation: none;
+  }
+
+  .leaf {
+    display: none;
+  }
+}

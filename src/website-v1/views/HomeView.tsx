@@ -22,7 +22,9 @@ import { reveal, revealGroup, revealGroupLate } from "../components/motion/revea
 import { RevealObserver } from "../components/motion/RevealObserver";
 import mosaic from "../components/wd/HeroMosaic.module.css";
 import { HeroMosaicMotion } from "../components/wd/HeroMosaicMotion";
+import { heroDisplay } from "../components/wd/heroType";
 import { HomeSceneStack } from "../components/wd/HomeSceneStack";
+import { StackDepth } from "../components/wd/StackDepth";
 import { MistRise } from "../components/wd/MistRise";
 import { FixedBannerMotion } from "../components/wd/FixedBannerMotion";
 import { ShowreelMotion } from "../components/wd/ShowreelMotion";
@@ -39,7 +41,24 @@ import { FeaturedTourBooking, type BookingMode } from "../components/booking/Fea
 import { PLAN_AREAS, PLAN_DURATIONS, PLAN_INTERESTS } from "../booking/privateDayPlan";
 import { ACTIVITY_LABELS, AREA_LABELS } from "../content/privateGuide";
 import { PhilosophySection } from "../components/globe/PhilosophySection";
-import { OurValueCinematicSection } from "../components/our-value/OurValueCinematicSection";
+import { WhyTravel } from "../components/why/WhyTravel";
+import { FeaturedFacts, FeaturedPhotoFrame, FeaturedSeal, FeaturedTitle } from "../components/wd/FeaturedPop";
+
+/** Home Featured slide title: the tour name after its "Osaka Like a Local:" lead (the tour data keeps the full name). */
+function featuredSlideTitle(title: string): string {
+  const at = title.indexOf(":");
+  return at > 0 ? title.slice(at + 1).trim() : title;
+}
+
+/** Line breaks of that title on the slide (Human instruction 2026-11-24). Same words as the tour name. */
+const FEATURED_SLIDE_TITLE_LINES = ["Shrine Traditions", "&", "Unique Japanese Souvenirs"];
+
+/**
+ * Short description for the slide (Human instruction 2026-11-24: shorter and clearer). The
+ * tour's full summary (content/featuredTour.ts) stays as is for the tour page and SEO.
+ */
+const FEATURED_SLIDE_SUMMARY =
+  "A 3-hour private walk with a local guide: Japanese shrine traditions, local crafts and unique souvenirs on Tenjinbashisuji Shopping Street.";
 
 /**
  * Not shown in public mode (launch scope 2026-11-11): DEMO experiences with TBD
@@ -69,7 +88,7 @@ const BASELINE_ORDER: HomeSectionKey[] = [
  * the first visit; the camera, text and rotation start when it ends.
  */
 const HEADLINE_CLASS =
-  "max-w-[9.4em] font-heading-jp text-[clamp(2.25rem,9.6vw,3rem)] leading-[1.08] text-cream drop-shadow-[0_2px_28px_rgba(5,11,24,0.6)] max-md:mx-auto md:text-[clamp(2.9rem,4.4vw,4.9rem)]";
+  `max-w-[9.4em] ${mosaic.title} text-[clamp(2.25rem,9.6vw,3rem)] text-cream drop-shadow-[0_2px_28px_rgba(5,11,24,0.6)] max-md:mx-auto md:text-[clamp(2.9rem,4.4vw,4.9rem)]`;
 
 /** One photo of the seven-photo (2 · 3 · 2) mosaic around the slider (assets/heroImages.ts HERO_MOSAIC). */
 function MosaicCell({ photo }: { photo: MosaicPhoto }) {
@@ -92,7 +111,7 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
   const line = (i: number) => ({ className: cinematic.line, style: { "--i": i } as CSSProperties });
   const words = hero.headline.status === "TBD" ? [] : hero.headline.value.split(" ");
   return (
-    <section id="home-hero" data-v1-hero className={`touch-pan-y ${mosaic.component}`}>
+    <section id="home-hero" data-v1-hero className={`touch-pan-y ${mosaic.component} ${heroDisplay.variable}`}>
       {/* Home Opening Experience (W1-D21): overlay on top; the Hero below is always in the HTML. */}
       {first ? <HomeOpeningExperience image={{ src: first.src, focus: heroFocus(first.src) }} /> : null}
 
@@ -131,16 +150,24 @@ function Hero({ hero }: { hero: HomeContent["hero"] }) {
           <div data-mosaic-copy className={`mx-auto w-full max-w-(--container-app) px-6 pb-20 md:px-12 md:pb-[13svh] ${openingStyles.heroCopy}`}>
             <div className="max-md:text-center">
               {words.length > 0 ? (
-                // Same headline text; each word rises out of its own mask.
-                <h1 className={HEADLINE_CLASS}>
-                  {words.map((word, i) => (
-                    <span key={i}>
-                      <span className={mosaic.word}>
-                        <span style={{ "--w": i } as CSSProperties}>{word}</span>
+                // Same headline text; each letter springs up out of its word's mask
+                // (stretch → land → squash → settle, HeroMosaic.module.css).
+                <h1 className={HEADLINE_CLASS} aria-label={words.join(" ")}>
+                  {words.map((word, i) => {
+                    const before = words.slice(0, i).join("").length;
+                    return (
+                      <span key={i} aria-hidden>
+                        <span className={mosaic.word}>
+                          {[...word].map((ch, j) => (
+                            <span key={j} className={mosaic.char} style={{ "--c": before + j } as CSSProperties}>
+                              {ch}
+                            </span>
+                          ))}
+                        </span>
+                        {i < words.length - 1 ? " " : null}
                       </span>
-                      {i < words.length - 1 ? " " : null}
-                    </span>
-                  ))}
+                    );
+                  })}
                 </h1>
               ) : (
                 <div {...line(0)}>
@@ -254,23 +281,28 @@ function FeaturedExperiences({ section, bookingMode }: { section: HomeContent["f
           )}
         </div>
 
-        {/* The tour panel. */}
-        <div data-sr-panel className="flex flex-col gap-6 px-5 py-10 md:absolute md:inset-y-0 md:right-0 md:w-[46%] md:justify-center md:px-12 md:py-0 lg:px-16 xl:pr-24">
-          <h3 {...{ [item]: "" }} className="font-heading-en text-2xl leading-snug tracking-wide text-gold md:text-[2.1rem] md:leading-[1.2]">
-            {tour.title}
-          </h3>
-          <p {...{ [item]: "" }} className="text-sm leading-relaxed text-cream/80 md:text-[0.98rem]">
-            {tour.summary}
+        {/* Gold frame and caption over the photo once it has moved left (wide screens). */}
+        <FeaturedPhotoFrame caption={tour.detailFacts.find((x) => x.label === "Meeting Area")?.value ?? "Osaka"} />
+
+        {/* The tour panel (editorial version, Human instruction 2026-11-22: components/wd/FeaturedPop). */}
+        <div data-sr-panel className="relative flex flex-col gap-7 px-5 py-10 md:absolute md:inset-y-0 md:right-0 md:w-[46%] md:justify-center md:px-12 md:py-0 lg:px-16 xl:pr-24">
+          <FeaturedSeal>大阪</FeaturedSeal>
+          {/* Title only, all in brand gold, centred on three fixed lines (Human instruction
+              2026-11-24): the index line and the "Osaka Like a Local:" lead are not shown on this
+              slide. The size follows the panel width (container units) so the longest line fits. */}
+          {/* The title may use part of the panel's side padding (-mx), so it can be set larger. */}
+          <div className="-mx-2 [container-type:inline-size] md:-mx-8 lg:-mx-10">
+            <h3 aria-label={featuredSlideTitle(tour.title)} className="font-heading-en text-[min(3.9rem,8.5cqi)] leading-[1.08] font-light tracking-[-0.025em] text-center text-gold">
+              <FeaturedTitle title={featuredSlideTitle(tour.title)} lines={FEATURED_SLIDE_TITLE_LINES} />
+            </h3>
+          </div>
+          <p {...{ [item]: "" }} className="max-w-[34rem] text-sm leading-[1.75] font-light text-cream/70 md:text-[0.98rem]">
+            {FEATURED_SLIDE_SUMMARY}
           </p>
-          <dl {...{ [item]: "" }} className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-cream/15 pt-6 text-sm">
-            {tour.facts.map((f) => (
-              <div key={f.label}>
-                <dt className="font-heading-en text-[11px] tracking-[0.15em] text-cream/45 uppercase">{f.label}</dt>
-                <dd className="mt-1 text-cream/90">{f.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <div {...{ [item]: "" }} className="flex flex-col gap-3 pt-2 sm:flex-row md:flex-col xl:flex-row">
+          <div {...{ [item]: "" }}>
+            <FeaturedFacts facts={tour.facts} />
+          </div>
+          <div {...{ [item]: "" }} className="flex flex-col gap-3 pt-1 sm:flex-row md:flex-col xl:flex-row">
             <CtaLink cta={tour.detailCta} pair />
             <FeaturedTourBooking tour={tour} mode={bookingMode} />
           </div>
@@ -301,18 +333,11 @@ function WhyConnectrip({ section }: { section: HomeContent["whyConnectrip"] }) {
   // grid below stays as the fallback while the heading or the cards are still TBD.
   if (section.heading.status !== "TBD" && section.items.status !== "TBD") {
     return (
-      <OurValueCinematicSection
+      // WHY TRAVEL WITH CONNECTRIP (Human instruction 2026-11-25): four strengths, no photos.
+      <WhyTravel
         id="value"
         heading={section.heading.value}
-        lead={section.supporting && section.supporting.status !== "TBD" ? section.supporting.value : undefined}
-        cards={section.items.value.map((item) => ({
-          title: textOr(item.title, ""),
-          description: textOr(item.description, ""),
-          image:
-            item.image && item.image.status !== "TBD"
-              ? { src: item.image.value.src, alt: item.image.value.alt }
-              : { src: "", alt: "" },
-        }))}
+        items={section.items.value.map((item) => ({ title: textOr(item.title, ""), description: textOr(item.description, "") }))}
       />
     );
   }
@@ -481,6 +506,7 @@ export function HomeView({ vm, bookingMode = "mock" }: { vm: HomeViewModel; book
       {/* Cinematic Globe Philosophy (preview only, Human instruction 2026-11-14): after all Home content, right before the footer. */}
       <div data-home-section="philosophy"><PhilosophySection /></div>
       <HomeSceneStack />
+      <StackDepth />
     </>
   );
 }

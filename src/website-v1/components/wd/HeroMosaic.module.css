@@ -132,33 +132,86 @@
   pointer-events: auto;
 }
 
-/* ---- Headline: each word rises out of its own mask ---- */
+/* ---- First-view typography (Home Hero only; PENDING HUMAN VISUAL REVIEW) ----
+ * Roles after The Real Hotels (title face vs light text face):
+ * - Title: Instrument Sans 600 (components/wd/heroType.ts), tight tracking and
+ *   leading for a bold, confident block.
+ * - Supporting label (photo location): the site gothic in its light weight.
+ * - CTA labels: the site gothic at medium weight for legibility; boxes unchanged.
+ * Nothing here reaches the header or other sections. */
+.title {
+  font-family: var(--font-hero-display), var(--font-heading-en);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  font-kerning: normal;
+}
+.component :global([data-hero-label]) p {
+  font-weight: 300;
+}
+.content :global(a) {
+  font-weight: 500;
+}
+
+/* ---- Headline: each letter springs up out of its word's mask ----
+ * Pure CSS (plays without JS). Every letter leaves the mask stretched tall and
+ * thin, overshoots, lands with a squash, rebounds once and settles exactly on
+ * the original glyph (end state: transform none). The mask clips only below
+ * the line, so the overshoot above it stays visible. Transforms only: no
+ * layout shift. */
 .word {
   display: inline-block;
-  overflow: clip;
-  overflow-clip-margin: 0.12em;
   padding-bottom: 0.08em;
   margin-bottom: -0.08em;
   vertical-align: top;
+  clip-path: inset(-0.9em -0.35em 0 -0.35em);
 }
-.word > span {
+.char {
   display: inline-block;
-  animation: wordRise 1.25s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(1.25s + var(--w) * 0.09s);
+  transform-origin: 50% 100%;
+  will-change: transform;
+  animation: charSpring 1.05s both;
+  animation-delay: calc(1.25s + var(--c) * 0.034s);
 }
-:global(html[data-v1-opening]) .word > span {
-  animation-delay: calc(0.2s + var(--w) * 0.09s);
+:global(html[data-v1-opening]) .char {
+  animation-delay: calc(0.2s + var(--c) * 0.034s);
 }
-:global(html[data-v1-opening="pending"]) .word > span,
-:global(html[data-v1-opening="play"]) .word > span,
-:global(html[data-v1-opening="reduced"]) .word > span,
-:global(html[data-v1-opening="reduced-out"]) .word > span {
+:global(html[data-v1-opening="pending"]) .char,
+:global(html[data-v1-opening="play"]) .char,
+:global(html[data-v1-opening="reduced"]) .char,
+:global(html[data-v1-opening="reduced-out"]) .char {
   animation: none;
-  transform: translateY(110%);
+  transform: translateY(125%);
 }
-@keyframes wordRise {
-  from { transform: translateY(110%) rotate(4deg); }
-  to { transform: translateY(0) rotate(0); }
+@keyframes charSpring {
+  0% {
+    /* Start far enough down that the stretched (1.55×) letter is fully under the mask. */
+    transform: translateY(175%) scale(0.72, 1.55);
+    animation-timing-function: cubic-bezier(0.22, 0.9, 0.36, 1);
+  }
+  38% {
+    transform: translateY(-16%) scale(0.9, 1.14);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.75, 0.45);
+  }
+  56% {
+    transform: translateY(0) scale(1.16, 0.84);
+    animation-timing-function: cubic-bezier(0.25, 0.7, 0.4, 1);
+  }
+  72% {
+    transform: translateY(-4%) scale(0.96, 1.05);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  86% {
+    transform: translateY(0) scale(1.03, 0.97);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.3, 1);
+  }
+  100% {
+    transform: none;
+  }
+}
+@media (max-width: 767px) {
+  /* Smaller type: a slightly quicker spring, same shape. */
+  .char { animation-duration: 0.95s; }
 }
 
 /* Thin gold rule drawn under the headline once the words are up. */
@@ -193,5 +246,5 @@
   .component { padding-bottom: 0; }
   .sticky { position: relative; overflow: clip; clip-path: none; }
   .contentSticky { position: relative; }
-  .word > span, .rule { animation: none !important; transform: none !important; }
+  .char, .rule { animation: none !important; transform: none !important; will-change: auto; }
 }
