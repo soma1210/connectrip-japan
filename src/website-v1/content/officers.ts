@@ -2,7 +2,7 @@
  * Officer names and titles (Human instruction 2026-11-15). The only place
  * that spells them; the Privacy Policy and About read from here.
  *
- * - Riku Oizumi: 代表取締役 / Representative Director & CEO (the legal
+ * - Riku Ohizumi: 代表取締役 / Representative Director & CEO (the legal
  *   representative of the company).
  * - Soma Beppu: 取締役副代表 / Director & Deputy Representative | EVP
  *   (official title, Human instruction 2026-11-21; replaces "Director &
@@ -11,7 +11,7 @@
 export type OfficerKey = "representative" | "deputy";
 
 export const OFFICERS = {
-  representative: { name: "Riku Oizumi", titleJa: "代表取締役", titleEn: "Representative Director & CEO" },
+  representative: { name: "Riku Ohizumi", titleJa: "代表取締役", titleEn: "Representative Director & CEO" },
   deputy: { name: "Soma Beppu", nameJa: "別府壮真", titleJa: "取締役副代表", titleEn: "Director & Deputy Representative | EVP" },
 } as const;
 
@@ -24,7 +24,7 @@ export const PRIVACY_OFFICER: OfficerKey = "deputy";
 export const PRIVACY_OFFICER_DECISION = { decidedAt: "2026-11-15", by: "Management decision (経営判断)" } as const;
 
 /**
- * "Riku Oizumi, Representative Director & CEO". " | " is glued to its
+ * "Riku Ohizumi, Representative Director & CEO". " | " is glued to its
  * neighbours (no-break spaces, plus a word joiner because browsers may break
  * after "|" even before a no-break space), so a narrow screen never leaves
  * "EVP" alone on a line: "Representative | EVP" wraps as one unit.
@@ -39,9 +39,9 @@ export function officerLine(key: OfficerKey): string {
  * both founders, used as supplied (not cropped; metadata removed), with the
  * names only. Left: Soma Beppu. Right: Riku Ohizumi.
  *
- * "Riku Ohizumi" is the spelling the owner confirmed for About (2026-11-16).
- * `OFFICERS.representative.name` (legal documents, Privacy Policy) still reads
- * "Riku Oizumi": unify both when the owner confirms the legal spelling.
+ * The name is spelled "Riku Ohizumi" everywhere on the site (Human instruction
+ * 2026-11-25: About, the company table, the Privacy Policy and the Domestic
+ * Travel Services Manager all use this one spelling; "Riku Ohizumi" is retired).
  * To replace the photo, overwrite the file at `src` (same name) or change it here.
  */
 export const FOUNDERS_PHOTO = {
