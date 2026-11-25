@@ -4,7 +4,8 @@
       "claude/website-v1-launch": false,
       "claude/website-v2-launch": false,
       "claude/website-v2-cinematic": false,
-      "claude/website-dark-cream": false
+      "claude/website-dark-cream": false,
+      "indexnow-state": false
     }
   }
 }

@@ -1,0 +1,144 @@
+# IndexNow: tell search engines (Bing, Yandex, Naver, Seznam, Yep…) which
+# connectripjapan.com pages are new, updated, deleted or moved after a production
+# deployment. See scripts/indexnow/README.md.
+#
+# Triggers
+# - status: Vercel posts a commit status ("Vercel", success) when a deployment completes.
+#   (Vercel creates no GitHub Deployments in this repository, so `deployment_status`
+#   never fires.) Only commits contained in main (the production branch) go further, and
+#   the script waits until connectripjapan.com really serves the commit (/api/build-info).
+# - schedule (every 3 h, only when sending is enabled): finishes an unfinished run
+#   (failure, 429, deployment not live in time) and catches a live commit that was never
+#   handled (missed event, redeploy, rollback). Otherwise it stops after one request.
+# - workflow_dispatch: by hand (dry-run or live), e.g. the first notification.
+#
+# Sending is OFF until the repository variable INDEXNOW_ENABLED is "true". Until then
+# every run is a dry run: nothing is sent, nothing is stored, no schedule runs.
+# This workflow is separate from the deployment: whatever happens here, the site is already
+# live and unaffected. Do not make it a required status check.
+
+name: IndexNow
+
+on:
+  status:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "dry-run: list only. live: send (also needs INDEXNOW_ENABLED=true)"
+        type: choice
+        options: [dry-run, live]
+        default: dry-run
+
+# Nothing by default; the job below asks for the one permission it needs.
+permissions: {}
+
+# One run at a time, never cancelled half-way: no two runs send or record at once.
+concurrency:
+  group: indexnow-production
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'status' && github.event.context == 'Vercel' && github.event.state == 'success') ||
+      (github.event_name == 'schedule' && vars.INDEXNOW_ENABLED == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write # read main; push the record to the indexnow-state branch (nothing else)
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SHA: ${{ github.event.sha || github.sha }}
+    steps:
+      - name: Production only, and choose the mode
+        id: gate
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "status" ]; then
+            # compare SHA...main: "ahead"/"identical" = main contains the commit (production).
+            rel=$(gh api "repos/${{ github.repository }}/compare/${SHA}...main" --jq .status)
+            echo "commit ${SHA} vs main: ${rel}"
+            if [ "$rel" != "ahead" ] && [ "$rel" != "identical" ]; then
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Not a production commit (preview branch): nothing to do." >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          fi
+          echo "run=true" >> "$GITHUB_OUTPUT"
+          mode=dry-run
+          if [ "${{ vars.INDEXNOW_ENABLED }}" = "true" ]; then
+            case "${{ github.event_name }}" in
+              status|schedule) mode=live ;;
+              workflow_dispatch) [ "${{ inputs.mode }}" = "live" ] && mode=live ;;
+            esac
+          fi
+          echo "mode=${mode}" >> "$GITHUB_OUTPUT"
+          echo "mode: ${mode}"
+
+      - name: Check out the scripts (main)
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          ref: main
+          # The token stays in git config only when the record will be pushed.
+          persist-credentials: ${{ steps.gate.outputs.mode == 'live' }}
+
+      - name: Check out the record (indexnow-state branch)
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          set -euo pipefail
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin indexnow-state >/dev/null; then
+            git fetch --depth=1 origin indexnow-state
+            git worktree add indexnow-state FETCH_HEAD
+            git -C indexnow-state switch -c indexnow-state
+          else
+            # First run: an orphan branch holding only the record. Its own vercel.json
+            # stops Vercel from building it.
+            git worktree add --orphan -b indexnow-state indexnow-state
+            printf '{\n  "git": { "deploymentEnabled": false }\n}\n' > indexnow-state/vercel.json
+            printf '# IndexNow record\n\nWritten by .github/workflows/indexnow.yml on main. state.json = last accepted notification; log/ = every run. Public URLs and run data only.\n' > indexnow-state/README.md
+          fi
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        if: steps.gate.outputs.run == 'true'
+        with:
+          bun-version: 1.4.0
+
+      - name: Find changes and notify IndexNow
+        id: run
+        if: steps.gate.outputs.run == 'true'
+        continue-on-error: true
+        run: >-
+          bun --no-env-file scripts/indexnow/run.ts
+          --mode ${{ steps.gate.outputs.mode }}
+          --state-dir indexnow-state
+          --sha "${SHA}"
+          --trigger ${{ github.event_name }}
+          --summary "$GITHUB_STEP_SUMMARY"
+
+      - name: Save the record (live runs, success or failure)
+        if: always() && steps.gate.outputs.mode == 'live' && steps.gate.outputs.run == 'true'
+        run: |
+          set -euo pipefail
+          cd indexnow-state
+          git add -A
+          if git diff --cached --quiet; then echo "record unchanged"; exit 0; fi
+          git commit -q -m "indexnow: ${{ steps.run.outcome }} (${{ github.event_name }}) ${SHA::7}"
+          for i in 1 2 3 4 5; do
+            if git push -q origin HEAD:indexnow-state; then exit 0; fi
+            sleep $((i * 5))
+            git pull -q --rebase origin indexnow-state || true
+          done
+          echo "::error::could not save the IndexNow record"
+          exit 1
+
+      - name: Report a failed notification
+        if: steps.run.outcome == 'failure'
+        run: |
+          echo "::error::IndexNow notification did not complete. The record was not advanced; the scheduled check (every 3 h) sends the same URLs again, or run this workflow by hand."
+          exit 1
