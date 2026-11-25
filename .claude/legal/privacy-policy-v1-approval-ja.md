@@ -71,7 +71,7 @@ Connectrip Japan Co., Ltd.（Connectrip Japan 株式会社。以下「Connectrip
 
 - 会社名：Connectrip Japan Co., Ltd.
 - 住所：大阪市西淀川区中島1丁目15番25号
-- 代表者：Riku Oizumi（代表取締役 / Representative Director & CEO）
+- 代表者：Riku Ohizumi（代表取締役 / Representative Director & CEO）
 - 個人情報管理責任者：Soma Beppu（取締役副代表 / Director & Deputy Head）
 - プライバシーに関する窓口：contact@connectripjapan.com
 

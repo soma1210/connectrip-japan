@@ -27,7 +27,7 @@ export const COMPANY_PROFILE = {
     },
     {
       "label": "Representative",
-      "value": "Riku Oizumi, President & CEO"
+      "value": "Riku Ohizumi, President & CEO"
     },
     {
       "label": "Address",
@@ -51,7 +51,7 @@ export const COMPANY_PROFILE = {
     },
     {
       "label": "Domestic Travel Services Manager",
-      "value": "Riku Oizumi"
+      "value": "Riku Ohizumi"
     }
   ],
   "footerSignature": "Connectrip Japan Co., Ltd."

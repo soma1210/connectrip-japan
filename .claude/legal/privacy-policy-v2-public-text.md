@@ -12,7 +12,7 @@ Connectrip Japan Co., Ltd. is the business operator responsible for your persona
 
 - **Company:** Connectrip Japan Co., Ltd.
 - **Address:** 1-15-25 Nakajima, Nishiyodogawa-ku, Osaka, Japan
-- **Representative:** Riku Oizumi, Representative Director & CEO
+- **Representative:** Riku Ohizumi, Representative Director & CEO
 - **Personal Information Management Officer:** Soma Beppu, Director & Deputy Head
 - **Privacy contact:** contact@connectripjapan.com
 
