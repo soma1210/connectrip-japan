@@ -13,8 +13,10 @@
     "check:v1-guides": "NEXT_PUBLIC_WEBSITE_V1_PREVIEW=1 bun scripts/check-v1-guides.ts",
     "check:booking": "bun --no-env-file src/lib/booking-request/rules.test.ts && bun --no-env-file src/lib/booking-request/api.test.ts",
     "check:inquiries": "bun --no-env-file src/lib/notify/forms.test.ts && bun --no-env-file src/lib/inquiries/db.test.ts && bun --no-env-file src/lib/inquiries/admin.test.ts && bun --no-env-file src/lib/admin/session.test.ts",
-    "check:site": "bun --no-env-file src/website-v1/booking/tourBookingRequest.test.ts && bun --no-env-file src/website-v1/content/privacyPolicy.test.ts",
-    "test:unit": "bun run check:booking && bun run check:inquiries && bun run check:site"
+    "check:site": "bun --no-env-file src/website-v1/booking/tourBookingRequest.test.ts && bun --no-env-file src/website-v1/content/privacyPolicy.test.ts && bun --no-env-file src/website-v1/seoGuard.test.ts",
+    "check:indexnow": "bun --no-env-file scripts/indexnow/indexnow.test.ts",
+    "indexnow:dry-run": "bun --no-env-file scripts/indexnow/run.ts --mode dry-run",
+    "test:unit": "bun run check:booking && bun run check:inquiries && bun run check:site && bun run check:indexnow"
   },
   "dependencies": {
     "@neondatabase/serverless": "0.9.5",
