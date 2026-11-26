@@ -67,9 +67,15 @@ assert.ok(
   "www.connectripjapan.com redirects to the apex",
 );
 
-// --- Search engine ownership (Naver Search Advisor) ---
+// --- Search engine ownership (Yandex Webmaster, Naver Search Advisor) ---
+const layoutSource = read("src/app/v1/layout.tsx");
 assert.match(
-  read("src/app/v1/layout.tsx"),
+  layoutSource,
+  /yandex: "e6dac6303897942b"/,
+  "Yandex Webmaster verification meta stays in the public layout metadata",
+);
+assert.match(
+  layoutSource,
   /"naver-site-verification": "2452c8013980cd69f8bd7a5172ec52c0b6a2274a"/,
   "Naver Search Advisor verification meta stays in the public layout metadata",
 );
