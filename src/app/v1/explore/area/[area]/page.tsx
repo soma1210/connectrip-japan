@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/website-v1/components/JsonLd";
-import { AREA_INFO, EXPLORE_AREAS, EXPLORE_VISIBLE, getAreaArticles, getAreaCounts, type ExploreArea } from "@/website-v1/content/explore";
+import { AREA_INFO, EXPLORE_AREAS, EXPLORE_VISIBLE, getAreaArticles, getAreaCounts, isIndexable, type ExploreArea } from "@/website-v1/content/explore";
 import { breadcrumbJsonLd, collectionJsonLd, exploreAreaMetadata, exploreCrumbs } from "@/website-v1/exploreSeo";
 import { exploreAreaHref } from "@/website-v1/routes";
 import { ExploreAreaView } from "@/website-v1/views/ExploreViews";
@@ -9,7 +9,7 @@ type Props = { params: Promise<{ area: string }> };
 
 /**
  * Area page (Osaka, Kyoto, Nara, Kobe): every Select guide and current
- * update for the area. An area without live articles is noindex (and left
+ * update for the area. An area without indexable articles is noindex (and left
  * out of the sitemap), so empty pages never reach search results.
  */
 export const dynamicParams = false;
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props) {
   const area = toArea((await params).area);
   if (!area) return {};
   const { select, updates } = getAreaArticles(area);
-  return exploreAreaMetadata(area, select.length + updates.length > 0);
+  return exploreAreaMetadata(area, [...select, ...updates].some(isIndexable));
 }
 
 export default async function V1ExploreAreaPage({ params }: Props) {

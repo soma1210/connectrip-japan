@@ -22,9 +22,10 @@ import { UPDATE_ARTICLES } from "./updates";
  *
  * Visibility:
  * - EXPLORE_VISIBLE: the preview shows every record with its status.
- * - EXPLORE_PUBLIC: Explore approved for the public site. false: its routes
- *   are not in PUBLIC_PATHS (404) and the sitemap lists nothing. Turning it
- *   on is a human decision, together with PUBLIC_PATHS / proxy routing.
+ * - EXPLORE_PUBLIC: Explore approved for search. false: the pages are still
+ *   served (V1_SHOW_ALL, owner decision 2026-11-19, routes.ts isServedPath),
+ *   but every Explore page is noindex, no article is indexable and the
+ *   sitemap lists nothing. Turning it on is a human decision.
  */
 export const EXPLORE_VISIBLE = V1_CONTENT;
 export const EXPLORE_PUBLIC = false;
