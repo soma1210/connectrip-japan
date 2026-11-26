@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "sitemap": [
+    "https://connectripjapan.com/",
+    "https://connectripjapan.com/about",
+    "https://connectripjapan.com/company",
+    "https://connectripjapan.com/experiences",
+    "https://connectripjapan.com/experiences/osaka-like-a-local",
+    "https://connectripjapan.com/experiences/osaka-tenmangu-tenjinbashisuji",
+    "https://connectripjapan.com/how-it-works",
+    "https://connectripjapan.com/inquiry",
+    "https://connectripjapan.com/privacy",
+    "https://connectripjapan.com/private-guide",
+    "https://connectripjapan.com/terms"
+  ],
+  "pages": {
+    "https://connectripjapan.com/": {
+      "hash": "ba9870d1a33669161e4c024b8d2a69f1c248c3f0c25fd418cc33c516f20e2f55",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/about": {
+      "hash": "845cf1b8462e61ab685935f83af7e935a5fc9b324c3f840abc60bc455d8d09c5",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/company": {
+      "hash": "4ae5f989f00e9801aed453c56f8bd64675afb072d0fb30458d729c4d90a32447",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/experiences": {
+      "hash": "8a6174a8eecf3c540b35f5e9c0770e4827ea841097c2856c5684cb8bdd00b9a1",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/experiences/osaka-like-a-local": {
+      "hash": "d84cee2151a5dc1fa4096ed6c2dd309d8105bdf72ba7c2aa1fc262fe62e9f148",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/experiences/osaka-tenmangu-tenjinbashisuji": {
+      "hash": "f96780b2e11b5f6c2298f27085189f6d8a96c4e8961ebe09fb6d458f31aaa4a8",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/how-it-works": {
+      "hash": "5821ffcf5eda862b456289b0eade3377ea03762f87322a65c6c70e7977eb338a",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/inquiry": {
+      "hash": "7d7dad5fd81ba257eee9104917feb91b9aceee200a726d1bcdc424ba68f8c2ab",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/privacy": {
+      "hash": "724a5e364dd1aeb1caaaea35450642f897e6d4704bc0c53016fc897c9dd9f638",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/private-guide": {
+      "hash": "a614cfd36a19709d575ef07bdb64dced94dedd3b0367da1f57d1fbda8755244e",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    },
+    "https://connectripjapan.com/terms": {
+      "hash": "b78fdd089fa396d98bdc2e3d8978a06c3baec78ef4710e2895a215f048d1dde9",
+      "notifiedAt": "2026-11-26T05:43:49.252Z",
+      "sha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a"
+    }
+  },
+  "lastProcessedSha": "bbdb796540effcf15a51682a9d3b4e9a57d0539a",
+  "updatedAt": "2026-11-26T05:43:49.252Z",
+  "retry": null
+}
