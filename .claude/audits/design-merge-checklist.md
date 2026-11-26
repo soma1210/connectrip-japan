@@ -24,12 +24,16 @@ Copying its files over main brings the old versions back.
 | Booking / inquiry APIs and rules | `src/lib/booking-request/*`, `src/lib/inquiries/*`, `src/app/api/v1/*` and their tests |
 | Meta descriptions | `src/website-v1/metadata.ts` (`PUBLIC_PAGE_META`, 25–160 characters) |
 | Sitemap / robots | `src/app/sitemap.ts`, `src/app/robots.ts`, `src/website-v1/sitemap.ts` |
-| Structured data | `src/website-v1/structuredData.ts` (`areaServed`) |
+| Structured data | `src/website-v1/structuredData.ts` (Organization with officers and sameAs, TouristTrip, Service, FAQPage; 2026-11-26), the `<JsonLd>` lines in `src/app/v1/private-guide/page.tsx`, `src/app/v1/experiences/osaka-like-a-local/page.tsx`, `src/app/v1/experiences/[slug]/page.tsx` |
 | How It Works H1 | `src/website-v1/components/wd/HowItWorksScene.tsx` (`<h1 data-wd-letters …>`) |
+| Search engine ownership tags (Naver, Yandex) | `src/app/v1/layout.tsx` (`verification`) |
 | www → apex 308 | `next.config.ts` (`redirects`) |
-| noindex management | `src/website-v1/content/explore/*` (`EXPLORE_PUBLIC = false`; the 7 Select drafts stay noindex until the owner approves them) |
+| noindex management | `src/website-v1/content/explore/*` (`EXPLORE_PUBLIC = false`; the 8 Select drafts stay noindex until the owner approves them), `src/website-v1/exploreSeo.ts` (every Explore page noindex while `EXPLORE_PUBLIC` is false), `src/app/v1/explore/area/[area]/page.tsx`, `src/website-v1/journalSeo.ts` (Journal list noindex while it has no published article) |
 | IndexNow | `scripts/indexnow/*`, `.github/workflows/indexnow.yml`, `public/ef7bc773cb5d3c99b8a0abe0dbfc69aa.txt`, `src/app/api/build-info/route.ts`, `vercel.json` (`indexnow-state: false`) |
 | Checks on PRs | `.github/workflows/checks.yml`, `src/website-v1/seoGuard.test.ts`, `package.json` scripts (`test:unit`, `check:*`, `indexnow:dry-run`) |
 
 Files that exist only on main (GA4, consent, IndexNow, build-info) are missing from the design branch.
 They must not be deleted. If the design branch shows them as "deleted", that is its age, not a decision.
+
+AIO / GEO items for the design work (Company link, How It Works copy, 6-hour price, languages, contact
+details, joined words, semantic HTML, links between tours): `aio-geo-design-handoff.md`.

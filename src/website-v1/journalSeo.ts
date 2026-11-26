@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 import { ORGANIZATION_NAME } from "./config";
-import { JOURNAL_COPY, type JournalArticle } from "./content/journal";
+import { JOURNAL_COPY, JOURNAL_RECORDS, type JournalArticle } from "./content/journal";
 import { absoluteUrl, toGuideMetadata } from "./metadata";
 import { journalPageHref } from "./routes";
 
@@ -12,13 +12,16 @@ import { journalPageHref } from "./routes";
  */
 const approved = (value: string) => ({ status: "APPROVED" as const, value, source: "Kansai Travel Journal record" });
 
+/** A list page is worth indexing only once it lists a real, published article (none yet: 2026-11-26). */
+export const journalHasIndexableArticles = (): boolean => JOURNAL_RECORDS.some((r) => r.status === "published" && !r.demo);
+
 export function journalListMetadata(page: number): Metadata {
   const title = page > 1 ? `${JOURNAL_COPY.title} – Page ${page}` : JOURNAL_COPY.title;
   return toGuideMetadata({
     title: approved(title),
     description: approved(`${JOURNAL_COPY.subtitle}. ${JOURNAL_COPY.tagline}`),
     canonicalPath: journalPageHref(page),
-    noindex: false,
+    noindex: !journalHasIndexableArticles(),
   });
 }
 

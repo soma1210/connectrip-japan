@@ -17,7 +17,11 @@ import { EXPLORE_PUBLIC, getSelectArticles, getUpdateArticles, isIndexable } fro
 import { PUBLIC_PAGE_META, toMetadata } from "./metadata";
 import { routeHref } from "./routes";
 import { getExploreSitemapEntries } from "./sitemap";
-import { organizationJsonLd, websiteJsonLd } from "./structuredData";
+import { featuredTourJsonLd, organizationJsonLd, privateGuideFaqJsonLd, privateGuideServiceJsonLd, tenmanguTourJsonLd, websiteJsonLd } from "./structuredData";
+import { exploreAreaMetadata, exploreEditorialPolicyMetadata, exploreHubMetadata, exploreMapMetadata, exploreSelectListMetadata, exploreUpdatesListMetadata } from "./exploreSeo";
+import { journalListMetadata } from "./journalSeo";
+import { OFFICERS } from "./content/officers";
+import { PRIVATE_GUIDE_FAQ } from "./content/privateGuideFaq";
 
 const SITE = "https://connectripjapan.com";
 const read = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), "utf8");
@@ -46,15 +50,49 @@ assert.ok(urls.every((u) => u.startsWith(`${SITE}/`) && !u.includes("/v1")), "si
 assert.equal(EXPLORE_PUBLIC, false, "Explore Kansai is not approved for the public site");
 assert.deepEqual(getExploreSitemapEntries(), [], "no Explore URL in the sitemap");
 assert.deepEqual([...getSelectArticles(), ...getUpdateArticles()].filter(isIndexable).map((a) => a.slug), [], "no Explore article is indexable");
+// Explore hub / list / area / map / policy pages and the empty Kansai Travel Journal are served
+// (V1_SHOW_ALL) but not approved for search: noindex (AIO / GEO audit 2026-11-26).
+const notIndexed = (m: { robots?: unknown }, name: string) =>
+  assert.equal((m.robots as { index?: boolean } | undefined)?.index, false, `${name} is noindex`);
+notIndexed(exploreHubMetadata(), "/explore");
+notIndexed(exploreSelectListMetadata(), "/explore/select");
+notIndexed(exploreUpdatesListMetadata(), "/explore/updates");
+for (const area of ["osaka", "kyoto", "kobe", "nara"] as const) notIndexed(exploreAreaMetadata(area, true), `/explore/area/${area}`);
+notIndexed(exploreMapMetadata(), "/explore/map/osaka");
+notIndexed(exploreEditorialPolicyMetadata(), "/explore/editorial-policy");
+notIndexed(journalListMetadata(1), "/kansai-travel-journal");
 
 // --- robots.txt ---
 assert.deepEqual(robots(), { rules: { userAgent: "*", allow: "/", disallow: ["/admin", "/api"] }, sitemap: `${SITE}/sitemap.xml` });
 
 // --- Structured data ---
-const org = organizationJsonLd() as Record<string, unknown>;
-assert.equal(org["@type"], "Organization");
+type Node = Record<string, unknown>;
+const graph = (organizationJsonLd() as { "@graph": Node[] })["@graph"];
+const org = graph.find((n) => n["@type"] === "Organization")!;
 assert.equal(org.url, `${SITE}/`);
+assert.equal(org.name, "Connectrip Japan");
+assert.equal(org.legalName, "Connectrip Japan 株式会社");
+assert.equal(org.alternateName, "Connectrip Japan Co., Ltd.");
+assert.match(org.description as string, /private guide company based in Osaka/);
+assert.deepEqual(org.knowsLanguage, ["en"], "English only until other languages are decided");
 assert.deepEqual((org.areaServed as { name: string }[]).map((c) => c.name), ["Osaka", "Kyoto", "Nara", "Kobe"]);
+assert.deepEqual(org.address, { "@type": "PostalAddress", streetAddress: "1-15-25 Nakajima", addressLocality: "Nishiyodogawa-ku, Osaka", addressRegion: "Osaka", addressCountry: "JP" });
+assert.deepEqual(org.sameAs, ["https://www.tiktok.com/@japan_travel_guide_ctj", "https://www.instagram.com/japan_travel_guide_ctj", "https://www.facebook.com/people/Connectrip-Japan/61590505293378/"]);
+assert.equal((org.contactPoint as Node).url, `${SITE}/inquiry`);
+// Officers: names and titles from content/officers.ts; founders are both of them (About).
+const people = graph.filter((n) => n["@type"] === "Person");
+assert.deepEqual(people.map((p) => [p.name, p.jobTitle]), [[OFFICERS.representative.name, OFFICERS.representative.titleEn], [OFFICERS.deputy.name, OFFICERS.deputy.titleEn]]);
+assert.equal((org.founder as unknown[]).length, 2);
+// Tours, Private Guide service and FAQ: built from the records the pages render.
+const service = privateGuideServiceJsonLd() as Node;
+assert.deepEqual((service.offers as Node[]).map((o) => o.price), [25000, 40000, 32000, 50000], "Private Guide offers = the price table");
+assert.deepEqual((featuredTourJsonLd().offers as Node[]).map((o) => o.price), [19800, 29800, 39800]);
+assert.deepEqual(((tenmanguTourJsonLd() as Node).offers as Node[]).map((o) => o.price), [24800, 39800, 59800]);
+assert.equal((tenmanguTourJsonLd() as Node).itinerary, undefined, "the Tenmangu page lists places, not a visit order");
+assert.equal((privateGuideFaqJsonLd().mainEntity as unknown[]).length, PRIVATE_GUIDE_FAQ.length);
+// Nothing the business is not (no travel-agency registration) and nothing the pages don't show.
+const allLd = JSON.stringify([organizationJsonLd(), websiteJsonLd(), service, featuredTourJsonLd(), tenmanguTourJsonLd(), privateGuideFaqJsonLd()]);
+assert.doesNotMatch(allLd, /TravelAgency|LocalBusiness|aggregateRating|"review"|travel agency|telephone|"email"/i);
 assert.equal((websiteJsonLd() as Record<string, unknown>).url, `${SITE}/`);
 
 // --- H1 on How It Works (the page's only title) ---

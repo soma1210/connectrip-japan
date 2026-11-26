@@ -3,6 +3,9 @@ import { getExperienceDetailViewModel, getExperienceSlugs } from "@/website-v1/c
 import { toMetadata } from "@/website-v1/metadata";
 import { ExperienceDetailView } from "@/website-v1/views/ExperienceViews";
 import { ExperienceProductView } from "@/website-v1/views/ExperienceProductView";
+import { JsonLd } from "@/website-v1/components/JsonLd";
+import { tenmanguTourJsonLd } from "@/website-v1/structuredData";
+import { TENMANGU_SLUG } from "@/website-v1/content/experienceTenmangu";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -20,8 +23,14 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function V1ExperienceDetailPage({ params }: Props) {
-  const vm = getExperienceDetailViewModel((await params).slug);
+  const slug = (await params).slug;
+  const vm = getExperienceDetailViewModel(slug);
   if (!vm) notFound();
   // Product records (with places) use the product layout; anything else the generic template.
-  return vm.content.places ? <ExperienceProductView vm={vm} /> : <ExperienceDetailView vm={vm} />;
+  return (
+    <>
+      {slug === TENMANGU_SLUG ? <JsonLd data={tenmanguTourJsonLd()} /> : null}
+      {vm.content.places ? <ExperienceProductView vm={vm} /> : <ExperienceDetailView vm={vm} />}
+    </>
+  );
 }

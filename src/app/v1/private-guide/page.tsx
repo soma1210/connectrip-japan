@@ -1,5 +1,5 @@
 import { JsonLd } from "@/website-v1/components/JsonLd";
-import { pageBreadcrumbJsonLd } from "@/website-v1/structuredData";
+import { pageBreadcrumbJsonLd, privateGuideFaqJsonLd, privateGuideServiceJsonLd } from "@/website-v1/structuredData";
 import { routeHref } from "@/website-v1/routes";
 import { bookingStoreFromEnv } from "@/lib/booking-request/handler";
 import { getPrivateGuideViewModel } from "@/website-v1/content/privateGuide";
@@ -21,6 +21,8 @@ export default function V1PrivateGuidePage() {
   return (
     <>
       <JsonLd data={pageBreadcrumbJsonLd("Private Guide", routeHref("privateGuide"))} />
+      <JsonLd data={privateGuideServiceJsonLd()} />
+      <JsonLd data={privateGuideFaqJsonLd()} />
       <PrivateGuideView vm={getPrivateGuideViewModel()} request={getPrivateGuideRequestModel(new Date(), mode)} />
     </>
   );

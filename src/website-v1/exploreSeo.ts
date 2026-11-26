@@ -30,17 +30,22 @@ import { exploreAreaHref, exploreEditorialPolicyHref, exploreHref, exploreSelect
  *   without the gate, for checks.
  */
 const value = (v: string) => ({ status: "APPROVED" as const, value: v, source: "Explore Kansai record" });
+/**
+ * Hub, list, area, map and policy pages. They are served publicly (V1_SHOW_ALL, owner decision
+ * 2026-11-19) but Explore Kansai is not approved for search yet (EXPLORE_PUBLIC = false), so they stay
+ * noindex until it is (AIO / GEO audit 2026-11-26). Turning EXPLORE_PUBLIC on lifts this.
+ */
 const page = (title: string, description: string, canonicalPath: string, noindex = false): Metadata =>
-  toGuideMetadata({ title: value(title), description: value(description), canonicalPath, noindex });
+  toGuideMetadata({ title: value(title), description: value(description), canonicalPath, noindex: noindex || !EXPLORE_PUBLIC });
 
 export const exploreHubMetadata = () => page(EXPLORE_COPY.title, EXPLORE_COPY.intro, exploreHref());
 export const exploreSelectListMetadata = () => page(EXPLORE_COPY.select.label, EXPLORE_COPY.select.description, exploreSelectHref());
 export const exploreUpdatesListMetadata = () => page(EXPLORE_COPY.updates.label, EXPLORE_COPY.updates.description, exploreUpdatesHref());
 export const exploreMapMetadata = () =>
   page(`${EXPLORE_COPY.map.label}: Connectrip Japan Select`, "A map of the places in Osaka picked by Connectrip Japan, from Osaka Castle and Dotonbori to local shrines and markets, linked to our guides.", routeHref("connectripSelect"));
-/** Area page: noindex while it has no live article (an empty page is not worth a search result). */
-export const exploreAreaMetadata = (area: ExploreArea, hasArticles: boolean) =>
-  page(`${AREA_INFO[area].name} Travel Guides`, AREA_INFO[area].intro, exploreAreaHref(area), !hasArticles);
+/** Area page: noindex while it has no indexable article (drafts don't count; an empty page is not worth a search result). */
+export const exploreAreaMetadata = (area: ExploreArea, hasIndexableArticles: boolean) =>
+  page(`${AREA_INFO[area].name} Travel Guides`, AREA_INFO[area].intro, exploreAreaHref(area), !hasIndexableArticles);
 export const exploreEditorialPolicyMetadata = () =>
   page("Editorial Policy", "How the Connectrip Japan Editorial Team researches, checks and updates the guides and travel updates in Explore Kansai.", exploreEditorialPolicyHref());
 /** Never indexed, never in the sitemap. */
