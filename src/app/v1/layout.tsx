@@ -37,8 +37,11 @@ export const metadata: Metadata = V1_PREVIEW
       robots: { index: true, follow: true },
       openGraph: { type: "website", siteName: ORGANIZATION_NAME, locale: "en_US", images: [OG_IMAGE] },
       twitter: { card: "summary", images: [OG_IMAGE.url] },
-      // Naver Search Advisor site ownership (2026-11-26). Keep it: removing it unverifies the site.
-      verification: { other: { "naver-site-verification": "2452c8013980cd69f8bd7a5172ec52c0b6a2274a" } },
+      // Site ownership: Yandex Webmaster and Naver Search Advisor (2026-11-26). Keep both: removing one unverifies the site.
+      verification: {
+        yandex: "e6dac6303897942b",
+        other: { "naver-site-verification": "2452c8013980cd69f8bd7a5172ec52c0b6a2274a" },
+      },
     };
 
 /**
