@@ -4,6 +4,8 @@ import { toMetadata } from "@/website-v1/metadata";
 import { experienceHref } from "@/website-v1/routes";
 import { TourDetailView } from "@/website-v1/views/TourDetailView";
 import { bookingStoreFromEnv } from "@/lib/booking-request/handler";
+import { JsonLd } from "@/website-v1/components/JsonLd";
+import { featuredTourJsonLd } from "@/website-v1/structuredData";
 
 /**
  * Osaka Tenma tour detail (2026-11-13). Preview only: `/experiences/*` is not
@@ -19,5 +21,10 @@ export function generateMetadata() {
 
 export default function V1OsakaLikeALocalPage() {
   // Live only when the booking backend is configured on the server (same rule as the Private Guide form).
-  return <TourDetailView tour={getFeaturedTour()} bookingMode={bookingStoreFromEnv() ? "live" : "mock"} />;
+  return (
+    <>
+      <JsonLd data={featuredTourJsonLd()} />
+      <TourDetailView tour={getFeaturedTour()} bookingMode={bookingStoreFromEnv() ? "live" : "mock"} />
+    </>
+  );
 }
