@@ -67,6 +67,13 @@ assert.ok(
   "www.connectripjapan.com redirects to the apex",
 );
 
+// --- Search engine ownership (Naver Search Advisor) ---
+assert.match(
+  read("src/app/v1/layout.tsx"),
+  /"naver-site-verification": "2452c8013980cd69f8bd7a5172ec52c0b6a2274a"/,
+  "Naver Search Advisor verification meta stays in the public layout metadata",
+);
+
 // --- GA4 behind Cookie Consent (Consent Mode v2, production only) ---
 assert.match(read("src/app/v1/layout.tsx"), /<Analytics \/>/);
 const analytics = read("src/website-v1/analytics.ts");
